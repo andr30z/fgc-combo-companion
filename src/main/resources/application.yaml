@@ -1,0 +1,37 @@
+.env:
+  prefix: ""
+
+# spring.cloud.compatibility-verifier.enabled=false
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: "*"
+authentication:
+  auth:
+    secureToken: ${SECURE_TOKEN:true}
+    tokenExpirationMsec: ${TOKEN_EXPIRATION_MSEC}
+    tokenSecret: ${TOKEN_SECRET}
+    refreshTokenExpirationMsec: ${REFRESH_TOKEN_EXPIRATION_MSEC}
+    accessTokenCookieName: accessToken
+    refreshTokenCookieName: refreshToken
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  show-sql: true
+  application:
+    name: template
+  datasource:
+    url: ${AUTH_SERVICE_POSTGRESQL_CONNECTION}
+    username: ${AUTH_SERVICE_POSTGRESQL_USERNAME}
+    password: ${AUTH_SERVICE_POSTGRESQL_PASSWORD}
+  flyway:
+    baselineOnMigrate: true
+    url: ${AUTH_SERVICE_POSTGRESQL_CONNECTION}
+    user: ${AUTH_SERVICE_POSTGRESQL_USERNAME}
+    password: ${AUTH_SERVICE_POSTGRESQL_PASSWORD}
