@@ -12,7 +12,7 @@ public class PlaylistMapper {
         this.modelMapper = modelMapper;
     }
 
-    public PlaylistResponseDTO toComboReponseDTO(Playlist playlist) {
+    public PlaylistResponseDTO toPlaylistReponseDTO(Playlist playlist) {
         return this.modelMapper.map(playlist, PlaylistResponseDTO.class);
     }
 

@@ -33,6 +33,8 @@ public class ComboServiceImpl implements ComboService {
     public ComboResponseDTO create(CreateComboDTO createComboDTO) {
 
         Combo combo = comboMapper.toCombo(createComboDTO);
+        User currentUser = userService.me();
+        combo.setOwner(currentUser);
         return comboMapper.toComboReponseDTO(this.comboRepository.save(combo));
     }
 
