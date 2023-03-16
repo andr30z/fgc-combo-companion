@@ -7,15 +7,13 @@ import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.model.User;
 
-
-
 public interface UserService {
 
     User create(CreateUserDTO userDTO);
 
     User findById(Long id);
 
-    User me(String token);
+    User me();
 
     ResponseEntity<LoginResponse> login(LoginRequest loginRequest, String accessToken, String refreshToken);
 
