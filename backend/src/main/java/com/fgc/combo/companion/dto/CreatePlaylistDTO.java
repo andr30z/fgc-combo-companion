@@ -1,19 +1,11 @@
 package com.fgc.combo.companion.dto;
 
+import java.util.Set;
+
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Builder
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class CreateComboDTO {
-
+public class CreatePlaylistDTO {
     @NotEmpty
     private String name;
 
@@ -23,6 +15,8 @@ public class CreateComboDTO {
     @Max(255)
     private String description;
 
-    @NotBlank
+    @NotEmpty
     private Long ownerId;
+
+    Set<Long> combos;
 }
