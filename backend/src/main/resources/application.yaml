@@ -1,7 +1,6 @@
 .env:
   prefix: ""
 
-# spring.cloud.compatibility-verifier.enabled=false
 management:
   endpoints:
     jmx:
@@ -18,12 +17,13 @@ authentication:
 
 spring:
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: none
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
-  show-sql: true
+ 
   application:
     name: template
   datasource:
