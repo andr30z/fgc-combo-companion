@@ -8,11 +8,13 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.CustomUserDetails;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.Token;
@@ -26,7 +28,6 @@ import com.fgc.combo.companion.service.UserService;
 import com.fgc.combo.companion.utils.CookieUtil;
 import com.fgc.combo.companion.utils.SecurityCipher;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -40,19 +41,16 @@ public class UserServiceImpl implements UserService {
   private final TokenProvider tokenProvider;
   private final PasswordEncoder passwordEncoder;
   private final CookieUtil cookieUtil;
-  private final HttpServletRequest httpServletRequest;
 
   public UserServiceImpl(
       UserRepository userRepository,
       TokenProvider tokenProvider,
       CookieUtil cookieUtil,
-      PasswordEncoder passwordEncoder,
-      HttpServletRequest httpServletRequest) {
+      PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.tokenProvider = tokenProvider;
     this.cookieUtil = cookieUtil;
     this.passwordEncoder = passwordEncoder;
-    this.httpServletRequest = httpServletRequest;
   }
 
   @Override
@@ -163,10 +161,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User me() {
-    String token = this.cookieUtil.getAuthCookieValue(httpServletRequest);
-    String accessToken = SecurityCipher.decrypt(token);
-    String userLogin = this.tokenProvider.getUsernameFromToken(accessToken);
-    return this.findByEmail(userLogin);
+    CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        .getPrincipal();
+    return currentUser.getUser();
   }
 
   private User findByEmail(String email) {
@@ -190,4 +187,5 @@ public class UserServiceImpl implements UserService {
             .createRefreshTokenCookie(token.getTokenValue(), token.getDuration())
             .toString());
   }
+
 }
