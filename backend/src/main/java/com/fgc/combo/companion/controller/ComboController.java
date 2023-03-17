@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.UpdateComboDTO;
 import com.fgc.combo.companion.service.ComboService;
 
 @RequestMapping("/api/v1/combos")
@@ -31,7 +32,7 @@ public class ComboController {
     }
 
     @PutMapping("/{comboId}")
-    public ComboResponseDTO getByDTO(@PathVariable Long comboId, @RequestBody @Validated CreateComboDTO comboDTO) {
+    public ComboResponseDTO getByDTO(@PathVariable Long comboId, @RequestBody @Validated UpdateComboDTO comboDTO) {
         return this.comboService.update(comboId, comboDTO);
     }
 

@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.dto;
 
-import jakarta.validation.constraints.Max;
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,6 @@ public class CreateComboDTO {
     @NotEmpty
     private String combo;
 
-    @Max(255)
+    @Length(max = 255)
     private String description;
 }

@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,15 +23,11 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString(exclude = "owner")
-@EqualsAndHashCode(exclude = "owner")
 @Entity
 @Table(name = "playlists")
 public class Playlist {
@@ -51,9 +50,11 @@ public class Playlist {
 
     @ManyToOne
     @JoinColumn(name = "user_owner_id", referencedColumnName = "id", nullable = false)
+    @Fetch(value = FetchMode.JOIN)
     private User owner;
 
-    @OneToMany(mappedBy = "playlist")
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.JOIN)
     Set<PlaylistCombo> playlistCombos = new HashSet<>();
 
 }

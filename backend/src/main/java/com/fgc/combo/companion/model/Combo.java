@@ -3,6 +3,8 @@ package com.fgc.combo.companion.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,15 +19,11 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString(exclude = "owner")
-@EqualsAndHashCode(exclude = "owner")
 @Entity
 @Table(name = "combos")
 public class Combo {
@@ -50,5 +48,6 @@ public class Combo {
 
     @ManyToOne
     @JoinColumn(name = "user_owner_id", referencedColumnName = "id", nullable = false)
+    @Fetch(value = FetchMode.JOIN)
     private User owner;
 }

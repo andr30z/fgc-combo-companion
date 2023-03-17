@@ -3,11 +3,14 @@ package com.fgc.combo.companion.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,13 +43,15 @@ public class PlaylistCombo {
     @Column(nullable = false)
     Integer position;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "combo_id")
+    @Fetch(value = FetchMode.JOIN)
     Combo combo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "playlist_id")
+    @Fetch(value = FetchMode.JOIN)
     Playlist playlist;
 
     @CreationTimestamp

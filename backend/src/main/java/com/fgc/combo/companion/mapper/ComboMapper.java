@@ -1,12 +1,12 @@
 package com.fgc.combo.companion.mapper;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.model.Combo;
 
-@Service
+@Component
 public class ComboMapper {
 
     private final ModelMapper modelMapper;

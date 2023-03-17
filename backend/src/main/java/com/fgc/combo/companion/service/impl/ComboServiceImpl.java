@@ -3,12 +3,14 @@ package com.fgc.combo.companion.service.impl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.webjars.NotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.UpdateComboDTO;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
+import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.mapper.PaginationResponseMapper;
 import com.fgc.combo.companion.model.Combo;
@@ -17,6 +19,7 @@ import com.fgc.combo.companion.repository.ComboRepository;
 import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
 
+@Service
 public class ComboServiceImpl implements ComboService {
 
     private final ComboRepository comboRepository;
@@ -39,15 +42,16 @@ public class ComboServiceImpl implements ComboService {
     }
 
     @Override
-    public ComboResponseDTO update(Long id, CreateComboDTO createComboDTO) {
+    public ComboResponseDTO update(Long id, UpdateComboDTO updateComboDTO) {
         User currentUser = userService.me();
 
-        Combo combo = this.comboRepository.findById(id).orElseThrow(() -> new NotFoundException("Combo not found!"));
+        Combo combo = this.comboRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
         if (combo.getOwner().getId() != currentUser.getId())
-            throw new OperationNotAllowedException("That combo belongs to another user!");
+            throw new OperationNotAllowedException("This combo belongs to another user!");
 
-        BeanUtils.copyProperties(createComboDTO, combo);
+        BeanUtils.copyProperties(updateComboDTO, combo);
 
         return this.comboMapper.toComboReponseDTO(this.comboRepository.save(combo));
     }
@@ -67,7 +71,7 @@ public class ComboServiceImpl implements ComboService {
         User currentUser = this.userService.me();
 
         Combo combo = this.comboRepository.findByIdAndOwner(id, currentUser)
-                .orElseThrow(() -> new NotFoundException("Combo not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
         return this.comboMapper.toComboReponseDTO(combo);
     }

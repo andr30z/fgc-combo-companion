@@ -14,5 +14,5 @@ public interface PlaylistComboService {
 
     List<Combo> addAllCombosToPlaylist(Playlist playlist, List<Long> comboIds);
 
-    List<Combo> removeCombosFromPlaylist(List<Long> playlistCombosId);
+    List<Combo> removeCombosFromPlaylist(Playlist playlist, List<Long> playlistCombosId);
 }
