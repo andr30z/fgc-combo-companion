@@ -1,10 +1,5 @@
 package com.fgc.combo.companion.service.impl;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
-import org.springframework.stereotype.Service;
-
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -17,115 +12,149 @@ import com.fgc.combo.companion.repository.PlaylistComboRepository;
 import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.service.PlaylistComboService;
 import com.fgc.combo.companion.service.UserService;
-
 import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.function.IntSupplier;
+import java.util.stream.IntStream;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PlaylistComboServiceImpl implements PlaylistComboService {
 
-    private final PlaylistRepository playlistRepository;
-    private final ComboRepository comboRepository;
-    private final PlaylistComboRepository playlistComboRepository;
-    private final UserService userService;
+  private final PlaylistRepository playlistRepository;
+  private final ComboRepository comboRepository;
+  private final PlaylistComboRepository playlistComboRepository;
+  private final UserService userService;
 
-    public PlaylistComboServiceImpl(
-            PlaylistRepository playlistRepository,
-            ComboRepository comboRepository,
-            PlaylistComboRepository playlistComboRepository,
-            UserService userService) {
-        this.playlistRepository = playlistRepository;
-        this.comboRepository = comboRepository;
-        this.playlistComboRepository = playlistComboRepository;
-        this.userService = userService;
-    }
+  public PlaylistComboServiceImpl(
+    PlaylistRepository playlistRepository,
+    ComboRepository comboRepository,
+    PlaylistComboRepository playlistComboRepository,
+    UserService userService
+  ) {
+    this.playlistRepository = playlistRepository;
+    this.comboRepository = comboRepository;
+    this.playlistComboRepository = playlistComboRepository;
+    this.userService = userService;
+  }
 
-    @Override
-    public List<Combo> getAllCombosInPlaylist(Long playlistId) {
-        Playlist playlist = getPlaylist(playlistId);
-        return getCombosFromPlaylist(playlist);
+  @Override
+  public List<Combo> getAllCombosInPlaylist(Long playlistId) {
+    Playlist playlist = getPlaylist(playlistId);
+    return getCombosFromPlaylist(playlist);
+  }
 
-    }
+  @Override
+  public List<Combo> getAllCombosInPlaylist(Playlist playlist) {
+    return getCombosFromPlaylist(playlist);
+  }
 
-    @Override
-    public List<Combo> getAllCombosInPlaylist(Playlist playlist) {
+  @Transactional
+  @Override
+  public List<Combo> addAllCombosToPlaylist(
+    Long playlistId,
+    List<Long> comboIds
+  ) {
+    Playlist playlist = getPlaylist(playlistId);
 
-        return getCombosFromPlaylist(playlist);
-    }
+    return addAllCombosToPlaylist(playlist, comboIds);
+  }
 
-    @Transactional
-    @Override
-    public List<Combo> addAllCombosToPlaylist(Long playlistId, List<Long> comboIds) {
+  @Transactional
+  @Override
+  public List<Combo> addAllCombosToPlaylist(
+    Playlist playlist,
+    List<Long> comboIds
+  ) {
+    User user = userService.me();
+    if (
+      user.getId() != playlist.getOwner().getId()
+    ) throw new OperationNotAllowedException(
+      "You cannot add combos to this playlist!"
+    );
 
-        Playlist playlist = getPlaylist(playlistId);
-        User user = userService.me();
+    List<Combo> combos = this.comboRepository.findAllById(comboIds);
+    List<PlaylistCombo> playlistCombos = createPlaylistCombos(combos, playlist);
 
-        if (user.getId() != playlist.getOwner().getId())
-            throw new OperationNotAllowedException("You cannot add combos to this playlist!");
+    List<PlaylistCombo> savedPlaylistCombos = playlistComboRepository.saveAll(
+      playlistCombos
+    );
+    playlist.getPlaylistCombos().addAll(savedPlaylistCombos);
+    playlistRepository.save(playlist);
 
-        List<Combo> combos = this.comboRepository.findAllById(comboIds);
-        List<PlaylistCombo> playlistCombos = createPlaylistCombos(combos, playlist);
+    return combos;
+  }
 
-        List<PlaylistCombo> savedPlaylistCombos = playlistComboRepository.saveAll(playlistCombos);
-        playlist.getPlaylistCombos().addAll(savedPlaylistCombos);
-        playlistRepository.save(playlist);
+  @Override
+  public List<Combo> removeCombosFromPlaylist(
+    Playlist playlist,
+    List<Long> playlistComboIds
+  ) {
+    if (playlistComboIds.isEmpty()) throw new BadRequestException(
+      "At least one Playlist Combo ID should be informed!"
+    );
 
-        return combos;
-    }
+    User user = userService.me();
 
-    @Transactional
-    @Override
-    public List<Combo> addAllCombosToPlaylist(Playlist playlist, List<Long> comboIds) {
+    if (
+      playlist.getOwner().getId() != user.getId()
+    ) throw new OperationNotAllowedException("This playlist is not yours!");
 
-        List<Combo> combos = this.comboRepository.findAllById(comboIds);
-        List<PlaylistCombo> playlistCombos = createPlaylistCombos(combos, playlist);
+    List<PlaylistCombo> playlistCombos =
+      this.playlistComboRepository.findAllByIdInAndPlaylist(
+          playlistComboIds,
+          playlist
+        );
 
-        List<PlaylistCombo> savedPlaylistCombos = playlistComboRepository.saveAll(playlistCombos);
-        playlist.getPlaylistCombos().addAll(savedPlaylistCombos);
-        playlistRepository.save(playlist);
+    if (playlistCombos.isEmpty()) throw new BadRequestException(
+      "Playlist or combos not found!"
+    );
+    this.playlistComboRepository.deletePlaylistCombos(playlistComboIds);
+    return playlistCombos
+      .stream()
+      .map(playlistCombo -> playlistCombo.getCombo())
+      .toList();
+  }
 
-        return combos;
-    }
+  private List<PlaylistCombo> createPlaylistCombos(
+    List<Combo> combos,
+    Playlist playlist
+  ) {
+    if (combos.isEmpty()) throw new ResourceNotFoundException(
+      "Combo IDs not found!"
+    );
 
-    @Override
-    public List<Combo> removeCombosFromPlaylist(Playlist playlist, List<Long> playlistComboIds) {
-        if (playlistComboIds.isEmpty())
-            throw new BadRequestException("At least one Playlist Combo ID should be informed!");
+    IntSupplier getEmptyListMaxPosition = () -> 0;
+    int maxComboPosition = playlist
+      .getPlaylistCombos()
+      .stream()
+      .mapToInt(PlaylistCombo::getPosition)
+      .max()
+      .orElseGet(getEmptyListMaxPosition);
 
-        User user = userService.me();
+    return IntStream
+      .range(0, combos.size())
+      .mapToObj(index ->
+        PlaylistCombo
+          .builder()
+          .combo(combos.get(maxComboPosition + index))
+          .playlist(playlist)
+          .position(index)
+          .build()
+      )
+      .toList();
+  }
 
-        if (playlist.getOwner().getId() != user.getId())
-            throw new OperationNotAllowedException("This playlist is not yours!");
+  private Playlist getPlaylist(Long id) {
+    return this.playlistRepository.findById(id)
+      .orElseThrow(() -> new ResourceNotFoundException("Playlist not found!"));
+  }
 
-        List<PlaylistCombo> playlistCombos = this.playlistComboRepository.findAllByIdInAndPlaylist(playlistComboIds,
-                playlist);
-
-        if (playlistCombos.isEmpty())
-            throw new BadRequestException("Playlist or combos not found!");
-        this.playlistComboRepository.deletePlaylistCombos(playlistComboIds);
-        return playlistCombos.stream().map((playlistCombo) -> playlistCombo.getCombo()).toList();
-    }
-
-    private List<PlaylistCombo> createPlaylistCombos(List<Combo> combos, Playlist playlist) {
-
-        if (combos.isEmpty())
-            throw new ResourceNotFoundException("Combo IDs not found!");
-
-        return IntStream.range(0, combos.size())
-                .mapToObj(index -> PlaylistCombo.builder()
-                        .combo(combos.get(index))
-                        .playlist(playlist)
-                        .position(index)
-                        .build())
-                .toList();
-    }
-
-    private Playlist getPlaylist(Long id) {
-        return this.playlistRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Playlist not found!"));
-    }
-
-    private List<Combo> getCombosFromPlaylist(Playlist playlist) {
-        return playlist.getPlaylistCombos().stream().map((playlistCombo) -> playlistCombo.getCombo()).toList();
-    }
-
+  private List<Combo> getCombosFromPlaylist(Playlist playlist) {
+    return playlist
+      .getPlaylistCombos()
+      .stream()
+      .map(playlistCombo -> playlistCombo.getCombo())
+      .toList();
+  }
 }

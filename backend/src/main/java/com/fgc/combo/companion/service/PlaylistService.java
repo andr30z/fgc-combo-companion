@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CompletePlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
@@ -23,5 +24,7 @@ public interface PlaylistService {
     boolean deleteCombosFromPlaylist(Long playlistId, List<Long> playlistComboIds);
 
     CompletePlaylistDTO getPlaylistWithCombos(Long playlistId);
+
+    CompletePlaylistDTO addCombosToPlaylist(Long playlistId, AddCombosToPlaylistDTO combos);
 
 }
