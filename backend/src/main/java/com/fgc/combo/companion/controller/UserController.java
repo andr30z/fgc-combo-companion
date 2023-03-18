@@ -20,11 +20,11 @@ import com.fgc.combo.companion.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UsersController {
+public class UserController {
 
   private final UserService usersService;
 
-  public UsersController(UserService usersService) {
+  public UserController(UserService usersService) {
     this.usersService = usersService;
   }
 
@@ -32,32 +32,25 @@ public class UsersController {
   public User create(@RequestBody @Validated CreateUserDTO createUserDTO) {
     return this.usersService.create(createUserDTO);
   }
-  @PostMapping(
-    value = "/login",
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    produces = MediaType.APPLICATION_JSON_VALUE
-  )
+
+  @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<LoginResponse> login(
-    @CookieValue(name = "accessToken", required = false) String accessToken,
-    @CookieValue(name = "refreshToken", required = false) String refreshToken,
-    @RequestBody @Validated LoginRequest loginRequest
-  ) {
+      @CookieValue(name = "accessToken", required = false) String accessToken,
+      @CookieValue(name = "refreshToken", required = false) String refreshToken,
+      @RequestBody @Validated LoginRequest loginRequest) {
     return usersService.login(loginRequest, accessToken, refreshToken);
   }
 
   @PostMapping(value = "/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<LoginResponse> refreshToken(
-    @CookieValue(name = "accessToken", required = false) String accessToken,
-    @CookieValue(name = "refreshToken", required = false) String refreshToken
-  ) {
+      @CookieValue(name = "accessToken", required = false) String accessToken,
+      @CookieValue(name = "refreshToken", required = false) String refreshToken) {
     return usersService.refresh(accessToken, refreshToken);
   }
 
   @GetMapping("/me")
-  public User me(
-    @CookieValue(name = "accessToken", required = true) String accessToken
-  ) {
-    return this.usersService.me(accessToken);
+  public User me() {
+    return this.usersService.me();
   }
 
   @GetMapping("/{id}")

@@ -1,0 +1,49 @@
+package com.fgc.combo.companion.controller;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fgc.combo.companion.dto.ComboResponseDTO;
+import com.fgc.combo.companion.dto.CreateComboDTO;
+import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.UpdateComboDTO;
+import com.fgc.combo.companion.service.ComboService;
+
+@RequestMapping("/api/v1/combos")
+@RestController
+public class ComboController {
+
+    private final ComboService comboService;
+
+    public ComboController(ComboService comboService) {
+        this.comboService = comboService;
+    }
+
+    @PostMapping
+    public ComboResponseDTO getByDTO(@RequestBody @Validated CreateComboDTO comboDTO) {
+        return this.comboService.create(comboDTO);
+    }
+
+    @PutMapping("/{comboId}")
+    public ComboResponseDTO getByDTO(@PathVariable Long comboId, @RequestBody @Validated UpdateComboDTO comboDTO) {
+        return this.comboService.update(comboId, comboDTO);
+    }
+
+    @GetMapping("/me")
+    public PaginationResponse<ComboResponseDTO> getAllCombosByCurrentUser(Pageable pageable) {
+        return this.comboService.getAllByCurrentUser(pageable);
+    }
+
+    @GetMapping("/{comboId}/me")
+    public ComboResponseDTO getByIdAndCurrentUser(@PathVariable Long comboId) {
+        return this.comboService.getByIdAndCurrentUser(comboId);
+    }
+
+}

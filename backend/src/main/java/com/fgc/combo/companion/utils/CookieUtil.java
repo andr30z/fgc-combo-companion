@@ -1,9 +1,17 @@
 package com.fgc.combo.companion.utils;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseCookie.ResponseCookieBuilder;
 import org.springframework.stereotype.Component;
+
+import com.fgc.combo.companion.exception.BadRequestException;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class CookieUtil {
@@ -13,16 +21,37 @@ public class CookieUtil {
     @Value("${authentication.auth.refreshTokenCookieName}")
     private String refreshTokenCookieName;
 
+    @Value("${spring.profiles.active:Unknown}")
+    private String activeProfile;
+
     private ResponseCookie buildCookieConfig(String cookieSourceName, String token,
-                                             Long duration) {
+            Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
-        return ResponseCookie.from(cookieSourceName, encryptedToken)
+        ResponseCookieBuilder cookieBuilder = ResponseCookie.from(cookieSourceName, encryptedToken)
                 .maxAge(duration)
                 .httpOnly(true)
                 .sameSite("None")
-//                .secure(true)
-                .path("/")
-                .build();
+                .path("/");
+
+        if (activeProfile == "production")
+            cookieBuilder.secure(true);
+
+        return cookieBuilder.build();
+    }
+
+    public String getCookieValue(HttpServletRequest req, String cookieName) {
+        return Arrays.stream(req.getCookies())
+                .filter(c -> c.getName().equals(cookieName))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
+    }
+
+    public String getAuthCookieValue(HttpServletRequest req) {
+        String authCookie = this.getCookieValue(req, accessTokenCookieName);
+        if (authCookie == null)
+            throw new BadRequestException("Token not present in request!");
+        return authCookie;
     }
 
     public HttpCookie createAccessTokenCookie(String token, Long duration) {
