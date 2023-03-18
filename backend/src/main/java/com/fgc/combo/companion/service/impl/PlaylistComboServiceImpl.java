@@ -1,12 +1,5 @@
 package com.fgc.combo.companion.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.IntStream;
-
-import org.springframework.stereotype.Service;
-
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -19,8 +12,13 @@ import com.fgc.combo.companion.repository.PlaylistComboRepository;
 import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.service.PlaylistComboService;
 import com.fgc.combo.companion.service.UserService;
-
 import jakarta.transaction.Transactional;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PlaylistComboServiceImpl implements PlaylistComboService {
@@ -57,7 +55,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   @Override
   public List<Combo> addAllCombosToPlaylist(
     Long playlistId,
-    List<Long> comboIds
+    Set<Long> comboIds
   ) {
     Playlist playlist = getPlaylist(playlistId);
 
@@ -68,7 +66,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   @Override
   public List<Combo> addAllCombosToPlaylist(
     Playlist playlist,
-    List<Long> comboIds
+    Set<Long> comboIds
   ) {
     User user = userService.me();
     if (
@@ -77,7 +75,9 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
       "You cannot add combos to this playlist!"
     );
 
-    List<Combo> combos = this.comboRepository.findAllById(comboIds);
+    Set<Combo> combos = new HashSet<>(
+      this.comboRepository.findAllById(comboIds)
+    );
 
     if (
       (!comboIds.isEmpty() && combos.isEmpty()) ||
@@ -87,8 +87,11 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
         "One of the combos you are trying to add is not in the database!"
       );
     }
-
-    List<PlaylistCombo> playlistCombos = createPlaylistCombos(combos, playlist);
+    List<Combo> listOfCombos = combos.stream().toList();
+    List<PlaylistCombo> playlistCombos = createPlaylistCombos(
+      listOfCombos,
+      playlist
+    );
 
     List<PlaylistCombo> savedPlaylistCombos = playlistComboRepository.saveAll(
       playlistCombos
@@ -96,7 +99,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
     playlist.getPlaylistCombos().addAll(savedPlaylistCombos);
     playlistRepository.save(playlist);
 
-    return combos;
+    return listOfCombos;
   }
 
   @Override
@@ -136,25 +139,18 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   ) {
     if (combos.isEmpty()) return Collections.emptyList();
 
-    int EMPTY_LIST_MAX_POSITION = 0;
     Set<PlaylistCombo> playlistCombos = playlist.getPlaylistCombos();
 
-    int maxComboPosition = playlistCombos.isEmpty()
-      ? EMPTY_LIST_MAX_POSITION
-      : playlistCombos
-        .stream()
-        .mapToInt(PlaylistCombo::getPosition)
-        .max()
-        .orElse(EMPTY_LIST_MAX_POSITION);
+    int EMPTY_LIST_MAX_POSITION = playlistCombos.size();
 
     return IntStream
       .range(0, combos.size())
       .mapToObj(index ->
         PlaylistCombo
           .builder()
-          .combo(combos.get(maxComboPosition + index))
+          .combo(combos.get(index))
           .playlist(playlist)
-          .position(index)
+          .position(EMPTY_LIST_MAX_POSITION + index)
           .build()
       )
       .toList();
@@ -171,5 +167,10 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
       .stream()
       .map(playlistCombo -> playlistCombo.getCombo())
       .toList();
+  }
+
+  @Override
+  public void deleteByPlaylist(Playlist playlist) {
+    this.playlistComboRepository.deleteByPlaylist(playlist);
   }
 }

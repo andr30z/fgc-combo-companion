@@ -16,4 +16,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
     @EntityGraph(attributePaths = { "owner" })
     Page<Playlist> findByOwner(User owner, Pageable pageable);
+
+
+    Long deleteByIdAndOwner(Long id, User owner);
 }

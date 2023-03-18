@@ -58,6 +58,11 @@ public class PlaylistController {
     return this.playlistService.update(playlistId, updatePlaylistDTO);
   }
 
+  @DeleteMapping("/{playlistId}")
+  public boolean delete(@PathVariable Long playlistId) {
+    return this.playlistService.delete(playlistId);
+  }
+
   @PostMapping("/{playlistId}/combos")
   public CompletePlaylistDTO addCombosToPlaylist(
     @PathVariable Long playlistId,

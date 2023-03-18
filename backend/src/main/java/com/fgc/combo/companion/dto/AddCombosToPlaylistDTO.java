@@ -1,12 +1,13 @@
 package com.fgc.combo.companion.dto;
 
+import java.util.Set;
+
 import jakarta.validation.constraints.NotEmpty;
-import java.util.List;
 import lombok.Data;
 
 @Data
 public class AddCombosToPlaylistDTO {
 
   @NotEmpty
-  private List<Long> combos;
+  private Set<Long> combos;
 }

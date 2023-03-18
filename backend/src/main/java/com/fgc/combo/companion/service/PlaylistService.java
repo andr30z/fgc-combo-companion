@@ -21,6 +21,8 @@ public interface PlaylistService {
 
     PlaylistResponseDTO update(Long id, UpdatePlaylistDTO playlistDTO);
 
+    boolean delete(Long playlistId);
+
     boolean deleteCombosFromPlaylist(Long playlistId, List<Long> playlistComboIds);
 
     CompletePlaylistDTO getPlaylistWithCombos(Long playlistId);

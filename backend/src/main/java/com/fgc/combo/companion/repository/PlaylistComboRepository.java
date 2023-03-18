@@ -21,6 +21,10 @@ public interface PlaylistComboRepository extends JpaRepository<PlaylistCombo, Lo
     @Query("delete from PlaylistCombo pc where pc.id in ?1")
     void deletePlaylistCombos(List<Long> ids);
 
+    @Modifying
+    @Query("delete from PlaylistCombo pc where pc.playlist = ?1")
+    void deleteByPlaylist(Playlist playlist);
+
     @EntityGraph(attributePaths = { "playlist.owner", "combo.owner" })
     List<PlaylistCombo> findAllByIdInAndPlaylist(List<Long> id, Playlist playlist);
 }

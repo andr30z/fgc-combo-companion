@@ -1,7 +1,7 @@
 package com.fgc.combo.companion.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -12,11 +12,12 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CreatePlaylistDTO {
-    @NotEmpty
-    private String name;
 
-    @Length(max = 255)
-    private String description;
+  @NotEmpty
+  private String name;
 
-    private List<Long> combos = new ArrayList<>();
+  @Length(max = 255)
+  private String description;
+
+  private Set<Long> combos = new HashSet<>();
 }
