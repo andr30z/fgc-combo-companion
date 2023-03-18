@@ -5,22 +5,21 @@ import java.time.LocalDateTime;
 import com.fgc.combo.companion.model.User;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class PlaylistResponseDTO {
-    private Long id;
 
-    private String name;
+  private Long id;
 
-    private String description;
+  private String name;
 
-    private LocalDateTime createdAt;
+  private String description;
 
-    private User owner;
+  private LocalDateTime createdAt;
+
+  private User owner;
 }

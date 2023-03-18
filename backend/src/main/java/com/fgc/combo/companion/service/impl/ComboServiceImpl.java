@@ -19,7 +19,10 @@ import com.fgc.combo.companion.repository.ComboRepository;
 import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ComboServiceImpl implements ComboService {
 
     private final ComboRepository comboRepository;
@@ -38,6 +41,8 @@ public class ComboServiceImpl implements ComboService {
         Combo combo = comboMapper.toCombo(createComboDTO);
         User currentUser = userService.me();
         combo.setOwner(currentUser);
+        combo.setGame(createComboDTO.getGame());
+        log.info("Creating combo with name: {} and game: {}", combo.getName(), combo.getGame().name());
         return comboMapper.toComboReponseDTO(this.comboRepository.save(combo));
     }
 

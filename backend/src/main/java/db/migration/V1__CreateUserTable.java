@@ -21,7 +21,7 @@ public class V1__CreateUserTable extends BaseJavaMigration {
             "password character varying(255) NOT NULL, " +
             "created_at timestamp, " +
             "CONSTRAINT user_pkey PRIMARY KEY (id) );");
-    statement.execute("CREATE SEQUENCE user_seq;");
+    statement.execute("CREATE SEQUENCE IF NOT EXISTS user_seq;");
     statement.execute(
         "ALTER TABLE users ADD CONSTRAINT unique_email_users UNIQUE (email);");
 

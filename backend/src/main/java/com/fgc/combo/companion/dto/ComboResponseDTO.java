@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.dto;
 
+import com.fgc.combo.companion.enums.ComboGameTypes;
 import com.fgc.combo.companion.model.User;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +19,8 @@ public class ComboResponseDTO {
     private String name;
 
     private String combo;
+    
+    private ComboGameTypes game;
 
     private String description;
 

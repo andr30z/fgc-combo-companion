@@ -21,7 +21,7 @@ public class V4__CreatePlaylistComboRelation extends BaseJavaMigration {
                         "CONSTRAINT playlist_combo_pkey PRIMARY KEY (id), " +
                         "CONSTRAINT playlist_id FOREIGN KEY (playlist_id) REFERENCES playlists(id), " +
                         "CONSTRAINT combo_fk FOREIGN KEY (combo_id) REFERENCES combos(id) );");
-        statement.execute("CREATE SEQUENCE playlist_combo_seq;");
+        statement.execute("CREATE SEQUENCE IF NOT EXISTS playlist_combo_seq;");
 
         statement.close();
 

@@ -12,18 +12,23 @@ public class V2__CreateComboTable extends BaseJavaMigration {
     Connection connection = context.getConnection();
     Statement statement = connection.createStatement();
     statement.execute(
-        "CREATE TABLE combos ( " +
-            "id bigint NOT NULL," +
-            "description character varying(255)," +
-            "name character varying(255) NOT NULL, " +
-            "combo text NOT NULL, " +
-            "created_at timestamp, " +
-            "user_owner_id bigint NOT NULL, " +
-            "CONSTRAINT combo_pkey PRIMARY KEY (id), " +
-            "CONSTRAINT user_fk FOREIGN KEY (user_owner_id) REFERENCES users(id) );");
-    statement.execute("CREATE SEQUENCE combo_seq;");
+      "DROP TYPE IF EXISTS gametypes CASCADE;" +
+      "CREATE TYPE gametypes AS ENUM ('TEKKEN_7', 'SFV', 'KOF_XV', 'GUILTY_GEAR_STRIVE');"
+    );
+    statement.execute(
+      "CREATE TABLE combos ( " +
+      "id bigint NOT NULL," +
+      "description character varying(255)," +
+      "name character varying(255) NOT NULL, " +
+      "combo text NOT NULL, " +
+      "game gametypes NOT NULL, " +
+      "created_at timestamp, " +
+      "user_owner_id bigint NOT NULL, " +
+      "CONSTRAINT combo_pkey PRIMARY KEY (id), " +
+      "CONSTRAINT user_fk FOREIGN KEY (user_owner_id) REFERENCES users(id) );"
+    );
+    statement.execute("CREATE SEQUENCE IF NOT EXISTS combo_seq;");
 
     statement.close();
-
   }
 }

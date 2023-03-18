@@ -1,5 +1,12 @@
 package com.fgc.combo.companion.service.impl;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
+
+import org.springframework.stereotype.Service;
+
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -12,11 +19,8 @@ import com.fgc.combo.companion.repository.PlaylistComboRepository;
 import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.service.PlaylistComboService;
 import com.fgc.combo.companion.service.UserService;
+
 import jakarta.transaction.Transactional;
-import java.util.List;
-import java.util.function.IntSupplier;
-import java.util.stream.IntStream;
-import org.springframework.stereotype.Service;
 
 @Service
 public class PlaylistComboServiceImpl implements PlaylistComboService {
@@ -74,6 +78,16 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
     );
 
     List<Combo> combos = this.comboRepository.findAllById(comboIds);
+
+    if (
+      (!comboIds.isEmpty() && combos.isEmpty()) ||
+      combos.size() != comboIds.size()
+    ) {
+      throw new ResourceNotFoundException(
+        "One of the combos you are trying to add is not in the database!"
+      );
+    }
+
     List<PlaylistCombo> playlistCombos = createPlaylistCombos(combos, playlist);
 
     List<PlaylistCombo> savedPlaylistCombos = playlistComboRepository.saveAll(
@@ -120,17 +134,18 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
     List<Combo> combos,
     Playlist playlist
   ) {
-    if (combos.isEmpty()) throw new ResourceNotFoundException(
-      "Combo IDs not found!"
-    );
+    if (combos.isEmpty()) return Collections.emptyList();
 
-    IntSupplier getEmptyListMaxPosition = () -> 0;
-    int maxComboPosition = playlist
-      .getPlaylistCombos()
-      .stream()
-      .mapToInt(PlaylistCombo::getPosition)
-      .max()
-      .orElseGet(getEmptyListMaxPosition);
+    int EMPTY_LIST_MAX_POSITION = 0;
+    Set<PlaylistCombo> playlistCombos = playlist.getPlaylistCombos();
+
+    int maxComboPosition = playlistCombos.isEmpty()
+      ? EMPTY_LIST_MAX_POSITION
+      : playlistCombos
+        .stream()
+        .mapToInt(PlaylistCombo::getPosition)
+        .max()
+        .orElse(EMPTY_LIST_MAX_POSITION);
 
     return IntStream
       .range(0, combos.size())

@@ -20,7 +20,7 @@ public class V3__CreatePlaylistTable extends BaseJavaMigration {
             "user_owner_id bigint NOT NULL, " +
             "CONSTRAINT playlist_pkey PRIMARY KEY (id), " +
             "CONSTRAINT user_fk FOREIGN KEY (user_owner_id) REFERENCES users(id) );");
-    statement.execute("CREATE SEQUENCE playlist_seq;");
+    statement.execute("CREATE SEQUENCE IF NOT EXISTS playlist_seq;");
 
     statement.close();
 

@@ -1,5 +1,12 @@
 package com.fgc.combo.companion.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CompletePlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
@@ -16,12 +23,8 @@ import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.service.PlaylistComboService;
 import com.fgc.combo.companion.service.PlaylistService;
 import com.fgc.combo.companion.service.UserService;
+
 import jakarta.transaction.Transactional;
-import java.util.List;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
@@ -95,8 +98,10 @@ public class PlaylistServiceImpl implements PlaylistService {
   public PlaylistResponseDTO create(CreatePlaylistDTO playlistDTO) {
     User currentUser = userService.me();
 
-    Playlist playlist = playlistMapper.toPlaylist(playlistDTO);
+    Playlist playlist = new Playlist();
+    BeanUtils.copyProperties(playlistDTO, playlist);
     playlist.setOwner(currentUser);
+
     Playlist createdPlaylist = this.playlistRepository.save(playlist);
 
     this.playlistComboService.addAllCombosToPlaylist(
