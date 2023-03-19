@@ -5,28 +5,27 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
-import com.fgc.combo.companion.dto.CompletePlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
+import com.fgc.combo.companion.model.Playlist;
 
 public interface PlaylistService {
 
-    PlaylistResponseDTO getByIdAndCurrentUser(Long id);
+    Playlist getByIdAndCurrentUser(Long id);
 
-    PaginationResponse<PlaylistResponseDTO> getByCurrentUser(Pageable pageable);
+    PaginationResponse<Playlist> getByCurrentUser(Pageable pageable);
 
-    PlaylistResponseDTO create(CreatePlaylistDTO playlistDTO);
+    Playlist create(CreatePlaylistDTO playlistDTO);
 
-    PlaylistResponseDTO update(Long id, UpdatePlaylistDTO playlistDTO);
+    Playlist update(Long id, UpdatePlaylistDTO playlistDTO);
 
     boolean delete(Long playlistId);
 
     boolean deleteCombosFromPlaylist(Long playlistId, List<Long> playlistComboIds);
 
-    CompletePlaylistDTO getPlaylistWithCombos(Long playlistId);
+    Playlist getPlaylistWithCombos(Long playlistId);
 
-    CompletePlaylistDTO addCombosToPlaylist(Long playlistId, AddCombosToPlaylistDTO combos);
+    Playlist addCombosToPlaylist(Long playlistId, AddCombosToPlaylistDTO combos);
 
 }
