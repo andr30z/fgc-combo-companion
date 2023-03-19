@@ -6,6 +6,7 @@ import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
+import com.fgc.combo.companion.mapper.PlaylistMapper;
 import com.fgc.combo.companion.service.PlaylistService;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
@@ -27,27 +28,39 @@ public class PlaylistController {
 
   private final PlaylistService playlistService;
 
-  public PlaylistController(PlaylistService playlistService) {
+  private final PlaylistMapper playlistMapper;
+
+  public PlaylistController(
+    PlaylistService playlistService,
+    PlaylistMapper playlistMapper
+  ) {
     this.playlistService = playlistService;
+    this.playlistMapper = playlistMapper;
   }
 
   @GetMapping("/{playlistId}")
   public PlaylistResponseDTO getByIdAndCurrentUser(Long playlistId) {
-    return this.playlistService.getByIdAndCurrentUser(playlistId);
+    return this.playlistMapper.toDTO(
+        this.playlistService.getByIdAndCurrentUser(playlistId)
+      );
   }
 
   @GetMapping("/me")
   public PaginationResponse<PlaylistResponseDTO> getByCurrentUser(
     Pageable pageable
   ) {
-    return this.playlistService.getByCurrentUser(pageable);
+    return this.playlistMapper.toPagination(
+        this.playlistService.getByCurrentUser(pageable)
+      );
   }
 
   @PostMapping
   public PlaylistResponseDTO create(
     @RequestBody @Validated CreatePlaylistDTO createPlaylistDTO
   ) {
-    return this.playlistService.create(createPlaylistDTO);
+    return this.playlistMapper.toDTO(
+        this.playlistService.create(createPlaylistDTO)
+      );
   }
 
   @PutMapping("/{playlistId}")
@@ -55,7 +68,9 @@ public class PlaylistController {
     @PathVariable Long playlistId,
     @RequestBody @Validated UpdatePlaylistDTO updatePlaylistDTO
   ) {
-    return this.playlistService.update(playlistId, updatePlaylistDTO);
+    return this.playlistMapper.toDTO(
+        this.playlistService.update(playlistId, updatePlaylistDTO)
+      );
   }
 
   @DeleteMapping("/{playlistId}")
@@ -68,9 +83,11 @@ public class PlaylistController {
     @PathVariable Long playlistId,
     @RequestBody @Validated AddCombosToPlaylistDTO addCombosToPlaylistDTO
   ) {
-    return this.playlistService.addCombosToPlaylist(
-        playlistId,
-        addCombosToPlaylistDTO
+    return this.playlistMapper.toCompletePlaylistDTO(
+        this.playlistService.addCombosToPlaylist(
+            playlistId,
+            addCombosToPlaylistDTO
+          )
       );
   }
 
@@ -91,6 +108,8 @@ public class PlaylistController {
   public CompletePlaylistDTO getCombosFromPlaylist(
     @PathVariable Long playlistId
   ) {
-    return this.playlistService.getPlaylistWithCombos(playlistId);
+    return this.playlistMapper.toCompletePlaylistDTO(
+        this.playlistService.getPlaylistWithCombos(playlistId)
+      );
   }
 }

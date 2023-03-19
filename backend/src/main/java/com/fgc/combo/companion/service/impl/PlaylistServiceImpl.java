@@ -1,15 +1,12 @@
 package com.fgc.combo.companion.service.impl;
 
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
-import com.fgc.combo.companion.dto.CompletePlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.mapper.PaginationResponseMapper;
-import com.fgc.combo.companion.mapper.PlaylistMapper;
 import com.fgc.combo.companion.model.Playlist;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.PlaylistRepository;
@@ -27,18 +24,15 @@ import org.springframework.stereotype.Service;
 public class PlaylistServiceImpl implements PlaylistService {
 
   private final PlaylistRepository playlistRepository;
-  private final PlaylistMapper playlistMapper;
   private final UserService userService;
   private final PlaylistComboService playlistComboService;
 
   public PlaylistServiceImpl(
     PlaylistRepository playlistRepository,
-    PlaylistMapper playlistMapper,
     UserService userService,
     PlaylistComboService playlistComboService
   ) {
     this.playlistRepository = playlistRepository;
-    this.playlistMapper = playlistMapper;
     this.userService = userService;
     this.playlistComboService = playlistComboService;
   }
@@ -54,7 +48,7 @@ public class PlaylistServiceImpl implements PlaylistService {
   }
 
   @Override
-  public CompletePlaylistDTO addCombosToPlaylist(
+  public Playlist addCombosToPlaylist(
     Long playlistId,
     AddCombosToPlaylistDTO combos
   ) {
@@ -63,17 +57,13 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlist,
         combos.getCombos()
       );
-    return this.playlistMapper.toCompletePlaylistDTO(playlist);
+    return playlist;
   }
 
   @Override
-  public CompletePlaylistDTO getPlaylistWithCombos(Long playlistId) {
-    return this.playlistMapper.toCompletePlaylistDTO(
-        this.playlistRepository.findById(playlistId)
-          .orElseThrow(() ->
-            new ResourceNotFoundException("Playlist not found!")
-          )
-      );
+  public Playlist getPlaylistWithCombos(Long playlistId) {
+    return this.playlistRepository.findById(playlistId)
+      .orElseThrow(() -> new ResourceNotFoundException("Playlist not found!"));
   }
 
   @Transactional
@@ -92,7 +82,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   @Transactional
-  public PlaylistResponseDTO create(CreatePlaylistDTO playlistDTO) {
+  public Playlist create(CreatePlaylistDTO playlistDTO) {
     User currentUser = userService.me();
 
     Playlist playlist = new Playlist();
@@ -106,11 +96,11 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlistDTO.getCombos()
       );
 
-    return playlistMapper.toPlaylistReponseDTO(createdPlaylist);
+    return createdPlaylist;
   }
 
   @Override
-  public PlaylistResponseDTO update(Long id, UpdatePlaylistDTO playlistDTO) {
+  public Playlist update(Long id, UpdatePlaylistDTO playlistDTO) {
     User currentUser = userService.me();
 
     Playlist playlist = playlistRepository
@@ -124,28 +114,19 @@ public class PlaylistServiceImpl implements PlaylistService {
     );
 
     BeanUtils.copyProperties(playlistDTO, playlist);
-    return playlistMapper.toPlaylistReponseDTO(
-      this.playlistRepository.save(playlist)
-    );
+    return this.playlistRepository.save(playlist);
   }
 
   @Override
-  public PlaylistResponseDTO getByIdAndCurrentUser(Long id) {
-    Playlist playlist = getByIdAndOwner(id, this.userService.me());
-
-    return this.playlistMapper.toPlaylistReponseDTO(playlist);
+  public Playlist getByIdAndCurrentUser(Long id) {
+    return getByIdAndOwner(id, this.userService.me());
   }
 
   @Override
-  public PaginationResponse<PlaylistResponseDTO> getByCurrentUser(
-    Pageable pageable
-  ) {
+  public PaginationResponse<Playlist> getByCurrentUser(Pageable pageable) {
     Page<Playlist> currentUserPlaylists =
       this.playlistRepository.findByOwner(this.userService.me(), pageable);
-    return PaginationResponseMapper.create(
-      currentUserPlaylists,
-      playlistMapper::toPlaylistReponseDTO
-    );
+    return PaginationResponseMapper.create(currentUserPlaylists);
   }
 
   @Override
@@ -157,5 +138,10 @@ public class PlaylistServiceImpl implements PlaylistService {
     this.playlistRepository.delete(playlist);
 
     return true;
+  }
+
+  @Override
+  public Playlist savePlaylist(Playlist playlist) {
+    return this.playlistRepository.save(playlist);
   }
 }

@@ -5,20 +5,23 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
@@ -51,9 +54,7 @@ public class Combo {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  @ColumnTransformer(
-    write = "?::gametypes"
-  )
+  @ColumnTransformer(write = "?::gametypes")
   private ComboGameTypes game;
 
   @CreationTimestamp
@@ -70,7 +71,11 @@ public class Combo {
   @Fetch(value = FetchMode.JOIN)
   private User owner;
 
+  @OneToMany(mappedBy = "combo", fetch = FetchType.LAZY)
+  @Fetch(value = FetchMode.JOIN)
+  private Set<Tag> tags = new HashSet<>();
+
   public void setGame(String literalString) {
     this.game = ComboGameTypes.valueOf(literalString);
-}
+  }
 }

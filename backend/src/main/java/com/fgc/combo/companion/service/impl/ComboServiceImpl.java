@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.UpdateComboDTO;
@@ -36,18 +35,18 @@ public class ComboServiceImpl implements ComboService {
     }
 
     @Override
-    public ComboResponseDTO create(CreateComboDTO createComboDTO) {
+    public Combo create(CreateComboDTO createComboDTO) {
 
-        Combo combo = comboMapper.toCombo(createComboDTO);
+        Combo combo = comboMapper.toOriginal(createComboDTO);
         User currentUser = userService.me();
         combo.setOwner(currentUser);
         combo.setGame(createComboDTO.getGame());
         log.info("Creating combo with name: {} and game: {}", combo.getName(), combo.getGame().name());
-        return comboMapper.toComboReponseDTO(this.comboRepository.save(combo));
+        return this.comboRepository.save(combo);
     }
 
     @Override
-    public ComboResponseDTO update(Long id, UpdateComboDTO updateComboDTO) {
+    public Combo update(Long id, UpdateComboDTO updateComboDTO) {
         User currentUser = userService.me();
 
         Combo combo = this.comboRepository.findById(id)
@@ -58,27 +57,32 @@ public class ComboServiceImpl implements ComboService {
 
         BeanUtils.copyProperties(updateComboDTO, combo);
 
-        return this.comboMapper.toComboReponseDTO(this.comboRepository.save(combo));
+        return this.comboRepository.save(combo);
     }
 
     @Override
-    public PaginationResponse<ComboResponseDTO> getAllByCurrentUser(Pageable pageable) {
+    public PaginationResponse<Combo> getAllByCurrentUser(Pageable pageable) {
         User user = this.userService.me();
         Page<Combo> userCombos = this.comboRepository.findAllByOwner(user, pageable);
 
         return PaginationResponseMapper
-                .create(userCombos, comboMapper::toComboReponseDTO);
+                .create(userCombos);
 
     }
 
     @Override
-    public ComboResponseDTO getByIdAndCurrentUser(Long id) {
+    public Combo getByIdAndCurrentUser(Long id) {
         User currentUser = this.userService.me();
 
         Combo combo = this.comboRepository.findByIdAndOwner(id, currentUser)
                 .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
-        return this.comboMapper.toComboReponseDTO(combo);
+        return combo;
+    }
+
+    @Override
+    public Combo saveCombo(Combo combo) {
+     return this.comboRepository.save(combo);
     }
 
 }

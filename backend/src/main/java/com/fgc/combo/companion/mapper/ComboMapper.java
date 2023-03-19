@@ -1,26 +1,29 @@
 package com.fgc.combo.companion.mapper;
 
+import com.fgc.combo.companion.dto.ComboResponseDTO;
+import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.model.Combo;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import com.fgc.combo.companion.dto.ComboResponseDTO;
-import com.fgc.combo.companion.model.Combo;
-
 @Component
-public class ComboMapper {
+public class ComboMapper extends BaseMapper<Combo> {
 
-    private final ModelMapper modelMapper;
+  public ComboMapper(ModelMapper modelMapper) {
+    super(modelMapper);
+  }
 
-    public ComboMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
+  public ComboResponseDTO toDTO(Combo combo) {
+    return this.toDTO(combo, ComboResponseDTO.class);
+  }
 
-    public ComboResponseDTO toComboReponseDTO(Combo combo) {
-        return this.modelMapper.map(combo, ComboResponseDTO.class);
-    }
+  public Combo toOriginal(Object comboDTO) {
+    return this.toOriginal(comboDTO, Combo.class);
+  }
 
-    public Combo toCombo(Object comboDTO) {
-        return modelMapper.map(comboDTO, Combo.class);
-    }
-
+  public PaginationResponse<ComboResponseDTO> toPagination(
+    PaginationResponse<Combo> comboPagination
+  ) {
+    return this.toPaginationDTO(comboPagination, ComboResponseDTO.class);
+  }
 }
