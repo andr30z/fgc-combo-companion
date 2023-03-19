@@ -58,4 +58,9 @@ public class Playlist {
     @Fetch(value = FetchMode.JOIN)
     Set<PlaylistCombo> playlistCombos = new HashSet<>();
 
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.JOIN)
+    private Set<Tag> tags= new HashSet<>();
+  
+
 }

@@ -40,7 +40,7 @@ public class PlaylistController {
 
   @GetMapping("/{playlistId}")
   public PlaylistResponseDTO getByIdAndCurrentUser(Long playlistId) {
-    return this.playlistMapper.toPlaylistReponseDTO(
+    return this.playlistMapper.toDTO(
         this.playlistService.getByIdAndCurrentUser(playlistId)
       );
   }
@@ -49,7 +49,7 @@ public class PlaylistController {
   public PaginationResponse<PlaylistResponseDTO> getByCurrentUser(
     Pageable pageable
   ) {
-    return this.playlistMapper.toPlaylistResponseDTOPagination(
+    return this.playlistMapper.toPagination(
         this.playlistService.getByCurrentUser(pageable)
       );
   }
@@ -58,7 +58,7 @@ public class PlaylistController {
   public PlaylistResponseDTO create(
     @RequestBody @Validated CreatePlaylistDTO createPlaylistDTO
   ) {
-    return this.playlistMapper.toPlaylistReponseDTO(
+    return this.playlistMapper.toDTO(
         this.playlistService.create(createPlaylistDTO)
       );
   }
@@ -68,7 +68,7 @@ public class PlaylistController {
     @PathVariable Long playlistId,
     @RequestBody @Validated UpdatePlaylistDTO updatePlaylistDTO
   ) {
-    return this.playlistMapper.toPlaylistReponseDTO(
+    return this.playlistMapper.toDTO(
         this.playlistService.update(playlistId, updatePlaylistDTO)
       );
   }

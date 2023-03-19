@@ -1,12 +1,5 @@
 package com.fgc.combo.companion.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
@@ -20,8 +13,12 @@ import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.service.PlaylistComboService;
 import com.fgc.combo.companion.service.PlaylistService;
 import com.fgc.combo.companion.service.UserService;
-
 import jakarta.transaction.Transactional;
+import java.util.List;
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
@@ -141,5 +138,10 @@ public class PlaylistServiceImpl implements PlaylistService {
     this.playlistRepository.delete(playlist);
 
     return true;
+  }
+
+  @Override
+  public Playlist savePlaylist(Playlist playlist) {
+    return this.playlistRepository.save(playlist);
   }
 }

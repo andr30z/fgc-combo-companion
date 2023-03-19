@@ -24,4 +24,6 @@ public class CompletePlaylistDTO {
     private User owner;
 
     private Set<PlaylistComboResponseDTO> playlistCombos;
+
+    private Set<TagResponseDTO> tags;
 }

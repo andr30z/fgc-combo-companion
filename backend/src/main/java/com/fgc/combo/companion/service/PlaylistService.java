@@ -11,21 +11,24 @@ import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.model.Playlist;
 
 public interface PlaylistService {
+  Playlist getByIdAndCurrentUser(Long id);
 
-    Playlist getByIdAndCurrentUser(Long id);
+  PaginationResponse<Playlist> getByCurrentUser(Pageable pageable);
 
-    PaginationResponse<Playlist> getByCurrentUser(Pageable pageable);
+  Playlist create(CreatePlaylistDTO playlistDTO);
 
-    Playlist create(CreatePlaylistDTO playlistDTO);
+  Playlist update(Long id, UpdatePlaylistDTO playlistDTO);
 
-    Playlist update(Long id, UpdatePlaylistDTO playlistDTO);
+  boolean delete(Long playlistId);
 
-    boolean delete(Long playlistId);
+  boolean deleteCombosFromPlaylist(
+    Long playlistId,
+    List<Long> playlistComboIds
+  );
 
-    boolean deleteCombosFromPlaylist(Long playlistId, List<Long> playlistComboIds);
+  Playlist getPlaylistWithCombos(Long playlistId);
 
-    Playlist getPlaylistWithCombos(Long playlistId);
+  Playlist addCombosToPlaylist(Long playlistId, AddCombosToPlaylistDTO combos);
 
-    Playlist addCombosToPlaylist(Long playlistId, AddCombosToPlaylistDTO combos);
-
+  Playlist savePlaylist(Playlist playlist);
 }

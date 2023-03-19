@@ -1,9 +1,8 @@
 package com.fgc.combo.companion.dto;
 
-import java.time.LocalDateTime;
-
 import com.fgc.combo.companion.model.User;
-
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +21,6 @@ public class PlaylistResponseDTO {
   private LocalDateTime createdAt;
 
   private User owner;
+
+  private List<TagResponseDTO> tags;
 }
