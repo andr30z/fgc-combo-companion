@@ -60,7 +60,6 @@ public class Playlist {
 
     @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.JOIN)
-    private Set<Tag> tags= new HashSet<>();
-  
+    private Set<Tag> tags = new HashSet<>();
 
 }

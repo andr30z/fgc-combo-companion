@@ -10,8 +10,10 @@ authentication:
     refreshTokenExpirationMsec: 7776000000
     accessTokenCookieName: accessToken
     refreshTokenCookieName: refreshToken
-
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
   flyway:
     enabled: false
   application:
