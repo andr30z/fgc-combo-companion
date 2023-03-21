@@ -19,8 +19,7 @@ public interface ComboService {
 
   Combo saveCombo(Combo combo);
 
-  PaginationResponse<Combo> getAllByTagsAndNameAndDescription(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
-    Pageable pageable
-  );
+  PaginationResponse<Combo> getAllByComboNameOrTagName(
+      PlaylistComboSearchDTO playlistComboSearchDTO,
+      Pageable pageable);
 }

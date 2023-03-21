@@ -31,47 +31,38 @@ public class ComboController {
 
   @GetMapping
   public PaginationResponse<ComboResponseDTO> getByNameAndTagsAndDescription(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
-    Pageable pageable
-  ) {
+      PlaylistComboSearchDTO playlistComboSearchDTO,
+      Pageable pageable) {
     return this.comboMapper.toPagination(
-        this.comboService.getAllByTagsAndNameAndDescription(
+        this.comboService.getAllByComboNameOrTagName(
             playlistComboSearchDTO,
-            pageable
-          )
-      );
+            pageable));
   }
 
   @PostMapping
   public ComboResponseDTO getByDTO(
-    @RequestBody @Validated CreateComboDTO comboDTO
-  ) {
+      @RequestBody @Validated CreateComboDTO comboDTO) {
     return this.comboMapper.toDTO((this.comboService.create(comboDTO)));
   }
 
   @PutMapping("/{comboId}")
   public ComboResponseDTO getByDTO(
-    @PathVariable Long comboId,
-    @RequestBody @Validated UpdateComboDTO comboDTO
-  ) {
+      @PathVariable Long comboId,
+      @RequestBody @Validated UpdateComboDTO comboDTO) {
     return this.comboMapper.toDTO(
-        (this.comboService.update(comboId, comboDTO))
-      );
+        (this.comboService.update(comboId, comboDTO)));
   }
 
   @GetMapping("/me")
   public PaginationResponse<ComboResponseDTO> getAllCombosByCurrentUser(
-    Pageable pageable
-  ) {
+      Pageable pageable) {
     return this.comboMapper.toPagination(
-        this.comboService.getAllByCurrentUser(pageable)
-      );
+        this.comboService.getAllByCurrentUser(pageable));
   }
 
   @GetMapping("/{comboId}/me")
   public ComboResponseDTO getByIdAndCurrentUser(@PathVariable Long comboId) {
     return this.comboMapper.toDTO(
-        this.comboService.getByIdAndCurrentUser(comboId)
-      );
+        this.comboService.getByIdAndCurrentUser(comboId));
   }
 }

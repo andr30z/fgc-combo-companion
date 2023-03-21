@@ -23,9 +23,8 @@ public interface PlaylistService {
   boolean delete(Long playlistId);
 
   boolean deleteCombosFromPlaylist(
-    Long playlistId,
-    List<Long> playlistComboIds
-  );
+      Long playlistId,
+      List<Long> playlistComboIds);
 
   Playlist getPlaylistWithCombos(Long playlistId);
 
@@ -33,8 +32,7 @@ public interface PlaylistService {
 
   Playlist savePlaylist(Playlist playlist);
 
-  PaginationResponse<Playlist> getAllByTagsAndNameAndDescription(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
-    Pageable pageable
-  );
+  PaginationResponse<Playlist> getAllByPlaylistNameOrTagName(
+      PlaylistComboSearchDTO playlistComboSearchDTO,
+      Pageable pageable);
 }
