@@ -3,6 +3,7 @@ package com.fgc.combo.companion.service.impl;
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -89,7 +90,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     BeanUtils.copyProperties(playlistDTO, playlist);
     playlist.setOwner(currentUser);
 
-    Playlist createdPlaylist = this.playlistRepository.save(playlist);
+    Playlist createdPlaylist = this.savePlaylist(playlist);
 
     this.playlistComboService.addAllCombosToPlaylist(
         createdPlaylist,
@@ -114,7 +115,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     );
 
     BeanUtils.copyProperties(playlistDTO, playlist);
-    return this.playlistRepository.save(playlist);
+    return this.savePlaylist(playlist);
   }
 
   @Override
@@ -143,5 +144,21 @@ public class PlaylistServiceImpl implements PlaylistService {
   @Override
   public Playlist savePlaylist(Playlist playlist) {
     return this.playlistRepository.save(playlist);
+  }
+
+  @Override
+  public PaginationResponse<Playlist> getAllByTagsAndNameAndDescription(
+    PlaylistComboSearchDTO playlistComboResponseDTO,
+    Pageable pageable
+  ) {
+    System.out.println(playlistComboResponseDTO);
+    return PaginationResponseMapper.create(
+      this.playlistRepository.findAllByNameAndDescriptionAndTags(
+          playlistComboResponseDTO.getName(),
+          playlistComboResponseDTO.getDescription(),
+          playlistComboResponseDTO.getTags(),
+          pageable
+        )
+    );
   }
 }

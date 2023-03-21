@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.UpdateComboDTO;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -24,65 +25,90 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ComboServiceImpl implements ComboService {
 
-    private final ComboRepository comboRepository;
-    private final ComboMapper comboMapper;
-    private final UserService userService;
+  private final ComboRepository comboRepository;
+  private final ComboMapper comboMapper;
+  private final UserService userService;
 
-    public ComboServiceImpl(ComboRepository comboRepository, ComboMapper comboMapper, UserService userService) {
-        this.comboRepository = comboRepository;
-        this.comboMapper = comboMapper;
-        this.userService = userService;
-    }
+  public ComboServiceImpl(
+    ComboRepository comboRepository,
+    ComboMapper comboMapper,
+    UserService userService
+  ) {
+    this.comboRepository = comboRepository;
+    this.comboMapper = comboMapper;
+    this.userService = userService;
+  }
 
-    @Override
-    public Combo create(CreateComboDTO createComboDTO) {
+  @Override
+  public Combo create(CreateComboDTO createComboDTO) {
+    Combo combo = comboMapper.toOriginal(createComboDTO);
+    User currentUser = userService.me();
+    combo.setOwner(currentUser);
+    combo.setGame(createComboDTO.getGame());
+    log.info(
+      "Creating combo with name: {} and game: {}",
+      combo.getName(),
+      combo.getGame().name()
+    );
+    return this.saveCombo(combo);
+  }
 
-        Combo combo = comboMapper.toOriginal(createComboDTO);
-        User currentUser = userService.me();
-        combo.setOwner(currentUser);
-        combo.setGame(createComboDTO.getGame());
-        log.info("Creating combo with name: {} and game: {}", combo.getName(), combo.getGame().name());
-        return this.comboRepository.save(combo);
-    }
+  @Override
+  public Combo update(Long id, UpdateComboDTO updateComboDTO) {
+    User currentUser = userService.me();
 
-    @Override
-    public Combo update(Long id, UpdateComboDTO updateComboDTO) {
-        User currentUser = userService.me();
+    Combo combo =
+      this.comboRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
-        Combo combo = this.comboRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
+    if (
+      combo.getOwner().getId() != currentUser.getId()
+    ) throw new OperationNotAllowedException(
+      "This combo belongs to another user!"
+    );
 
-        if (combo.getOwner().getId() != currentUser.getId())
-            throw new OperationNotAllowedException("This combo belongs to another user!");
+    BeanUtils.copyProperties(updateComboDTO, combo);
 
-        BeanUtils.copyProperties(updateComboDTO, combo);
+    return this.saveCombo(combo);
+  }
 
-        return this.comboRepository.save(combo);
-    }
+  @Override
+  public PaginationResponse<Combo> getAllByCurrentUser(Pageable pageable) {
+    User user = this.userService.me();
+    Page<Combo> userCombos =
+      this.comboRepository.findAllByOwner(user, pageable);
 
-    @Override
-    public PaginationResponse<Combo> getAllByCurrentUser(Pageable pageable) {
-        User user = this.userService.me();
-        Page<Combo> userCombos = this.comboRepository.findAllByOwner(user, pageable);
+    return PaginationResponseMapper.create(userCombos);
+  }
 
-        return PaginationResponseMapper
-                .create(userCombos);
+  @Override
+  public Combo getByIdAndCurrentUser(Long id) {
+    User currentUser = this.userService.me();
 
-    }
+    Combo combo =
+      this.comboRepository.findByIdAndOwner(id, currentUser)
+        .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
-    @Override
-    public Combo getByIdAndCurrentUser(Long id) {
-        User currentUser = this.userService.me();
+    return combo;
+  }
 
-        Combo combo = this.comboRepository.findByIdAndOwner(id, currentUser)
-                .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
+  @Override
+  public Combo saveCombo(Combo combo) {
+    return this.comboRepository.save(combo);
+  }
 
-        return combo;
-    }
-
-    @Override
-    public Combo saveCombo(Combo combo) {
-     return this.comboRepository.save(combo);
-    }
-
+  @Override
+  public PaginationResponse<Combo> getAllByTagsAndNameAndDescription(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
+    return PaginationResponseMapper.create(
+      this.comboRepository.findAllByNameAndDescriptionAndTags(
+          playlistComboSearchDTO.getName(),
+          playlistComboSearchDTO.getDescription(),
+          playlistComboSearchDTO.getTags(),
+          pageable
+        )
+    );
+  }
 }

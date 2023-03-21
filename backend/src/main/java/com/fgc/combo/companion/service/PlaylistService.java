@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.model.Playlist;
 
@@ -31,4 +32,9 @@ public interface PlaylistService {
   Playlist addCombosToPlaylist(Long playlistId, AddCombosToPlaylistDTO combos);
 
   Playlist savePlaylist(Playlist playlist);
+
+  PaginationResponse<Playlist> getAllByTagsAndNameAndDescription(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  );
 }

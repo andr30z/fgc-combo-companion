@@ -4,6 +4,7 @@ import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CompletePlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.mapper.PlaylistMapper;
@@ -38,10 +39,16 @@ public class PlaylistController {
     this.playlistMapper = playlistMapper;
   }
 
-  @GetMapping("/{playlistId}")
-  public PlaylistResponseDTO getByIdAndCurrentUser(Long playlistId) {
-    return this.playlistMapper.toDTO(
-        this.playlistService.getByIdAndCurrentUser(playlistId)
+  @GetMapping
+  public PaginationResponse<PlaylistResponseDTO> getByNameAndTagsAndDescription(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
+    return this.playlistMapper.toPagination(
+        this.playlistService.getAllByTagsAndNameAndDescription(
+            playlistComboSearchDTO,
+            pageable
+          )
       );
   }
 
@@ -104,10 +111,8 @@ public class PlaylistController {
       );
   }
 
-  @GetMapping("/{playlistId}/combos")
-  public CompletePlaylistDTO getCombosFromPlaylist(
-    @PathVariable Long playlistId
-  ) {
+  @GetMapping("/{playlistId}")
+  public CompletePlaylistDTO getPlaylistDetails(@PathVariable Long playlistId) {
     return this.playlistMapper.toCompletePlaylistDTO(
         this.playlistService.getPlaylistWithCombos(playlistId)
       );

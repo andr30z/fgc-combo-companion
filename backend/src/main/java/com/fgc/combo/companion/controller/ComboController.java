@@ -3,6 +3,7 @@ package com.fgc.combo.companion.controller;
 import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.UpdateComboDTO;
 import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.service.ComboService;
@@ -26,6 +27,19 @@ public class ComboController {
   public ComboController(ComboService comboService, ComboMapper comboMapper) {
     this.comboService = comboService;
     this.comboMapper = comboMapper;
+  }
+
+  @GetMapping
+  public PaginationResponse<ComboResponseDTO> getByNameAndTagsAndDescription(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
+    return this.comboMapper.toPagination(
+        this.comboService.getAllByTagsAndNameAndDescription(
+            playlistComboSearchDTO,
+            pageable
+          )
+      );
   }
 
   @PostMapping
