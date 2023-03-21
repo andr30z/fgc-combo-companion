@@ -1,10 +1,10 @@
 .env:
   prefix: ""
-# logging:
-#   level:
-#     org:
-#       hibernate: 
-#         type: TRACE
+logging:
+  level:
+    org:
+      hibernate: 
+        type: TRACE
 
 management:
   endpoints:
