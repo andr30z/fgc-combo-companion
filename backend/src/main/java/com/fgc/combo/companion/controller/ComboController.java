@@ -3,6 +3,7 @@ package com.fgc.combo.companion.controller;
 import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.UpdateComboDTO;
 import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.service.ComboService;
@@ -28,36 +29,40 @@ public class ComboController {
     this.comboMapper = comboMapper;
   }
 
+  @GetMapping
+  public PaginationResponse<ComboResponseDTO> getByNameAndTagsAndDescription(
+      PlaylistComboSearchDTO playlistComboSearchDTO,
+      Pageable pageable) {
+    return this.comboMapper.toPagination(
+        this.comboService.getAllByComboNameOrTagName(
+            playlistComboSearchDTO,
+            pageable));
+  }
+
   @PostMapping
   public ComboResponseDTO getByDTO(
-    @RequestBody @Validated CreateComboDTO comboDTO
-  ) {
+      @RequestBody @Validated CreateComboDTO comboDTO) {
     return this.comboMapper.toDTO((this.comboService.create(comboDTO)));
   }
 
   @PutMapping("/{comboId}")
   public ComboResponseDTO getByDTO(
-    @PathVariable Long comboId,
-    @RequestBody @Validated UpdateComboDTO comboDTO
-  ) {
+      @PathVariable Long comboId,
+      @RequestBody @Validated UpdateComboDTO comboDTO) {
     return this.comboMapper.toDTO(
-        (this.comboService.update(comboId, comboDTO))
-      );
+        (this.comboService.update(comboId, comboDTO)));
   }
 
   @GetMapping("/me")
   public PaginationResponse<ComboResponseDTO> getAllCombosByCurrentUser(
-    Pageable pageable
-  ) {
+      Pageable pageable) {
     return this.comboMapper.toPagination(
-        this.comboService.getAllByCurrentUser(pageable)
-      );
+        this.comboService.getAllByCurrentUser(pageable));
   }
 
   @GetMapping("/{comboId}/me")
   public ComboResponseDTO getByIdAndCurrentUser(@PathVariable Long comboId) {
     return this.comboMapper.toDTO(
-        this.comboService.getByIdAndCurrentUser(comboId)
-      );
+        this.comboService.getByIdAndCurrentUser(comboId));
   }
 }

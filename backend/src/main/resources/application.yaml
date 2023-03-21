@@ -1,5 +1,10 @@
 .env:
   prefix: ""
+logging:
+  level:
+    org:
+      hibernate: 
+        type: TRACE
 
 management:
   endpoints:
@@ -23,7 +28,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
- 
+
   application:
     name: template
   datasource:
