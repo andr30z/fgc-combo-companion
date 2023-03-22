@@ -61,9 +61,10 @@ public class ComboServiceImpl implements ComboService {
     Combo combo = this.comboRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
-    if (combo.getOwner().getId() != currentUser.getId())
+    if (combo.getOwner().getId() != currentUser.getId()) {
       throw new OperationNotAllowedException(
           "This combo belongs to another user!");
+    }
 
     BeanUtils.copyProperties(updateComboDTO, combo);
 

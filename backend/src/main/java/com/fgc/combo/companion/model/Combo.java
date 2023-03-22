@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnTransformer;
@@ -31,6 +32,7 @@ import org.hibernate.annotations.FetchMode;
 @AllArgsConstructor
 @Data
 @Entity
+@Builder
 @Table(name = "combos")
 public class Combo {
 
@@ -52,7 +54,7 @@ public class Combo {
 
   private String description;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "VARCHAR(20) default 'TEKKEN_7'")
   @Enumerated(EnumType.STRING)
   @ColumnTransformer(write = "?::gametypes")
   private ComboGameTypes game;
@@ -73,6 +75,7 @@ public class Combo {
 
   @OneToMany(mappedBy = "combo", fetch = FetchType.LAZY)
   @Fetch(value = FetchMode.JOIN)
+  @Builder.Default
   private Set<Tag> tags = new HashSet<>();
 
   public void setGame(String literalString) {
