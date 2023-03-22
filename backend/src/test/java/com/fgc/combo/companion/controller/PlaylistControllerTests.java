@@ -3,15 +3,21 @@ package com.fgc.combo.companion.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
+import com.fgc.combo.companion.dto.CompletePlaylistDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
+import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.enums.ComboGameTypes;
 import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.Playlist;
 import com.fgc.combo.companion.model.PlaylistCombo;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.ComboRepository;
+import com.fgc.combo.companion.repository.PlaylistComboRepository;
 import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.repository.UserRepository;
 import java.util.HashSet;
@@ -29,6 +35,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -63,17 +70,30 @@ public class PlaylistControllerTests {
   private ComboRepository comboRepository;
 
   @Autowired
+  private PlaylistComboRepository playlistComboRepository;
+
+  @Autowired
   private ObjectMapper objectMapper;
 
   private static User currentUser;
+  private static Combo defaultCombo;
 
-  public final User setupUser() {
+  public final User setupUser(String email) {
     User user = new User();
     user.setPassword("test123");
-    user.setEmail("test@gmail.com");
+    user.setEmail(email);
     user.setName("Sidney");
-    currentUser = userRepository.save(user);
-    return currentUser;
+    return userRepository.save(user);
+  }
+
+  private void setupCombo() {
+    Combo combo = new Combo();
+    combo.setName("Combo 1");
+    combo.setCombo("Test Combo");
+    combo.setOwner(currentUser);
+    combo.setGame(ComboGameTypes.TEKKEN_7.name());
+
+    defaultCombo = comboRepository.save(combo);
   }
 
   @AfterAll
@@ -84,7 +104,9 @@ public class PlaylistControllerTests {
 
   @BeforeAll
   void setUp() {
-    setupUser();
+    currentUser = setupUser("test@gmail.com");
+    setupUser("secondtestmail@gmail.com");
+    setupCombo();
   }
 
   @BeforeEach
@@ -114,9 +136,21 @@ public class PlaylistControllerTests {
       );
   }
 
-  private PlaylistResponseDTO toPlaylistResposeDTO(String content)
+  private void assertSuccessResponse(int responseStatus) {
+    assertThat(responseStatus).isIn(List.of(200, 201));
+  }
+
+  private <T> T toPlaylistResposeDTO(String content, Class<T> clazz)
     throws Exception {
-    return objectMapper.readValue(content, PlaylistResponseDTO.class);
+    return objectMapper.readValue(content, clazz);
+  }
+
+  private Playlist createEmptyPlaylist(User owner, String name) {
+    Playlist playlist = new Playlist();
+    playlist.setName(name);
+    playlist.setDescription("TEST DESCRIPTION");
+    playlist.setOwner(owner);
+    return playlistRepository.save(playlist);
   }
 
   private PlaylistResponseDTO doPlaylistCreationTest(Set<Long> comboIds)
@@ -128,9 +162,10 @@ public class PlaylistControllerTests {
     MvcResult mvcResult = createPostMvcAction("/api/v1/playlists", playlist)
       .andReturn();
 
-    assertThat(mvcResult.getResponse().getStatus()).isIn(List.of(200, 201));
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
     PlaylistResponseDTO expectedResult = toPlaylistResposeDTO(
-      mvcResult.getResponse().getContentAsString()
+      mvcResult.getResponse().getContentAsString(),
+      PlaylistResponseDTO.class
     );
     assertThat(playlistRepository.count()).isGreaterThan(numberOfPlaylists);
     assertThat(expectedResult.getId()).isNotNull();
@@ -142,8 +177,14 @@ public class PlaylistControllerTests {
   @Test
   @WithUserDetails("test@gmail.com")
   void itShouldCreateAPlaylist() throws Exception {
-    doPlaylistCreationTest(new HashSet<>());
-    assertThat(comboRepository.count()).isEqualTo(0);
+    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+      new HashSet<>()
+    );
+    Playlist createdPlaylist =
+      this.playlistRepository.findById(playlistResponseDTO.getId())
+        .orElseThrow(() -> new NotFoundException("Playlist not found"));
+
+    assertThat(createdPlaylist.getPlaylistCombos().size()).isEqualTo(0);
   }
 
   @Test
@@ -186,5 +227,250 @@ public class PlaylistControllerTests {
         .toList()
     )
       .containsAll(createdCombos.stream().map(Combo::getId).toList());
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldGetPlaylistDetails() throws Exception {
+    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+      new HashSet<>()
+    );
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .get("/api/v1/playlists/{playlistId}", playlistResponseDTO.getId())
+            .contentType("application/json")
+        )
+        .andReturn();
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+    CompletePlaylistDTO playlist = toPlaylistResposeDTO(
+      mvcResult.getResponse().getContentAsString(),
+      CompletePlaylistDTO.class
+    );
+
+    assertThat(playlist.getId()).isEqualTo(playlistResponseDTO.getId());
+    assertThat(playlist.getPlaylistCombos().stream().toList())
+      .asList()
+      .isEmpty();
+    assertThat(playlist.getTags().stream().toList()).asList().isEmpty();
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldAddCombosToPlaylist() throws Exception {
+    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+      new HashSet<>()
+    );
+    MvcResult mvcResult = createPostMvcAction(
+      "/api/v1/playlists/{id}/combos".replace(
+          "{id}",
+          playlistResponseDTO.getId().toString()
+        ),
+      AddCombosToPlaylistDTO
+        .builder()
+        .combos(Set.of(defaultCombo.getId()))
+        .build()
+    )
+      .andReturn();
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+
+    CompletePlaylistDTO playlist = toPlaylistResposeDTO(
+      mvcResult.getResponse().getContentAsString(),
+      CompletePlaylistDTO.class
+    );
+
+    assertThat(
+      playlist
+        .getPlaylistCombos()
+        .stream()
+        .map(playlistCombo -> playlistCombo.getCombo().getId())
+        .toList()
+    )
+      .contains(defaultCombo.getId());
+  }
+
+  @Test
+  @WithUserDetails("secondtestmail@gmail.com")
+  void itShouldNotAddComboToPlaylistWhenUserDoNotOwnPlaylist()
+    throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    MvcResult mvcResult = createPostMvcAction(
+      "/api/v1/playlists/{id}/combos".replace(
+          "{id}",
+          playlist.getId().toString()
+        ),
+      AddCombosToPlaylistDTO
+        .builder()
+        .combos(Set.of(defaultCombo.getId()))
+        .build()
+    )
+      .andReturn();
+    assertThat(mvcResult.getResponse().getStatus())
+      .isEqualTo(HttpStatus.FORBIDDEN.value());
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldRemoveCombosFromPlaylist() throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+
+    PlaylistCombo playlistCombo = playlistComboRepository.save(
+      PlaylistCombo
+        .builder()
+        .playlist(playlist)
+        .position(1)
+        .combo(defaultCombo)
+        .build()
+    );
+    playlist.getPlaylistCombos().add(playlistCombo);
+    playlist = playlistRepository.save(playlist);
+
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .delete(
+              "/api/v1/playlists/{id}/combos?playlistComboId={playlistComboId}",
+              playlist.getId(),
+              defaultCombo.getId()
+            )
+            .contentType("application/json")
+        )
+        .andReturn();
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+    boolean result = mvcResult
+      .getResponse()
+      .getContentAsString()
+      .contains("true");
+    assertThat(result).isTrue();
+    assertThat(
+      playlistComboRepository.findById(playlistCombo.getId()).isPresent()
+    )
+      .isFalse();
+  }
+
+  @Test
+  @WithUserDetails("secondtestmail@gmail.com")
+  void itShouldNotRemoveCombosFromPlaylistWhenUserDoNotOwnPlaylist()
+    throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .delete(
+              "/api/v1/playlists/{id}/combos?playlistComboId={playlistComboId}",
+              playlist.getId(),
+              playlist.getId()
+            )
+            .contentType("application/json")
+        )
+        .andReturn();
+    assertThat(mvcResult.getResponse().getStatus())
+      .isEqualTo(HttpStatus.FORBIDDEN.value());
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldDeleteAPlaylist() throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .delete("/api/v1/playlists/{id}", playlist.getId())
+            .contentType("application/json")
+        )
+        .andReturn();
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+    assertThat(playlistRepository.findById(playlist.getId()).isPresent())
+      .isFalse();
+  }
+
+  @Test
+  @WithUserDetails("secondtestmail@gmail.com")
+  void itShouldNotDeleteAPlaylistWhenUserDoNotOwnPlaylist() throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .delete("/api/v1/playlists/{id}", playlist.getId())
+            .contentType("application/json")
+        )
+        .andReturn();
+    assertThat(mvcResult.getResponse().getStatus())
+      .isEqualTo(HttpStatus.FORBIDDEN.value());
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldUpdatePlaylist() throws Exception {
+    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+      new HashSet<>()
+    );
+
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .put("/api/v1/playlists/{id}", playlistResponseDTO.getId())
+            .contentType("application/json")
+            .content(
+              objectMapper.writeValueAsString(
+                UpdatePlaylistDTO
+                  .builder()
+                  .name("Updated name")
+                  .description("Updated description")
+                  .build()
+              )
+            )
+        )
+        .andReturn();
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+    PlaylistResponseDTO updatedPlaylistResponseDTO = toPlaylistResposeDTO(
+      mvcResult.getResponse().getContentAsString(),
+      PlaylistResponseDTO.class
+    );
+
+    Playlist updatedPlaylist = playlistRepository
+      .findById(playlistResponseDTO.getId())
+      .orElse(Playlist.builder().build());
+
+    assertThat(updatedPlaylist.getName())
+      .isEqualTo(updatedPlaylistResponseDTO.getName());
+
+    assertThat(updatedPlaylist.getDescription())
+      .isEqualTo(updatedPlaylistResponseDTO.getDescription());
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldGetAllPlaylistsBySearchParameters() throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    Playlist secondPlaylist = createEmptyPlaylist(currentUser, "tESt123");
+    Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL PLAYLIST");
+
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .get("/api/v1/playlists?name=test", thirdPlaylist.getName())
+            .contentType("application/json")
+        )
+        .andReturn();
+
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+    System.out.println(mvcResult.getResponse().getContentAsString());
+    PaginationResponse<PlaylistResponseDTO> response = objectMapper.readValue(
+      mvcResult.getResponse().getContentAsString(),
+      new TypeReference<PaginationResponse<PlaylistResponseDTO>>() {}
+    );
+
+    List<String> responsePlaylistNames = response
+      .getData()
+      .stream()
+      .map(PlaylistResponseDTO::getName)
+      .toList();
+
+    assertThat(responsePlaylistNames)
+      .contains(playlist.getName(), secondPlaylist.getName());
+
+    assertThat(responsePlaylistNames).doesNotContain(thirdPlaylist.getName());
   }
 }
