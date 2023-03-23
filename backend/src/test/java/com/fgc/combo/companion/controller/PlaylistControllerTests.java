@@ -174,6 +174,23 @@ public class PlaylistControllerTests {
     return expectedResult;
   }
 
+  private PaginationResponse<PlaylistResponseDTO> setupSearchPlaylist(
+    String url
+  ) throws Exception {
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders.get(url).contentType("application/json")
+        )
+        .andReturn();
+
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+    PaginationResponse<PlaylistResponseDTO> response = objectMapper.readValue(
+      mvcResult.getResponse().getContentAsString(),
+      new TypeReference<PaginationResponse<PlaylistResponseDTO>>() {}
+    );
+    return response;
+  }
+
   @Test
   @WithUserDetails("test@gmail.com")
   void itShouldCreateAPlaylist() throws Exception {
@@ -448,18 +465,8 @@ public class PlaylistControllerTests {
     Playlist secondPlaylist = createEmptyPlaylist(currentUser, "tESt123");
     Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL PLAYLIST");
 
-    MvcResult mvcResult =
-      this.mockMvc.perform(
-          MockMvcRequestBuilders
-            .get("/api/v1/playlists?name={search}", playlist.getName())
-            .contentType("application/json")
-        )
-        .andReturn();
-
-    assertSuccessResponse(mvcResult.getResponse().getStatus());
-    PaginationResponse<PlaylistResponseDTO> response = objectMapper.readValue(
-      mvcResult.getResponse().getContentAsString(),
-      new TypeReference<PaginationResponse<PlaylistResponseDTO>>() {}
+    PaginationResponse<PlaylistResponseDTO> response = setupSearchPlaylist(
+      "/api/v1/playlists?name={name}".replace("{name}", playlist.getName())
     );
     List<String> responsePlaylistNames = response
       .getData()
@@ -471,5 +478,32 @@ public class PlaylistControllerTests {
       .contains(playlist.getName(), secondPlaylist.getName());
 
     assertThat(responsePlaylistNames).doesNotContain(thirdPlaylist.getName());
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldGetAllPlaylistsWhenNoSearchParameterIsPassed() throws Exception {
+    playlistRepository.deleteAll();
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    Playlist secondPlaylist = createEmptyPlaylist(currentUser, "tESt123");
+    Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL PLAYLIST");
+
+    PaginationResponse<PlaylistResponseDTO> response = setupSearchPlaylist(
+      "/api/v1/playlists"
+    );
+    List<String> responsePlaylistNames = response
+      .getData()
+      .stream()
+      .map(PlaylistResponseDTO::getName)
+      .toList();
+
+    assertThat(responsePlaylistNames)
+      .containsAll(
+        List.of(
+          playlist.getName(),
+          secondPlaylist.getName(),
+          thirdPlaylist.getName()
+        )
+      );
   }
 }
