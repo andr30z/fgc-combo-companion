@@ -154,15 +154,18 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   public PaginationResponse<Playlist> getAllByPlaylistNameOrTagName(
-    PlaylistComboSearchDTO playlistComboResponseDTO,
+    PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   ) {
+
     return PaginationResponseMapper.create(
-      this.playlistRepository.findAllByComboNameAndTagName(
-          URLDecoder.decode(
-            playlistComboResponseDTO.getName(),
-            StandardCharsets.UTF_8
-          ),
+      this.playlistRepository.findAllByPlaylistNameAndTagName(
+          playlistComboSearchDTO.getName() != null
+            ? URLDecoder.decode(
+              playlistComboSearchDTO.getName(),
+              StandardCharsets.UTF_8
+            )
+            : null,
           pageable
         )
     );

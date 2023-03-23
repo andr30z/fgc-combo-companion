@@ -16,7 +16,7 @@ public class PaginationResponse<T> {
     private int perPage;
     private int totalPages;
     private Long totalItems;
-
+    private boolean hasNext;
     private List<T> data;
 
 }
