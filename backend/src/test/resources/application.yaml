@@ -1,6 +1,12 @@
 .env:
   prefix: ""
 
+logging:
+  level:
+    org:
+      hibernate: 
+        type: TRACE
+
 server:
   port: 0
 authentication:
@@ -10,8 +16,10 @@ authentication:
     refreshTokenExpirationMsec: 7776000000
     accessTokenCookieName: accessToken
     refreshTokenCookieName: refreshToken
-
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
   flyway:
     enabled: false
   application:
@@ -22,6 +30,7 @@ spring:
     # password: ${AUTH_SERVICE_POSTGRESQL_PASSWORD}
     driver-class-name: org.h2.Driver
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: create-drop
 

@@ -32,42 +32,52 @@ public class PlaylistController {
   private final PlaylistMapper playlistMapper;
 
   public PlaylistController(
-      PlaylistService playlistService,
-      PlaylistMapper playlistMapper) {
+    PlaylistService playlistService,
+    PlaylistMapper playlistMapper
+  ) {
     this.playlistService = playlistService;
     this.playlistMapper = playlistMapper;
   }
 
   @GetMapping
   public PaginationResponse<PlaylistResponseDTO> getByNameAndTagsAndDescription(
-      PlaylistComboSearchDTO playlistComboSearchDTO,
-      Pageable pageable) {
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
     return this.playlistMapper.toPagination(
         this.playlistService.getAllByPlaylistNameOrTagName(
             playlistComboSearchDTO,
-            pageable));
+            pageable
+          )
+      );
   }
 
   @GetMapping("/me")
   public PaginationResponse<PlaylistResponseDTO> getByCurrentUser(
-      Pageable pageable) {
+    Pageable pageable
+  ) {
     return this.playlistMapper.toPagination(
-        this.playlistService.getByCurrentUser(pageable));
+        this.playlistService.getByCurrentUser(pageable)
+      );
   }
 
   @PostMapping
   public PlaylistResponseDTO create(
-      @RequestBody @Validated CreatePlaylistDTO createPlaylistDTO) {
+    @RequestBody @Validated CreatePlaylistDTO createPlaylistDTO
+  ) {
     return this.playlistMapper.toDTO(
-        this.playlistService.create(createPlaylistDTO));
+        this.playlistService.create(createPlaylistDTO)
+      );
   }
 
   @PutMapping("/{playlistId}")
   public PlaylistResponseDTO update(
-      @PathVariable Long playlistId,
-      @RequestBody @Validated UpdatePlaylistDTO updatePlaylistDTO) {
+    @PathVariable Long playlistId,
+    @RequestBody @Validated UpdatePlaylistDTO updatePlaylistDTO
+  ) {
     return this.playlistMapper.toDTO(
-        this.playlistService.update(playlistId, updatePlaylistDTO));
+        this.playlistService.update(playlistId, updatePlaylistDTO)
+      );
   }
 
   @DeleteMapping("/{playlistId}")
@@ -77,26 +87,34 @@ public class PlaylistController {
 
   @PostMapping("/{playlistId}/combos")
   public CompletePlaylistDTO addCombosToPlaylist(
-      @PathVariable Long playlistId,
-      @RequestBody @Validated AddCombosToPlaylistDTO addCombosToPlaylistDTO) {
+    @PathVariable Long playlistId,
+    @RequestBody @Validated AddCombosToPlaylistDTO addCombosToPlaylistDTO
+  ) {
     return this.playlistMapper.toCompletePlaylistDTO(
         this.playlistService.addCombosToPlaylist(
             playlistId,
-            addCombosToPlaylistDTO));
+            addCombosToPlaylistDTO
+          )
+      );
   }
 
   @DeleteMapping("/{playlistId}/combos")
   public boolean deleteCombosFromPlaylist(
-      @PathVariable Long playlistId,
-      @Validated @NotEmpty @RequestParam(name = "playlistComboId") List<Long> playlistComboIds) {
+    @PathVariable Long playlistId,
+    @Validated @NotEmpty @RequestParam(
+      name = "playlistComboId"
+    ) List<Long> playlistComboIds
+  ) {
     return this.playlistService.deleteCombosFromPlaylist(
         playlistId,
-        playlistComboIds);
+        playlistComboIds
+      );
   }
 
   @GetMapping("/{playlistId}")
   public CompletePlaylistDTO getPlaylistDetails(@PathVariable Long playlistId) {
     return this.playlistMapper.toCompletePlaylistDTO(
-        this.playlistService.getPlaylistWithCombos(playlistId));
+        this.playlistService.getPlaylistWithCombos(playlistId)
+      );
   }
 }
