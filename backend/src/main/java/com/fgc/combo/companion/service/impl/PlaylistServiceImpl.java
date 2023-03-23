@@ -18,6 +18,7 @@ import jakarta.transaction.Transactional;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -154,20 +155,23 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   public PaginationResponse<Playlist> getAllByPlaylistNameOrTagName(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
+    PlaylistComboSearchDTO playlistSearchResponseDTO,
     Pageable pageable
   ) {
-
+    String name = playlistSearchResponseDTO.getName() != null
+      ? URLDecoder.decode(
+        playlistSearchResponseDTO.getName(),
+        StandardCharsets.UTF_8
+      )
+      : null;
     return PaginationResponseMapper.create(
-      this.playlistRepository.findAllByPlaylistNameAndTagName(
-          playlistComboSearchDTO.getName() != null
-            ? URLDecoder.decode(
-              playlistComboSearchDTO.getName(),
-              StandardCharsets.UTF_8
-            )
-            : null,
-          pageable
-        )
+      name == null
+        ? this.playlistRepository.findAll(pageable)
+        : this.playlistRepository.findAllByNameContainingIgnoreCaseOrTagsTitleInIgnoreCase(
+            name,
+            Set.of(name),
+            pageable
+          )
     );
   }
 }

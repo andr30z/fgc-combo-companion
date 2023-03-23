@@ -447,7 +447,6 @@ public class PlaylistControllerTests {
     Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
     Playlist secondPlaylist = createEmptyPlaylist(currentUser, "tESt123");
     Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL PLAYLIST");
-    System.out.println(playlistRepository.findAll());
 
     MvcResult mvcResult =
       this.mockMvc.perform(
@@ -458,14 +457,10 @@ public class PlaylistControllerTests {
         .andReturn();
 
     assertSuccessResponse(mvcResult.getResponse().getStatus());
-    System.out.println(mvcResult.getResponse().getContentAsString());
     PaginationResponse<PlaylistResponseDTO> response = objectMapper.readValue(
       mvcResult.getResponse().getContentAsString(),
       new TypeReference<PaginationResponse<PlaylistResponseDTO>>() {}
     );
-    System.out.println("TEESSSTT");
-    System.out.println(response);
-    System.out.println("TEESSSTT");
     List<String> responsePlaylistNames = response
       .getData()
       .stream()
