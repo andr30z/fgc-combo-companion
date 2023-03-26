@@ -1,17 +1,17 @@
-"use client";
-import { AppLogo } from "@/common/components/AppLogo";
-import { ButtonProps, Button } from "@/common/components/Button";
-import Image from "next/image";
-import type { FC } from "react";
-import { BiTransfer } from "react-icons/bi";
+'use client';
+import { Button, ButtonProps } from '@/common/components/button';
+import Image from 'next/image';
+import type { FC } from 'react';
+import { BiTransfer } from 'react-icons/bi';
 
-interface PresentationProps extends Omit<ButtonProps, "onClick"> {}
+interface PresentationProps extends Omit<ButtonProps, 'onClick'> {}
 
 export const PresentationButtons: FC<PresentationProps> = () => {
   return (
     <div className="z-10 flex items-center justify-center flex-wrap gap-3">
       <Button
-        onClick={() => null}
+        renderAsInnerLink
+        href="/combo-translator"
         text="Translate Combos"
         extraStyles="flex-auto"
         rightIcon={<BiTransfer size={23} />}
