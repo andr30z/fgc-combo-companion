@@ -10,11 +10,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#d20606",
+        primary: { DEFAULT: "#d20606", darker: "#a80404" },
         secondary: "#da0037",
         dark: "#000000",
         "secondary-dark": "#363636",
-        white: "#fff",
+        light: { DEFAULT: "#fff", darker: "#f2f2f2" },
       },
       fontFamily: {
         primary: ["var(--roboto-font)", ...fontFamily.sans],

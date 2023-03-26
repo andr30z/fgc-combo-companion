@@ -3,14 +3,17 @@ import Image from "next/image";
 export interface AppLogoProps {
   height?: number;
   width?: number;
+  extraStyles?: string;
 }
 export const AppLogo: React.FC<AppLogoProps> = ({
-  height = 150,
-  width = 150,
+  height = 80,
+  width = 80,
+  extraStyles=""
 }) => {
   return (
     <Image
       priority
+      className={extraStyles}
       src="/fists.svg"
       height={height}
       width={width}
