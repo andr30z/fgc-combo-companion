@@ -1,7 +1,7 @@
 'use client';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { Input } from '@/common/components/input';
-import { GameTypes } from '@/common/types/combo';
+import { GameTypes } from '@/common/types/game-types';
 import { useState } from 'react';
 
 export default function ComboTranslator() {
