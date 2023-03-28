@@ -1,12 +1,12 @@
 'use client';
 import { ComboTranslation } from '@/common/components/combo-translation';
-import { Input } from '@/common/components/input';
+import { Input } from '@/common/components/Input';
 import { GameTypes } from '@/common/types/game-types';
 import { useState } from 'react';
 
 export default function ComboTranslator() {
   const [combo, setCombo] = useState(
-    'f,n,d,df+2, f,n,d,df+2, f,n,d,df+2, S! B+2,1, {DASH} f,n,d,df+3',
+    'f,n,d,df+2, f,n,d,df+2, f,n,d,df+2, B+2,1 S!, {DASH} f,n,d,df+3',
   );
 
   return (

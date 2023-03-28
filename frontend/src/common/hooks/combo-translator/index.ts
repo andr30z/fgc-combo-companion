@@ -1,17 +1,19 @@
-import { GameTypes } from '@/common/types/game-types';
 import {
-  replaceAllExceptInBetweenCurlyBracket,
-  splitMulti,
-} from '@/common/utils/String';
-import {
-  Tekken7MapType,
-  TEKKEN_7_COMBO_MAP_TRANSLATION,
+  Tekken7MapKey,
+  TEKKEN_7_COMBO_MAP_TRANSLATION
 } from '@/common/constants/ComboMappers';
-import { useMemo } from 'react';
 import type {
   ComboStepTranslation,
-  ComboTranslation,
+  ComboTranslation
 } from '@/common/types/combo-translation';
+import { GameTypes } from '@/common/types/game-types';
+import {
+  addSpacesToStringIfBeforePlus,
+  replaceAllExceptInBetweenCurlyBracket,
+  replaceComboWithSpaceFlagWithinBraces,
+  replaceSpacesWithinBraces, splitMulti
+} from '@/common/utils/String';
+import { useMemo } from 'react';
 
 interface UseComboTranslatorParams {
   game: GameTypes;
@@ -19,16 +21,19 @@ interface UseComboTranslatorParams {
 }
 
 function tekken7Translator(combo: string): ComboTranslation {
-  const translation = combo.split(',').map((localStep) => {
+  console.log(addSpacesToStringIfBeforePlus(combo))
+  const translation = addSpacesToStringIfBeforePlus(combo).split(',').map((localStep) => {
     let localStepTranslated = String(localStep);
 
-    const toImageTranslation = splitMulti(localStepTranslated, [
+    const toImageTranslation = splitMulti(replaceSpacesWithinBraces(localStepTranslated), [
       ' ',
-      '+',
+      "/",
+      "+ ",
+      " +"
     ]).map((localItem) => {
       const upperCasedItem = localItem.toUpperCase();
       const mapItem =
-        TEKKEN_7_COMBO_MAP_TRANSLATION[upperCasedItem as Tekken7MapType];
+        TEKKEN_7_COMBO_MAP_TRANSLATION[upperCasedItem as Tekken7MapKey];
 
       if (mapItem) {
         localStepTranslated = replaceAllExceptInBetweenCurlyBracket(
@@ -44,9 +49,16 @@ function tekken7Translator(combo: string): ComboTranslation {
       };
       return defaultComboStep;
     });
+
+
     return {
-      combo: localStepTranslated.replace(/{|}/g, ''),
-      actions: toImageTranslation,
+      combo: replaceComboWithSpaceFlagWithinBraces(localStepTranslated).replace(/{|}/g, ''),
+      actions: toImageTranslation.map((item) => (
+        {
+          ...item,
+          action: replaceComboWithSpaceFlagWithinBraces(item.action)
+            .replace(/{|}/g, '')
+        })),
     };
   });
   return {

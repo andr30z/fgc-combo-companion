@@ -1,6 +1,8 @@
 export interface ComboStepTranslation {
   action: string;
   imagePath: string;
+  width?: number;
+  height?: number;
 }
 
 
