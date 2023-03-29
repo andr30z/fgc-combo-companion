@@ -40,12 +40,13 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
                   alt={step.action}
                   width={step.width ?? 40}
                   height={step.height ?? 50}
+                  className="m-[1px]"
                 />
               );
             }
             return (
               <span
-                className="bg-dark px-[5px] mx-[3px] text-lg font-semibold"
+                className="bg-dark px-[5px] mx-[3px] text-xl font-semibold"
                 key={step.action + idx.toString()}
               >
                 {step.action}{' '}

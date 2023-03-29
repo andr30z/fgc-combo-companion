@@ -21,7 +21,6 @@ interface UseComboTranslatorParams {
 }
 
 function tekken7Translator(combo: string): ComboTranslation {
-  console.log(addSpacesToStringIfBeforePlus(combo))
   const translation = addSpacesToStringIfBeforePlus(combo).split(',').map((localStep) => {
     let localStepTranslated = String(localStep);
 

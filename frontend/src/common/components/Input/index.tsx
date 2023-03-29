@@ -11,6 +11,7 @@ export interface InputProps {
   placeholder?: string;
   type?: string;
   className?: string;
+  containerClassName?: string;
 }
 
 export const Input: FC<InputProps> = ({
@@ -23,10 +24,11 @@ export const Input: FC<InputProps> = ({
   height = 'h-full',
   width = 'w-full',
   placeholder,
-  type = "text",
+  type = 'text',
+  containerClassName = '',
 }) => {
   return (
-    <div className={`${width} ${height}`}>
+    <div className={`${width} ${height} ${containerClassName}`}>
       {label && (
         <label className="block text-sm font-medium text-light">{label}</label>
       )}
