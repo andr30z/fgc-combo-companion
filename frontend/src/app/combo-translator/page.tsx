@@ -5,6 +5,31 @@ import { GameTypes } from '@/common/types/game-types';
 import Image from 'next/image';
 import { useState } from 'react';
 
+const Card: React.FC<{ url: string; showSoonMessage?: boolean }> = ({
+  url,
+  showSoonMessage = false,
+}) => {
+  return (
+    <div className="group/card-item relative ">
+      <Image
+        alt="next step"
+        width={300}
+        height={230}
+        src={url}
+        className="rounded-lg"
+      />
+      <div className="group/card-item:hover:invisible absolute top-0 bg-primary h-full w-full opacity-30 rounded-lg" />
+      {showSoonMessage && (
+        <div className="absolute top-0 w-full h-full flex items-center justify-center">
+          <h4 className="text-light text-lg font-primary font-semibold bg-dark p-1 rounded-lg opacity-60">
+            SOON
+          </h4>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function ComboTranslator() {
   const [combo, setCombo] = useState(
     'f,n,d,df+2, f,n,d,df+2, f,n,d,df+2, B+2,1 S!, {DASH} f,n,d,df+3',
@@ -13,32 +38,20 @@ export default function ComboTranslator() {
   return (
     <div className="w-full h-full min-h-80vh flex flex-col items-center justify-center px-10">
       <div className="flex flex-col mb-10 text-light w-full">
-        <label className='mb-4'>
+        <label className="mb-4">
           <span className="px-4 py-2 font-semibold text-sm bg-secondary text-light rounded-full shadow-sm font-primary font-black">
             Select a game:
           </span>
         </label>
-        <div className="flex flex-row gap-4">
-          <Image
-            alt="next step"
-            className='backdrop-blur-md backdrop-brightness-150 md:backdrop-filter-none'
-            width={230}
-            height={200}
-            src={'/tekken7/tekken7-select.jpg'}
+        <div className="flex flex-row gap-4 w-full">
+          <Card url="/tekken7/tekken7-select.jpg" />
+          <Card
+            url="/guilty-gear-strive/guilty-gear-strive-select.jpg"
+            showSoonMessage
           />
-          <Image
-            alt="next step"
-            className='backdrop-blur-md backdrop-brightness-150 md:backdrop-filter-none'
-            width={230}
-            height={200}
-            src={'/guilty-gear-strive/guilty-gear-strive-select.jpg'}
-          />
-          <Image
-            alt="next step"
-            className='backdrop-blur-md backdrop-brightness-150 md:backdrop-filter-none'
-            width={230}
-            height={200}
-            src={'/street-fighter-5/street-fighter-5-select.jpg'}
+          <Card
+            url="/street-fighter-5/street-fighter-5-select.jpg"
+            showSoonMessage
           />
         </div>
       </div>
