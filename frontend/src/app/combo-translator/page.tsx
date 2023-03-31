@@ -66,7 +66,7 @@ export default function ComboTranslator() {
         placeholder="Type your combo..."
         height="min-h-[100px] h-[10vh]"
         width="w-full"
-        className="sm:text-[1.23rem] font-semibold text-primary"
+        className="text-xm md:text-xl font-semibold text-primary"
       />
 
       <ComboTranslation combo={combo} game={GameTypes.TEKKEN_7} />

@@ -1,4 +1,4 @@
-'use - client';
+'use client';
 import { useComboTranslator } from '@/common/hooks/combo-translator';
 import { GameTypes } from '@/common/types/game-types';
 import Image from 'next/image';
@@ -17,7 +17,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
     return null;
   }
   return (
-    <div className="text-light rounded p-3 bg-secondary w-100 flex items-center flex-row flex-wrap">
+    <div className="text-light rounded p-3 bg-secondary flex items-center flex-row flex-wrap">
       {result.actions.map((action, index) => (
         <Fragment key={index.toString()}>
           {action.map((step, idx) => {
@@ -40,6 +40,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
                   key={step.action + idx.toString()}
                   src={step.imagePath}
                   alt={step.action}
+                  unoptimized
                   width={step.width ?? 40}
                   height={step.height ?? 50}
                   className="m-[1px]"
@@ -48,8 +49,8 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
             }
             return (
               <span
-                className="bg-dark px-[5px] mx-[3px] text-xl font-semibold"
                 key={step.action + idx.toString()}
+                className="bg-dark px-[5px] mx-[3px] text-xl font-semibold"
               >
                 {step.action}{' '}
               </span>
