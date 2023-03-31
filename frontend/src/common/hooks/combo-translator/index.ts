@@ -22,7 +22,7 @@ interface UseComboTranslatorParams {
   combo: string;
 }
 
-function tekken7Translator(combo: string): ComboTranslation {
+export function tekken7Translator(combo: string): ComboTranslation {
   const translation = addSpacesToStringIfBeforePlus(combo)
     .split(',')
     .map((localStep) => {
