@@ -12,7 +12,6 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    "next/babel",
     'next/core-web-vitals',
   ],
   parserOptions: {
@@ -70,12 +69,6 @@ module.exports = {
       'error',
       {
         checkAliases: true,
-      },
-    ],
-    'react/jsx-sort-props': [
-      'error',
-      {
-        ignoreCase: true,
       },
     ],
     'react-hooks/rules-of-hooks': 'error',

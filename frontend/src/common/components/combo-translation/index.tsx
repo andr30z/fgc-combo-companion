@@ -13,7 +13,9 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
   game,
 }) => {
   const result = useComboTranslator({ combo, game });
-  if (!result.combo) return null;
+  if (!result.combo) {
+    return null;
+  }
   return (
     <div className="text-light rounded p-3 bg-secondary w-100 flex items-center flex-row flex-wrap">
       {result.actions.map((action, index) => (

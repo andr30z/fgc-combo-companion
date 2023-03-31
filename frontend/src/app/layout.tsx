@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${roboto.variable}`}>
-      <body className='min-h-screen bg-dark'>
+      <body className="min-h-screen bg-dark">
         <Header />
         {children}
         <Footer />

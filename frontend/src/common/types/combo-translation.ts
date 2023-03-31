@@ -5,7 +5,6 @@ export interface ComboStepTranslation {
   height?: number;
 }
 
-
 export interface ComboTranslation {
   combo: string;
   actions: Array<Array<ComboStepTranslation>>;

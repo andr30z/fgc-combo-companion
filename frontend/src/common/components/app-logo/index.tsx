@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export interface AppLogoProps {
   height?: number;
@@ -8,7 +8,7 @@ export interface AppLogoProps {
 export const AppLogo: React.FC<AppLogoProps> = ({
   height = 80,
   width = 80,
-  extraStyles=""
+  extraStyles = '',
 }) => {
   return (
     <Image

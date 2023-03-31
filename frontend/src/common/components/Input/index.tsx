@@ -1,7 +1,7 @@
-import { ChangeEventHandler, FC } from 'react';
+import type { ChangeEventHandler, FC, ReactNode } from 'react';
 
 export interface InputProps {
-  label?: string;
+  label?: ReactNode;
   value: string;
   setValue?: (value: string) => void;
   error?: string;
@@ -30,7 +30,9 @@ export const Input: FC<InputProps> = ({
   return (
     <div className={`${width} ${height} ${containerClassName}`}>
       {label && (
-        <label className="block text-sm font-medium text-light">{label}</label>
+        <label className="block text-lg font-medium text-light h-[30%]">
+          {label}
+        </label>
       )}
       <input
         type={type}
@@ -40,10 +42,12 @@ export const Input: FC<InputProps> = ({
             const value = e.target.value;
             setValue(value);
           }
-          if (onChange) onChange(e);
+          if (onChange) {
+            onChange(e);
+          }
         }}
         placeholder={placeholder}
-        className={`h-full w-full px-3 py-2 bg-white shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1 font-primary disabled:shadow-none ${className}`}
+        className={`h-[70%] w-full px-3 py-2 bg-white shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1 font-primary disabled:shadow-none ${className}`}
       />
       {error && <p className="mt-2 opacity-10 text-primary text-sm">{error}</p>}
     </div>

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import type { FC } from 'react';
 import { BiTransfer } from 'react-icons/bi';
 
-interface PresentationProps extends Omit<ButtonProps, 'onClick'> {}
+type PresentationProps = Omit<ButtonProps, 'onClick'>;
 
 export const PresentationButtons: FC<PresentationProps> = () => {
   return (
