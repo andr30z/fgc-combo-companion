@@ -45,9 +45,7 @@ export const Button: FC<ButtonProps> = ({
   renderAsInnerLink = false,
   href = '',
 }) => {
-  const className = `px-4 py-2 sm font-semibold text-sm ${
-    classMappings[color].default
-  } ${
+  const className = `px-4 py-2 font-semibold ${classMappings[color].default} ${
     useHoverStyles ? classMappings[color].hover : ''
   } rounded-full shadow-sm flex items-center justify-center gap-1 ${extraStyles}`;
 

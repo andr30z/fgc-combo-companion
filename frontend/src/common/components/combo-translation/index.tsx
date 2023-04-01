@@ -17,7 +17,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
     return null;
   }
   return (
-    <div className="text-light rounded p-3 bg-secondary flex items-center flex-row flex-wrap">
+    <div className="text-light rounded p-3 bg-secondary flex items-center flex-row flex-wrap gap-1">
       {result.actions.map((action, index) => (
         <Fragment key={index.toString()}>
           {action.map((step, idx) => {
