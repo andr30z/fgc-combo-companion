@@ -49,6 +49,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
             }
             return (
               <span
+                data-testid={'combo-action-' + step.action}
                 key={step.action + idx.toString()}
                 className="bg-dark px-[5px] mx-[3px] text-xl font-semibold"
               >
