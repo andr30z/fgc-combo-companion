@@ -4,7 +4,6 @@ import { ComboTranslation } from './index';
 
 describe('<ComboTranslation />', () => {
   it('renders', () => {
-    // see: https://on.cypress.io/mounting-react
     cy.mount(
       <ComboTranslation
         game={GameTypes.TEKKEN_7}
@@ -13,7 +12,7 @@ describe('<ComboTranslation />', () => {
     );
   });
 
-  it('not translate text between {}', () => {
+  it('should not translate text between {}', () => {
     cy.mount(
       <ComboTranslation
         game={GameTypes.TEKKEN_7}
@@ -21,6 +20,6 @@ describe('<ComboTranslation />', () => {
       />,
     );
 
-    cy.get('[data-testid="combo-action-DASH"]').should('be.DASH');
+    cy.get('[data-testid="combo-action-DASH"]').contains('DASH');
   });
 });

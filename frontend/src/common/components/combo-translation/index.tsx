@@ -16,8 +16,12 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
   if (!result.combo) {
     return null;
   }
+
   return (
-    <div className="text-light rounded p-3 bg-secondary flex items-center flex-row flex-wrap gap-1">
+    <div
+      data-testid={result.combo}
+      className="text-light rounded p-3 bg-secondary flex items-center flex-row flex-wrap gap-1"
+    >
       {result.actions.map((action, index) => (
         <Fragment key={index.toString()}>
           {action.map((step, idx) => {

@@ -92,6 +92,7 @@ export default function ComboTranslator() {
         <Input
           value={combo}
           setValue={setCombo}
+          dataTestId="combo-input-id"
           label={
             <span className="mb-1 flex flex-row items-center gap-2 text-xl font-primary font-semibold text-light">
               Type your combo{' '}
@@ -130,6 +131,7 @@ export default function ComboTranslator() {
           inputProps={{ autoComplete: 'none', autoCorrect: 'none' }}
         />
         <Button
+          dataTestId="random-combo-button"
           color="primary"
           text="Random Combo"
           leftIcon={<FaRandom size={17} />}

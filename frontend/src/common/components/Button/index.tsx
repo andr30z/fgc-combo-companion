@@ -13,6 +13,7 @@ export interface ButtonProps {
   useHoverStyles?: boolean;
   renderAsInnerLink?: boolean;
   href?: Url;
+  dataTestId?: string;
 }
 
 const classMappings = {
@@ -44,6 +45,7 @@ export const Button: FC<ButtonProps> = ({
   useHoverStyles = true,
   renderAsInnerLink = false,
   href = '',
+  dataTestId = '',
 }) => {
   const className = `px-4 py-2 font-semibold ${classMappings[color].default} ${
     useHoverStyles ? classMappings[color].hover : ''
@@ -59,14 +61,14 @@ export const Button: FC<ButtonProps> = ({
 
   if (renderAsInnerLink) {
     return (
-      <Link href={href} className={className}>
+      <Link data-testid={dataTestId} href={href} className={className}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button className={className} onClick={onClick}>
+    <button data-testid={dataTestId} className={className} onClick={onClick}>
       {children}
     </button>
   );
