@@ -23,7 +23,7 @@ export const Input: FC<InputProps> = ({
   error,
   setValue,
   className = '',
-  height = 'h-full',
+  height = 'h-[75px]',
   width = 'w-full',
   placeholder,
   type = 'text',
@@ -34,7 +34,7 @@ export const Input: FC<InputProps> = ({
   return (
     <div className={`${width} ${height} ${containerClassName}`}>
       {typeof label === 'string' ? (
-        <label className="block text-lg font-medium text-light h-[30%]">
+        <label className="block mb-1 text-lg font-medium text-light h-[30%]">
           {label}
         </label>
       ) : (
