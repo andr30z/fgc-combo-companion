@@ -51,7 +51,7 @@ export default function ComboTranslator() {
     'FC df+1, ws+2,2  S!  wr+2+4 {CHAR: KING}',
     'f,b+2,1, f+3 {DYNAMIC ENTRY} 2, df+3 d {DYNAMIC ENTRY} 2, f+2,1 {SILENT ENTRY} 3+4 S!, f,f,f+3+4 {DYNAMIC ENTRY} 1 f, {SILENT ENTRY} 1 {CHAR: Lars}',
     'ws+2, b+1,2 S!, d,df,f+1, b+2,1 {HOLD} {CHAR: PAUL PHEONIX}',
-    'df+3+4, b+3,3 {RELAX} 2,3 b+2,4 S!, d+2,3 {RELAX} 3 {CHAR: Eddy}',
+    'df+3+4, b+3,3 {RELAX} 2,3, b+2,4 S!, d+2,3 {RELAX} 3 {CHAR: Eddy}',
     '[ 3,4 ] {BT} b+2,3, b+2,4,2 S!, f,f+3, f,f+4 {CHAR: MASTER RAVEN}',
     'SS 2,1, df+3 df+1  df+3  db+2,4 S! wr+2+4 {CHAR: ARMOR KING}',
   ];
