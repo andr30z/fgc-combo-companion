@@ -6,14 +6,14 @@ interface CardProps {
   cardTitle?: ReactNode;
   size?: 'xl' | 'lg' | 'md';
   theme?: 'primary' | 'secondary' | 'secondary-dark' | 'dark';
-  shadowSize?: 'none' | 'xl' | 'lg' | 'md' | 'sm';
+  shadowSize?: 'none' | 'lg' | 'md' | 'sm';
 }
 
 export const Card: FC<CardProps> = ({
   className = '',
   cardTitle,
   children,
-  size,
+  size = 'lg',
   theme = 'secondary-dark',
   shadowSize = 'none',
 }) => {
@@ -41,10 +41,10 @@ export const Card: FC<CardProps> = ({
     >
       {typeof cardTitle === 'string' ? (
         <>
-          <h1 className="text-lg font-bold text-light text-left">
+          <h1 className="text-lg font-bold text-light text-left mb-2">
             {cardTitle}
           </h1>
-          <hr />
+          <hr className="text-light w-full" />
         </>
       ) : (
         cardTitle
