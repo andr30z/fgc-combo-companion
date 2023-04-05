@@ -9,6 +9,7 @@ export const Header = () => {
   const pathname = usePathname();
 
   const showLoginButton = pathname !== '/login';
+  const showSignupButton = pathname !== '/signup';
   return (
     <header className="px-10 sm:px20 py-5 bg-dark w-full flex justify-between items-center py-3 h-10vh">
       <Image
@@ -38,12 +39,14 @@ export const Header = () => {
             extraStyles="hover:text-primary"
           />
         )}
-        <Button
-          renderAsInnerLink
-          href="/login"
-          text="Sign Up"
-          color="primary"
-        />
+        {showSignupButton && (
+          <Button
+            renderAsInnerLink
+            href="/login"
+            text="Sign Up"
+            color="primary"
+          />
+        )}
       </div>
     </header>
   );
