@@ -2,10 +2,11 @@ import { Footer } from '@/common/components/footer';
 import { Header } from '@/common/components/header';
 import { Roboto } from 'next/font/google';
 import './globals.css';
+import { Toast } from '@/modules/home/Toast';
 
 export const metadata = {
   title: 'FGC Combo Companion',
-  description: 'FGC-COMBO-COMPANION',
+  description: 'FGC COMBO COMPANION',
 };
 
 const roboto = Roboto({
@@ -26,6 +27,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <Toast />
       </body>
     </html>
   );
