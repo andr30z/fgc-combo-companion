@@ -138,7 +138,11 @@ export default function ComboTranslator() {
           onClick={setRandomCombo}
         />
       </div>
-      <ComboTranslation combo={combo} game={GameTypes.TEKKEN_7} />
+      {combo ? (
+        <ComboTranslation combo={combo} game={GameTypes.TEKKEN_7} />
+      ) : (
+        <div className="h-[125px]" />
+      )}
     </div>
   );
 }
