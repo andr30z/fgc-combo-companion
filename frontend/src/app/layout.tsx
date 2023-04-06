@@ -1,8 +1,11 @@
 import { Footer } from '@/common/components/footer';
 import { Header } from '@/common/components/header';
+import { AuthProvider } from '@/modules/home/auth-provider';
+import { Toast } from '@/modules/home/toast';
+import type { Session } from 'next-auth';
 import { Roboto } from 'next/font/google';
 import './globals.css';
-import { Toast } from '@/modules/home/toast';
+import { RefreshToken } from '@/modules/home/refresh-token';
 
 export const metadata = {
   title: 'FGC Combo Companion',
@@ -18,16 +21,21 @@ const roboto = Roboto({
 
 export default function RootLayout({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: Session | null;
 }) {
   return (
     <html lang="en" className={`${roboto.variable}`}>
       <body className="min-h-screen bg-dark">
-        <Header />
-        {children}
-        <Footer />
-        <Toast />
+        <AuthProvider session={session}>
+          <RefreshToken />
+          <Header />
+          {children}
+          <Footer />
+          <Toast />
+        </AuthProvider>
       </body>
     </html>
   );

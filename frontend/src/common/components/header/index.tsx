@@ -1,15 +1,20 @@
 'use client';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import { FiLogOut } from 'react-icons/fi';
 import { AppLogo } from '../app-logo';
 import { Button } from '../button';
-import { usePathname, useRouter } from 'next/navigation';
 
 export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { data: session } = useSession();
 
-  const showLoginButton = pathname !== '/login';
-  const showSignupButton = pathname !== '/signup';
+  const hasSession = !!session;
+  const showLoginButton = !hasSession && pathname !== '/login';
+  const showSignupButton = !hasSession && pathname !== '/signup';
+
   return (
     <header className="px-10 sm:px20 py-5 bg-dark w-full flex justify-between items-center py-3 h-10vh">
       <Image
@@ -45,6 +50,17 @@ export const Header = () => {
             href="/signup"
             text="Sign Up"
             color="primary"
+          />
+        )}
+
+        {hasSession && (
+          <Button
+            text="Sign out"
+            color="primary"
+            leftIcon={<FiLogOut size={17} />}
+            onClick={() => {
+              signOut({ callbackUrl: '/' });
+            }}
           />
         )}
       </div>
