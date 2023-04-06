@@ -2,7 +2,7 @@ import { Footer } from '@/common/components/footer';
 import { Header } from '@/common/components/header';
 import { Roboto } from 'next/font/google';
 import './globals.css';
-import { Toast } from '@/modules/home/Toast';
+import { Toast } from '@/modules/home/toast';
 
 export const metadata = {
   title: 'FGC Combo Companion',
