@@ -4,6 +4,7 @@ import { Card } from '@/common/components/card';
 import { Input } from '@/common/components/input';
 import { Link } from '@/common/components/link';
 import { useForm } from '@/common/hooks/form';
+import { toast } from 'react-hot-toast';
 
 export default function SignupPage() {
   const [{ email, password, passwordConfirmation, name }, onChange, onSubmit] =
@@ -53,10 +54,37 @@ export default function SignupPage() {
           required
         />
         <Button
-          onClick={onSubmit(async ({ values }) => {
-            // eslint-disable-next-line no-console
-            console.log(values);
-          })}
+          onClick={onSubmit(
+            async ({
+              values: { email, name, password, passwordConfirmation },
+            }) => {
+              let hasError = false;
+
+              if (!email.includes('@') || email.trim().length === 0) {
+                toast.error('Email must be valid');
+                hasError = true;
+              }
+
+              if (password.trim().length < 8) {
+                toast.error('Password must be at least 8 characters');
+                hasError = true;
+              }
+
+              if (password !== passwordConfirmation) {
+                toast.error('Passwords must match');
+                hasError = true;
+              }
+
+              if (name.trim().length === 0) {
+                toast.error('Name must be at least 3 characters');
+                hasError = true;
+              }
+
+              if (hasError) {
+                return;
+              }
+            },
+          )}
           extraStyles="w-full mt-3"
           color="primary"
           text="Create account"

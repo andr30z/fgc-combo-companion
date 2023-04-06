@@ -5,6 +5,7 @@ import { Card } from '@/common/components/card';
 import { Input } from '@/common/components/input';
 import { Link } from '@/common/components/link';
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { IoArrowBackSharp } from 'react-icons/io5';
 export default function ForgotPage() {
   const [hasSubmited, setHasSubmited] = useState(false);
@@ -47,6 +48,13 @@ export default function ForgotPage() {
                   text="Send recovery email"
                   color="primary"
                   onClick={() => {
+                    if (value.trim().length === 0) {
+                      return toast.error('Email is required');
+                    }
+
+                    if (!value.includes('@')) {
+                      return toast.error('Email must be valid');
+                    }
                     setHasSubmited(true);
                   }}
                 />
