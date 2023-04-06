@@ -2,10 +2,10 @@
 import { Button } from '@/common/components/button';
 import { Card } from '@/common/components/card';
 import { Input } from '@/common/components/input';
-import { useForm } from '@/common/hooks/form';
-import { FiLogIn } from 'react-icons/fi';
-import { FcGoogle } from 'react-icons/fc';
 import { Link } from '@/common/components/link';
+import { useForm } from '@/common/hooks/form';
+import { FcGoogle } from 'react-icons/fc';
+import { FiLogIn } from 'react-icons/fi';
 
 export default function LoginPage() {
   const [{ email, password }, onChange, onSubmit] = useForm({
@@ -26,6 +26,7 @@ export default function LoginPage() {
           value={email}
           placeholder="Your email"
           onChange={onChange('email')}
+          required
         />
         <Input
           type="password"
@@ -33,6 +34,7 @@ export default function LoginPage() {
           placeholder="Your password"
           value={password}
           onChange={onChange('password')}
+          required
         />
         <Button
           extraStyles="w-full mt-3"

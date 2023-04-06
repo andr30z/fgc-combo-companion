@@ -26,6 +26,7 @@ export default function SignupPage() {
           type="email"
           label="Email"
           placeholder="Your email"
+          required
         />
         <Input
           value={name}
@@ -33,6 +34,7 @@ export default function SignupPage() {
           type="text"
           label="Name"
           placeholder="Your Name"
+          required
         />
         <Input
           value={password}
@@ -40,6 +42,7 @@ export default function SignupPage() {
           type="password"
           label="Password"
           placeholder="Your password"
+          required
         />
         <Input
           value={passwordConfirmation}
@@ -47,6 +50,7 @@ export default function SignupPage() {
           type="password"
           label="Password confirmation"
           placeholder="Password confirmation"
+          required
         />
         <Button
           onClick={onSubmit(async ({ values }) => {

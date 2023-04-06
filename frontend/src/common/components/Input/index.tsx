@@ -14,6 +14,7 @@ export interface InputProps {
   containerClassName?: string;
   inputProps?: Partial<React.InputHTMLAttributes<HTMLInputElement>>;
   dataTestId?: string;
+  required?: boolean;
 }
 
 export const Input: FC<InputProps> = ({
@@ -30,12 +31,13 @@ export const Input: FC<InputProps> = ({
   containerClassName = '',
   inputProps = {},
   dataTestId,
+  required = false,
 }) => {
   return (
     <div className={`${width} ${height} ${containerClassName}`}>
       {typeof label === 'string' ? (
         <label className="block mb-1 text-lg font-medium text-light h-[30%]">
-          {label}
+          {label} {required && <span className="text-secondary">*</span>}
         </label>
       ) : (
         label
