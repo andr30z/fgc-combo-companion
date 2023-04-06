@@ -42,7 +42,7 @@ export const Header = () => {
         {showSignupButton && (
           <Button
             renderAsInnerLink
-            href="/login"
+            href="/signup"
             text="Sign Up"
             color="primary"
           />
