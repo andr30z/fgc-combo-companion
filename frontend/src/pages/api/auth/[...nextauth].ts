@@ -12,8 +12,8 @@ export const authOption: NextAuthOptions = {
   },
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID as string,
-      clientSecret: process.env.GOOGLE_SECRET as string,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
     CredentialsProvider({
       id: 'fgc-email-password',
@@ -37,6 +37,15 @@ export const authOption: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    // async signIn({ account, profile }) {
+    //   console.log(account, profile)
+    //   // if (account?.provider === 'google') {
+    //   //   return profile.email_verified && profile.email.endsWith('@example.com');
+    //   // }
+    //   return true; // Do different verification for other providers that don't have `email_verified`
+    // },
+  },
 };
 
 export default NextAuth(authOption);
