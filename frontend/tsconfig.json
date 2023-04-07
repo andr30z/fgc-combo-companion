@@ -28,6 +28,7 @@
   },
   "include": [
     "src/**/*",
+    "pages/**/*",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
