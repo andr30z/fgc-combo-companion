@@ -14,13 +14,17 @@ public class V1__CreateUserTable extends BaseJavaMigration {
     statement.execute(
       "CREATE SEQUENCE IF NOT EXISTS hibernate_sequence START WITH 1 INCREMENT BY 1"
     );
+
+    statement.execute("CREATE TYPE oauthtypes AS ENUM ('GOOGLE');");
+
+
     statement.execute(
       "CREATE TABLE users ( " +
       "id bigint NOT NULL," +
       "email character varying(255) NOT NULL, " +
       "name character varying(255) NOT NULL, " +
       "password character varying(255), " +
-      "auth_provider character varying(255), " +
+      "auth_provider oauthtypes, " +
       "email_verified BOOL DEFAULT false NOT NULL, " +
       "created_at timestamp, " +
       "CONSTRAINT user_pkey PRIMARY KEY (id) );"
@@ -32,6 +36,7 @@ public class V1__CreateUserTable extends BaseJavaMigration {
     statement.execute(
       "CREATE UNIQUE INDEX users_unique_lower_email_idx on users (lower(email));"
     );
+
 
     statement.close();
   }

@@ -4,6 +4,7 @@ import com.fgc.combo.companion.dto.CreateUserDTO;
 import com.fgc.combo.companion.dto.CustomUserDetails;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
+import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.Token;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.EntityExistsException;
@@ -14,6 +15,7 @@ import com.fgc.combo.companion.service.TokenProvider;
 import com.fgc.combo.companion.service.UserService;
 import com.fgc.combo.companion.utils.CookieUtil;
 import com.fgc.combo.companion.utils.SecurityCipher;
+import jakarta.transaction.Transactional;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
@@ -76,44 +78,13 @@ public class UserServiceImpl implements UserService {
     String encryptedAccessToken,
     String encryptedRefreshToken
   ) {
-    String accessToken = SecurityCipher.decrypt(encryptedAccessToken);
-    String refreshToken = SecurityCipher.decrypt(encryptedRefreshToken);
     String email = loginRequest.getEmail();
     User user = this.findByEmail(email);
     if (
       !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())
     ) throw new BadRequestException("Password doesn't match!");
-    var accessTokenValid = tokenProvider.validateToken(accessToken);
-    var refreshTokenValid = tokenProvider.validateToken(refreshToken);
 
-    HttpHeaders responseHeaders = new HttpHeaders();
-    Token newAccessToken;
-    Token newRefreshToken;
-    if (!accessTokenValid && !refreshTokenValid) {
-      newAccessToken = tokenProvider.generateAccessToken(user.getEmail());
-      newRefreshToken = tokenProvider.generateRefreshToken(user.getEmail());
-      addAccessTokenCookie(responseHeaders, newAccessToken);
-      addRefreshTokenCookie(responseHeaders, newRefreshToken);
-    }
-
-    if (!accessTokenValid && refreshTokenValid) {
-      newAccessToken = tokenProvider.generateAccessToken(user.getEmail());
-      addAccessTokenCookie(responseHeaders, newAccessToken);
-    }
-
-    if (accessTokenValid && refreshTokenValid) {
-      newAccessToken = tokenProvider.generateAccessToken(user.getEmail());
-      newRefreshToken = tokenProvider.generateRefreshToken(user.getEmail());
-      addAccessTokenCookie(responseHeaders, newAccessToken);
-      addRefreshTokenCookie(responseHeaders, newRefreshToken);
-    }
-
-    LoginResponse loginResponse = new LoginResponse(
-      LoginResponse.SuccessFailure.SUCCESS,
-      "Auth successful. Tokens are created in cookies.",
-      user
-    );
-    return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
+    return login(user, encryptedAccessToken, encryptedRefreshToken);
   }
 
   @Override
@@ -175,6 +146,68 @@ public class UserServiceImpl implements UserService {
       .getAuthentication()
       .getPrincipal();
     return currentUser.getUser();
+  }
+
+  @Transactional
+  @Override
+  public ResponseEntity<LoginResponse> oAuthlogin(
+    OAuthLoginRequestDto loginRequest
+  ) {
+    String email = loginRequest.getEmail();
+    User user =
+      this.userRepository.findUserByEmail(email)
+        .orElseGet(() -> {
+          User oAuthUser = User
+            .builder()
+            .email(email)
+            .name(loginRequest.getName())
+            .emailVerified(true)
+            .build();
+          oAuthUser.setAuthProvider(loginRequest.getAuthProvider());
+          return this.userRepository.save(oAuthUser);
+        });
+
+    return this.login(user, null, null);
+  }
+
+  private ResponseEntity<LoginResponse> login(
+    User user,
+    String encryptedAccessToken,
+    String encryptedRefreshToken
+  ) {
+    String accessToken = SecurityCipher.decrypt(encryptedAccessToken);
+    String refreshToken = SecurityCipher.decrypt(encryptedRefreshToken);
+    boolean accessTokenValid = tokenProvider.validateToken(accessToken);
+    boolean refreshTokenValid = tokenProvider.validateToken(refreshToken);
+
+    HttpHeaders responseHeaders = new HttpHeaders();
+    Token newAccessToken;
+    Token newRefreshToken;
+    if (!accessTokenValid && !refreshTokenValid) {
+      newAccessToken = tokenProvider.generateAccessToken(user.getEmail());
+      newRefreshToken = tokenProvider.generateRefreshToken(user.getEmail());
+      addAccessTokenCookie(responseHeaders, newAccessToken);
+      addRefreshTokenCookie(responseHeaders, newRefreshToken);
+    }
+
+    if (!accessTokenValid && refreshTokenValid) {
+      newAccessToken = tokenProvider.generateAccessToken(user.getEmail());
+      addAccessTokenCookie(responseHeaders, newAccessToken);
+    }
+
+    if (accessTokenValid && refreshTokenValid) {
+      newAccessToken = tokenProvider.generateAccessToken(user.getEmail());
+      newRefreshToken = tokenProvider.generateRefreshToken(user.getEmail());
+      addAccessTokenCookie(responseHeaders, newAccessToken);
+      addRefreshTokenCookie(responseHeaders, newRefreshToken);
+    }
+
+    LoginResponse loginResponse = new LoginResponse(
+      LoginResponse.SuccessFailure.SUCCESS,
+      "Auth successful. Tokens are created in cookies.",
+      user
+    );
+    return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
   }
 
   private User findByEmail(String email) {

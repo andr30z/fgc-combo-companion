@@ -1,8 +1,11 @@
 package com.fgc.combo.companion.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fgc.combo.companion.enums.OAuthTypes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Data
@@ -39,7 +43,9 @@ public class User {
   private String email;
 
   @Column(name = "auth_provider")
-  private String authProvider;
+  @Enumerated(EnumType.STRING)
+  @ColumnTransformer(write = "?::oauthtypes")
+  private OAuthTypes authProvider;
 
   @Column(name = "email_verified")
   private Boolean emailVerified;
@@ -53,4 +59,9 @@ public class User {
 
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
+
+  public void setAuthProvider(String authProvider) {
+    if (authProvider == null) return;
+    this.authProvider = OAuthTypes.valueOf(authProvider);
+  }
 }

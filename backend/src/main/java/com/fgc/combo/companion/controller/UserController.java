@@ -1,5 +1,11 @@
 package com.fgc.combo.companion.controller;
 
+import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.LoginRequest;
+import com.fgc.combo.companion.dto.LoginResponse;
+import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
+import com.fgc.combo.companion.model.User;
+import com.fgc.combo.companion.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,12 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fgc.combo.companion.dto.CreateUserDTO;
-import com.fgc.combo.companion.dto.LoginRequest;
-import com.fgc.combo.companion.dto.LoginResponse;
-import com.fgc.combo.companion.model.User;
-import com.fgc.combo.companion.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -33,18 +33,35 @@ public class UserController {
     return this.usersService.create(createUserDTO);
   }
 
-  @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(
+    value = "/login",
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE
+  )
   public ResponseEntity<LoginResponse> login(
-      @CookieValue(name = "accessToken", required = false) String accessToken,
-      @CookieValue(name = "refreshToken", required = false) String refreshToken,
-      @RequestBody @Validated LoginRequest loginRequest) {
+    @CookieValue(name = "accessToken", required = false) String accessToken,
+    @CookieValue(name = "refreshToken", required = false) String refreshToken,
+    @RequestBody @Validated LoginRequest loginRequest
+  ) {
     return usersService.login(loginRequest, accessToken, refreshToken);
+  }
+
+  @PostMapping(
+    value = "/oauth/login",
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE
+  )
+  public ResponseEntity<LoginResponse> oAuthLogin(
+    @RequestBody @Validated OAuthLoginRequestDto loginRequest
+  ) {
+    return usersService.oAuthlogin(loginRequest);
   }
 
   @PostMapping(value = "/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<LoginResponse> refreshToken(
-      @CookieValue(name = "accessToken", required = false) String accessToken,
-      @CookieValue(name = "refreshToken", required = false) String refreshToken) {
+    @CookieValue(name = "accessToken", required = false) String accessToken,
+    @CookieValue(name = "refreshToken", required = false) String refreshToken
+  ) {
     return usersService.refresh(accessToken, refreshToken);
   }
 
