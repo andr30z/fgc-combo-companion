@@ -3,6 +3,8 @@ import { Button } from '@/common/components/button';
 import { Card } from '@/common/components/card';
 import { Input } from '@/common/components/input';
 import { Link } from '@/common/components/link';
+import { LoadingBackdrop } from '@/common/components/loading-backdrop';
+import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
 import { signIn } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
@@ -13,6 +15,9 @@ export const LoginForm = () => {
     email: '',
     password: '',
   });
+
+  const [loading, { setTrue: startLoading, setFalse: endLoading }] =
+    useBoolean();
   return (
     <Card
       className="gap-3 shadow-primary shadow-lg w-[80vw]"
@@ -54,13 +59,14 @@ export const LoginForm = () => {
           if (hasError) {
             return;
           }
-
+          startLoading();
           const data = await signIn('fgc-email-password', {
             email,
             password,
             callbackUrl: '/dashboard',
             redirect: false,
           });
+          endLoading();
           if (data?.error) {
             toast.error(data.error);
           }
@@ -72,8 +78,8 @@ export const LoginForm = () => {
         text="Continue with Google"
         leftIcon={<FcGoogle size={17} />}
       />
-
       <hr className="bg-light w-full" />
+      <LoadingBackdrop isLoading={loading} />
       <footer className="flex flex-row w-full justify-center items-center">
         <p className="font-primary">
           <Link href="/forgot" className="hover:text-light text-secondary">

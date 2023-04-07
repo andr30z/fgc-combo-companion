@@ -14,6 +14,7 @@ export interface ButtonProps {
   renderAsInnerLink?: boolean;
   href?: Url;
   dataTestId?: string;
+  disabled?: boolean;
 }
 
 const classMappings = {
@@ -46,6 +47,7 @@ export const Button: FC<ButtonProps> = ({
   renderAsInnerLink = false,
   href = '',
   dataTestId = '',
+  disabled = false,
 }) => {
   const className = `px-4 py-2 font-semibold ${classMappings[color].default} ${
     useHoverStyles ? classMappings[color].hover : ''
@@ -68,7 +70,12 @@ export const Button: FC<ButtonProps> = ({
   }
 
   return (
-    <button data-testid={dataTestId} className={className} onClick={onClick}>
+    <button
+      disabled={disabled}
+      data-testid={dataTestId}
+      className={className}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

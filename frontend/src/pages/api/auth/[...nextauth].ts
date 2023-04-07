@@ -29,7 +29,7 @@ export const authOption: NextAuthOptions = {
         );
         if (error) {
           throw new Error(
-            error.response?.data?.message ??
+            error.response?.data?.errors?.join(', ') ??
               'Something went wrong while logging in. Try again later.',
           );
         }
