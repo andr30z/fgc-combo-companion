@@ -3,7 +3,7 @@
 logging:
   level:
     org:
-      hibernate: 
+      hibernate:
         type: TRACE
 
 management:
@@ -25,6 +25,16 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_SENDER_MAIL_USERNAME}
+    password: ${MAIL_SENDER_MAIL_PASSWORD}
+    properties:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
