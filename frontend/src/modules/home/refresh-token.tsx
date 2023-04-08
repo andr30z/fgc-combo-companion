@@ -1,6 +1,6 @@
 'use client';
 
-import { API_URLS, fgcApi } from '@/common/services/fgc-api';
+import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { LoginResponse } from '@/common/types/login';
 import { useSession } from 'next-auth/react';
 import { FC, useEffect } from 'react';
@@ -9,7 +9,9 @@ export const RefreshToken: FC = () => {
   const { data: authSession, update } = useSession();
 
   const refreshToken = async () => {
-    const response = await fgcApi.post<LoginResponse>(API_URLS.REFRESH_TOKEN);
+    const response = await fgcApi.post<LoginResponse>(
+      FGC_API_URLS.REFRESH_TOKEN,
+    );
     await update(response.data.user);
     return response.data;
   };

@@ -7,6 +7,7 @@ import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import { FiLogIn } from 'react-icons/fi';
@@ -15,7 +16,7 @@ export const LoginForm = () => {
     email: '',
     password: '',
   });
-
+  const router = useRouter();
   const [loading, { setTrue: startLoading, setFalse: endLoading }] =
     useBoolean();
   return (
@@ -63,13 +64,13 @@ export const LoginForm = () => {
           const data = await signIn('fgc-email-password', {
             email,
             password,
-            callbackUrl: '/dashboard',
             redirect: false,
           });
           endLoading();
           if (data?.error) {
             toast.error(data.error);
           }
+          router.push('/dashboard');
         })}
       />
       <Button

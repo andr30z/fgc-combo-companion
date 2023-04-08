@@ -1,12 +1,30 @@
-import { API_URLS, fgcApi } from '@/common/services/fgc-api';
+import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
+import { AuthProviderTypes } from '@/common/types/auth-types';
 import type { LoginRequest, LoginResponse } from '@/common/types/login';
+import type { User } from '@/common/types/user';
 import { promiseResultWithError } from '@/common/utils/Promises';
+import type { AxiosResponse } from 'axios';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import type { NextAuthOptions, User as NextAuthUser } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
-export const authOption: NextAuthOptions = {
+function setCookies(
+  res: NextApiResponse,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  response: AxiosResponse<LoginResponse, any> | null,
+) {
+  const cookies = response?.headers['set-cookie'] ?? [];
+  res.setHeader('Set-Cookie', cookies as string[]);
+}
+
+type NextAuthOptionsCallback = (
+  req: NextApiRequest,
+  res: NextApiResponse,
+) => NextAuthOptions;
+
+const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
   pages: {
     signIn: '/login',
   },
@@ -21,8 +39,9 @@ export const authOption: NextAuthOptions = {
       credentials: {},
       async authorize(credentials) {
         const { email, password } = credentials as unknown as LoginRequest;
+        const fgcApi = getFgcApiInstance();
         const { error, result } = await promiseResultWithError(
-          fgcApi.post<LoginResponse>(API_URLS.LOGIN, {
+          fgcApi.post<LoginResponse>(FGC_API_URLS.LOGIN, {
             email,
             password,
           }),
@@ -33,19 +52,53 @@ export const authOption: NextAuthOptions = {
               'Something went wrong while logging in. Try again later.',
           );
         }
+        setCookies(res, result);
+
         return result?.data.user as unknown as NextAuthUser;
       },
     }),
   ],
-  callbacks: {
-    // async signIn({ account, profile }) {
-    //   console.log(account, profile)
-    //   // if (account?.provider === 'google') {
-    //   //   return profile.email_verified && profile.email.endsWith('@example.com');
-    //   // }
-    //   return true; // Do different verification for other providers that don't have `email_verified`
-    // },
+  events: {
+    async signOut() {
+      res.setHeader('Set-Cookie', [
+        'accessToken=deleted;Max-Age=0;path=/;',
+        'refreshToken=deleted;Max-Age=0;path=/;',
+      ]);
+    },
   },
-};
+  callbacks: {
+    async signIn(data) {
+      const { user, account } = data;
+      if (account?.provider === 'fgc-email-password') {
+        return true;
+      }
+      const fgcApi = getFgcApiInstance();
 
-export default NextAuth(authOption);
+      const { error, result } = await promiseResultWithError(
+        fgcApi.post<LoginResponse>(FGC_API_URLS.OAUTH_LOGIN, {
+          email: user.email,
+          name: user.name,
+          authProvider: AuthProviderTypes.GOOGLE,
+        }),
+      );
+
+      setCookies(res, result);
+      return error === null;
+    },
+
+    jwt: async (data) => {
+      if (data.user) {
+        data.token.user = data.user;
+      }
+      return data.token;
+    },
+    session: async ({ session, token }) => {
+      session.user = token.user as unknown as User;
+      return session;
+    },
+  },
+});
+const nextAuth = (req: NextApiRequest, res: NextApiResponse) => {
+  return NextAuth(req, res, getAuthOption(req, res));
+};
+export default nextAuth;

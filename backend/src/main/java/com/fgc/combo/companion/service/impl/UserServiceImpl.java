@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
     );
     String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
     user.setPassword(encodedPassword);
+    user.setEmailVerified(false);
     log.info("Creating user with email {}", userDTO.getEmail());
     return this.userRepository.save(user);
   }

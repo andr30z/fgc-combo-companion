@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.config;
 
+import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,8 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -104,7 +106,8 @@ public class SecurityConfig {
         HttpMethod.POST,
         "/api/v1/users/login",
         "/api/v1/users/refresh",
-        "/api/v1/users"
+        "/api/v1/users",
+        "/api/v1/users/oauth/login"
       )
       .permitAll()
       .anyRequest()
@@ -116,15 +119,16 @@ public class SecurityConfig {
       )
       .build();
   }
-  //   @Bean
-  //   CorsFilter corsFilter() {
-  //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-  //     CorsConfiguration config = new CorsConfiguration();
-  //     config.setAllowCredentials(true);
-  //     config.addAllowedOriginPattern("*");
-  //     config.addAllowedHeader("*");
-  //     config.addAllowedMethod("*");
-  //     source.registerCorsConfiguration("/**", config);
-  //     return new CorsFilter(source);
-  //   }
+
+  @Bean
+  CorsFilter corsFilter() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.addAllowedOriginPattern("*");
+    config.addAllowedHeader("*");
+    config.addAllowedMethod("*");
+    source.registerCorsConfiguration("/**", config);
+    return new CorsFilter(source);
+  }
 }
