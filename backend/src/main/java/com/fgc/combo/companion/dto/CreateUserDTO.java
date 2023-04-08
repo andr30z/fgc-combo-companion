@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import jakarta.validation.constraints.Size;
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 public class CreateUserDTO {
     @NotBlank
     @Email

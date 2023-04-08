@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import com.fgc.combo.companion.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-  @Query("select u from User u where u.email = ?1")
+  @Query("select u from User u where lower(u.email) = lower(?1)")
   Optional<User> findUserByEmail(String email);
 }

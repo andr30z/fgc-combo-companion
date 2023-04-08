@@ -11,22 +11,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fgc.combo.companion.dto.CreateUserDTO;
-import com.fgc.combo.companion.dto.CustomUserDetails;
-import com.fgc.combo.companion.dto.LoginRequest;
-import com.fgc.combo.companion.dto.LoginResponse;
-import com.fgc.combo.companion.dto.Token;
-import com.fgc.combo.companion.exception.BadRequestException;
-import com.fgc.combo.companion.exception.EntityExistsException;
-import com.fgc.combo.companion.exception.ResourceNotFoundException;
-import com.fgc.combo.companion.model.User;
-import com.fgc.combo.companion.repository.UserRepository;
-import com.fgc.combo.companion.service.impl.UserServiceImpl;
-import com.fgc.combo.companion.utils.CookieUtil;
-import com.fgc.combo.companion.utils.SecurityCipher;
 import java.io.IOException;
 import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +33,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.CustomUserDetails;
+import com.fgc.combo.companion.dto.LoginRequest;
+import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
+import com.fgc.combo.companion.dto.Token;
+import com.fgc.combo.companion.enums.OAuthTypes;
+import com.fgc.combo.companion.exception.BadRequestException;
+import com.fgc.combo.companion.exception.EntityExistsException;
+import com.fgc.combo.companion.exception.ResourceNotFoundException;
+import com.fgc.combo.companion.model.User;
+import com.fgc.combo.companion.repository.UserRepository;
+import com.fgc.combo.companion.service.impl.UserServiceImpl;
+import com.fgc.combo.companion.utils.CookieUtil;
+import com.fgc.combo.companion.utils.SecurityCipher;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTests {
@@ -236,8 +239,103 @@ public class UserServiceImplTests {
     assertThat(response.getHeaders().get(HttpHeaders.SET_COOKIE)).isNotNull();
     var responseBody = response.getBody();
     assertThat(responseBody).isNotNull();
-    assertThat(responseBody.getStatus())
-      .isEqualTo(LoginResponse.SuccessFailure.SUCCESS);
+  }
+
+  @Test
+  @DisplayName("It should login the user successfully via oAuth.")
+  void itShouldLoginThroughOAuth() {
+    // given
+    OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
+      "teste@mail.com",
+      OAuthTypes.GOOGLE.name(),
+      "testname"
+    );
+    String userMail = loginRequest.getEmail();
+    String testName = loginRequest.getName();
+    Long userId = 1L;
+    User userToLogin = User
+      .builder()
+      .id(userId)
+      .name(testName)
+      .email(userMail)
+      .build();
+    userToLogin.setAuthProvider(OAuthTypes.GOOGLE.name());
+
+    when(userRepository.findUserByEmail(anyString()))
+      .thenReturn(Optional.of(userToLogin));
+    var tokenMock = new Token(
+      Token.TokenType.ACCESS,
+      WANNABE_ACCESS_TOKEN,
+      MILLIS_PER_DAY,
+      null
+    );
+    when(tokenProvider.generateAccessToken(anyString())).thenReturn(tokenMock);
+    when(tokenProvider.generateRefreshToken(anyString())).thenReturn(tokenMock);
+    when(cookieUtil.createAccessTokenCookie(anyString(), anyLong()))
+      .thenReturn(
+        ResponseCookie.from("accessToken", WANNABE_ACCESS_TOKEN).build()
+      );
+
+    when(cookieUtil.createRefreshTokenCookie(anyString(), anyLong()))
+      .thenReturn(
+        ResponseCookie.from("refreshToken", WANNABE_ACCESS_TOKEN).build()
+      );
+
+    var response = underTest.oAuthlogin(loginRequest);
+
+    verify(userRepository, times(0)).save(Mockito.any());
+    assertThat(response.getHeaders().get(HttpHeaders.SET_COOKIE)).isNotNull();
+    var responseBody = response.getBody();
+    assertThat(responseBody).isNotNull();
+  }
+
+  @Test
+  @DisplayName("It should create and login the user successfully via oAuth.")
+  void itShouldCreateAnUserAndLogin() {
+    // given
+    OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
+      "teste@mail.com",
+      OAuthTypes.GOOGLE.name(),
+      "testname"
+    );
+    String userMail = loginRequest.getEmail();
+    String testName = loginRequest.getName();
+    Long userId = 1L;
+    User userToLogin = User
+      .builder()
+      .id(userId)
+      .name(testName)
+      .email(userMail)
+      .build();
+    userToLogin.setAuthProvider(OAuthTypes.GOOGLE.name());
+
+    when(userRepository.findUserByEmail(anyString()))
+      .thenReturn(Optional.empty());
+    when(userRepository.save(any())).thenReturn(userToLogin);
+    var tokenMock = new Token(
+      Token.TokenType.ACCESS,
+      WANNABE_ACCESS_TOKEN,
+      MILLIS_PER_DAY,
+      null
+    );
+    when(tokenProvider.generateAccessToken(anyString())).thenReturn(tokenMock);
+    when(tokenProvider.generateRefreshToken(anyString())).thenReturn(tokenMock);
+    when(cookieUtil.createAccessTokenCookie(anyString(), anyLong()))
+      .thenReturn(
+        ResponseCookie.from("accessToken", WANNABE_ACCESS_TOKEN).build()
+      );
+
+    when(cookieUtil.createRefreshTokenCookie(anyString(), anyLong()))
+      .thenReturn(
+        ResponseCookie.from("refreshToken", WANNABE_ACCESS_TOKEN).build()
+      );
+
+    var response = underTest.oAuthlogin(loginRequest);
+
+    verify(userRepository, times(1)).save(Mockito.any());
+    assertThat(response.getHeaders().get(HttpHeaders.SET_COOKIE)).isNotNull();
+    var responseBody = response.getBody();
+    assertThat(responseBody).isNotNull();
   }
 
   @Test
@@ -272,6 +370,8 @@ public class UserServiceImplTests {
     String generatedToken = "NEW_TOKEN_TEST";
     String emailFromToken = "testmail@yay.com";
     when(SecurityCipher.decrypt(anyString())).thenReturn(emailFromToken);
+    when(userRepository.findUserByEmail(anyString()))
+      .thenReturn(Optional.of(User.builder().email(emailFromToken).build()));
     when(tokenProvider.validateToken(anyString())).thenReturn(true);
     var tokenMock = new Token(
       Token.TokenType.ACCESS,
@@ -303,8 +403,6 @@ public class UserServiceImplTests {
     assertThat(response.getHeaders().get(HttpHeaders.SET_COOKIE)).isNotNull();
     var responseBody = response.getBody();
     assertThat(responseBody).isNotNull();
-    assertThat(responseBody.getStatus())
-      .isEqualTo(LoginResponse.SuccessFailure.SUCCESS);
   }
 
   @Test

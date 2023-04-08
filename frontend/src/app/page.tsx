@@ -1,4 +1,4 @@
-import { PresentationButtons } from '@/modules/lading-page/PresentationButtons';
+import { PresentationButtons } from '@/modules/lading-page/presentation-buttons';
 
 export default function Home() {
   return (
