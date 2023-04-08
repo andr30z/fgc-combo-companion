@@ -1,30 +1,35 @@
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { User } from '@/common/types/user';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 const ONE_HOUR = 1000 * 60 * 60;
 
 interface UseUserParams {
-  redirectOnError?: boolean;
+  redirectTo?: string | null;
 }
 export function useUser(
-  { redirectOnError }: UseUserParams = { redirectOnError: true },
+  { redirectTo }: UseUserParams = { redirectTo: '/login' },
 ) {
-  const router = useRouter();
+  const queryClient = useQueryClient();
+  function onUnauthenticated() {
+    if (!redirectTo) {
+      return;
+    }
+    toast.error('Please log in again!');
+
+    signOut({ callbackUrl: redirectTo });
+  }
   const { update, data, status } = useSession({
     required: true,
-    onUnauthenticated() {
-      if (!redirectOnError) {
-        return;
-      }
-      toast.error('Please log in again!');
-      router.replace('/login');
-    },
+    onUnauthenticated,
   });
-  const { data: user, isLoading } = useQuery(
-    ['user', data?.user.id],
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery(
+    ['user'],
     async () => {
       const result = await fgcApi.get<User>(FGC_API_URLS.ME);
       await update(result.data);
@@ -32,9 +37,12 @@ export function useUser(
     },
     {
       staleTime: ONE_HOUR,
+      retry: 3,
       enabled: data !== null,
       onError() {
+        queryClient.invalidateQueries(['user']);
         toast.error('Failed to load user info');
+        onUnauthenticated();
       },
     },
   );
@@ -43,6 +51,6 @@ export function useUser(
     user,
     isLoadingUser: isLoading,
     isLoadingSession: status === 'loading',
-    isAuthenticated: status === 'authenticated',
+    isAuthenticated: status === 'authenticated' && !error,
   };
 }

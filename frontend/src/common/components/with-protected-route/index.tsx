@@ -1,9 +1,19 @@
 'use client';
 
 import { useUser } from '@/common/hooks/user';
-import { useRouter } from 'next/navigation';
 import type { FC, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { LoadingBackdrop } from '../loading-backdrop';
+
+// const Backdrop = dynamic(
+//   async () => {
+//     const backdrop = await import('@/common/components/loading-backdrop');
+//     return backdrop.LoadingBackdrop;
+//   },
+//   {
+//     ssr: false,
+//   },
+// );
 export interface WithProtectedRouteOptions {
   redirectTo?: string;
   OnUnauthenticatedComponent?: ReactNode;
@@ -11,28 +21,32 @@ export interface WithProtectedRouteOptions {
 export function WithProtectedRoute(
   Component: FC,
   {
-    OnUnauthenticatedComponent = null,
+    OnUnauthenticatedComponent = <div className="h-[50vh]" />,
     redirectTo,
   }: WithProtectedRouteOptions = {},
 ) {
   return function WithProtectedRouteComponent() {
     const { isAuthenticated, isLoadingSession, isLoadingUser } = useUser({
-      redirectOnError: redirectTo === undefined,
+      redirectTo,
     });
-    const router = useRouter();
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+      //temporary fix for radix ui hydratation error
+      if (isLoadingSession || isLoadingUser) {
+        setIsLoading(true);
+      }
+    }, [isLoadingSession]);
+
     if (isLoadingSession || isLoadingUser) {
       return (
-        <>
-          <LoadingBackdrop isLoading />
-          <div className="h-[30vh]" />
-        </>
+        <div className="h-[50vh]">
+          <LoadingBackdrop isLoading={isLoading} />
+        </div>
       );
     }
 
-    if (!isAuthenticated && redirectTo) {
-      router.push(redirectTo);
-      return <div className="h-[30vh]" />;
-    }
     return isAuthenticated ? <Component /> : OnUnauthenticatedComponent;
   };
 }
