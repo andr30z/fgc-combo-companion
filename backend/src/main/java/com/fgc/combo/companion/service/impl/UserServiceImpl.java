@@ -1,6 +1,18 @@
 package com.fgc.combo.companion.service.impl;
 
-import com.fgc.combo.companion.dto.CreateEmailDto;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.fgc.combo.companion.dto.CreateUserDTO;
 import com.fgc.combo.companion.dto.CustomUserDetails;
 import com.fgc.combo.companion.dto.LoginRequest;
@@ -12,24 +24,14 @@ import com.fgc.combo.companion.exception.EntityExistsException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.UserRepository;
-import com.fgc.combo.companion.service.EmailService;
 import com.fgc.combo.companion.service.TokenProvider;
+import com.fgc.combo.companion.service.UserEmailVerificationService;
 import com.fgc.combo.companion.service.UserService;
 import com.fgc.combo.companion.utils.CookieUtil;
 import com.fgc.combo.companion.utils.SecurityCipher;
+
 import jakarta.transaction.Transactional;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -43,20 +45,20 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
   private final CookieUtil cookieUtil;
 
-  private final EmailService emailService;
+  private final UserEmailVerificationService userVerificationEmailService;
 
   public UserServiceImpl(
     UserRepository userRepository,
     TokenProvider tokenProvider,
     CookieUtil cookieUtil,
     PasswordEncoder passwordEncoder,
-    EmailService emailService
+    UserEmailVerificationService userVerificationEmailService
   ) {
     this.userRepository = userRepository;
     this.tokenProvider = tokenProvider;
     this.cookieUtil = cookieUtil;
     this.passwordEncoder = passwordEncoder;
-    this.emailService = emailService;
+    this.userVerificationEmailService = userVerificationEmailService;
   }
 
   @Override
@@ -78,8 +80,8 @@ public class UserServiceImpl implements UserService {
 
     log.info("Creating user with email {}", userDTO.getEmail());
     User createdUser = this.userRepository.save(user);
-    
-    sendVerificationEmail(createdUser.getEmail(), createdUser.getName());
+
+    this.userVerificationEmailService.sendVerificationEmail(createdUser);
     return createdUser;
   }
 
@@ -179,21 +181,6 @@ public class UserServiceImpl implements UserService {
         });
 
     return this.login(user, null, null);
-  }
-
-  private void sendVerificationEmail(String userEmail, String userName) {
-    String WELCOME = "Welcome";
-    String CONTENT = String.format(
-      "Hello, %s, \n Welcome to our app!",
-      userName
-    );
-    CreateEmailDto emailDTO = CreateEmailDto
-      .builder()
-      .subject(WELCOME)
-      .content(CONTENT)
-      .emailTo(userEmail)
-      .build();
-    this.emailService.sendEmail(emailDTO);
   }
 
   private ResponseEntity<LoginResponse> login(

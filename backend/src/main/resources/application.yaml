@@ -6,6 +6,8 @@ logging:
       hibernate:
         type: TRACE
 
+email-verification:
+  base-user-email-verification-frontend-url: ${BASE_USER_EMAIL_VERIFICATION_FRONTEND_URL}
 management:
   endpoints:
     jmx:
