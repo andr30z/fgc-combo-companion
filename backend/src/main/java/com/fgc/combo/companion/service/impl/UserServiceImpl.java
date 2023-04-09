@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.service.impl;
 
+import com.fgc.combo.companion.dto.CreateEmailDto;
 import com.fgc.combo.companion.dto.CreateUserDTO;
 import com.fgc.combo.companion.dto.CustomUserDetails;
 import com.fgc.combo.companion.dto.LoginRequest;
@@ -11,6 +12,7 @@ import com.fgc.combo.companion.exception.EntityExistsException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.UserRepository;
+import com.fgc.combo.companion.service.EmailService;
 import com.fgc.combo.companion.service.TokenProvider;
 import com.fgc.combo.companion.service.UserService;
 import com.fgc.combo.companion.utils.CookieUtil;
@@ -41,16 +43,20 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
   private final CookieUtil cookieUtil;
 
+  private final EmailService emailService;
+
   public UserServiceImpl(
     UserRepository userRepository,
     TokenProvider tokenProvider,
     CookieUtil cookieUtil,
-    PasswordEncoder passwordEncoder
+    PasswordEncoder passwordEncoder,
+    EmailService emailService
   ) {
     this.userRepository = userRepository;
     this.tokenProvider = tokenProvider;
     this.cookieUtil = cookieUtil;
     this.passwordEncoder = passwordEncoder;
+    this.emailService = emailService;
   }
 
   @Override
@@ -69,8 +75,12 @@ public class UserServiceImpl implements UserService {
     String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
     user.setPassword(encodedPassword);
     user.setEmailVerified(false);
+
     log.info("Creating user with email {}", userDTO.getEmail());
-    return this.userRepository.save(user);
+    User createdUser = this.userRepository.save(user);
+    
+    sendVerificationEmail(createdUser.getEmail(), createdUser.getName());
+    return createdUser;
   }
 
   @Override
@@ -169,6 +179,21 @@ public class UserServiceImpl implements UserService {
         });
 
     return this.login(user, null, null);
+  }
+
+  private void sendVerificationEmail(String userEmail, String userName) {
+    String WELCOME = "Welcome";
+    String CONTENT = String.format(
+      "Hello, %s, \n Welcome to our app!",
+      userName
+    );
+    CreateEmailDto emailDTO = CreateEmailDto
+      .builder()
+      .subject(WELCOME)
+      .content(CONTENT)
+      .emailTo(userEmail)
+      .build();
+    this.emailService.sendEmail(emailDTO);
   }
 
   private ResponseEntity<LoginResponse> login(
