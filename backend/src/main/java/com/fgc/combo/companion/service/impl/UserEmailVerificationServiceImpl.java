@@ -48,7 +48,7 @@ public class UserEmailVerificationServiceImpl
 
     UUID token = UUID.randomUUID();
 
-    String WELCOME = "Welcome";
+    String SUBJECT = "Verify your email for FGC COMBO COMPANION";
     String CONTENT = String.format(
       "Hello, %s, \n Welcome to FGC Combo Companion! \n Please click on the link below to verify your email address: \n %s",
       user.getName(),
@@ -56,7 +56,7 @@ public class UserEmailVerificationServiceImpl
     );
     CreateEmailDto emailDTO = CreateEmailDto
       .builder()
-      .subject(WELCOME)
+      .subject(SUBJECT)
       .content(CONTENT)
       .emailTo(user.getEmail())
       .build();
