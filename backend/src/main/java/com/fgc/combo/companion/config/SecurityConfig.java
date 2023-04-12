@@ -107,8 +107,18 @@ public class SecurityConfig {
         "/api/v1/users/login",
         "/api/v1/users/refresh",
         "/api/v1/users",
-        "/api/v1/users/oauth/login"
+        "/api/v1/users/oauth/login",
+        "/api/v1/users/email-verification-solicitation",
+        "/api/v1/users/password-change-solicitation"
       )
+      .permitAll()
+      .requestMatchers(
+        HttpMethod.PATCH,
+        "/api/v1/users/password-change",
+        "/api/v1/users/email-verification"
+      )
+      .permitAll()
+      .requestMatchers(HttpMethod.GET, "/api/v1/users/verification/**")
       .permitAll()
       .anyRequest()
       .authenticated()

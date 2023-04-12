@@ -31,6 +31,8 @@ public interface UserService {
 
   User getTokenUser(String token);
 
+  UserVerification getUserVerificationToken(UUID token);
+
   UserVerification createEmailVerification(String email);
   UserVerification createPasswordChangeSolicitation(String email);
 

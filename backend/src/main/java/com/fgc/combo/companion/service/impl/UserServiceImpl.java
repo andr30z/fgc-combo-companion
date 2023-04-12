@@ -271,4 +271,9 @@ public class UserServiceImpl implements UserService {
   public User changePassword(UUID token, String newPassword) {
     return this.userVerificationService.changePassword(token, newPassword);
   }
+
+  @Override
+  public UserVerification getUserVerificationToken(UUID token) {
+    return this.userVerificationService.getUserVerificationByToken(token);
+  }
 }

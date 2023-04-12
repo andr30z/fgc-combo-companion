@@ -117,4 +117,11 @@ public class UserController {
 
     return UserVerficationSuccessDto.success("Email verified successfully");
   }
+
+  @GetMapping("/verification/{token}")
+  public UserVerificationDto getVerificationToken(@PathVariable UUID token) {
+    return this.userVerificationMapper.toDto(
+        this.usersService.getUserVerificationToken(token)
+      );
+  }
 }
