@@ -15,4 +15,6 @@ export const FGC_API_URLS = {
   SIGNUP: '/v1/users',
   ME: '/v1/users/me',
   OAUTH_LOGIN: '/v1/users/oauth/login',
+  PASSWORD_CHANGE: '/v1/users/password-change',
+  GET_USER_VERIFICATION: '/v1/users/verification',
 };

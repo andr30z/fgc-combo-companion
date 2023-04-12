@@ -25,7 +25,7 @@ export const Header = () => {
         width={200}
         alt="FGC Combo Companion logo"
         onClick={() => {
-          router.push('/');
+          router.push(hasSession ? '/dashboard' : '/');
         }}
         className="hidden sm:block cursor-pointer"
       />
