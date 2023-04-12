@@ -11,6 +11,7 @@ import com.fgc.combo.companion.repository.UserVerificationRepository;
 import com.fgc.combo.companion.service.EmailService;
 import com.fgc.combo.companion.service.UserVerificationService;
 import jakarta.transaction.Transactional;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -68,20 +69,24 @@ public class UserVerificationServiceImpl implements UserVerificationService {
   private UserVerification getUserVerificationWithValidations(UUID token) {
     UserVerification userVerification = getUserVerificationByToken(token);
 
-    if (userVerification.isExpired()) throw new BadRequestException(
-      "Token expired!"
-    );
-
     User user = userVerification.getUser();
     if (user.getEmailVerified()) throw new BadRequestException(
       "User already verified!"
     );
+    
+    if (userVerification.isExpired()) throw new BadRequestException(
+      "Token expired!"
+    );
+
     return userVerification;
   }
 
   @Override
   @Transactional
   public UserVerification sendVerificationEmail(User user) {
+    if (user.getEmailVerified()) throw new BadRequestException(
+      "User already verified!"
+    );
     UUID token = UUID.randomUUID();
 
     String SUBJECT = "Verify your email for FGC COMBO COMPANION";
@@ -154,14 +159,22 @@ public class UserVerificationServiceImpl implements UserVerificationService {
       user.getId(),
       user.getEmail()
     );
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    user.setPassword(encoder.encode(newPassword));
+    int PASSWORD_STRENGTH = 10;
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(
+      PASSWORD_STRENGTH,
+      new SecureRandom()
+    );
+    user.setPassword(bCryptPasswordEncoder.encode(newPassword));
     return this.userRepository.save(user);
   }
 
   @Override
   public UserVerification getUserVerificationByToken(UUID token) {
     return this.UserVerificationRepository.findByToken(token)
-      .orElseThrow(() -> new ResourceNotFoundException("Verification not found for token: " + token));
+      .orElseThrow(() ->
+        new ResourceNotFoundException(
+          "Verification not found for token: " + token
+        )
+      );
   }
 }
