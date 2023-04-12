@@ -29,17 +29,17 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_email_verifications")
+@Table(name = "user_verifications")
 public class UserVerification {
 
   @Id
   @GeneratedValue(
     strategy = GenerationType.SEQUENCE,
-    generator = "user_email_verifications_seq"
+    generator = "user_verifications_seq"
   )
   @SequenceGenerator(
-    name = "user_email_verifications_seq",
-    sequenceName = "user_email_verifications_seq",
+    name = "user_verifications_seq",
+    sequenceName = "user_verifications_seq",
     allocationSize = 1
   )
   private Long id;
@@ -51,7 +51,7 @@ public class UserVerification {
   @ColumnTransformer(write = "?::userverificationtypes")
   private UserVerificationTypes type;
 
-  @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(nullable = false, name = "user_id")
   private User user;
 

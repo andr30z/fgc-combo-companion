@@ -8,7 +8,9 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class CreateEmailDto {
-    private String emailTo;
-    private String subject;
-    private String content;
+
+  private String emailTo;
+  private String emailFrom;
+  private String subject;
+  private String content;
 }

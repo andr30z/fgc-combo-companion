@@ -12,7 +12,7 @@ interface PasswordChangePageProps {
   verificationToken: string;
 }
 
-export const PasswordChangePage: FC<PasswordChangePageProps> = ({
+export const PasswordForm: FC<PasswordChangePageProps> = ({
   verificationToken,
 }) => {
   const router = useRouter();

@@ -1,7 +1,6 @@
 package com.fgc.combo.companion.config;
 
 import java.util.Properties;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +30,13 @@ public class MailSenderConfig {
     mailSender.setUsername(username);
     mailSender.setPassword(password);
 
+    System.out.println(
+      "--------------------------------------------------------"
+    );
+    System.out.println(username + "  -  " + password);
+    System.out.println(
+      "--------------------------------------------------------"
+    );
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.transport.protocol", "smtp");
     props.put("mail.smtp.auth", "true");

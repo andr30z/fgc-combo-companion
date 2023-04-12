@@ -127,6 +127,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public User create(CreateUserDTO userDTO) {
     Optional<User> userOptional =
       this.userRepository.findUserByEmail(userDTO.getEmail());

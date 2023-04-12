@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserVerificationServiceImpl implements UserVerificationService {
 
-  private final UserVerificationRepository UserVerificationRepository;
+  private final UserVerificationRepository userVerificationRepository;
 
   private final UserRepository userRepository;
 
@@ -35,12 +35,14 @@ public class UserVerificationServiceImpl implements UserVerificationService {
   @Value("${password-change.base-frontend-url}")
   private String PASSWORD_CHANGE_FRONTEND_URL;
 
+  private final String EMAIL_FROM = "noreply.fgccombocompanion@gmail.com";
+
   public UserVerificationServiceImpl(
-    UserVerificationRepository UserVerificationRepository,
+    UserVerificationRepository userVerificationRepository,
     EmailService emailService,
     UserRepository userRepository
   ) {
-    this.UserVerificationRepository = UserVerificationRepository;
+    this.userVerificationRepository = userVerificationRepository;
     this.emailService = emailService;
     this.userRepository = userRepository;
   }
@@ -52,7 +54,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
     UserVerificationTypes verificationTypes
   ) {
     //removing/invalidating old verification email request
-    this.UserVerificationRepository.deleteByUser(user);
+    this.userVerificationRepository.deleteByUser(user);
 
     this.emailService.sendEmail(createEmailDto);
     LocalDateTime oneDayFromNow = LocalDateTime.now().plusDays(1);
@@ -63,7 +65,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
       .user(user)
       .type(verificationTypes)
       .build();
-    return UserVerificationRepository.save(verification);
+    return userVerificationRepository.save(verification);
   }
 
   private UserVerification getUserVerificationWithValidations(UUID token) {
@@ -73,7 +75,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
     if (user.getEmailVerified()) throw new BadRequestException(
       "User already verified!"
     );
-    
+
     if (userVerification.isExpired()) throw new BadRequestException(
       "Token expired!"
     );
@@ -102,6 +104,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         .subject(SUBJECT)
         .content(CONTENT)
         .emailTo(user.getEmail())
+        .emailFrom(EMAIL_FROM)
         .build(),
       token,
       UserVerificationTypes.EMAIL_VERIFICATION
@@ -141,6 +144,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         .subject(SUBJECT)
         .content(CONTENT)
         .emailTo(user.getEmail())
+        .emailFrom(EMAIL_FROM)
         .build(),
       token,
       UserVerificationTypes.PASSWORD_CHANGE
@@ -170,7 +174,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
 
   @Override
   public UserVerification getUserVerificationByToken(UUID token) {
-    return this.UserVerificationRepository.findByToken(token)
+    return this.userVerificationRepository.findByToken(token)
       .orElseThrow(() ->
         new ResourceNotFoundException(
           "Verification not found for token: " + token
