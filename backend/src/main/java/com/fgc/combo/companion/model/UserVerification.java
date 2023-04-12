@@ -1,7 +1,10 @@
 package com.fgc.combo.companion.model;
 
+import com.fgc.combo.companion.enums.UserVerificationTypes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Data
@@ -26,7 +30,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Builder
 @Entity
 @Table(name = "user_email_verifications")
-public class UserEmailVerification {
+public class UserVerification {
 
   @Id
   @GeneratedValue(
@@ -42,6 +46,11 @@ public class UserEmailVerification {
 
   private UUID token;
 
+  @Column(nullable = false, columnDefinition = "VARCHAR(20)")
+  @Enumerated(EnumType.STRING)
+  @ColumnTransformer(write = "?::userverificationtypes")
+  private UserVerificationTypes type;
+
   @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
   @JoinColumn(nullable = false, name = "user_id")
   private User user;
@@ -56,5 +65,9 @@ public class UserEmailVerification {
 
   public boolean isExpired() {
     return LocalDateTime.now().isAfter(expiryDate);
+  }
+
+  public void setType(String literalString) {
+    this.type = UserVerificationTypes.valueOf(literalString);
   }
 }

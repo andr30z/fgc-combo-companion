@@ -7,7 +7,10 @@ logging:
         type: TRACE
 
 email-verification:
-  base-user-email-verification-frontend-url: ${BASE_USER_EMAIL_VERIFICATION_FRONTEND_URL}
+  base-frontend-url: ${BASE_EMAIL_VERIFICATION_FRONTEND_URL}
+password-change:
+  base-frontend-url: ${BASE_PASSWORD_CHANGE_FRONTEND_URL}
+
 management:
   endpoints:
     jmx:

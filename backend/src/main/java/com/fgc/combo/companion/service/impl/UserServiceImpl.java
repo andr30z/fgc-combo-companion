@@ -25,7 +25,7 @@ import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.UserRepository;
 import com.fgc.combo.companion.service.TokenProvider;
-import com.fgc.combo.companion.service.UserEmailVerificationService;
+import com.fgc.combo.companion.service.UserVerificationService;
 import com.fgc.combo.companion.service.UserService;
 import com.fgc.combo.companion.utils.CookieUtil;
 import com.fgc.combo.companion.utils.SecurityCipher;
@@ -45,14 +45,14 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
   private final CookieUtil cookieUtil;
 
-  private final UserEmailVerificationService userVerificationEmailService;
+  private final UserVerificationService userVerificationEmailService;
 
   public UserServiceImpl(
     UserRepository userRepository,
     TokenProvider tokenProvider,
     CookieUtil cookieUtil,
     PasswordEncoder passwordEncoder,
-    UserEmailVerificationService userVerificationEmailService
+    UserVerificationService userVerificationEmailService
   ) {
     this.userRepository = userRepository;
     this.tokenProvider = tokenProvider;
