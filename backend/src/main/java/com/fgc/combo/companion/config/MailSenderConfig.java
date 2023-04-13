@@ -30,13 +30,6 @@ public class MailSenderConfig {
     mailSender.setUsername(username);
     mailSender.setPassword(password);
 
-    System.out.println(
-      "--------------------------------------------------------"
-    );
-    System.out.println(username + "  -  " + password);
-    System.out.println(
-      "--------------------------------------------------------"
-    );
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.transport.protocol", "smtp");
     props.put("mail.smtp.auth", "true");

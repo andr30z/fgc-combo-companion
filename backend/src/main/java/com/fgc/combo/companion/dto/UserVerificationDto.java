@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class UserVerificationDto {
 
@@ -14,5 +16,5 @@ public class UserVerificationDto {
   private UUID token;
   private UserVerificationTypes type;
   private LocalDateTime expiryDate;
-  LocalDateTime createdAt;
+  private LocalDateTime createdAt;
 }

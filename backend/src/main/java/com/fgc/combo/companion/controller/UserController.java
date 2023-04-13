@@ -10,6 +10,10 @@ import com.fgc.combo.companion.dto.UserVerificationDto;
 import com.fgc.combo.companion.mapper.UserVerificationMapper;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.service.UserService;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.UUID;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -96,7 +100,7 @@ public class UserController {
   }
 
   @PostMapping("/password-change-solicitation")
-  public UserVerificationDto createPasswordChange(@RequestParam String email) {
+  public UserVerificationDto createPasswordChange(@RequestParam @NotBlank @Email String email) {
     return this.userVerificationMapper.toDto(
         this.usersService.createPasswordChangeSolicitation(email)
       );

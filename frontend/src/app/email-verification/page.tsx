@@ -20,11 +20,9 @@ export default async function EmailVerification({ searchParams }: PageProps) {
   );
 
   return (
-    <div className="w-full h-full min-h-80vh flex flex-column justify-center items-center gap-2">
+    <div className="w-full h-full min-h-80vh flex flex-col justify-center items-center gap-5">
       <h1 className="text-3xl font-bold text-light">
-        {error
-          ? 'Email verification failed, please try again.'
-          : 'Email verified successfuly'}
+        {error?.response?.data?.message ?? 'Email verified successfuly'}
       </h1>
 
       <Button text="Go to login" renderAsInnerLink href="/login" />

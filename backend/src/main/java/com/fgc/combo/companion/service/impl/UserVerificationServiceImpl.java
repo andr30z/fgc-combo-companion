@@ -71,11 +71,6 @@ public class UserVerificationServiceImpl implements UserVerificationService {
   private UserVerification getUserVerificationWithValidations(UUID token) {
     UserVerification userVerification = getUserVerificationByToken(token);
 
-    User user = userVerification.getUser();
-    if (user.getEmailVerified()) throw new BadRequestException(
-      "User already verified!"
-    );
-
     if (userVerification.isExpired()) throw new BadRequestException(
       "Token expired!"
     );
@@ -112,12 +107,16 @@ public class UserVerificationServiceImpl implements UserVerificationService {
   }
 
   @Override
+  @Transactional
   public User verifyEmail(UUID token) {
     UserVerification userVerification = getUserVerificationWithValidations(
       token
     );
 
     User user = userVerification.getUser();
+    if (user.getEmailVerified()) throw new BadRequestException(
+      "User already verified!"
+    );
     log.info(
       "Verifying email for user with ID => {} and email => {}",
       user.getId(),
@@ -128,6 +127,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
   }
 
   @Override
+  @Transactional
   public UserVerification sendChangePasswordEmail(User user) {
     UUID token = UUID.randomUUID();
 

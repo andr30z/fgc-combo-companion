@@ -13,12 +13,12 @@ public class V7__CreateUserVerificationTable extends BaseJavaMigration {
     Statement statement = connection.createStatement();
     statement.execute(
       "DROP TYPE IF EXISTS userverificationtypes CASCADE; " +
-      "CREATE TYPE userverificationtypes AS ENUM ('PASSWORD_RESET', 'EMAIL_VERIFICATION'); "
+      "CREATE TYPE userverificationtypes AS ENUM ('PASSWORD_CHANGE', 'EMAIL_VERIFICATION'); "
     );
     statement.execute(
       "CREATE TABLE user_verifications ( " +
       "id bigint NOT NULL, " +
-      "token character varying(255) NOT NULL, " +
+      "token UUID NOT NULL, " +
       "created_at timestamp, " +
       "user_id bigint NOT NULL, " +
       "type userverificationtypes NOT NULL, " +
@@ -32,7 +32,7 @@ public class V7__CreateUserVerificationTable extends BaseJavaMigration {
       "ALTER TABLE user_verifications ADD CONSTRAINT unique_users_verifications_user_id UNIQUE (user_id);"
     );
     statement.execute(
-      "CREATE UNIQUE INDEX user_verification_token_unique_lower_token_idx on user_verifications (lower(token));"
+      "CREATE UNIQUE INDEX user_verification_token_unique_lower_token_idx on user_verifications (token);"
     );
 
     statement.close();
