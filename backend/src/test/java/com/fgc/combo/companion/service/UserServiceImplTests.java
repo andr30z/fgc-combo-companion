@@ -11,9 +11,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.CustomUserDetails;
+import com.fgc.combo.companion.dto.LoginRequest;
+import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
+import com.fgc.combo.companion.dto.Token;
+import com.fgc.combo.companion.enums.OAuthTypes;
+import com.fgc.combo.companion.exception.BadRequestException;
+import com.fgc.combo.companion.exception.EntityExistsException;
+import com.fgc.combo.companion.exception.ResourceNotFoundException;
+import com.fgc.combo.companion.model.User;
+import com.fgc.combo.companion.repository.UserRepository;
+import com.fgc.combo.companion.service.impl.UserServiceImpl;
+import com.fgc.combo.companion.utils.CookieUtil;
+import com.fgc.combo.companion.utils.SecurityCipher;
 import java.io.IOException;
 import java.util.Optional;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,22 +47,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fgc.combo.companion.dto.CreateUserDTO;
-import com.fgc.combo.companion.dto.CustomUserDetails;
-import com.fgc.combo.companion.dto.LoginRequest;
-import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
-import com.fgc.combo.companion.dto.Token;
-import com.fgc.combo.companion.enums.OAuthTypes;
-import com.fgc.combo.companion.exception.BadRequestException;
-import com.fgc.combo.companion.exception.EntityExistsException;
-import com.fgc.combo.companion.exception.ResourceNotFoundException;
-import com.fgc.combo.companion.model.User;
-import com.fgc.combo.companion.repository.UserRepository;
-import com.fgc.combo.companion.service.impl.UserServiceImpl;
-import com.fgc.combo.companion.utils.CookieUtil;
-import com.fgc.combo.companion.utils.SecurityCipher;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTests {
@@ -84,6 +82,9 @@ public class UserServiceImplTests {
   @Mock
   private Authentication auth;
 
+  @Mock
+  private UserVerificationService userVerificationService;
+
   private MockedStatic<SecurityCipher> securityCipherStaticMocked;
 
   private AutoCloseable autoCloseable;
@@ -112,7 +113,8 @@ public class UserServiceImplTests {
         userRepository,
         tokenProvider,
         cookieUtil,
-        passwordEncoder
+        passwordEncoder,
+        userVerificationService
       );
   }
 
@@ -141,6 +143,7 @@ public class UserServiceImplTests {
       .build();
 
     when(userRepository.save(any())).thenReturn(createdUser);
+    when(userVerificationService.sendVerificationEmail(any())).thenReturn(null);
 
     underTest.create(
       new CreateUserDTO(
