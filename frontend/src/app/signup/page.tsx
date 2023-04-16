@@ -10,13 +10,16 @@ import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { toast } from 'react-hot-toast';
 
 export default function SignupPage() {
-  const [{ email, password, passwordConfirmation, name }, onChange, onSubmit] =
-    useForm({
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-      name: '',
-    });
+  const [
+    { email, password, passwordConfirmation, name },
+    { onChange },
+    onSubmit,
+  ] = useForm({
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+    name: '',
+  });
   const [isLoading, { setFalse: closeLoading, setTrue: startLoading }] =
     useBoolean();
 

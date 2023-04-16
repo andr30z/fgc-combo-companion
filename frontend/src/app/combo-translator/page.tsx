@@ -1,46 +1,11 @@
 'use client';
 import { Button } from '@/common/components/button';
+import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
-import { Input } from '@/common/components/input';
-import { PopOver } from '@/common/components/pop-over';
-import { TEKKEN_7_COMBO_MAP } from '@/common/constants/ComboMappers';
+import { GameSelect } from '@/common/components/game-select';
 import { GameTypes } from '@/common/types/game-types';
-import Image from 'next/image';
 import { useState } from 'react';
-import { AiFillQuestionCircle } from 'react-icons/ai';
 import { FaRandom } from 'react-icons/fa';
-
-const Card: React.FC<{
-  url: string;
-  showSoonMessage?: boolean;
-  selected?: boolean;
-}> = ({ url, showSoonMessage = false, selected = false }) => {
-  return (
-    <div
-      className={`group overflow-hidden cursor-pointer relative rounded-lg ${
-        selected ? 'border-4 border-solid border-primary' : ''
-      }`}
-    >
-      <Image
-        alt="next step"
-        className="h-full scale-100 group-hover:scale-110 ease-in duration-500"
-        height={230}
-        src={url}
-        width={300}
-      />
-      {!selected && (
-        <div className="absolute top-0 bg-primary h-full w-full opacity-30" />
-      )}
-      {showSoonMessage && (
-        <div className="absolute top-0 w-full h-full flex items-center justify-center">
-          <h4 className="text-light font-primary font-semibold text-sm sm:text-lg bg-dark p-1 rounded-lg opacity-60">
-            SOON
-          </h4>
-        </div>
-      )}
-    </div>
-  );
-};
 
 export default function ComboTranslator() {
   const [combo, setCombo] = useState('');
@@ -65,71 +30,11 @@ export default function ComboTranslator() {
     setCombo(randomCombo);
   };
 
-  const comboMap = Object.keys(TEKKEN_7_COMBO_MAP);
   return (
-    <div className="w-full h-full min-h-80vh flex flex-col items-center justify-center px-10 gap-24">
-      <div className="flex flex-col text-light w-full">
-        <label className="mb-4">
-          <span className="px-4 py-2 font-semibold text-sm bg-secondary text-light rounded-full shadow-sm font-primary font-black">
-            Select a game:
-          </span>
-        </label>
-        <div className="flex flex-row gap-4 w-full">
-          <Card url="/tekken7/tekken7-select.webp" selected />
-          <Card
-            url="/guilty-gear-strive/guilty-gear-strive-select.jpg"
-            showSoonMessage
-            selected={false}
-          />
-          <Card
-            url="/street-fighter-5/street-fighter-5-select.jpg"
-            showSoonMessage
-            selected={false}
-          />
-        </div>
-      </div>
+    <main className="w-full h-full min-h-80vh flex flex-col items-center justify-center px-10 gap-24">
+      <GameSelect onSelect={() => null} selectedOption={GameTypes.TEKKEN_7} />
       <div className="w-full flex items-center justify-center flex-col gap-2">
-        <Input
-          value={combo}
-          setValue={setCombo}
-          dataTestId="combo-input-id"
-          label={
-            <span className="mb-1 flex flex-row items-center gap-2 text-xl font-primary font-semibold text-light">
-              Type your combo{' '}
-              <PopOver
-                trigger={
-                  <button>
-                    <AiFillQuestionCircle
-                      className="cursor-pointer"
-                      size={21}
-                    />
-                  </button>
-                }
-              >
-                <p className="text-secondary font-primary text-lg font-medium">
-                  Available commands: <br />
-                  <div>
-                    {comboMap.map((command, index) => (
-                      <span key={command}>
-                        {command.toLocaleLowerCase()}
-                        {comboMap.length - 1 === index ? '' : ', '}
-                      </span>
-                    ))}
-                  </div>
-                  <hr className="my-3" />
-                  Anything you type between {'"{}"'} is considered as a comment
-                  and is not translated, e.g: f,f+2 is translated but {'{df+2}'}{' '}
-                  is not. <br />
-                </p>
-              </PopOver>
-            </span>
-          }
-          placeholder="Type your combo..."
-          height="min-h-[100px] h-[10vh]"
-          width="w-full"
-          className="text-xm md:text-xl font-semibold text-secondary"
-          inputProps={{ autoComplete: 'none', autoCorrect: 'none' }}
-        />
+        <ComboInput combo={combo} setCombo={setCombo} />
         <Button
           dataTestId="random-combo-button"
           color="primary"
@@ -143,6 +48,6 @@ export default function ComboTranslator() {
       ) : (
         <div className="h-[125px]" />
       )}
-    </div>
+    </main>
   );
 }

@@ -15,7 +15,7 @@ export const PasswordChangeForm: FC<PasswordChangeFormProps> = ({
 }) => {
   const [
     { newPassword, oldPassword, newPasswordConfirmation },
-    onChange,
+    { onChange },
     onSubmitForm,
   ] = useForm({
     oldPassword: '',

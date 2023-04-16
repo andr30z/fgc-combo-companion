@@ -15,6 +15,7 @@ export interface ButtonProps {
   href?: Url;
   dataTestId?: string;
   disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 const classMappings = {
@@ -48,6 +49,7 @@ export const Button: FC<ButtonProps> = ({
   href = '',
   dataTestId = '',
   disabled = false,
+  type = 'button',
 }) => {
   const className = `px-4 py-2 font-semibold ${classMappings[color].default} ${
     useHoverStyles ? classMappings[color].hover : ''
@@ -75,6 +77,7 @@ export const Button: FC<ButtonProps> = ({
       data-testid={dataTestId}
       className={className}
       onClick={onClick}
+      type={type}
     >
       {children}
     </button>
