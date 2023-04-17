@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.layout-padding-x {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 6px;

@@ -17,7 +17,7 @@ export const Header = () => {
 
   const isLoadingSession = status === 'loading';
   return (
-    <header className="px-10 sm:px20 py-5 bg-dark w-full flex justify-between items-center py-3 h-10vh">
+    <header className="layout-padding-x py-5 bg-dark w-full flex justify-between items-center py-3 h-10vh">
       <Image
         priority
         src="/full-logo.svg"

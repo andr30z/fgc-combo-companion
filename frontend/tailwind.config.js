@@ -18,7 +18,7 @@ module.exports = {
       },
       minHeight: {
         '80vh': '80vh',
-        "400": "400px",
+        400: '400px',
       },
       colors: {
         primary: { DEFAULT: '#d20606', darker: '#a80404' },
