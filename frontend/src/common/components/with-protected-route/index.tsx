@@ -22,7 +22,7 @@ export function WithProtectedRoute(
   Component: FC,
   {
     OnUnauthenticatedComponent = <div className="h-[50vh]" />,
-    redirectTo,
+    redirectTo = '/',
   }: WithProtectedRouteOptions = {},
 ) {
   return function WithProtectedRouteComponent() {

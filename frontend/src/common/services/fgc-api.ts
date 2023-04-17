@@ -19,4 +19,5 @@ export const FGC_API_URLS = {
   PASSWORD_CHANGE_SOLICITATION: '/v1/users/password-change-solicitation',
   EMAIL_VERIFICATION: '/v1/users/email-verification',
   GET_USER_VERIFICATION: '/v1/users/verification',
+  COMBOS: '/v1/combos',
 };

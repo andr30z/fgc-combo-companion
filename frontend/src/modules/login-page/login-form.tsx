@@ -12,7 +12,7 @@ import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import { FiLogIn } from 'react-icons/fi';
 export const LoginForm = () => {
-  const [{ email, password }, onChange, onSubmit] = useForm({
+  const [{ email, password }, { onChange }, onSubmit] = useForm({
     email: '',
     password: '',
   });
