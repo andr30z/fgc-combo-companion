@@ -21,10 +21,14 @@ export function useApiQuery<Response>({
   retryMaxCount = 3,
   onError,
 }: UseApiParams<Response>) {
-  return useQuery(key, () => fgcApi.request<Response>(apiConfig), {
-    staleTime,
-    onError,
-    enabled,
-    retry: retryMaxCount,
-  });
+  return useQuery(
+    key,
+    async () => (await fgcApi.request<Response>(apiConfig))?.data,
+    {
+      staleTime,
+      onError,
+      enabled,
+      retry: retryMaxCount,
+    },
+  );
 }

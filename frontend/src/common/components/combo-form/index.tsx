@@ -14,7 +14,7 @@ import { Input } from '../input';
 import { LoadingBackdrop } from '../loading-backdrop';
 import type { FC } from 'react';
 
-type ComboWithId = Omit<Combo, 'id'> & { id?: string | number };
+type ComboWithId = Omit<Combo, 'id' | 'owner'> & { id?: string | number };
 interface ComboFormProps {
   initialValues?: ComboWithId;
   onSuccess?: () => void;
@@ -41,7 +41,7 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
         onSubmit={onSubmit(async (data) => {
           let hasFormError = false;
           if (combo.trim().length === 0) {
-            toast.error('Combo name is required');
+            toast.error('Combo is required');
             hasFormError = true;
           }
           if (name.trim().length === 0) {
