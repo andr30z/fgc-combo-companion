@@ -39,35 +39,40 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
   const debouncedRefetch = useDebounce(refetch);
   return (
     <div className="flex flex-col flex-1 w-full h-full mt-6">
-      <header className="mb-5 w-full flex flex-row flex-wrap items-center justify-end gap-2">
-        <Input
-          iconLeft={<AiOutlineSearch size={23} className="text-primary" />}
-          placeholder="Search for a combo"
-          height="h-[40px]"
-          width="w-[300px]"
-          className=""
-          value={searchValue}
-          setValue={setSearchValue}
-          onChange={() => debouncedRefetch()}
-        />
-        <Button
-          onClick={openForm}
-          color="primary"
-          rightIcon={<AiOutlinePlus size={22} />}
-        />
-        <Modal
-          title="Combo Form"
-          isOpen={isComboFormOpen}
-          onClose={closeForm}
-          width="lg"
-        >
-          <ComboForm
-            onSuccess={() => {
-              closeForm();
-              refetch();
-            }}
+      <header className="mb-12 w-full flex flex-row flex-wrap items-center justify-between gap-2">
+        <h5 className="text-2xl text-light font-primary font-bold">
+          Your Combos
+        </h5>
+        <div className="flex gap-2">
+          <Input
+            iconLeft={<AiOutlineSearch size={23} className="text-primary" />}
+            placeholder="Search for a combo"
+            height="h-[40px]"
+            width="w-[300px]"
+            className=""
+            value={searchValue}
+            setValue={setSearchValue}
+            onChange={() => debouncedRefetch()}
           />
-        </Modal>
+          <Button
+            onClick={openForm}
+            color="primary"
+            rightIcon={<AiOutlinePlus size={22} />}
+          />
+          <Modal
+            title="Combo Form"
+            isOpen={isComboFormOpen}
+            onClose={closeForm}
+            width="lg"
+          >
+            <ComboForm
+              onSuccess={() => {
+                closeForm();
+                refetch();
+              }}
+            />
+          </Modal>
+        </div>
       </header>
       <ListItems
         columns={[
