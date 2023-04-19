@@ -27,7 +27,7 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
     FGCApiPaginationResponse<Combo>
   >({
     apiConfig: {
-      url: FGC_API_URLS.COMBOS,
+      url: FGC_API_URLS.MY_COMBOS,
       params: {
         name: encodeURIComponent(searchValue),
       },
@@ -39,11 +39,11 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
   const debouncedRefetch = useDebounce(refetch);
   return (
     <div className="flex flex-col flex-1 w-full h-full mt-6">
-      <header className="mb-12 w-full flex flex-row flex-wrap items-center justify-between gap-2">
+      <header className="border-2 border-secondary-dark bg-dark p-3 mb-12 w-full flex flex-col sm:flex-row flex-wrap items-center justify-between gap-2">
         <h5 className="text-2xl text-light font-primary font-bold">
           Your Combos
         </h5>
-        <div className="flex gap-2">
+        <div className="flex flex-row flex-wrap justify-center gap-2">
           <Input
             iconLeft={<AiOutlineSearch size={23} className="text-primary" />}
             placeholder="Search for a combo"
@@ -79,12 +79,17 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
           {
             label: 'Name',
             name: 'name',
-            size: 'w-[30%]',
+            size: 'w-[20%]',
+          },
+          {
+            label: 'Game',
+            name: 'game',
+            size: 'w-[20%]',
           },
           {
             label: 'Description',
             name: 'description',
-            size: 'w-[30%]',
+            size: 'w-[20%]',
           },
           {
             label: 'Created At',

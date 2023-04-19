@@ -11,15 +11,25 @@ interface ListItemsProps<Data> {
   }>;
   items?: Array<Data> | null;
   emptyListComponent?: React.ReactNode;
+  getRowClassName?: (rowItem: Data) => string;
+  headerClassName?: string;
+  className?: string;
 }
 export const ListItems = <Data,>({
   columns,
   emptyListComponent,
   items,
+  getRowClassName,
+  headerClassName,
+  className,
 }: ListItemsProps<Data>) => {
   return (
-    <div className="w-full">
-      <header className="flex-row flex text-light w-full border-b-2 border-secondary-dark">
+    <div className={`w-full ${className ?? ''}`}>
+      <header
+        className={`flex-row flex p-2 text-light w-full ${
+          headerClassName ?? ''
+        }`}
+      >
         {columns.map(({ label, name, size }) => (
           <div key={name} className={`${size} py-2`}>
             <span className="font-primary text-light text-lg font-semibold">
@@ -34,7 +44,9 @@ export const ListItems = <Data,>({
             return (
               <div
                 key={index.toString()}
-                className="p-2 mt-2 rounded-md min-h-[85px] w-full flex flex-row items-center justify-start border-2 border-secondary-dark"
+                className={`${
+                  getRowClassName ? getRowClassName(item) : ''
+                } p-2 mt-2 rounded-md min-h-[85px] w-full flex flex-row items-center justify-start border-2 border-secondary-dark`}
               >
                 {columns.map(({ name, size, format }) => {
                   const value: string = get(item, name);

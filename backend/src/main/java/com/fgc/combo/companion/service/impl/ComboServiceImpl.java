@@ -99,7 +99,7 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public PaginationResponse<Combo> getAllByComboNameOrTagName(
+  public PaginationResponse<Combo> getAllByOwnerAndComboNameOrTagName(
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   ) {
@@ -109,10 +109,13 @@ public class ComboServiceImpl implements ComboService {
         StandardCharsets.UTF_8
       )
       : null;
+    User currentUser = userService.me();
     return PaginationResponseMapper.create(
       name == null
-        ? this.comboRepository.findAllByOwner(userService.me(), pageable)
-        : this.comboRepository.findAllByNameContainingIgnoreCaseOrTagsTitleInIgnoreCase(
+        ? this.comboRepository.findAllByOwner(currentUser, pageable)
+        : this.comboRepository.findAllByOwnerAndNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrTagsTitleInIgnoreCase(
+            currentUser,
+            name,
             name,
             Set.of(name),
             pageable

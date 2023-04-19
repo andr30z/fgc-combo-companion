@@ -17,8 +17,10 @@ public interface ComboRepository extends JpaRepository<Combo, Long> {
   Optional<Combo> findByIdAndOwner(Long id, User owner);
 
   @EntityGraph(attributePaths = { "owner", "tags" })
-  Page<Combo> findAllByNameContainingIgnoreCaseOrTagsTitleInIgnoreCase(
+  Page<Combo> findAllByOwnerAndNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrTagsTitleInIgnoreCase(
+    User owner,
     String name,
+    String description,
     Set<String> tagTitle,
     Pageable pageable
   );
