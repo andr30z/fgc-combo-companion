@@ -166,7 +166,7 @@ public class PlaylistServiceImpl implements PlaylistService {
       : null;
     return PaginationResponseMapper.create(
       name == null
-        ? this.playlistRepository.findAll(pageable)
+        ? this.playlistRepository.findByOwner(userService.me(), pageable)
         : this.playlistRepository.findAllByNameContainingIgnoreCaseOrTagsTitleInIgnoreCase(
             name,
             Set.of(name),

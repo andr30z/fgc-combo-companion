@@ -103,16 +103,20 @@ public class ComboServiceImpl implements ComboService {
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   ) {
-    String name = URLDecoder.decode(
-      playlistComboSearchDTO.getName(),
-      StandardCharsets.UTF_8
-    );
+    String name = playlistComboSearchDTO.getName() != null
+      ? URLDecoder.decode(
+        playlistComboSearchDTO.getName(),
+        StandardCharsets.UTF_8
+      )
+      : null;
     return PaginationResponseMapper.create(
-      this.comboRepository.findAllByNameContainingIgnoreCaseOrTagsTitleInIgnoreCase(
-          name,
-          Set.of(name),
-          pageable
-        )
+      name == null
+        ? this.comboRepository.findAllByOwner(userService.me(), pageable)
+        : this.comboRepository.findAllByNameContainingIgnoreCaseOrTagsTitleInIgnoreCase(
+            name,
+            Set.of(name),
+            pageable
+          )
     );
   }
 }

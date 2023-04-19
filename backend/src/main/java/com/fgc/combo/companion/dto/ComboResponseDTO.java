@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.dto;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.fgc.combo.companion.enums.ComboGameTypes;
@@ -21,6 +22,8 @@ public class ComboResponseDTO {
     private String name;
 
     private String combo;
+
+    private LocalDateTime createdAt;
     
     private ComboGameTypes game;
 
