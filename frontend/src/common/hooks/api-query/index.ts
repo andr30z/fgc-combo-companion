@@ -11,6 +11,7 @@ interface UseApiParams<Response> {
   onError?: (err: unknown) => void;
   enabled?: boolean;
   retryMaxCount?: number;
+  initialData?: Response | null;
 }
 
 export function useApiQuery<Response>({
@@ -20,6 +21,7 @@ export function useApiQuery<Response>({
   enabled = true,
   retryMaxCount = 3,
   onError,
+  initialData,
 }: UseApiParams<Response>) {
   return useQuery(
     key,
@@ -29,6 +31,7 @@ export function useApiQuery<Response>({
       onError,
       enabled,
       retry: retryMaxCount,
+      initialData,
     },
   );
 }
