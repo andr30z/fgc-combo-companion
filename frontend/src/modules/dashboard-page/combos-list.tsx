@@ -30,6 +30,7 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
       url: FGC_API_URLS.MY_COMBOS,
       params: {
         name: encodeURIComponent(searchValue),
+        sort: 'id,desc',
       },
     },
     initialData: initialComboData ?? undefined,

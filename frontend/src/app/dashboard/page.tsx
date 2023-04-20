@@ -18,7 +18,11 @@ export const metadata: Metadata = {
 export default async function Dashboard() {
   const fgcInstance = getFgcApiInstanceWithTokenCookie(cookies());
   const { result: initialComboData } = await promiseResultWithError(
-    fgcInstance.get<FGCApiPaginationResponse<Combo>>(FGC_API_URLS.MY_COMBOS),
+    fgcInstance.get<FGCApiPaginationResponse<Combo>>(FGC_API_URLS.MY_COMBOS, {
+      params: {
+        sort: 'id,desc',
+      },
+    }),
   );
   return (
     <DashboardProtectedValidation>
