@@ -1,14 +1,11 @@
-'use client';
 import { Button, ButtonProps } from '@/common/components/button';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { BiTransfer } from 'react-icons/bi';
 
 type PresentationProps = Omit<ButtonProps, 'onClick'>;
 
 export const PresentationButtons: FC<PresentationProps> = () => {
-  const router = useRouter();
   return (
     <div className="z-10 flex items-center justify-center flex-wrap gap-3">
       <Button
@@ -19,7 +16,8 @@ export const PresentationButtons: FC<PresentationProps> = () => {
         rightIcon={<BiTransfer size={23} />}
       />
       <Button
-        onClick={() => router.push('/dashboard?open_combo_form=true')}
+        renderAsInnerLink
+        href="/dashboard/combos"
         text="Create Combos"
         color="light"
         useHoverStyles={false}

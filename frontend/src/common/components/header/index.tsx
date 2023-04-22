@@ -18,7 +18,7 @@ export const Header = () => {
   const isLoadingSession = status === 'loading';
 
   const onClickLogo = () => {
-    router.push(hasSession ? '/dashboard' : '/');
+    router.push(hasSession ? '/dashboard/combos' : '/');
   };
   return (
     <header className="layout-padding-x py-5 bg-dark w-full flex justify-between items-center h-10vh">

@@ -22,7 +22,10 @@ export const Modal = memo<ModalProps>(
       <Dialog.Root modal open={isOpen}>
         <Dialog.Portal>
           <Dialog.Overlay
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             className="bg-black bg-opacity-70 data-[state=open]:animate-overlayShow fixed inset-0"
           />
           <Dialog.Content

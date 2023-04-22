@@ -4,8 +4,8 @@ import { get } from 'lodash';
 import { Spinner } from '../spinner';
 import { FC, Fragment } from 'react';
 
-interface ListItemsProps<Data> {
-  columns: Array<{
+export interface ListItemsProps<Data> {
+  columns?: Array<{
     size: string;
     label: React.ReactNode;
     name: string;
@@ -19,6 +19,8 @@ interface ListItemsProps<Data> {
   className?: string;
   isLoadingData?: boolean;
   loadingDataPlaceholder?: React.ReactNode;
+  hideHeader?: boolean;
+  renderRow?: (item: Data) => React.ReactNode;
   rowFatherComponent?: FC<{ item: Data; children: React.ReactNode }>;
 }
 export const ListItems = <Data,>({
@@ -29,6 +31,8 @@ export const ListItems = <Data,>({
   headerClassName,
   className,
   isLoadingData,
+  hideHeader = false,
+  renderRow,
   rowFatherComponent: RowFatherComponent,
   loadingDataPlaceholder = (
     <div className="min-h-[300px] w-full flex justify-center items-center">
@@ -41,14 +45,32 @@ export const ListItems = <Data,>({
       ? emptyListComponent
       : items.map((item, index) => {
           const Container = RowFatherComponent ?? Fragment;
+          const containerProps = RowFatherComponent
+            ? {
+                item,
+              }
+            : {};
+          if (renderRow) {
+            return (
+              <Container
+                {...(containerProps as { item: Data })}
+                key={index.toString()}
+              >
+                {renderRow(item)}
+              </Container>
+            );
+          }
           return (
-            <Container item={item} key={index.toString()}>
+            <Container
+              {...(containerProps as { item: Data })}
+              key={index.toString()}
+            >
               <div
                 className={`${
                   getRowClassName ? getRowClassName(item) : ''
                 } px-4 sm:px-[5px] p-2 mt-2 rounded-md min-h-[85px] w-full flex flex-col md:flex-row items-center justify-start border-2 border-secondary-dark`}
               >
-                {columns.map(
+                {columns?.map(
                   ({ name, size, format, renderColumnValue, label }) => {
                     const value: string = get(item, name);
                     const formatedValue = format
@@ -86,19 +108,21 @@ export const ListItems = <Data,>({
 
   return (
     <div className={`w-full ${className ?? ''}`}>
-      <header
-        className={`hidden md:flex flex-row p-2 text-light w-full ${
-          headerClassName ?? ''
-        }`}
-      >
-        {columns.map(({ label, name, size }) => (
-          <div key={name} className={`${size} py-2`}>
-            <span className="font-primary text-light text-lg font-semibold">
-              {label}
-            </span>
-          </div>
-        ))}
-      </header>
+      {!hideHeader && (
+        <header
+          className={`hidden md:flex flex-row p-2 text-light w-full ${
+            headerClassName ?? ''
+          }`}
+        >
+          {columns?.map(({ label, name, size }) => (
+            <div key={name} className={`${size} py-2`}>
+              <span className="font-primary text-light text-lg font-semibold">
+                {label}
+              </span>
+            </div>
+          ))}
+        </header>
+      )}
       {isLoadingData ? loadingDataPlaceholder : content}
     </div>
   );

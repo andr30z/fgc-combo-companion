@@ -7,6 +7,7 @@ export interface TabsProps {
   tabs: Array<{ id: string; label: ReactNode }>;
   rootClassName?: string;
   listContainerClassName?: string;
+  onClickTab?: (id: string) => void;
 }
 
 export const TabContent = RadixTab.Content;
@@ -16,6 +17,7 @@ export const Tabs: FC<TabsProps> = ({
   tabs,
   rootClassName = '',
   listContainerClassName = '',
+  onClickTab,
 }) => (
   <RadixTab.Root
     className={`flex flex-col h-full w-full ${rootClassName}`}
@@ -29,6 +31,11 @@ export const Tabs: FC<TabsProps> = ({
         <RadixTab.Trigger
           key={id}
           value={id}
+          onClick={() => {
+            if (onClickTab) {
+              onClickTab(id);
+            }
+          }}
           className="text-light px-3 h-[45px] flex items-center justify-center text-[15px] first:rounded-tl-md last:rounded-tr-md leading-none select-none hover:text-secondary data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative outline-none cursor-pointer"
         >
           {label}

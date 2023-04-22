@@ -77,7 +77,7 @@ export const LoginForm = () => {
         extraStyles="w-full"
         color="dark"
         text="Continue with Google"
-        onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+        onClick={() => signIn('google', { callbackUrl: '/dashboard/combos' })}
         leftIcon={<FcGoogle size={17} />}
       />
       <hr className="bg-light w-full" />
