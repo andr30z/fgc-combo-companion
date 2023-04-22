@@ -15,7 +15,6 @@ import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -99,7 +98,7 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public PaginationResponse<Combo> getAllByOwnerAndComboNameOrTagName(
+  public PaginationResponse<Combo> getAllByOwnerAndSearchParam(
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   ) {
@@ -113,13 +112,28 @@ public class ComboServiceImpl implements ComboService {
     return PaginationResponseMapper.create(
       name == null
         ? this.comboRepository.findAllByOwner(currentUser, pageable)
-        : this.comboRepository.findAllByOwnerAndNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrTagsTitleInIgnoreCase(
+        : this.comboRepository.findAllByOnwerAndSearchParam(
             currentUser,
             name,
-            name,
-            Set.of(name),
             pageable
           )
     );
+  }
+
+  @Override
+  public boolean deleteByIdAndCurrentUser(Long id) {
+    Combo combo =
+      this.comboRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
+    User me = userService.me();
+
+    if (
+      combo.getOwner().getId() != me.getId()
+    ) throw new OperationNotAllowedException(
+      "This combo belongs to another user!"
+    );
+
+    this.comboRepository.delete(combo);
+    return true;
   }
 }

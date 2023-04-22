@@ -18,7 +18,9 @@ public interface ComboService {
 
   Combo saveCombo(Combo combo);
 
-  PaginationResponse<Combo> getAllByOwnerAndComboNameOrTagName(
+  boolean deleteByIdAndCurrentUser(Long id);
+
+  PaginationResponse<Combo> getAllByOwnerAndSearchParam(
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   );

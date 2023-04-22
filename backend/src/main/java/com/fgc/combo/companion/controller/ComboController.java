@@ -9,6 +9,7 @@ import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.service.ComboService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +36,7 @@ public class ComboController {
     Pageable pageable
   ) {
     return this.comboMapper.toPagination(
-        this.comboService.getAllByOwnerAndComboNameOrTagName(
+        this.comboService.getAllByOwnerAndSearchParam(
             playlistComboSearchDTO,
             pageable
           )
@@ -50,7 +51,7 @@ public class ComboController {
   }
 
   @PutMapping("/{comboId}")
-  public ComboResponseDTO getByDTO(
+  public ComboResponseDTO updateCombo(
     @PathVariable Long comboId,
     @RequestBody @Validated UpdateComboDTO comboDTO
   ) {
@@ -59,10 +60,8 @@ public class ComboController {
       );
   }
 
-  @GetMapping("/{comboId}/me")
-  public ComboResponseDTO getByIdAndCurrentUser(@PathVariable Long comboId) {
-    return this.comboMapper.toDTO(
-        this.comboService.getByIdAndCurrentUser(comboId)
-      );
+  @DeleteMapping("/{comboId}/me")
+  public boolean deleteCombo(@PathVariable Long comboId) {
+    return this.comboService.deleteByIdAndCurrentUser(comboId);
   }
 }
