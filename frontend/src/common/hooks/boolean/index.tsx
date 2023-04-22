@@ -4,7 +4,7 @@ export function useBoolean(initialValue = false) {
   const [value, setValue] = useState(initialValue);
 
   const toggle = useCallback(() => {
-    setValue(!value);
+    setValue((pastState) => !pastState);
   }, []);
 
   const setFalse = useCallback(() => {

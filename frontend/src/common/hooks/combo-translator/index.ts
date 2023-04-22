@@ -28,7 +28,7 @@ export function tekken7Translator(combo: string): ComboTranslation {
     .map((localStep) => {
       let localStepTranslated = String(localStep);
 
-      const toImageTranslation = splitMulti(
+      const imageTranslation = splitMulti(
         replaceSpacesWithinBraces(localStepTranslated),
         [' ', '/', '+ ', ' +'],
       ).map((localItem) => {
@@ -55,7 +55,7 @@ export function tekken7Translator(combo: string): ComboTranslation {
         combo: replaceComboWithSpaceFlagWithinBraces(
           localStepTranslated,
         ).replace(/{|}/g, ''),
-        actions: toImageTranslation.map((item) => ({
+        actions: imageTranslation.map((item) => ({
           ...item,
           action: replaceComboWithSpaceFlagWithinBraces(item.action).replace(
             /{|}/g,

@@ -21,6 +21,7 @@ export default async function Dashboard() {
     fgcInstance.get<FGCApiPaginationResponse<Combo>>(FGC_API_URLS.MY_COMBOS, {
       params: {
         sort: 'id,desc',
+        size: '30',
       },
     }),
   );

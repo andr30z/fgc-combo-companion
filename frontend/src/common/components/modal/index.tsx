@@ -11,8 +11,8 @@ interface ModalProps {
 const widths = {
   xl: 'w-[90vw]',
   lg: 'w-[70vw]',
-  md: 'w-[50vw]',
-  sm: 'w-[30vw]',
+  md: 'w-[80vw] md:w-[50vw]',
+  sm: 'w-[50vw] md:w-[30vw]',
 };
 
 export const Modal = memo<ModalProps>(

@@ -1,6 +1,8 @@
 'use client';
 
 import { get } from 'lodash';
+import { Spinner } from '../spinner';
+import { FC, Fragment } from 'react';
 
 interface ListItemsProps<Data> {
   columns: Array<{
@@ -8,12 +10,16 @@ interface ListItemsProps<Data> {
     label: React.ReactNode;
     name: string;
     format?: 'date';
+    renderColumnValue?: (item: Data) => React.ReactNode;
   }>;
   items?: Array<Data> | null;
   emptyListComponent?: React.ReactNode;
   getRowClassName?: (rowItem: Data) => string;
   headerClassName?: string;
   className?: string;
+  isLoadingData?: boolean;
+  loadingDataPlaceholder?: React.ReactNode;
+  rowFatherComponent?: FC<{ item: Data; children: React.ReactNode }>;
 }
 export const ListItems = <Data,>({
   columns,
@@ -22,11 +28,66 @@ export const ListItems = <Data,>({
   getRowClassName,
   headerClassName,
   className,
+  isLoadingData,
+  rowFatherComponent: RowFatherComponent,
+  loadingDataPlaceholder = (
+    <div className="min-h-[300px] w-full flex justify-center items-center">
+      <Spinner color="primary" />
+    </div>
+  ),
 }: ListItemsProps<Data>) => {
+  const content =
+    !items || items?.length === 0
+      ? emptyListComponent
+      : items.map((item, index) => {
+          const Container = RowFatherComponent ?? Fragment;
+          return (
+            <Container item={item} key={index.toString()}>
+              <div
+                className={`${
+                  getRowClassName ? getRowClassName(item) : ''
+                } px-4 sm:px-[5px] p-2 mt-2 rounded-md min-h-[85px] w-full flex flex-col md:flex-row items-center justify-start border-2 border-secondary-dark`}
+              >
+                {columns.map(
+                  ({ name, size, format, renderColumnValue, label }) => {
+                    const value: string = get(item, name);
+                    const formatedValue = format
+                      ? new Date(value).toLocaleString()
+                      : value;
+                    const customRender = renderColumnValue
+                      ? renderColumnValue(item)
+                      : null;
+
+                    const defaultValue =
+                      !formatedValue && formatedValue?.length === 0 ? (
+                        <strong>-</strong>
+                      ) : (
+                        formatedValue
+                      );
+                    return (
+                      <div
+                        key={name}
+                        className={`text-ellipsis truncate px-1 md:mt-0 mt-4 text-light flex justify-between flex-row font-primary ${size} min-w-[100%] md:min-w-[unset]`}
+                      >
+                        <span className="md:hidden font-bold">
+                          {typeof label === 'string' && label
+                            ? label + ':'
+                            : ''}
+                        </span>
+                        {customRender || defaultValue}
+                      </div>
+                    );
+                  },
+                )}
+              </div>
+            </Container>
+          );
+        });
+
   return (
     <div className={`w-full ${className ?? ''}`}>
       <header
-        className={`flex-row flex p-2 text-light w-full ${
+        className={`hidden md:flex flex-row p-2 text-light w-full ${
           headerClassName ?? ''
         }`}
       >
@@ -38,35 +99,7 @@ export const ListItems = <Data,>({
           </div>
         ))}
       </header>
-      {!items || items?.length === 0
-        ? emptyListComponent
-        : items.map((item, index) => {
-            return (
-              <div
-                key={index.toString()}
-                className={`${
-                  getRowClassName ? getRowClassName(item) : ''
-                } p-2 mt-2 rounded-md min-h-[85px] w-full flex flex-row items-center justify-start border-2 border-secondary-dark`}
-              >
-                {columns.map(({ name, size, format }) => {
-                  const value: string = get(item, name);
-                  const formatedValue = format
-                    ? new Date(value).toLocaleString()
-                    : value;
-                  return (
-                    <span key={name} className={`${size} text-light`}>
-                      {!formatedValue && formatedValue?.length === 0 ? (
-                        <strong>-</strong>
-                      ) : (
-                        formatedValue
-                      )}
-                    </span>
-                  );
-                })}
-              </div>
-            );
-          })}
-      {}
+      {isLoadingData ? loadingDataPlaceholder : content}
     </div>
   );
 };

@@ -55,10 +55,11 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
 
           startLoading();
           const { error } = await promiseResultWithError(
-            fgcApi.post(
-              `${FGC_API_URLS.COMBOS}${id ? '/' + id : ''}`,
-              data.values,
-            ),
+            fgcApi.request({
+              url: `${FGC_API_URLS.COMBOS}${id ? '/' + id : ''}`,
+              data: data.values,
+              method: id ? 'PUT' : 'POST',
+            }),
           );
           closeLoading();
           if (error) {
@@ -94,8 +95,8 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
         <footer className="w-full flex items-center justify-center flex-1">
           <Button
             type="submit"
-            text="Submit"
-            extraStyles="self-center w-[130px]"
+            text={initialValues?.id ? 'Save Changes' : 'Submit'}
+            extraStyles="self-center min-w-[130px]"
           />
         </footer>
       </form>
