@@ -40,12 +40,12 @@ public class PlaylistController {
   }
 
   @GetMapping
-  public PaginationResponse<PlaylistResponseDTO> getByNameAndTagsAndDescription(
+  public PaginationResponse<PlaylistResponseDTO> getByUserAndSearchParam(
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   ) {
     return this.playlistMapper.toPagination(
-        this.playlistService.getAllByPlaylistNameOrTagName(
+        this.playlistService.getByCurrentUserPlaylistAndSearchParam(
             playlistComboSearchDTO,
             pageable
           )

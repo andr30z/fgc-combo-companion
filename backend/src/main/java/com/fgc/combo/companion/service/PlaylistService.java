@@ -32,7 +32,7 @@ public interface PlaylistService {
 
   Playlist savePlaylist(Playlist playlist);
 
-  PaginationResponse<Playlist> getAllByPlaylistNameOrTagName(
+  PaginationResponse<Playlist> getByCurrentUserPlaylistAndSearchParam(
       PlaylistComboSearchDTO playlistComboSearchDTO,
       Pageable pageable);
 }
