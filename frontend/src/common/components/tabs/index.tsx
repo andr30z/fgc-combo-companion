@@ -8,6 +8,7 @@ export interface TabsProps {
   rootClassName?: string;
   listContainerClassName?: string;
   onClickTab?: (id: string) => void;
+  defaultTab?: string;
 }
 
 export const TabContent = RadixTab.Content;
@@ -18,10 +19,11 @@ export const Tabs: FC<TabsProps> = ({
   rootClassName = '',
   listContainerClassName = '',
   onClickTab,
+  defaultTab,
 }) => (
   <RadixTab.Root
     className={`flex flex-col h-full w-full ${rootClassName}`}
-    defaultValue={tabs.at(0)?.id}
+    defaultValue={defaultTab ?? tabs.at(0)?.id}
   >
     <RadixTab.List
       className={`flex mb-2 border-b-2 border-secondary-dark w-full ${listContainerClassName}`}
@@ -31,7 +33,7 @@ export const Tabs: FC<TabsProps> = ({
         <RadixTab.Trigger
           key={id}
           value={id}
-          onClick={() => {
+          onPointerDown={() => {
             if (onClickTab) {
               onClickTab(id);
             }

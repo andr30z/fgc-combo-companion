@@ -39,7 +39,7 @@ public class PlaylistController {
     this.playlistMapper = playlistMapper;
   }
 
-  @GetMapping
+  @GetMapping("/me")
   public PaginationResponse<PlaylistResponseDTO> getByUserAndSearchParam(
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
@@ -49,15 +49,6 @@ public class PlaylistController {
             playlistComboSearchDTO,
             pageable
           )
-      );
-  }
-
-  @GetMapping("/me")
-  public PaginationResponse<PlaylistResponseDTO> getByCurrentUser(
-    Pageable pageable
-  ) {
-    return this.playlistMapper.toPagination(
-        this.playlistService.getByCurrentUser(pageable)
       );
   }
 

@@ -70,7 +70,7 @@ export const LoginForm = () => {
           if (data?.error) {
             toast.error(data.error);
           }
-          router.push('/dashboard');
+          router.push('/dashboard/combos');
         })}
       />
       <Button

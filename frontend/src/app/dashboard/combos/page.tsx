@@ -3,7 +3,7 @@ import {
   FGC_API_URLS,
   getFgcApiInstanceWithTokenCookie,
 } from '@/common/services/fgc-api';
-import { Combo } from '@/common/types/combo';
+import type { Combo } from '@/common/types/combo';
 import { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
 import { promiseResultWithError } from '@/common/utils/Promises';
 import { CombosList } from '@/modules/dashboard-page/combos-list';
@@ -11,7 +11,7 @@ import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
-  title: 'FGC - Dashboard - Combo',
+  title: 'FGC - Dashboard - Combos',
   description: 'FGC Combo Companion - Dashboard Combo',
 };
 
