@@ -6,6 +6,7 @@ import { ListItems } from '@/common/components/list-items';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { Modal } from '@/common/components/modal';
 import { Pagination } from '@/common/components/pagination';
+import { PlaylistForm } from '@/common/components/playlist-form';
 import { useApiQuery } from '@/common/hooks/api-query';
 import { useBoolean } from '@/common/hooks/boolean';
 import { useDebounce } from '@/common/hooks/debounce';
@@ -55,6 +56,7 @@ export const PlaylistList: FC<{
     flushSync(() => {
       setPage(0);
     });
+    setSelectedItem(undefined);
     refetch();
   });
 
@@ -78,6 +80,12 @@ export const PlaylistList: FC<{
   return (
     <div className="flex flex-col flex-1 w-full h-full mt-6">
       <LoadingBackdrop isLoading={isLoading} />
+      <Modal isOpen={isPlaylistFormOpen} onClose={closePlaylistForm}>
+        <PlaylistForm
+          initialValues={selectedItem}
+          onSuccess={debouncedRefetch}
+        />
+      </Modal>
       <header className="border-2 border-secondary-dark bg-dark p-3 mb-12 w-full flex flex-col sm:flex-row flex-wrap items-center justify-between gap-2">
         <h5 className="text-2xl text-light font-primary font-bold">
           Your Playlists
