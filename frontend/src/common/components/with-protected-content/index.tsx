@@ -20,7 +20,7 @@ export interface WithProtectedRouteOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   OnUnauthenticatedComponent?: ReactElement<any, any> | null;
 }
-export function WithProtectedRoute<ComponentProps>(
+export function WithProtectedContent<ComponentProps>(
   Component?: FC<ComponentProps>,
   {
     OnUnauthenticatedComponent = <div className="h-[50vh]" />,
@@ -60,3 +60,5 @@ export function WithProtectedRoute<ComponentProps>(
     );
   };
 }
+
+export const ProtectedContent = WithProtectedContent();

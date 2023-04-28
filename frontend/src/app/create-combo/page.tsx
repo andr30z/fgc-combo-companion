@@ -1,6 +1,6 @@
 'use client';
 import { ComboForm } from '@/common/components/combo-form';
-import { WithProtectedRoute } from '@/common/components/with-protected-route';
+import { WithProtectedRoute } from '@/common/components/with-protected-content';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

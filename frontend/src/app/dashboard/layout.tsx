@@ -1,6 +1,6 @@
 'use client';
 import { Tabs } from '@/common/components/tabs';
-import { DashboardProtectedValidation } from '@/modules/dashboard-page/dashboard-user-validation';
+import { ProtectedContent } from '@/common/components/with-protected-content';
 import { usePathname, useRouter } from 'next/navigation';
 
 export default function DashboardLayout(props: { children: React.ReactNode }) {
@@ -9,7 +9,7 @@ export default function DashboardLayout(props: { children: React.ReactNode }) {
   const isPlaylistScreen = pathname?.includes('/playlists');
   return (
     <div className="w-full h-full min-h-80vh flex flex-col items-center gap-2">
-      <DashboardProtectedValidation>
+      <ProtectedContent>
         <Tabs
           defaultTab={isPlaylistScreen ? 'playlists' : 'combos'}
           tabs={[
@@ -24,7 +24,7 @@ export default function DashboardLayout(props: { children: React.ReactNode }) {
         >
           {props.children}
         </Tabs>
-      </DashboardProtectedValidation>
+      </ProtectedContent>
     </div>
   );
 }
