@@ -43,6 +43,19 @@ public class ComboController {
       );
   }
 
+  @GetMapping
+  public PaginationResponse<ComboResponseDTO> getAllCombosBySearchParam(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
+    return this.comboMapper.toPagination(
+        this.comboService.getAllByOwnerAndSearchParam(
+            playlistComboSearchDTO,
+            pageable
+          )
+      );
+  }
+
   @PostMapping
   public ComboResponseDTO getByDTO(
     @RequestBody @Validated CreateComboDTO comboDTO

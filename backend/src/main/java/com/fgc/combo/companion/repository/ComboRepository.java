@@ -23,9 +23,17 @@ public interface ComboRepository extends JpaRepository<Combo, Long> {
     "c.name ILIKE concat('%',COALESCE(?2, c.name),'%') OR " +
     "c.description ILIKE concat('%',COALESCE(?2, c.description),'%') )"
   )
-  Page<Combo> findAllByOnwerAndSearchParam(
+  Page<Combo> findAllByOwnerAndSearchParam(
     User owner,
     String searchParam,
     Pageable pageable
   );
+
+  @EntityGraph(attributePaths = { "owner", "tags" })
+  @Query(
+    "SELECT c FROM Combo c WHERE (" +
+    "c.name ILIKE concat('%',COALESCE(?1, c.name),'%') OR " +
+    "c.description ILIKE concat('%',COALESCE(?1, c.description),'%') )"
+  )
+  Page<Combo> findAllBySearchParam(String searchParam, Pageable pageable);
 }

@@ -1,5 +1,13 @@
 package com.fgc.combo.companion.service.impl;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
@@ -13,13 +21,8 @@ import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.ComboRepository;
 import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -112,7 +115,7 @@ public class ComboServiceImpl implements ComboService {
     return PaginationResponseMapper.create(
       name == null
         ? this.comboRepository.findAllByOwner(currentUser, pageable)
-        : this.comboRepository.findAllByOnwerAndSearchParam(
+        : this.comboRepository.findAllByOwnerAndSearchParam(
             currentUser,
             name,
             pageable
@@ -135,5 +138,23 @@ public class ComboServiceImpl implements ComboService {
 
     this.comboRepository.delete(combo);
     return true;
+  }
+
+  @Override
+  public PaginationResponse<Combo> getAllBySearchParams(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
+    String name = playlistComboSearchDTO.getName() != null
+      ? URLDecoder.decode(
+        playlistComboSearchDTO.getName(),
+        StandardCharsets.UTF_8
+      )
+      : null;
+    return PaginationResponseMapper.create(
+      name == null
+        ? this.comboRepository.findAll(pageable)
+        : this.comboRepository.findAllBySearchParam(name, pageable)
+    );
   }
 }

@@ -14,6 +14,8 @@ public interface ComboService {
 
   Combo getByIdAndCurrentUser(Long id);
 
+  PaginationResponse<Combo> getAllBySearchParams(PlaylistComboSearchDTO playlistComboSearchDTO, Pageable pageable);
+
   PaginationResponse<Combo> getAllByCurrentUser(Pageable pageable);
 
   Combo saveCombo(Combo combo);
