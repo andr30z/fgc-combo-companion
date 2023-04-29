@@ -98,9 +98,8 @@ export const Pagination = <Data,>({
   return (
     <div className="flex flex-col w-full">
       {showTotal && (
-        <p className="text-light mb-2">
-          Total:
-          {pagination.totalItems}
+        <p className="text-light my-1 text-center">
+          Total items: {pagination.totalItems}
         </p>
       )}
       <div className="flex flex-row w-full items-center justify-center gap-1">

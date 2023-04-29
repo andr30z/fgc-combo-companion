@@ -13,12 +13,15 @@ import { LoadingBackdrop } from '../loading-backdrop';
 import { promiseResultWithError } from '@/common/utils/Promises';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { toast } from 'react-hot-toast';
+import { ComboPreview } from '../combo-preview';
 
 interface ComboListItemsProps extends ListItemsProps<Combo> {
   onSuccessSaveComboForm?: () => void;
   onSuccessDeleteCombo?: () => void;
+  useComboItemHeader?: boolean;
   isLoadingCombos?: boolean;
   emptyListMessage?: string;
+  onClickComboItem?: (combo: Combo) => void;
 }
 
 export const ComboListItems: FC<ComboListItemsProps> = ({
@@ -27,6 +30,8 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
   onSuccessDeleteCombo,
   isLoadingCombos = false,
   emptyListMessage = 'No combos to list',
+  useComboItemHeader = true,
+  onClickComboItem,
   ...rest
 }) => {
   const [selectedItem, setSelectedItem] = useState<Combo>();
@@ -34,10 +39,6 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
     useBoolean();
   const [isLoading, { setFalse: endLoading, setTrue: startLoading }] =
     useBoolean();
-  const [
-    isComboDetailsOpen,
-    { setTrue: openComboDetails, setFalse: closeComboDetails },
-  ] = useBoolean();
 
   const deleteCombo = (comboId: number) => async () => {
     startLoading();
@@ -76,80 +77,69 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
           initialValues={selectedItem}
         />
       </Modal>
-      {selectedItem && (
-        <Modal
-          title="Combo Preview"
-          isOpen={isComboDetailsOpen}
-          onClose={() => {
-            setSelectedItem(undefined);
-            closeComboDetails();
-          }}
-          width="xl"
-        >
-          <ComboTranslation
-            combo={selectedItem.combo}
-            game={selectedItem.game}
-            backgroundColor="secondary"
-            className="mt-5"
-          />
-          {selectedItem.description && (
-            <p className="text-xl text-center text-light mt-5">
-              {selectedItem.description}
-            </p>
-          )}
-        </Modal>
-      )}
-      <ListItems
-        renderRow={(item) => {
-          return (
-            <ComboTranslation
-              className="mt-4 border-2 border-secondary-dark hover:bg-opacity-20 hover:bg-light cursor-pointer"
-              backgroundColor="dark"
-              game={item.game}
-              combo={item.combo}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedItem(item);
-                openComboDetails();
-              }}
-              rendeHeader={() => {
-                return (
-                  <header className=" w-full mb-4 items-center flex flex-wrap flex-row justify-between">
-                    <h5 className="text-ellipsis truncate text-xl text-light font-primary font-bold">
-                      {item.name}
-                    </h5>
-                    <div className="flex-row flex gap-2">
-                      <AiFillEdit
-                        size={27}
-                        className="text-light cursor-pointer hover:text-primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedItem(item);
-                          openForm();
-                        }}
-                      />
-                      <ConfirmAction
-                        onConfirm={deleteCombo(item.id)}
-                        confirmationText="Are you sure you want to delete this combo?"
-                      >
-                        {({ openConfirmModal }) => (
-                          <AiFillDelete
+
+      <ListItems<Combo>
+        renderRow={(item) => (
+          <ComboPreview
+            combo={item.combo}
+            description={item.description}
+            game={item.game}
+          >
+            {(openComboDetails) => (
+              <ComboTranslation
+                className="mt-4 border-2 border-secondary-dark hover:bg-opacity-20 hover:bg-light cursor-pointer"
+                backgroundColor="dark"
+                game={item.game}
+                combo={item.combo}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onClickComboItem) {
+                    return onClickComboItem(item);
+                  }
+                  setSelectedItem(item);
+                  openComboDetails();
+                }}
+                rendeHeader={() => {
+                  return (
+                    <header className=" w-full mb-4 items-center flex flex-wrap flex-row justify-between">
+                      <h5 className="text-ellipsis truncate text-xl text-light font-primary font-bold">
+                        {item.name}
+                      </h5>
+                      {useComboItemHeader && (
+                        <div className="flex-row flex gap-2">
+                          <AiFillEdit
                             size={27}
                             className="text-light cursor-pointer hover:text-primary"
                             onClick={(e) => {
                               e.stopPropagation();
-                              openConfirmModal();
+                              setSelectedItem(item);
+                              openForm();
                             }}
                           />
-                        )}
-                      </ConfirmAction>
-                    </div>
-                  </header>
-                );
-              }}
-            />
-          );
-        }}
+                          <ConfirmAction
+                            onConfirm={deleteCombo(item.id)}
+                            confirmationText="Are you sure you want to delete this combo?"
+                          >
+                            {({ openConfirmModal }) => (
+                              <AiFillDelete
+                                size={27}
+                                className="text-light cursor-pointer hover:text-primary"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openConfirmModal();
+                                }}
+                              />
+                            )}
+                          </ConfirmAction>
+                        </div>
+                      )}
+                    </header>
+                  );
+                }}
+              />
+            )}
+          </ComboPreview>
+        )}
         emptyListComponent={
           <div className="flex flex-col flex-1 justify-center items-center min-h-[500px] text-center gap-4">
             <h1 className="text-light font-bold text-5xl">

@@ -1,6 +1,7 @@
 import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
+import { Combo } from '@/common/types/combo';
 import type { Playlist } from '@/common/types/playlist';
 import { promiseResultWithError } from '@/common/utils/Promises';
 import type { FC } from 'react';
@@ -8,9 +9,11 @@ import toast from 'react-hot-toast';
 import { Button } from '../button';
 import { Input } from '../input';
 import { LoadingBackdrop } from '../loading-backdrop';
+import { SelectSearchCombo } from '../select-search-combo';
 
 type PlaylistWithId = Omit<Playlist, 'id' | 'owner' | 'createdAt'> & {
   id?: string | number;
+  combos?: Array<Combo>;
 };
 
 interface PlaylistFormProps {
@@ -23,12 +26,13 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
   onSuccess,
 }) => {
   const initialForm: PlaylistWithId = {
-    id: '',
+    id: undefined,
     name: '',
     description: '',
     tags: [],
+    combos: [],
   };
-  const [{ description, name, id }, { onChange }, onSubmit] =
+  const [{ description, name, id, combos }, { onChange, setValue }, onSubmit] =
     useForm<PlaylistWithId>(initialValues ?? initialForm);
   const [isLoading, { setTrue: startLoading, setFalse: closeLoading }] =
     useBoolean();
@@ -44,8 +48,17 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
           startLoading();
           const { error } = await promiseResultWithError(
             fgcApi.request({
-              url: `${FGC_API_URLS.PLAYLISTS}${id ? '/' + id : ''}`,
-              data: data.values,
+              url: `${
+                id
+                  ? FGC_API_URLS.getUpdatePlaylistUrl(id.toString())
+                  : FGC_API_URLS.PLAYLISTS
+              }`,
+              data: {
+                ...data.values,
+                combos: data.values.combos
+                  ? data.values.combos.map((combo) => combo.id)
+                  : [],
+              },
               method: id ? 'PUT' : 'POST',
             }),
           );
@@ -62,7 +75,11 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
           if (onSuccess) {
             onSuccess();
           }
-          toast.success('Your combo was created successfully!');
+          toast.success(
+            id
+              ? 'Playlist updated successfully'
+              : 'Your playlist was created successfully!',
+          );
         })}
         className="w-full flex-1 gap-4 flex flex-col"
       >
@@ -77,7 +94,14 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
           onChange={onChange('description')}
           label="Description"
         />
-        <footer className="w-full flex items-center justify-center flex-1">
+        {id === undefined && combos && (
+          <SelectSearchCombo
+            selectedCombos={combos}
+            onClickRemoveCombo={setValue('combos')}
+            onFinish={setValue('combos')}
+          />
+        )}
+        <footer className="w-full flex items-center justify-center flex-1 mt-5">
           <Button
             type="submit"
             text={initialValues?.id ? 'Save Changes' : 'Submit'}

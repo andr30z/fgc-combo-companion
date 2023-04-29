@@ -61,7 +61,7 @@ public class PlaylistController {
       );
   }
 
-  @PutMapping("/{playlistId}")
+  @PutMapping("/{playlistId}/me")
   public PlaylistResponseDTO update(
     @PathVariable Long playlistId,
     @RequestBody @Validated UpdatePlaylistDTO updatePlaylistDTO
@@ -71,12 +71,12 @@ public class PlaylistController {
       );
   }
 
-  @DeleteMapping("/{playlistId}")
+  @DeleteMapping("/{playlistId}/me")
   public boolean delete(@PathVariable Long playlistId) {
     return this.playlistService.delete(playlistId);
   }
 
-  @PostMapping("/{playlistId}/combos")
+  @PostMapping("/{playlistId}/me/combos")
   public CompletePlaylistDTO addCombosToPlaylist(
     @PathVariable Long playlistId,
     @RequestBody @Validated AddCombosToPlaylistDTO addCombosToPlaylistDTO
@@ -89,7 +89,7 @@ public class PlaylistController {
       );
   }
 
-  @DeleteMapping("/{playlistId}/combos")
+  @DeleteMapping("/{playlistId}/me/combos")
   public boolean deleteCombosFromPlaylist(
     @PathVariable Long playlistId,
     @Validated @NotEmpty @RequestParam(

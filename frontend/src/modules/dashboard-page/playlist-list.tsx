@@ -21,6 +21,7 @@ import { toast } from 'react-hot-toast';
 import {
   AiFillDelete,
   AiFillEdit,
+  AiFillEye,
   AiOutlinePlus,
   AiOutlineSearch,
 } from 'react-icons/ai';
@@ -39,7 +40,7 @@ export const PlaylistList: FC<{
     isFetching: isLoadingCombos,
   } = useApiQuery<FGCApiPaginationResponse<Playlist>>({
     apiConfig: {
-      url: FGC_API_URLS.MY_COMBOS,
+      url: FGC_API_URLS.MY_PLAYLISTS,
       params: {
         name: encodeURIComponent(searchValue),
         sort: 'id,desc',
@@ -80,12 +81,6 @@ export const PlaylistList: FC<{
   return (
     <div className="flex flex-col flex-1 w-full h-full mt-6">
       <LoadingBackdrop isLoading={isLoading} />
-      <Modal isOpen={isPlaylistFormOpen} onClose={closePlaylistForm}>
-        <PlaylistForm
-          initialValues={selectedItem}
-          onSuccess={debouncedRefetch}
-        />
-      </Modal>
       <header className="border-2 border-secondary-dark bg-dark p-3 mb-12 w-full flex flex-col sm:flex-row flex-wrap items-center justify-between gap-2">
         <h5 className="text-2xl text-light font-primary font-bold">
           Your Playlists
@@ -115,7 +110,14 @@ export const PlaylistList: FC<{
             }}
             width="lg"
           >
-            <></>
+            <PlaylistForm
+              initialValues={selectedItem}
+              onSuccess={() => {
+                setSelectedItem(undefined);
+                debouncedRefetch();
+                closePlaylistForm();
+              }}
+            />
           </Modal>
         </div>
       </header>
@@ -144,10 +146,19 @@ export const PlaylistList: FC<{
             size: 'w-[20%]',
             renderColumnValue(item) {
               return (
-                <>
+                <div className="flex flex-row flex-wrap gap-2">
+                  <AiFillEye
+                    title="View playlist"
+                    size={27}
+                    className="text-light cursor-pointer hover:text-primary"
+                  />
                   <AiFillEdit
                     size={27}
                     className="text-light cursor-pointer hover:text-primary"
+                    onClick={() => {
+                      setSelectedItem(item);
+                      openPlaylistForm();
+                    }}
                   />
                   <ConfirmAction
                     onConfirm={deletePlaylists(item.id)}
@@ -164,7 +175,7 @@ export const PlaylistList: FC<{
                       />
                     )}
                   </ConfirmAction>
-                </>
+                </div>
               );
             },
           },
@@ -176,7 +187,11 @@ export const PlaylistList: FC<{
                 ? 'No playlists found for search term: "' + searchValue + '"'
                 : "You don't have any playlists yet."}
             </h1>
-            <Button text="Create Playlist" color="light" />
+            <Button
+              onClick={openPlaylistForm}
+              text="Create Playlist"
+              color="light"
+            />
           </div>
         }
       />

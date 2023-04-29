@@ -74,7 +74,11 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
           if (onSuccess) {
             onSuccess();
           }
-          toast.success('Your combo was created successfully!');
+          toast.success(
+            id
+              ? 'Combo updated successfully'
+              : 'Your combo was created successfully!',
+          );
         })}
         className="w-full flex-1 gap-4 flex flex-col"
       >

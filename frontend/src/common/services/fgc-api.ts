@@ -38,6 +38,8 @@ export const FGC_API_URLS = {
   COMBOS: '/v1/combos',
   MY_COMBOS: '/v1/combos/me',
   PLAYLISTS: '/v1/playlists',
+  getUpdatePlaylistUrl: (playlistId: string) =>
+    `/v1/playlists/${playlistId}/me`,
   getDeleteComboUrl: (comboId: number) => `/v1/combos/${comboId}/me`,
   getDeletePlaylistUrl: (playlistId: number) =>
     `/v1/playlists/${playlistId}/me`,
