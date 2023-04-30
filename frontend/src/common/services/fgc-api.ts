@@ -37,6 +37,7 @@ export const FGC_API_URLS = {
   GET_USER_VERIFICATION: '/v1/users/verification',
   COMBOS: '/v1/combos',
   MY_COMBOS: '/v1/combos/me',
+  getUpdateComboUrl: (comboId: string) => `/v1/combos/${comboId}/me`,
   PLAYLISTS: '/v1/playlists',
   getUpdatePlaylistUrl: (playlistId: string) =>
     `/v1/playlists/${playlistId}/me`,

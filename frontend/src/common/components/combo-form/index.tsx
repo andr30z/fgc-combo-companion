@@ -56,7 +56,11 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
           startLoading();
           const { error } = await promiseResultWithError(
             fgcApi.request({
-              url: `${FGC_API_URLS.COMBOS}${id ? '/' + id : ''}`,
+              url: `${
+                id
+                  ? FGC_API_URLS.getUpdateComboUrl(id.toString())
+                  : FGC_API_URLS.COMBOS
+              }`,
               data: data.values,
               method: id ? 'PUT' : 'POST',
             }),
