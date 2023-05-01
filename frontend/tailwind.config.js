@@ -25,6 +25,7 @@ module.exports = {
         secondary: '#da0037',
         dark: '#000000',
         'secondary-dark': '#363636',
+        'sub-info': "#c3c3c3c3",
         light: { DEFAULT: '#fff', darker: '#f2f2f2' },
       },
       fontFamily: {

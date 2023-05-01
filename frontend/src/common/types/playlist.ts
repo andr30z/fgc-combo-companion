@@ -6,6 +6,7 @@ export interface Playlist {
   description: string | null;
   createdAt: string;
   owner: {
+    id: number;
     name: string;
   };
   tags: Array<unknown>;

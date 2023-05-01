@@ -17,7 +17,7 @@ type PlaylistWithId = Omit<Playlist, 'id' | 'owner' | 'createdAt'> & {
 };
 
 interface PlaylistFormProps {
-  initialValues?: Playlist;
+  initialValues?: Playlist | null;
   onSuccess?: () => void;
 }
 

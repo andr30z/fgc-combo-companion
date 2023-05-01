@@ -1,20 +1,21 @@
-import { FC, useState } from 'react';
-import { ListItems, ListItemsProps } from '../list-items';
-import { ComboTranslation } from '../combo-translation';
-import { Button } from '../button';
-import Image from 'next/image';
-import { Combo } from '@/common/types/combo';
-import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
-import { Modal } from '../modal';
-import { ComboForm } from '../combo-form';
 import { useBoolean } from '@/common/hooks/boolean';
-import { ConfirmAction } from '../confirm-action-modal';
-import { LoadingBackdrop } from '../loading-backdrop';
-import { promiseResultWithError } from '@/common/utils/Promises';
-import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
-import { toast } from 'react-hot-toast';
-import { ComboPreview } from '../combo-preview';
 import { useUser } from '@/common/hooks/user';
+import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
+import { Combo } from '@/common/types/combo';
+import { promiseResultWithError } from '@/common/utils/Promises';
+import { AxiosResponse } from 'axios';
+import Image from 'next/image';
+import { FC, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { Button } from '../button';
+import { ComboForm } from '../combo-form';
+import { ComboPreview } from '../combo-preview';
+import { ComboTranslation } from '../combo-translation';
+import { ConfirmAction } from '../confirm-action-modal';
+import { ListItems, ListItemsProps } from '../list-items';
+import { LoadingBackdrop } from '../loading-backdrop';
+import { Modal } from '../modal';
 
 interface ComboListItemsProps extends ListItemsProps<Combo> {
   onSuccessSaveComboForm?: () => void;
@@ -24,6 +25,11 @@ interface ComboListItemsProps extends ListItemsProps<Combo> {
   emptyListMessage?: string;
   onClickComboItem?: (combo: Combo) => void;
   useCreateComboButtonWhenEmpty?: boolean;
+  showComboOwner?: boolean;
+  confirmDeleteMsg?: string;
+  deleteComboAction?: (
+    comboId: number,
+  ) => Promise<AxiosResponse<unknown, unknown>>;
 }
 
 export const ComboListItems: FC<ComboListItemsProps> = ({
@@ -35,6 +41,9 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
   useComboItemHeader = true,
   onClickComboItem,
   useCreateComboButtonWhenEmpty = true,
+  showComboOwner = false,
+  confirmDeleteMsg = 'Are you sure you want to delete this combo?',
+  deleteComboAction,
   ...rest
 }) => {
   const [selectedItem, setSelectedItem] = useState<Combo>();
@@ -47,7 +56,9 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
   const deleteCombo = (comboId: number) => async () => {
     startLoading();
     const { error } = await promiseResultWithError(
-      fgcApi.delete(FGC_API_URLS.getDeleteComboUrl(comboId)),
+      deleteComboAction
+        ? deleteComboAction(comboId)
+        : fgcApi.delete(FGC_API_URLS.getDeleteComboUrl(comboId)),
     );
     endLoading();
     if (error) {
@@ -96,7 +107,6 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                 game={item.game}
                 combo={item.combo}
                 onClick={(e) => {
-                  console.log('Ï CLICKED ');
                   e.stopPropagation();
                   if (onClickComboItem) {
                     return onClickComboItem(item);
@@ -108,9 +118,17 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                   const currentUserIsOwner = item.owner.id === user?.id;
                   return (
                     <header className=" w-full mb-4 items-center flex flex-wrap flex-row justify-between">
-                      <h5 className="text-ellipsis truncate text-xl text-light font-primary font-bold">
-                        {item.name}
-                      </h5>
+                      <div className="flex flex-col">
+                        <h5 className="text-ellipsis truncate text-xl text-light font-primary font-bold">
+                          {item.name}
+                        </h5>
+                        {showComboOwner && (
+                          <span className="text-sub-info font-primary text-sm mt-[1px]">
+                            Created by{' '}
+                            {currentUserIsOwner ? 'you' : item.owner.name}
+                          </span>
+                        )}
+                      </div>
                       {useComboItemHeader && currentUserIsOwner && (
                         <div className="flex-row flex gap-2">
                           <AiFillEdit
@@ -124,7 +142,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                           />
                           <ConfirmAction
                             onConfirm={deleteCombo(item.id)}
-                            confirmationText="Are you sure you want to delete this combo?"
+                            confirmationText={confirmDeleteMsg}
                           >
                             {({ openConfirmModal }) => (
                               <AiFillDelete
