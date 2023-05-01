@@ -7,6 +7,7 @@ export interface Combo {
   combo: string;
   description?: string;
   owner: {
+    id: number;
     name: string;
   };
 }

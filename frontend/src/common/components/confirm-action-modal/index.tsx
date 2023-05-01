@@ -29,12 +29,16 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = ({
       </main>
       <footer className="w-full flex justify-end gap-2 mt-5">
         <Button
-          onClick={closeConfirmation}
+          onClick={(e) => {
+            e.stopPropagation();
+            closeConfirmation();
+          }}
           color="light"
           text="No, cancel action"
         />
         <Button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             closeConfirmation();
             onConfirm();
           }}

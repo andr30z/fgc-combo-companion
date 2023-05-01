@@ -14,6 +14,7 @@ import { promiseResultWithError } from '@/common/utils/Promises';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { toast } from 'react-hot-toast';
 import { ComboPreview } from '../combo-preview';
+import { useUser } from '@/common/hooks/user';
 
 interface ComboListItemsProps extends ListItemsProps<Combo> {
   onSuccessSaveComboForm?: () => void;
@@ -22,6 +23,7 @@ interface ComboListItemsProps extends ListItemsProps<Combo> {
   isLoadingCombos?: boolean;
   emptyListMessage?: string;
   onClickComboItem?: (combo: Combo) => void;
+  useCreateComboButtonWhenEmpty?: boolean;
 }
 
 export const ComboListItems: FC<ComboListItemsProps> = ({
@@ -32,6 +34,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
   emptyListMessage = 'No combos to list',
   useComboItemHeader = true,
   onClickComboItem,
+  useCreateComboButtonWhenEmpty = true,
   ...rest
 }) => {
   const [selectedItem, setSelectedItem] = useState<Combo>();
@@ -39,6 +42,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
     useBoolean();
   const [isLoading, { setFalse: endLoading, setTrue: startLoading }] =
     useBoolean();
+  const { user } = useUser();
 
   const deleteCombo = (comboId: number) => async () => {
     startLoading();
@@ -92,6 +96,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                 game={item.game}
                 combo={item.combo}
                 onClick={(e) => {
+                  console.log('Ï CLICKED ');
                   e.stopPropagation();
                   if (onClickComboItem) {
                     return onClickComboItem(item);
@@ -100,12 +105,13 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                   openComboDetails();
                 }}
                 rendeHeader={() => {
+                  const currentUserIsOwner = item.owner.id === user?.id;
                   return (
                     <header className=" w-full mb-4 items-center flex flex-wrap flex-row justify-between">
                       <h5 className="text-ellipsis truncate text-xl text-light font-primary font-bold">
                         {item.name}
                       </h5>
-                      {useComboItemHeader && (
+                      {useComboItemHeader && currentUserIsOwner && (
                         <div className="flex-row flex gap-2">
                           <AiFillEdit
                             size={27}
@@ -145,23 +151,25 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
             <h1 className="text-light font-bold text-5xl">
               {emptyListMessage}
             </h1>
-            <Button
-              onClick={openForm}
-              text="Create Combo"
-              color="light"
-              useHoverStyles={false}
-              extraStyles="group/combo"
-              rightIcon={
-                <Image
-                  priority
-                  className="group-hover/combo:scale-125 group-hover/combo:transition-all group-hover/combo:duration-300 group-hover/combo:ease-in-out"
-                  alt="FGC Combo"
-                  src="/combo-fist.svg"
-                  height={23}
-                  width={23}
-                />
-              }
-            />
+            {useCreateComboButtonWhenEmpty && (
+              <Button
+                onClick={openForm}
+                text="Create Combo"
+                color="light"
+                useHoverStyles={false}
+                extraStyles="group/combo"
+                rightIcon={
+                  <Image
+                    priority
+                    className="group-hover/combo:scale-125 group-hover/combo:transition-all group-hover/combo:duration-300 group-hover/combo:ease-in-out"
+                    alt="FGC Combo"
+                    src="/combo-fist.svg"
+                    height={23}
+                    width={23}
+                  />
+                }
+              />
+            )}
           </div>
         }
         items={items}

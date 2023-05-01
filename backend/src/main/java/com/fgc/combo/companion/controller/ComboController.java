@@ -63,7 +63,7 @@ public class ComboController {
     return this.comboMapper.toDTO((this.comboService.create(comboDTO)));
   }
 
-  @PutMapping("/{comboId}")
+  @PutMapping("/{comboId}/me")
   public ComboResponseDTO updateCombo(
     @PathVariable Long comboId,
     @RequestBody @Validated UpdateComboDTO comboDTO

@@ -1,3 +1,5 @@
+import { PlaylistCombo } from './playlist-combo';
+
 export interface Playlist {
   id: number;
   name: string;
@@ -7,4 +9,8 @@ export interface Playlist {
     name: string;
   };
   tags: Array<unknown>;
+}
+
+export interface PlaylistWithCombos extends Playlist {
+  playlistCombos: Array<PlaylistCombo>;
 }

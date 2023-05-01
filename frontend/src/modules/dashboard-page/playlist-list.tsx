@@ -2,6 +2,7 @@
 import { Button } from '@/common/components/button';
 import { ConfirmAction } from '@/common/components/confirm-action-modal';
 import { Input } from '@/common/components/input';
+import { Link } from '@/common/components/link';
 import { ListItems } from '@/common/components/list-items';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { Modal } from '@/common/components/modal';
@@ -147,11 +148,13 @@ export const PlaylistList: FC<{
             renderColumnValue(item) {
               return (
                 <div className="flex flex-row flex-wrap gap-2">
-                  <AiFillEye
-                    title="View playlist"
-                    size={27}
-                    className="text-light cursor-pointer hover:text-primary"
-                  />
+                  <Link href={`/playlist/${item.id}`}>
+                    <AiFillEye
+                      title="View playlist"
+                      size={27}
+                      className="text-light cursor-pointer hover:text-primary"
+                    />
+                  </Link>
                   <AiFillEdit
                     size={27}
                     className="text-light cursor-pointer hover:text-primary"

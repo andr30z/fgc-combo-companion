@@ -37,7 +37,13 @@ export const Modal = memo<ModalProps>(
                   {title}
                 </Dialog.Title>
               )}
-              <Dialog.Close asChild onClick={onClose}>
+              <Dialog.Close
+                asChild
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+              >
                 <button
                   className="text-light bg-dark hover:bg-primary hover:text-light border-1 inline-flex h-[30px] w-[30px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                   aria-label="Close"
