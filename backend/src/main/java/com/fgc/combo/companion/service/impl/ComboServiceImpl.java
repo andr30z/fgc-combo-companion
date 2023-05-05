@@ -1,13 +1,5 @@
 package com.fgc.combo.companion.service.impl;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
@@ -21,8 +13,12 @@ import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.ComboRepository;
 import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
-
+import com.fgc.combo.companion.utils.URLDecoderUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -105,12 +101,9 @@ public class ComboServiceImpl implements ComboService {
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   ) {
-    String name = playlistComboSearchDTO.getName() != null
-      ? URLDecoder.decode(
-        playlistComboSearchDTO.getName(),
-        StandardCharsets.UTF_8
-      )
-      : null;
+    String name = URLDecoderUtil.decodeParamToUTF8(
+      playlistComboSearchDTO.getName()
+    );
     User currentUser = userService.me();
     return PaginationResponseMapper.create(
       name == null
@@ -145,12 +138,9 @@ public class ComboServiceImpl implements ComboService {
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   ) {
-    String name = playlistComboSearchDTO.getName() != null
-      ? URLDecoder.decode(
-        playlistComboSearchDTO.getName(),
-        StandardCharsets.UTF_8
-      )
-      : null;
+    String name = URLDecoderUtil.decodeParamToUTF8(
+      playlistComboSearchDTO.getName()
+    );
     return PaginationResponseMapper.create(
       name == null
         ? this.comboRepository.findAll(pageable)

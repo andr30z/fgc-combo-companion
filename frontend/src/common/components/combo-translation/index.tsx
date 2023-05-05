@@ -9,7 +9,12 @@ interface ComboTranslationProps {
   combo: string;
   className?: string;
   rendeHeader?: (result: ComboTranslationInterface) => React.ReactNode;
-  backgroundColor?: 'primary' | 'secondary' | 'dark' | 'secondary-dark';
+  backgroundColor?:
+    | 'primary'
+    | 'secondary'
+    | 'dark'
+    | 'secondary-dark'
+    | 'light-active';
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -31,6 +36,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
     secondary: 'text-light bg-dark',
     dark: 'text-light bg-primary',
     'secondary-dark': 'text-light bg-primary',
+    'light-active': 'text-light bg-light-active',
   };
 
   return (

@@ -4,7 +4,7 @@ import { useBoolean } from '@/common/hooks/boolean';
 import { usePaginatedSearch } from '@/common/hooks/paginated-search';
 import { FGC_API_URLS } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
-import { FC, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { IoMdAddCircle } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
@@ -44,10 +44,20 @@ const ComboItem: FC<{ combo: Combo; onClickIcon: () => void }> = ({
   </ComboPreview>
 );
 export const SelectSearchCombo: FC<{
-  selectedCombos: Array<Combo>;
+  selectedCombos?: Array<Combo>;
+  label?: string;
   onFinish: (uniqueArray: Array<Combo>, selectedCombos: Array<Combo>) => void;
-  onClickRemoveCombo: (filteredArray: Array<Combo>, comboId: number) => void;
-}> = ({ selectedCombos, onFinish, onClickRemoveCombo }) => {
+  onClickRemoveCombo?: (filteredArray: Array<Combo>, comboId: number) => void;
+  renderAddIcon?: (triggerModalOpen: () => void) => ReactNode;
+  containerClassName?: string;
+}> = ({
+  selectedCombos = [],
+  onFinish,
+  onClickRemoveCombo,
+  label = 'Selected Combos:',
+  renderAddIcon,
+  containerClassName = 'flex flex-col w-full',
+}) => {
   const [isOpen, { setTrue: openModal, setFalse: closeModal }] = useBoolean();
   const {
     data: combos,
@@ -141,31 +151,41 @@ export const SelectSearchCombo: FC<{
           </main>
         </div>
       </Modal>
-      <div className="flex flex-col w-full">
-        <div className="flex flex-row w-full gap-2 mb-3">
-          <label className="text-light font-lg">Selected Combos: </label>
-          <div className="w-[30px] h-[30px]">
-            <IoMdAddCircle
-              size={25}
-              className="text-secondary hover:text-white cursor-pointer"
-              onClick={openModal}
-            />
+      <div className={containerClassName}>
+        <div
+          className={`flex flex-row w-full gap-2 ${
+            selectedCombos.length > 1 ? 'mb-3' : ''
+          }`}
+        >
+          {label && <label className="text-light font-lg">{label}</label>}
+          {renderAddIcon ? (
+            renderAddIcon(openModal)
+          ) : (
+            <div className="w-[30px] h-[30px]">
+              <IoMdAddCircle
+                size={25}
+                className="text-secondary hover:text-white cursor-pointer"
+                onClick={openModal}
+              />
+            </div>
+          )}
+        </div>
+        {selectedCombos.length > 1 ? (
+          <div className="flex flex-row gap-2 flex-wrap">
+            {selectedCombos.map((combo) => (
+              <ComboItem
+                key={combo.id}
+                combo={combo}
+                onClickIcon={() =>
+                  onClickRemoveCombo?.(
+                    selectedCombos.filter((item) => item.id !== combo.id),
+                    combo.id,
+                  )
+                }
+              />
+            ))}
           </div>
-        </div>
-        <div className="flex flex-row gap-2 flex-wrap">
-          {selectedCombos.map((combo) => (
-            <ComboItem
-              key={combo.id}
-              combo={combo}
-              onClickIcon={() =>
-                onClickRemoveCombo(
-                  selectedCombos.filter((item) => item.id !== combo.id),
-                  combo.id,
-                )
-              }
-            />
-          ))}
-        </div>
+        ) : null}
       </div>
     </>
   );

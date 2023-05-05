@@ -49,10 +49,7 @@ public class ComboController {
     Pageable pageable
   ) {
     return this.comboMapper.toPagination(
-        this.comboService.getAllByOwnerAndSearchParam(
-            playlistComboSearchDTO,
-            pageable
-          )
+        this.comboService.getAllBySearchParams(playlistComboSearchDTO, pageable)
       );
   }
 
