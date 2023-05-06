@@ -28,6 +28,8 @@
     "downlevelIteration": true
   },
   "include": [
+    "src/*",
+    "src/",
     "src/**/*",
     "pages/**/*",
     "next-env.d.ts",
