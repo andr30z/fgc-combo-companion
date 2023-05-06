@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@/common/components/__button';
+import { Button } from '@/common/components/button';
 import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { GameSelect } from '@/common/components/game-select';

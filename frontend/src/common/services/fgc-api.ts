@@ -1,6 +1,6 @@
 import axios, { CreateAxiosDefaults } from 'axios';
 import type { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
-import type { ReadonlyRequestCookies } from 'next/dist/server/app-render';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export const FGC_API_URL =
   process.env.FGC_API_URL ?? 'http://localhost:8080/api';

@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/common/components/__button';
+import { Button } from '@/common/components/button';
 import { Card } from '@/common/components/card';
-import { Input } from '@/common/components/__input';
+import { Input } from '@/common/components/input';
 import { Link } from '@/common/components/link';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { useBoolean } from '@/common/hooks/boolean';

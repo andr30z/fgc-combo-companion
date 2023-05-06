@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { FC, MouseEvent as ReactMouseEvent, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
-import { Button } from '../__button';
+import { Button } from '../button';
 import { ComboForm } from '../combo-form';
 import { ComboPreview } from '../combo-preview';
 import { ComboTranslation } from '../combo-translation';

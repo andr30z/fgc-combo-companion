@@ -1,4 +1,4 @@
-import { Button } from '@/common/components/__button';
+import { Button } from '@/common/components/button';
 import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
 import { promiseResultWithError } from '@/common/utils/Promises';
 import { PasswordForm } from '@/modules/password-change-page/password-form';

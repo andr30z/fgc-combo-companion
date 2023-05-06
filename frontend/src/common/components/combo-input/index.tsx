@@ -1,5 +1,5 @@
 import type { ChangeEventHandler, FC } from 'react';
-import { Input } from '../__input';
+import { Input } from '../input';
 import { PopOver } from '../pop-over';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { TEKKEN_7_COMBO_MAP } from '@/common/constants/ComboMappers';

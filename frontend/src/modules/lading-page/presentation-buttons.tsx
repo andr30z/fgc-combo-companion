@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@/common/components/__button';
+import { Button, ButtonProps } from '@/common/components/button';
 import Image from 'next/image';
 import type { FC } from 'react';
 import { BiTransfer } from 'react-icons/bi';
