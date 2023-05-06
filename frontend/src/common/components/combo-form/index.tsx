@@ -6,11 +6,11 @@ import type { Combo } from '@/common/types/combo';
 import { GameTypes } from '@/common/types/game-types';
 import { promiseResultWithError } from '@/common/utils/Promises';
 import toast from 'react-hot-toast';
-import { Button } from '../button';
+import { Button } from '../__button';
 import { ComboInput } from '../combo-input';
 import { ComboTranslation } from '../combo-translation';
 import { GameSelect } from '../game-select';
-import { Input } from '../input';
+import { Input } from '../__input';
 import { LoadingBackdrop } from '../loading-backdrop';
 import type { FC } from 'react';
 

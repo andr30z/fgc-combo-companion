@@ -1,6 +1,6 @@
 import { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
 import { useMemo } from 'react';
-import { Button } from '../button';
+import { Button } from '../__button';
 
 interface PaginationProps<Data> {
   pagination: FGCApiPaginationResponse<Data>;

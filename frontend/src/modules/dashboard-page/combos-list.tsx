@@ -1,8 +1,8 @@
 'use client';
-import { Button } from '@/common/components/button';
+import { Button } from '@/common/components/__button';
 import { ComboForm } from '@/common/components/combo-form';
 import { ComboListItems } from '@/common/components/combo-list-items';
-import { Input } from '@/common/components/input';
+import { Input } from '@/common/components/__input';
 import { Modal } from '@/common/components/modal';
 import { Pagination } from '@/common/components/pagination';
 import { useApiQuery } from '@/common/hooks/api-query';

@@ -1,7 +1,7 @@
 'use client';
-import { Button } from '@/common/components/button';
+import { Button } from '@/common/components/__button';
 import { ConfirmAction } from '@/common/components/confirm-action-modal';
-import { Input } from '@/common/components/input';
+import { Input } from '@/common/components/__input';
 import { Link } from '@/common/components/link';
 import { ListItems } from '@/common/components/list-items';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';

@@ -2,9 +2,9 @@
 import { useForm } from '@/common/hooks/form';
 import type { FC } from 'react';
 import { toast } from 'react-hot-toast';
-import { Button } from '../button';
+import { Button } from '../__button';
 import { Card } from '../card';
-import { Input } from '../input';
+import { Input } from '../__input';
 interface PasswordChangeFormProps {
   useOldPasswordInput?: boolean;
   onSubmit: (oldPassword: string, newPassword: string) => Promise<void>;

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
 import { AppLogo } from '../app-logo';
-import { Button } from '../button';
+import { Button } from '../__button';
 
 export const Header = () => {
   const router = useRouter();

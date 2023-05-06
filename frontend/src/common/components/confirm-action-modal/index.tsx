@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Button } from '../button';
+import { Button } from '../__button';
 import { Modal } from '../modal';
 import { useBoolean } from '@/common/hooks/boolean';
 

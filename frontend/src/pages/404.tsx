@@ -1,6 +1,6 @@
 import { AppLogo } from '@/common/components/app-logo';
 import '../app/globals.css';
-import { Button } from '@/common/components/button';
+import { Button } from '@/common/components/__button';
 import { AiFillHome } from 'react-icons/ai';
 export default function Page404() {
   return (

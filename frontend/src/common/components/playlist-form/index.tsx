@@ -6,8 +6,8 @@ import type { Playlist } from '@/common/types/playlist';
 import { promiseResultWithError } from '@/common/utils/Promises';
 import type { FC } from 'react';
 import toast from 'react-hot-toast';
-import { Button } from '../button';
-import { Input } from '../input';
+import { Button } from '../__button';
+import { Input } from '../__input';
 import { LoadingBackdrop } from '../loading-backdrop';
 import { SelectSearchCombo } from '../select-search-combo';
 
