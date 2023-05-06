@@ -22,21 +22,10 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "types": ["node"],
       "@/*": ["src/*"]
     },
     "downlevelIteration": true
   },
-  "include": [
-    "./src",
-    "src/*",
-    "src/",
-    "src/**/*",
-    "pages/**/*",
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
