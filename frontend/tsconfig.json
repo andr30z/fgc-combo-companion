@@ -22,9 +22,8 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "baseUrl": ["."],
       "types": ["node"],
-      "@/*": ["./src/*"]
+      "@/*": ["/src/*"]
     },
     "downlevelIteration": true
   },
