@@ -17,6 +17,7 @@ export interface ButtonProps {
   dataTestId?: string;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  textClassName?: string;
 }
 
 const classMappings = {
@@ -56,6 +57,7 @@ export const Button: FC<ButtonProps> = ({
   href = '',
   dataTestId = '',
   type = 'button',
+  textClassName = '',
 }) => {
   const className = `${usePaddingStyles ? 'px-4 py-2' : ''} font-semibold ${
     classMappings[color].default
@@ -66,7 +68,9 @@ export const Button: FC<ButtonProps> = ({
   const children = (
     <>
       {leftIcon}
-      {text && <span className="font-primary text-lg">{text}</span>}
+      {text && (
+        <span className={`font-primary text-lg ${textClassName}`}>{text}</span>
+      )}
       {rightIcon}
     </>
   );

@@ -20,13 +20,14 @@ const ComboItem: FC<{ combo: Combo; onClickIcon: () => void }> = ({
   combo,
   onClickIcon,
 }) => (
-  <ComboPreview key={combo.id} {...combo}>
+  <ComboPreview {...combo}>
     {(openDetails) => (
       <Button
         text={combo.name}
         usePaddingStyles={false}
         color="secondary"
         extraStyles="px-0 pl-2 overflow-hidden"
+        textClassName="truncate text-elipsis max-w-[90%]"
         onClick={openDetails}
         rightIcon={
           <div
@@ -81,7 +82,7 @@ export const SelectSearchCombo: FC<{
   };
   return (
     <>
-      <Modal title="Combos" onClose={closeModal} isOpen={isOpen}>
+      <Modal title="Combos" width="xl" onClose={closeModal} isOpen={isOpen}>
         <div className="min-h-[500px]">
           <header>
             <Input
@@ -133,9 +134,10 @@ export const SelectSearchCombo: FC<{
                   if (past.some((pastCombo) => pastCombo.id === combo.id)) {
                     return past;
                   }
-                  return [...past, combo];
+                  return [...past, combo] as Array<Combo>;
                 });
               }}
+              showComboOwner
               useComboItemHeader={false}
               isLoadingCombos={isFetching}
               items={combos?.data}

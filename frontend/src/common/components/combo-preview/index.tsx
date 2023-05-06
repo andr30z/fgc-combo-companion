@@ -28,7 +28,9 @@ export const ComboPreview: FC<{
           className="mt-5"
         />
         {description && (
-          <p className="text-xl text-center text-light mt-5">{description}</p>
+          <p className="break-words text-xl text-center text-light mt-5">
+            {description}
+          </p>
         )}
       </Modal>
       {renderTrigger(openComboDetails)}

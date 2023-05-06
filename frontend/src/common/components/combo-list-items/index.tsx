@@ -1,9 +1,9 @@
 import { useBoolean } from '@/common/hooks/boolean';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
-import { Combo } from '@/common/types/combo';
+import type { Combo } from '@/common/types/combo';
 import { promiseResultWithError } from '@/common/utils/Promises';
-import { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 import Image from 'next/image';
 import { FC, MouseEvent as ReactMouseEvent, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -17,16 +17,21 @@ import { ListItems, ListItemsProps } from '../list-items';
 import { LoadingBackdrop } from '../loading-backdrop';
 import { Modal } from '../modal';
 import { get } from 'lodash';
-interface ComboListItemsProps extends ListItemsProps<Combo> {
+import type { PlaylistCombo } from '@/common/types/playlist-combo';
+
+type ComboOrPlaylistCombo = Combo | PlaylistCombo;
+interface ComboListItemsProps extends ListItemsProps<ComboOrPlaylistCombo> {
   onSuccessSaveComboForm?: () => void;
   onSuccessDeleteCombo?: () => void;
-  rowIdentifier?: (combo: Combo) => string;
+  showComboDeleteIconValidation?: (
+    comboOrPlaylistCombo: ComboOrPlaylistCombo,
+  ) => boolean;
   useComboItemHeader?: boolean;
   isLoadingCombos?: boolean;
   emptyListMessage?: string;
-  highlitedCombos?: Array<number | Combo>;
+  highlitedCombos?: Array<number | Combo | PlaylistCombo>;
   onClickComboItem?: (
-    combo: Combo,
+    combo: ComboOrPlaylistCombo,
     event: ReactMouseEvent<HTMLDivElement, MouseEvent>,
     defaultAction: () => void,
   ) => void;
@@ -51,7 +56,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
   confirmDeleteMsg = 'Are you sure you want to delete this combo?',
   deleteComboAction,
   highlitedCombos = [],
-  rowIdentifier = ({ id }) => id,
+  showComboDeleteIconValidation,
   ...rest
 }) => {
   const [selectedItem, setSelectedItem] = useState<Combo>();
@@ -101,20 +106,21 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
         />
       </Modal>
 
-      <ListItems<Combo>
+      <ListItems<ComboOrPlaylistCombo>
         renderRow={(item) => {
-          const id = rowIdentifier(item);
+          const id = item.id;
           const isComboHighlited = highlitedCombos.some((comboOrComboId) => {
-            return (
-              String(get(comboOrComboId, 'id')) === id ||
-              String(comboOrComboId) === id
-            );
+            return get(comboOrComboId, 'id') === id || comboOrComboId === id;
           });
+          const combo: Combo = (
+            typeof get(item, 'combo') === 'string' ? item : item.combo
+          ) as Combo;
+
           return (
             <ComboPreview
-              combo={item.combo}
-              description={item.description}
-              game={item.game}
+              combo={combo.combo}
+              description={combo.description}
+              game={combo.game}
             >
               {(openComboDetails) => (
                 <ComboTranslation
@@ -122,12 +128,12 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                     isComboHighlited ? '' : 'hover:bg-light'
                   } cursor-pointer`}
                   backgroundColor={isComboHighlited ? 'light-active' : 'dark'}
-                  game={item.game}
-                  combo={item.combo}
+                  game={combo.game}
+                  combo={combo.combo}
                   onClick={(e) => {
                     e.stopPropagation();
                     const defaultAction = () => {
-                      setSelectedItem(item);
+                      setSelectedItem(combo);
                       openComboDetails();
                     };
                     if (onClickComboItem) {
@@ -136,46 +142,61 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                     defaultAction();
                   }}
                   rendeHeader={() => {
-                    const currentUserIsOwner = item.owner.id === user?.id;
+                    const currentUserIsOwner = combo.owner.id === user?.id;
+                    const showDeleteIcon = showComboDeleteIconValidation
+                      ? showComboDeleteIconValidation(item)
+                      : currentUserIsOwner;
+
                     return (
                       <header className=" w-full mb-4 items-center flex flex-wrap flex-row justify-between">
-                        <div className="flex flex-col">
-                          <h5 className="text-ellipsis truncate text-xl text-light font-primary font-bold">
-                            {item.name}
+                        <div className="flex flex-col max-w-[80%]">
+                          <h5
+                            title={combo.name}
+                            className="text-ellipsis truncate text-xl text-light font-primary font-bold"
+                          >
+                            {combo.name}
                           </h5>
                           {showComboOwner && (
-                            <span className="text-sub-info font-primary text-sm mt-[1px]">
+                            <span className="text-ellipsis truncate text-sub-info font-primary text-sm mt-[1px]">
                               Created by{' '}
-                              {currentUserIsOwner ? 'you' : item.owner.name}
+                              {currentUserIsOwner ? (
+                                <strong>you</strong>
+                              ) : (
+                                combo.owner.name
+                              )}
                             </span>
                           )}
                         </div>
-                        {useComboItemHeader && currentUserIsOwner && (
-                          <div className="flex-row flex gap-2">
-                            <AiFillEdit
-                              size={27}
-                              className="text-light cursor-pointer hover:text-primary"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedItem(item);
-                                openForm();
-                              }}
-                            />
-                            <ConfirmAction
-                              onConfirm={deleteCombo(item.id)}
-                              confirmationText={confirmDeleteMsg}
-                            >
-                              {({ openConfirmModal }) => (
-                                <AiFillDelete
-                                  size={27}
-                                  className="text-light cursor-pointer hover:text-primary"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    openConfirmModal();
-                                  }}
-                                />
-                              )}
-                            </ConfirmAction>
+                        {useComboItemHeader && (
+                          <div className="flex flex-row gap-2">
+                            {currentUserIsOwner && (
+                              <AiFillEdit
+                                size={27}
+                                className="text-light cursor-pointer hover:text-primary"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedItem(combo);
+                                  openForm();
+                                }}
+                              />
+                            )}
+                            {showDeleteIcon && (
+                              <ConfirmAction
+                                onConfirm={deleteCombo(item.id)}
+                                confirmationText={confirmDeleteMsg}
+                              >
+                                {({ openConfirmModal }) => (
+                                  <AiFillDelete
+                                    size={27}
+                                    className="text-light cursor-pointer hover:text-primary"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      openConfirmModal();
+                                    }}
+                                  />
+                                )}
+                              </ConfirmAction>
+                            )}
                           </div>
                         )}
                       </header>

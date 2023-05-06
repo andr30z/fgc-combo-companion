@@ -22,6 +22,7 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "types": ["node"],
       "@/*": ["./src/*"]
     },
     "downlevelIteration": true
