@@ -4,10 +4,12 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+
   reactStrictMode: true,
   webpack(config) {
     // config.resolve.alias[package.name] = path.resolve(__dirname, 'src');
-    config.resolve.alias['@'] = path.join(__dirname, 'src')
+    config.resolve.alias['@'] = path.join(__dirname, 'src');
+    console.log(config.resolve.alias)
     return config;
   },
 };
