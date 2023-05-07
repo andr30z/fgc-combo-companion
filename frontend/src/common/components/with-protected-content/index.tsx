@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useUser } from '@/common/hooks/user';
 import type { FC, ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { LoadingBackdrop } from '../loading-backdrop';
 
 // const Backdrop = dynamic(
@@ -16,16 +17,19 @@ import { LoadingBackdrop } from '../loading-backdrop';
 // );
 export interface WithProtectedRouteOptions {
   redirectTo?: string;
-  OnUnauthenticatedComponent?: ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  OnUnauthenticatedComponent?: ReactElement<any, any> | null;
 }
-export function WithProtectedRoute(
-  Component: FC,
+export function WithProtectedContent<ComponentProps>(
+  Component?: FC<ComponentProps>,
   {
     OnUnauthenticatedComponent = <div className="h-[50vh]" />,
     redirectTo = '/',
   }: WithProtectedRouteOptions = {},
 ) {
-  return function WithProtectedRouteComponent() {
+  return function WithProtectedRouteComponent(
+    props: ComponentProps & { children?: ReactNode },
+  ) {
     const { isAuthenticated, isLoadingSession, isLoadingUser } = useUser({
       redirectTo,
     });
@@ -47,6 +51,14 @@ export function WithProtectedRoute(
       );
     }
 
-    return isAuthenticated ? <Component /> : OnUnauthenticatedComponent;
+    return isAuthenticated ? (
+      <>
+        {Component && <Component {...(props as any)} />} {props.children}
+      </>
+    ) : (
+      OnUnauthenticatedComponent
+    );
   };
 }
+
+export const ProtectedContent = WithProtectedContent();

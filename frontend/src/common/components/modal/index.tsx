@@ -11,8 +11,8 @@ interface ModalProps {
 const widths = {
   xl: 'w-[90vw]',
   lg: 'w-[70vw]',
-  md: 'w-[50vw]',
-  sm: 'w-[30vw]',
+  md: 'w-[80vw] md:w-[50vw]',
+  sm: 'w-[50vw] md:w-[30vw]',
 };
 
 export const Modal = memo<ModalProps>(
@@ -22,7 +22,10 @@ export const Modal = memo<ModalProps>(
       <Dialog.Root modal open={isOpen}>
         <Dialog.Portal>
           <Dialog.Overlay
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             className="bg-black bg-opacity-70 data-[state=open]:animate-overlayShow fixed inset-0"
           />
           <Dialog.Content
@@ -34,7 +37,13 @@ export const Modal = memo<ModalProps>(
                   {title}
                 </Dialog.Title>
               )}
-              <Dialog.Close asChild onClick={onClose}>
+              <Dialog.Close
+                asChild
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+              >
                 <button
                   className="text-light bg-dark hover:bg-primary hover:text-light border-1 inline-flex h-[30px] w-[30px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                   aria-label="Close"

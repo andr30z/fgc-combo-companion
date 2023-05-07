@@ -16,24 +16,24 @@ export const Header = () => {
   const showSignupButton = !hasSession && pathname !== '/signup';
 
   const isLoadingSession = status === 'loading';
+
+  const onClickLogo = () => {
+    router.push(hasSession ? '/dashboard/combos' : '/');
+  };
   return (
-    <header className="px-10 sm:px20 py-5 bg-dark w-full flex justify-between items-center py-3 h-10vh">
+    <header className="layout-padding-x py-5 bg-dark w-full flex justify-between items-center h-10vh">
       <Image
         priority
         src="/full-logo.svg"
         height={200}
         width={200}
         alt="FGC Combo Companion logo"
-        onClick={() => {
-          router.push(hasSession ? '/dashboard' : '/');
-        }}
+        onClick={onClickLogo}
         className="hidden sm:block cursor-pointer"
       />
       <AppLogo
         extraStyles="inline-flex sm:hidden cursor-pointer"
-        onClick={() => {
-          router.push('/');
-        }}
+        onClick={onClickLogo}
       />
       {isLoadingSession ? (
         <div />

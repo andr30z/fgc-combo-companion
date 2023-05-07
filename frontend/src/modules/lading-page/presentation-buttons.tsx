@@ -1,4 +1,3 @@
-'use client';
 import { Button, ButtonProps } from '@/common/components/button';
 import Image from 'next/image';
 import type { FC } from 'react';
@@ -17,7 +16,8 @@ export const PresentationButtons: FC<PresentationProps> = () => {
         rightIcon={<BiTransfer size={23} />}
       />
       <Button
-        onClick={() => null}
+        renderAsInnerLink
+        href="/dashboard/combos"
         text="Create Combos"
         color="light"
         useHoverStyles={false}

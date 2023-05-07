@@ -14,7 +14,7 @@ import { Input } from '../input';
 import { LoadingBackdrop } from '../loading-backdrop';
 import type { FC } from 'react';
 
-type ComboWithId = Omit<Combo, 'id'> & { id?: string | number };
+type ComboWithId = Omit<Combo, 'id' | 'owner'> & { id?: string | number };
 interface ComboFormProps {
   initialValues?: ComboWithId;
   onSuccess?: () => void;
@@ -41,7 +41,7 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
         onSubmit={onSubmit(async (data) => {
           let hasFormError = false;
           if (combo.trim().length === 0) {
-            toast.error('Combo name is required');
+            toast.error('Combo is required');
             hasFormError = true;
           }
           if (name.trim().length === 0) {
@@ -55,10 +55,15 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
 
           startLoading();
           const { error } = await promiseResultWithError(
-            fgcApi.post(
-              `${FGC_API_URLS.COMBOS}${id ? '/' + id : ''}`,
-              data.values,
-            ),
+            fgcApi.request({
+              url: `${
+                id
+                  ? FGC_API_URLS.getUpdateComboUrl(id.toString())
+                  : FGC_API_URLS.COMBOS
+              }`,
+              data: data.values,
+              method: id ? 'PUT' : 'POST',
+            }),
           );
           closeLoading();
           if (error) {
@@ -73,7 +78,11 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
           if (onSuccess) {
             onSuccess();
           }
-          toast.success('Your combo was created successfully!');
+          toast.success(
+            id
+              ? 'Combo updated successfully'
+              : 'Your combo was created successfully!',
+          );
         })}
         className="w-full flex-1 gap-4 flex flex-col"
       >
@@ -94,8 +103,8 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
         <footer className="w-full flex items-center justify-center flex-1">
           <Button
             type="submit"
-            text="Submit"
-            extraStyles="self-center w-[130px]"
+            text={initialValues?.id ? 'Save Changes' : 'Submit'}
+            extraStyles="self-center min-w-[130px]"
           />
         </footer>
       </form>

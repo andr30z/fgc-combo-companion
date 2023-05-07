@@ -4,7 +4,7 @@ import {
 } from '@/common/constants/ComboMappers';
 import type {
   ComboStepTranslation,
-  ComboTranslation,
+  ComboTranslationInterface,
 } from '@/common/types/combo-translation';
 import { GameTypes } from '@/common/types/game-types';
 import {
@@ -22,13 +22,13 @@ interface UseComboTranslatorParams {
   combo: string;
 }
 
-export function tekken7Translator(combo: string): ComboTranslation {
+export function tekken7Translator(combo: string): ComboTranslationInterface {
   const translation = addSpacesToStringIfBeforePlus(combo)
     .split(',')
     .map((localStep) => {
       let localStepTranslated = String(localStep);
 
-      const toImageTranslation = splitMulti(
+      const imageTranslation = splitMulti(
         replaceSpacesWithinBraces(localStepTranslated),
         [' ', '/', '+ ', ' +'],
       ).map((localItem) => {
@@ -55,7 +55,7 @@ export function tekken7Translator(combo: string): ComboTranslation {
         combo: replaceComboWithSpaceFlagWithinBraces(
           localStepTranslated,
         ).replace(/{|}/g, ''),
-        actions: toImageTranslation.map((item) => ({
+        actions: imageTranslation.map((item) => ({
           ...item,
           action: replaceComboWithSpaceFlagWithinBraces(item.action).replace(
             /{|}/g,
@@ -72,6 +72,6 @@ export function tekken7Translator(combo: string): ComboTranslation {
 
 export function useComboTranslator({
   combo,
-}: UseComboTranslatorParams): ComboTranslation {
+}: UseComboTranslatorParams): ComboTranslationInterface {
   return useMemo(() => tekken7Translator(combo), [combo]);
 }

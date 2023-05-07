@@ -13,9 +13,7 @@ import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.ComboRepository;
 import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Set;
+import com.fgc.combo.companion.utils.URLDecoderUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -99,20 +97,54 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public PaginationResponse<Combo> getAllByComboNameOrTagName(
+  public PaginationResponse<Combo> getAllByOwnerAndSearchParam(
     PlaylistComboSearchDTO playlistComboSearchDTO,
     Pageable pageable
   ) {
-    String name = URLDecoder.decode(
-      playlistComboSearchDTO.getName(),
-      StandardCharsets.UTF_8
+    String name = URLDecoderUtil.decodeParamToUTF8(
+      playlistComboSearchDTO.getName()
+    );
+    User currentUser = userService.me();
+    return PaginationResponseMapper.create(
+      name == null
+        ? this.comboRepository.findAllByOwner(currentUser, pageable)
+        : this.comboRepository.findAllByOwnerAndSearchParam(
+            currentUser,
+            name,
+            pageable
+          )
+    );
+  }
+
+  @Override
+  public boolean deleteByIdAndCurrentUser(Long id) {
+    Combo combo =
+      this.comboRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
+    User me = userService.me();
+
+    if (
+      combo.getOwner().getId() != me.getId()
+    ) throw new OperationNotAllowedException(
+      "This combo belongs to another user!"
+    );
+
+    this.comboRepository.delete(combo);
+    return true;
+  }
+
+  @Override
+  public PaginationResponse<Combo> getAllBySearchParams(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
+    String name = URLDecoderUtil.decodeParamToUTF8(
+      playlistComboSearchDTO.getName()
     );
     return PaginationResponseMapper.create(
-      this.comboRepository.findAllByNameContainingIgnoreCaseOrTagsTitleInIgnoreCase(
-          name,
-          Set.of(name),
-          pageable
-        )
+      name == null
+        ? this.comboRepository.findAll(pageable)
+        : this.comboRepository.findAllBySearchParam(name, pageable)
     );
   }
 }

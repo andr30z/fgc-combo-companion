@@ -8,14 +8,16 @@ export interface ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
-  color?: 'primary' | 'secondary' | 'dark' | 'light';
+  color?: 'primary' | 'secondary' | 'dark' | 'light' | 'secondary-dark';
   extraStyles?: string;
   useHoverStyles?: boolean;
+  usePaddingStyles?: boolean;
   renderAsInnerLink?: boolean;
   href?: Url;
   dataTestId?: string;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  textClassName?: string;
 }
 
 const classMappings = {
@@ -25,11 +27,15 @@ const classMappings = {
   },
   secondary: {
     default: 'bg-secondary text-white',
-    hover: 'hover:bg-secondary-dark',
+    hover: 'hover:bg-light hover:text-secondary',
   },
   dark: {
     default: 'bg-dark text-white',
     hover: 'hover:bg-light hover:text-dark',
+  },
+  'secondary-dark': {
+    default: 'bg-secondary-dark text-white',
+    hover: 'hover:bg-light hover:text-secondary-dark',
   },
   light: {
     default: 'bg-light text-primary',
@@ -46,19 +52,25 @@ export const Button: FC<ButtonProps> = ({
   extraStyles = '',
   useHoverStyles = true,
   renderAsInnerLink = false,
+  disabled = false,
+  usePaddingStyles = true,
   href = '',
   dataTestId = '',
-  disabled = false,
   type = 'button',
+  textClassName = '',
 }) => {
-  const className = `px-4 py-2 font-semibold ${classMappings[color].default} ${
+  const className = `${usePaddingStyles ? 'px-4 py-2' : ''} font-semibold ${
+    classMappings[color].default
+  } ${
     useHoverStyles ? classMappings[color].hover : ''
   } rounded-full shadow-sm flex items-center justify-center gap-1 ${extraStyles}`;
 
   const children = (
     <>
       {leftIcon}
-      {text && <span className="font-primary text-lg">{text}</span>}
+      {text && (
+        <span className={`font-primary text-lg ${textClassName}`}>{text}</span>
+      )}
       {rightIcon}
     </>
   );

@@ -20,19 +20,13 @@
         "name": "next"
       }
     ],
+    "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    },
-    "downlevelIteration": true
+      "@": ["src/"],
+      "@/*": ["src/*"],
+    }
   },
-  "include": [
-    "src/**/*",
-    "pages/**/*",
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"],
 }

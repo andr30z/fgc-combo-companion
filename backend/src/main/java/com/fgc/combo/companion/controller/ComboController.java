@@ -9,6 +9,7 @@ import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.service.ComboService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,40 +30,48 @@ public class ComboController {
     this.comboMapper = comboMapper;
   }
 
-  @GetMapping
-  public PaginationResponse<ComboResponseDTO> getByNameAndTagsAndDescription(
-      PlaylistComboSearchDTO playlistComboSearchDTO,
-      Pageable pageable) {
+  @GetMapping("/me")
+  public PaginationResponse<ComboResponseDTO> getUserCombos(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
     return this.comboMapper.toPagination(
-        this.comboService.getAllByComboNameOrTagName(
+        this.comboService.getAllByOwnerAndSearchParam(
             playlistComboSearchDTO,
-            pageable));
+            pageable
+          )
+      );
+  }
+
+  @GetMapping
+  public PaginationResponse<ComboResponseDTO> getAllCombosBySearchParam(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  ) {
+    return this.comboMapper.toPagination(
+        this.comboService.getAllBySearchParams(playlistComboSearchDTO, pageable)
+      );
   }
 
   @PostMapping
   public ComboResponseDTO getByDTO(
-      @RequestBody @Validated CreateComboDTO comboDTO) {
+    @RequestBody @Validated CreateComboDTO comboDTO
+  ) {
     return this.comboMapper.toDTO((this.comboService.create(comboDTO)));
   }
 
-  @PutMapping("/{comboId}")
-  public ComboResponseDTO getByDTO(
-      @PathVariable Long comboId,
-      @RequestBody @Validated UpdateComboDTO comboDTO) {
+  @PutMapping("/{comboId}/me")
+  public ComboResponseDTO updateCombo(
+    @PathVariable Long comboId,
+    @RequestBody @Validated UpdateComboDTO comboDTO
+  ) {
     return this.comboMapper.toDTO(
-        (this.comboService.update(comboId, comboDTO)));
+        (this.comboService.update(comboId, comboDTO))
+      );
   }
 
-  @GetMapping("/me")
-  public PaginationResponse<ComboResponseDTO> getAllCombosByCurrentUser(
-      Pageable pageable) {
-    return this.comboMapper.toPagination(
-        this.comboService.getAllByCurrentUser(pageable));
-  }
-
-  @GetMapping("/{comboId}/me")
-  public ComboResponseDTO getByIdAndCurrentUser(@PathVariable Long comboId) {
-    return this.comboMapper.toDTO(
-        this.comboService.getByIdAndCurrentUser(comboId));
+  @DeleteMapping("/{comboId}/me")
+  public boolean deleteCombo(@PathVariable Long comboId) {
+    return this.comboService.deleteByIdAndCurrentUser(comboId);
   }
 }

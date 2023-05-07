@@ -18,14 +18,19 @@ module.exports = {
       },
       minHeight: {
         '80vh': '80vh',
-        "400": "400px",
+        400: '400px',
       },
       colors: {
         primary: { DEFAULT: '#d20606', darker: '#a80404' },
         secondary: '#da0037',
         dark: '#000000',
         'secondary-dark': '#363636',
-        light: { DEFAULT: '#fff', darker: '#f2f2f2' },
+        'sub-info': '#c3c3c3c3',
+        light: {
+          DEFAULT: '#fff',
+          darker: '#f2f2f2',
+          active: 'rgba(255, 255, 255, 0.3)',
+        },
       },
       fontFamily: {
         primary: ['var(--roboto-font)', ...fontFamily.sans],

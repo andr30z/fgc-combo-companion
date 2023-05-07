@@ -1,27 +1,51 @@
 'use client';
 import { useComboTranslator } from '@/common/hooks/combo-translator';
+import { ComboTranslationInterface } from '@/common/types/combo-translation';
 import { GameTypes } from '@/common/types/game-types';
 import Image from 'next/image';
 import { FC, Fragment } from 'react';
 interface ComboTranslationProps {
   game: GameTypes;
   combo: string;
+  className?: string;
+  rendeHeader?: (result: ComboTranslationInterface) => React.ReactNode;
+  backgroundColor?:
+    | 'primary'
+    | 'secondary'
+    | 'dark'
+    | 'secondary-dark'
+    | 'light-active';
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export const ComboTranslation: FC<ComboTranslationProps> = ({
   combo,
   game,
+  className = '',
+  rendeHeader,
+  backgroundColor = 'secondary',
+  onClick,
 }) => {
   const result = useComboTranslator({ combo, game });
   if (!result.combo) {
     return null;
   }
 
+  const nonTranslatedComboColors = {
+    primary: 'text-light bg-dark',
+    secondary: 'text-light bg-dark',
+    dark: 'text-light bg-primary',
+    'secondary-dark': 'text-light bg-primary',
+    'light-active': 'text-light bg-light-active',
+  };
+
   return (
     <div
       data-testid={result.combo}
-      className="text-light rounded p-3 bg-secondary flex items-center flex-row flex-wrap gap-1"
+      className={`text-light rounded p-3 bg-${backgroundColor} flex items-center flex-row flex-wrap gap-1 ${className}`}
+      onClick={onClick}
     >
+      {rendeHeader && rendeHeader(result)}
       {result.actions.map((action, index) => (
         <Fragment key={index.toString()}>
           {action.map((step, idx) => {
@@ -55,7 +79,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
               <span
                 data-testid={'combo-action-' + step.action}
                 key={step.action + idx.toString()}
-                className="bg-dark px-[5px] mx-[3px] text-xl font-semibold"
+                className={`${nonTranslatedComboColors[backgroundColor]} px-[5px] mx-[3px] text-xl font-semibold`}
               >
                 {step.action}{' '}
               </span>
