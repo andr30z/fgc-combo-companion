@@ -1,12 +1,11 @@
 import { Footer } from '@/common/components/footer';
 import { Header } from '@/common/components/header';
+import { ApiProvider } from '@/modules/home/api-provider';
 import { AuthProvider } from '@/modules/home/auth-provider';
-import { RefreshToken } from '@/modules/home/refresh-token';
 import { Toast } from '@/modules/home/toast';
 import type { Session } from 'next-auth';
 import { Roboto } from 'next/font/google';
 import './globals.css';
-import { ApiProvider } from '@/modules/home/api-provider';
 export const metadata = {
   title: 'FGC Combo Companion',
   description: 'FGC COMBO COMPANION',
@@ -31,7 +30,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-dark">
         <ApiProvider>
           <AuthProvider session={session}>
-            <RefreshToken />
+            {/* <RefreshToken /> */}
             <Header />
             {children}
             <Footer />

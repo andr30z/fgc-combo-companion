@@ -116,6 +116,10 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION: Record<
     imagePath: '/tekken7/buttons/1+3+4.svg',
     action: TEKKEN_7_COMBO_MAP['1+3+4'],
   },
+  '1+2+3': {
+    imagePath: '/tekken7/buttons/1+2+3.svg',
+    action: TEKKEN_7_COMBO_MAP['1+2+3'],
+  },
   '1+2+4': {
     imagePath: '/tekken7/buttons/1+2+4.svg',
     action: TEKKEN_7_COMBO_MAP['1+2+4'],

@@ -8,12 +8,12 @@ import type {
 } from '@/common/types/combo-translation';
 import { GameTypes } from '@/common/types/game-types';
 import {
-  addSpacesToStringIfBeforePlus,
+  addSpacesToStringBeforeAllPlusSigns,
   replaceAllExceptInBetweenCurlyBracket,
   replaceComboWithSpaceFlagWithinBraces,
   replaceSpacesWithinBraces,
   splitMulti,
-} from '@/common/utils/String';
+} from '@/common/utils/string';
 
 import { useMemo } from 'react';
 
@@ -23,7 +23,7 @@ interface UseComboTranslatorParams {
 }
 
 export function tekken7Translator(combo: string): ComboTranslationInterface {
-  const translation = addSpacesToStringIfBeforePlus(combo)
+  const translation = addSpacesToStringBeforeAllPlusSigns(combo)
     .split(',')
     .map((localStep) => {
       let localStepTranslated = String(localStep);
