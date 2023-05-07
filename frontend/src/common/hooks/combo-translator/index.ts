@@ -13,7 +13,7 @@ import {
   replaceComboWithSpaceFlagWithinBraces,
   replaceSpacesWithinBraces,
   splitMulti,
-} from '@/common/utils/string';
+} from '@/common/utils/_string';
 
 import { useMemo } from 'react';
 
