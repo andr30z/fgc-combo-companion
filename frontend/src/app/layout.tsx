@@ -5,6 +5,7 @@ import { AuthProvider } from '@/modules/home/auth-provider';
 import { Toast } from '@/modules/home/toast';
 import type { Session } from 'next-auth';
 import { Roboto } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 export const metadata = {
   title: 'FGC Combo Companion',
@@ -35,6 +36,7 @@ export default function RootLayout({
             {children}
             <Footer />
             <Toast />
+            <Analytics />
           </AuthProvider>
         </ApiProvider>
       </body>
