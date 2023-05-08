@@ -1,5 +1,3 @@
-import { ComboStepTranslation } from '../types/combo-translation';
-
 export const TEKKEN_7_COMBO_MAP = {
   F: 'FORWARD',
   N: 'NEUTRAL',
@@ -50,10 +48,7 @@ export const TEKKEN_7_COMBO_MAP = {
 
 export type Tekken7MapKey = keyof typeof TEKKEN_7_COMBO_MAP;
 
-export const TEKKEN_7_COMBO_MAP_TRANSLATION: Record<
-  string,
-  ComboStepTranslation
-> = {
+export const TEKKEN_7_COMBO_MAP_TRANSLATION = {
   F: { imagePath: '/tekken7/moves/f.svg', action: TEKKEN_7_COMBO_MAP.F },
   N: { imagePath: '/tekken7/moves/n.svg', action: TEKKEN_7_COMBO_MAP.N },
   D: { imagePath: '/tekken7/moves/d.svg', action: TEKKEN_7_COMBO_MAP.D },
@@ -115,6 +110,10 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION: Record<
   '1+3+4': {
     imagePath: '/tekken7/buttons/1+3+4.svg',
     action: TEKKEN_7_COMBO_MAP['1+3+4'],
+  },
+  '1+2+3': {
+    imagePath: '/tekken7/buttons/1+2+3.svg',
+    action: TEKKEN_7_COMBO_MAP['1+2+3'],
   },
   '1+2+4': {
     imagePath: '/tekken7/buttons/1+2+4.svg',
