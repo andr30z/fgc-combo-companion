@@ -1,77 +1,41 @@
-import {
-  Tekken7MapKey,
-  TEKKEN_7_COMBO_MAP_TRANSLATION,
-} from '@/common/constants/ComboMappers';
-import type {
-  ComboStepTranslation,
-  ComboTranslationInterface,
-} from '@/common/types/combo-translation';
+import type { ComboTranslationInterface } from '@/common/types/combo-translation';
 import { GameTypes } from '@/common/types/game-types';
-import {
-  addSpacesToStringIfBeforePlus,
-  replaceAllExceptInBetweenCurlyBracket,
-  replaceComboWithSpaceFlagWithinBraces,
-  replaceSpacesWithinBraces,
-  splitMulti,
-} from '@/common/utils/String';
+import { tekken7Translator } from '@/common/combo-translations/tekken7';
 
 import { useMemo } from 'react';
+import { ComboTranslatorType } from '@/common/types/combo-translator';
+import { streetFighter6Translator } from '@/common/combo-translations/street-fighter-6';
 
 interface UseComboTranslatorParams {
   game: GameTypes;
   combo: string;
 }
-
-export function tekken7Translator(combo: string): ComboTranslationInterface {
-  const translation = addSpacesToStringIfBeforePlus(combo)
-    .split(',')
-    .map((localStep) => {
-      let localStepTranslated = String(localStep);
-
-      const imageTranslation = splitMulti(
-        replaceSpacesWithinBraces(localStepTranslated),
-        [' ', '/', '+ ', ' +'],
-      ).map((localItem) => {
-        const upperCasedItem = localItem.toUpperCase();
-        const mapItem =
-          TEKKEN_7_COMBO_MAP_TRANSLATION[upperCasedItem as Tekken7MapKey];
-
-        if (mapItem) {
-          localStepTranslated = replaceAllExceptInBetweenCurlyBracket(
-            localStepTranslated,
-            localItem,
-            mapItem.action,
-          );
-          return mapItem;
-        }
-        const defaultComboStep: ComboStepTranslation = {
-          action: upperCasedItem,
-          imagePath: '',
-        };
-        return defaultComboStep;
-      });
-
-      return {
-        combo: replaceComboWithSpaceFlagWithinBraces(
-          localStepTranslated,
-        ).replace(/{|}/g, ''),
-        actions: imageTranslation.map((item) => ({
-          ...item,
-          action: replaceComboWithSpaceFlagWithinBraces(item.action).replace(
-            /{|}/g,
-            '',
-          ),
-        })),
-      };
-    });
-  return {
-    combo: translation.map((item) => item.combo).join(', '),
-    actions: translation.map((item) => item.actions),
-  };
-}
+const translatorDirectionary: Record<GameTypes, ComboTranslatorType> = {
+  TEKKEN_7: tekken7Translator,
+  STREET_FIGHTER_6: streetFighter6Translator,
+  GUILTY_GEAR_STRIVE: () => ({
+    combo: '',
+    actions: [],
+  }),
+  KOF_XV: () => ({
+    combo: '',
+    actions: [],
+  }),
+  SFV: () => ({
+    actions: [],
+    combo: '',
+  }),
+};
 
 export function useComboTranslator({
   combo,
+  game,
 }: UseComboTranslatorParams): ComboTranslationInterface {
-  return useMemo(() => tekken7Translator(combo), [combo]);
+  const comboTranslator = (): ComboTranslationInterface => {
+    const translatorFunction = translatorDirectionary[game];
+    return translatorFunction
+      ? translatorFunction(combo)
+      : { actions: [], combo: '' };
+  };
+  return useMemo(comboTranslator, [combo]);
 }

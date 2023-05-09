@@ -48,11 +48,11 @@ export const GameSelect: FC<{
   return (
     <div className="flex flex-col text-light w-full">
       <label className="my-4">
-        <span className="px-4 py-2 font-semibold text-sm bg-secondary text-light rounded-full shadow-sm font-primary font-black">
+        <span className="px-4 py-2 text-sm bg-secondary text-light rounded-full shadow-sm font-primary font-black">
           Select a game:
         </span>
       </label>
-      <div className="flex flex-row gap-4 w-full">
+      <div className="flex flex-row flex-wrap gap-4 w-full">
         <Option
           option={GameTypes.TEKKEN_7}
           selectedOption={selectedOption}
@@ -61,11 +61,18 @@ export const GameSelect: FC<{
         />
         <Option
           selectedOption={selectedOption}
+          option={GameTypes.STREET_FIGHTER_6}
+          onSelect={onSelect}
+          url="/street-fighter-6/street-fighter-6-select.jpg"
+        />
+        <Option
+          selectedOption={selectedOption}
           option={GameTypes.GUILTY_GEAR_STRIVE}
           onSelect={onSelect}
           url="/guilty-gear-strive/guilty-gear-strive-select.jpg"
           showSoonMessage
         />
+
         <Option
           selectedOption={selectedOption}
           option={GameTypes.STREET_FIGHTER_V}

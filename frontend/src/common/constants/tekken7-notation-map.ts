@@ -43,7 +43,7 @@ export const TEKKEN_7_COMBO_MAP = {
   'F!': 'FLOOR-BREAK',
   'FB!': 'FLOOR-BREAK',
   'BB!': 'BALCONY-BREAK',
-  SUGARCOATKAZ: "I'M NOT GONNA  SUGARCOAT IT",
+  SUGARCOATKAZ: "I'M NOT GONNA SUGARCOAT IT",
 } as const;
 
 export type Tekken7MapKey = keyof typeof TEKKEN_7_COMBO_MAP;

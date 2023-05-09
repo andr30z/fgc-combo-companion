@@ -4,6 +4,7 @@ import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { GameSelect } from '@/common/components/game-select';
 import { GameTypes } from '@/common/types/game-types';
+import { get } from 'lodash';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -22,9 +23,18 @@ const randomCombos = [
 ];
 export default function ComboTranslator() {
   const params = useSearchParams();
-  const comboSearchParam = params?.get('combo');
+  const comboParam = params?.get('combo');
+  const gameParam = params?.get('game');
+
+  const gameInitialValue = gameParam ? gameParam : GameTypes.TEKKEN_7;
+
+  const [game, setGame] = useState(
+    get(GameTypes, gameInitialValue)
+      ? (gameInitialValue as GameTypes)
+      : GameTypes.TEKKEN_7,
+  );
   const [combo, setCombo] = useState(
-    comboSearchParam ? decodeURIComponent(comboSearchParam) : '',
+    comboParam ? decodeURIComponent(comboParam) : '',
   );
   const setRandomCombo = (): void => {
     const randomCombo =
@@ -37,9 +47,12 @@ export default function ComboTranslator() {
 
   return (
     <main className="w-full h-full min-h-80vh flex flex-col items-center justify-center px-10 gap-24">
-      <GameSelect onSelect={() => null} selectedOption={GameTypes.TEKKEN_7} />
+      <GameSelect
+        onSelect={(selected) => setGame(selected)}
+        selectedOption={game}
+      />
       <div className="w-full flex items-center justify-center flex-col gap-2">
-        <ComboInput combo={combo} setCombo={setCombo} />
+        <ComboInput combo={combo} game={game} setCombo={setCombo} />
         <div className="gap-2 flex flex-row flex-wrap justify-center">
           <Button
             dataTestId="random-combo-button"
@@ -54,9 +67,13 @@ export default function ComboTranslator() {
               leftIcon={<BsFillShareFill size={17} />}
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `https://fgc-combo-companion.vercel.app/combo-translator?combo=${encodeURIComponent(
+                  `${
+                    process.env.NODE_ENV === 'production'
+                      ? 'https://fgc-combo-companion.vercel.app'
+                      : 'http://localhost:3000'
+                  }/combo-translator?combo=${encodeURIComponent(
                     combo,
-                  )}&game=${GameTypes.TEKKEN_7}`,
+                  )}&game=${game}`,
                 );
                 toast.success('The share link was copied to the clipboard');
               }}
@@ -65,7 +82,7 @@ export default function ComboTranslator() {
         </div>
       </div>
       {combo ? (
-        <ComboTranslation combo={combo} game={GameTypes.TEKKEN_7} />
+        <ComboTranslation key={game} combo={combo} game={game} />
       ) : (
         <div className="h-[125px]" />
       )}
