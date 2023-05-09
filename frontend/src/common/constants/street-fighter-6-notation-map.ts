@@ -4,6 +4,7 @@ export const STREET_FIGHTER_6_COMBO_MAP = {
   B: 'BACK',
   S: 'STANDING',
   C: 'CROUCHING',
+  CR: 'CROUCHING',
   D: 'DOWN',
   J: 'JUMPING',
   DF: 'DOWN-FORWARD',
@@ -36,6 +37,10 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = {
   S: {
     imagePath: '',
     action: STREET_FIGHTER_6_COMBO_MAP.S,
+  },
+  CR: {
+    imagePath: '',
+    action: STREET_FIGHTER_6_COMBO_MAP.CR,
   },
   C: {
     imagePath: '',
