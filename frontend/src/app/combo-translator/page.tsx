@@ -11,7 +11,7 @@ import { toast } from 'react-hot-toast';
 import { BsFillShareFill } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
 
-const randomCombos = [
+const tekken7Combos = [
   'f,n,d,df+2, f,n,d,df+2, f,n,d,df+2, B+2,1 S!, {DASH} f,n,d,df+4,1 {CHAR: KAZUYA}',
   'f+1+2 S!  f,f+4,3 {delay last hit}  df+4,2,1+2 {CHAR: FENG WEI}',
   'FC df+1, ws+2,2  S!  wr+2+4 {CHAR: KING}',
@@ -21,13 +21,27 @@ const randomCombos = [
   '[ 3,4 ] {BT} b+2,3, b+2,4,2 S!, f,f+3, f,f+4 {CHAR: MASTER RAVEN}',
   'SS 2,1, df+3 df+1  df+3  db+2,4 S!, wr+2+4 {CHAR: ARMOR KING}',
 ];
+
+const streetFighter6 = [
+  'C.LP PC, C.MK > DP HP {CHAR: RYU}',
+  's.hp PC > DR > f.hp, c.mp > qcf kk, b.hk > dp hp > LVL3 {CHAR: RYU}',
+  's.mp, b.hp > DR > s.hk, c.hp > dp hp {CHAR: RYU}',
+  'j.HK, LP > MP > HP xx qcb+PP, qcb+HP xx {SA3} {CHAR: LUKE}',
+];
+
+const combos = {
+  [GameTypes.TEKKEN_7]: tekken7Combos,
+  [GameTypes.STREET_FIGHTER_6]: streetFighter6,
+  [GameTypes.STREET_FIGHTER_V]: streetFighter6,
+  [GameTypes.GUILTY_GEAR_STRIVE]: streetFighter6,
+  [GameTypes.KOF_XV]: streetFighter6,
+};
 export default function ComboTranslator() {
   const params = useSearchParams();
   const comboParam = params?.get('combo');
   const gameParam = params?.get('game');
 
   const gameInitialValue = gameParam ? gameParam : GameTypes.TEKKEN_7;
-
   const [game, setGame] = useState(
     get(GameTypes, gameInitialValue)
       ? (gameInitialValue as GameTypes)
@@ -36,6 +50,8 @@ export default function ComboTranslator() {
   const [combo, setCombo] = useState(
     comboParam ? decodeURIComponent(comboParam) : '',
   );
+
+  const randomCombos = combos[game] || [];
   const setRandomCombo = (): void => {
     const randomCombo =
       randomCombos[Math.floor(Math.random() * randomCombos.length)];

@@ -68,7 +68,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
                   key={step.action + idx.toString()}
                   src={step.imagePath}
                   alt={step.action}
-                  unoptimized
+                  title={step.action}
                   width={step.width ?? 40}
                   height={step.height ?? 50}
                   className="m-[1px]"

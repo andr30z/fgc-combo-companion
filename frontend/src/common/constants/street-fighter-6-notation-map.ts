@@ -10,6 +10,7 @@ export const STREET_FIGHTER_6_COMBO_MAP = {
   DF: 'DOWN-FORWARD',
   DB: 'DOWN-BACK',
   UF: 'UP-FORWAD',
+  PC: 'PUNISH COUNTER',
   UB: 'UP-BACK',
   QCF: 'QUARTER CIRCLE FORWARD',
   QCB: 'QUARTER CIRCLE BACK',
@@ -29,6 +30,8 @@ export const STREET_FIGHTER_6_COMBO_MAP = {
   XX: 'SPECIAL CANCEL',
   DI: 'DRIVE IMPACT',
   DRC: 'DRIVE RUSH CANCEL',
+  DR: 'DRIVE RUSH',
+  DP: 'DRAGON PUNCH MOTION',
 } as const;
 
 export type StreetFighter6MapKey = keyof typeof STREET_FIGHTER_6_COMBO_MAP;
@@ -51,35 +54,35 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = {
     action: STREET_FIGHTER_6_COMBO_MAP.J,
   },
   F: {
-    imagePath: '',
+    imagePath: '/street-fighter-6/moves/forward.png',
     action: STREET_FIGHTER_6_COMBO_MAP.F,
   },
   U: {
-    imagePath: '',
+    imagePath: '/street-fighter-6/moves/up.png',
     action: STREET_FIGHTER_6_COMBO_MAP.U,
   },
   D: {
-    imagePath: '',
+    imagePath: '/street-fighter-6/moves/down.png',
     action: STREET_FIGHTER_6_COMBO_MAP.D,
   },
   B: {
-    imagePath: '',
+    imagePath: '/street-fighter-6/moves/back.png',
     action: STREET_FIGHTER_6_COMBO_MAP.B,
   },
   DF: {
-    imagePath: '',
+    imagePath: '/street-fighter-6/moves/downforward.png',
     action: STREET_FIGHTER_6_COMBO_MAP.DF,
   },
   DB: {
-    imagePath: '',
+    imagePath: '/street-fighter-6/moves/downback.png',
     action: STREET_FIGHTER_6_COMBO_MAP.DB,
   },
   UF: {
-    imagePath: '',
+    imagePath: '/street-fighter-6/moves/upforward.png',
     action: STREET_FIGHTER_6_COMBO_MAP.UF,
   },
   UB: {
-    imagePath: '',
+    imagePath: '/street-fighter-6/moves/upbackward.png',
     action: STREET_FIGHTER_6_COMBO_MAP.UB,
   },
   QCF: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.QCF },
@@ -87,17 +90,50 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = {
   CH: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.CH },
   HCF: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.HCF },
   HCB: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.HCB },
-  K: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.K },
-  P: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.P },
+  K: {
+    imagePath: '/street-fighter-6/buttons/kick.png',
+    action: STREET_FIGHTER_6_COMBO_MAP.K,
+  },
+  P: {
+    imagePath: '/street-fighter-6/buttons/punch.png',
+    action: STREET_FIGHTER_6_COMBO_MAP.P,
+  },
+  DP: {
+    imagePath: '',
+    action: STREET_FIGHTER_6_COMBO_MAP.DP,
+  },
+  PC: {
+    imagePath: '',
+    action: STREET_FIGHTER_6_COMBO_MAP.PC,
+  },
   PPP: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.PPP },
   KKK: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.KKK },
-  LP: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.LP },
-  MP: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.MP },
-  HP: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.HP },
-  LK: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.LK },
-  HK: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.HK },
-  MK: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.MK },
+  LP: {
+    imagePath: '/street-fighter-6/buttons/light_punch.png',
+    action: STREET_FIGHTER_6_COMBO_MAP.LP,
+  },
+  MP: {
+    imagePath: '/street-fighter-6/buttons/mid_punch.png',
+    action: STREET_FIGHTER_6_COMBO_MAP.MP,
+  },
+  HP: {
+    imagePath: '/street-fighter-6/buttons/heavy_punch.png',
+    action: STREET_FIGHTER_6_COMBO_MAP.HP,
+  },
+  LK: {
+    imagePath: '/street-fighter-6/buttons/light_kick.png',
+    action: STREET_FIGHTER_6_COMBO_MAP.LK,
+  },
+  HK: {
+    imagePath: '/street-fighter-6/buttons/heavy_kick.png',
+    action: STREET_FIGHTER_6_COMBO_MAP.HK,
+  },
+  MK: {
+    imagePath: '/street-fighter-6/buttons/mid_kick.png',
+    action: STREET_FIGHTER_6_COMBO_MAP.MK,
+  },
   XX: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.XX },
   DRC: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.DRC },
+  DR: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.DR },
   DI: { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.DI },
 } as const;
