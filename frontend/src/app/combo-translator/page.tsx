@@ -27,6 +27,9 @@ const streetFighter6 = [
   's.hp PC > DR > f.hp, c.mp > qcf kk, b.hk > dp hp > LVL3 {CHAR: RYU}',
   's.mp, b.hp > DR > s.hk, c.hp > dp hp {CHAR: RYU}',
   'j.HK, LP > MP > HP xx qcb+PP, qcb+HP xx {SA3} {CHAR: LUKE}',
+  'C.MK, QCF HK+MK, MK, DP HP {(1 Charge)} {CHAR: Juri}',
+  'DR F+HK, C.MP, QCF MP, F.P, F.P {CHAR: Jamie}',
+  'HCB K, S.MP, S.LK, QCF LP, F.LP, F.LP {CHAR: Jamie}',
 ];
 
 const combos = {

@@ -13,7 +13,7 @@ type DefaultComboTranslatorParams = {
   map: {
     [x: string]: {
       action: string;
-      imagePath: string;
+      imagePath: string | Array<string>;
     };
   };
 };

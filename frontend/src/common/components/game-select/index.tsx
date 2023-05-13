@@ -22,10 +22,10 @@ const Option: React.FC<{
     >
       <Image
         alt="next step"
-        className="h-full scale-100 group-hover:scale-110 ease-in duration-500"
+        className="h-full w-full scale-100 group-hover:scale-110 ease-in duration-500"
         height={230}
-        src={url}
         width={300}
+        src={url}
       />
       {!selected && (
         <div className="absolute top-0 bg-primary h-full w-full opacity-30" />
@@ -44,7 +44,8 @@ const Option: React.FC<{
 export const GameSelect: FC<{
   selectedOption: GameTypes;
   onSelect: OnSelectFunction;
-}> = ({ onSelect, selectedOption }) => {
+}> = (props) => {
+  const { onSelect, selectedOption } = props;
   return (
     <div className="flex flex-col text-light w-full">
       <label className="my-4">
@@ -52,7 +53,7 @@ export const GameSelect: FC<{
           Select a game:
         </span>
       </label>
-      <div className="flex flex-row flex-wrap gap-4 w-full">
+      <div className="flex flex-row flex-wrap sm:flex-nowrap gap-4 w-full">
         <Option
           option={GameTypes.TEKKEN_7}
           selectedOption={selectedOption}
@@ -70,14 +71,6 @@ export const GameSelect: FC<{
           option={GameTypes.GUILTY_GEAR_STRIVE}
           onSelect={onSelect}
           url="/guilty-gear-strive/guilty-gear-strive-select.jpg"
-          showSoonMessage
-        />
-
-        <Option
-          selectedOption={selectedOption}
-          option={GameTypes.STREET_FIGHTER_V}
-          onSelect={onSelect}
-          url="/street-fighter-5/street-fighter-5-select.jpg"
           showSoonMessage
         />
       </div>

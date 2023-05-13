@@ -63,17 +63,20 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
             }
 
             if (step.imagePath) {
-              return (
+              const stepArray = Array.isArray(step.imagePath)
+                ? step.imagePath
+                : [step.imagePath];
+              return stepArray.map((imagePath, idx) => (
                 <Image
-                  key={step.action + idx.toString()}
-                  src={step.imagePath}
+                  key={imagePath + step.action + idx.toString()}
+                  src={imagePath}
                   alt={step.action}
                   title={step.action}
                   width={step.width ?? 40}
                   height={step.height ?? 50}
                   className="m-[1px]"
                 />
-              );
+              ));
             }
             return (
               <span
