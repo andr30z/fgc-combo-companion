@@ -1,21 +1,33 @@
-import type { ChangeEventHandler, FC } from 'react';
+import { ChangeEventHandler, FC, useMemo } from 'react';
 import { Input } from '../input';
 import { PopOver } from '../pop-over';
 import { AiFillQuestionCircle } from 'react-icons/ai';
-import { TEKKEN_7_COMBO_MAP } from '@/common/constants/ComboMappers';
+import { TEKKEN_7_COMBO_MAP } from '@/common/constants/tekken7-notation-map';
+import { GameTypes } from '@/common/types/game-types';
+import { STREET_FIGHTER_6_COMBO_MAP } from '@/common/constants/street-fighter-6-notation-map';
+import { get } from 'lodash';
 interface ComboInputInterface {
   combo: string;
+  game?: GameTypes;
   setCombo?: React.Dispatch<React.SetStateAction<string>>;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-const comboMap = Object.keys(TEKKEN_7_COMBO_MAP);
+const comboMapsDirectionary = {
+  [GameTypes.TEKKEN_7]: TEKKEN_7_COMBO_MAP,
+  [GameTypes.STREET_FIGHTER_6]: STREET_FIGHTER_6_COMBO_MAP,
+} as const;
 
 export const ComboInput: FC<ComboInputInterface> = ({
   combo,
+  game = GameTypes.TEKKEN_7,
   setCombo,
   onChange,
 }) => {
+  const comboMap = useMemo(() => {
+    const selectedMap = get(comboMapsDirectionary, game);
+    return selectedMap ? Object.keys(selectedMap) : [];
+  }, [game]);
   return (
     <Input
       value={combo}

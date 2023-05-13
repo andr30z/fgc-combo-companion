@@ -43,7 +43,7 @@ export const TEKKEN_7_COMBO_MAP = {
   'F!': 'FLOOR-BREAK',
   'FB!': 'FLOOR-BREAK',
   'BB!': 'BALCONY-BREAK',
-  SUGARCOATKAZ: "I'M NOT GONNA  SUGARCOAT IT",
+  SUGARCOATKAZ: "I'M NOT GONNA SUGARCOAT IT",
 } as const;
 
 export type Tekken7MapKey = keyof typeof TEKKEN_7_COMBO_MAP;
@@ -62,11 +62,43 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = {
     action: TEKKEN_7_COMBO_MAP['S!'],
   },
   FC: { imagePath: '', action: TEKKEN_7_COMBO_MAP.FC },
-  QCF: { imagePath: '', action: TEKKEN_7_COMBO_MAP.QCF },
-  QCB: { imagePath: '', action: TEKKEN_7_COMBO_MAP.QCB },
+  QCF: {
+    imagePath: [
+      '/tekken7/moves/d.svg',
+      '/tekken7/moves/df.svg',
+      '/tekken7/moves/f.svg',
+    ],
+    action: TEKKEN_7_COMBO_MAP.QCF,
+  },
+  QCB: {
+    imagePath: [
+      '/tekken7/moves/d.svg',
+      '/tekken7/moves/db.svg',
+      '/tekken7/moves/b.svg',
+    ],
+    action: TEKKEN_7_COMBO_MAP.QCB,
+  },
   CH: { imagePath: '', action: TEKKEN_7_COMBO_MAP.CH },
-  HCF: { imagePath: '', action: TEKKEN_7_COMBO_MAP.HCF },
-  HCB: { imagePath: '', action: TEKKEN_7_COMBO_MAP.HCB },
+  HCF: {
+    imagePath: [
+      '/tekken7/moves/b.svg',
+      '/tekken7/moves/db.svg',
+      '/tekken7/moves/d.svg',
+      '/tekken7/moves/df.svg',
+      '/tekken7/moves/f.svg',
+    ],
+    action: TEKKEN_7_COMBO_MAP.HCF,
+  },
+  HCB: {
+    imagePath: [
+      '/tekken7/moves/f.svg',
+      '/tekken7/moves/df.svg',
+      '/tekken7/moves/d.svg',
+      '/tekken7/moves/db.svg',
+      '/tekken7/moves/b.svg',
+    ],
+    action: TEKKEN_7_COMBO_MAP.HCB,
+  },
   CD: { imagePath: '', action: TEKKEN_7_COMBO_MAP.CD },
   SS: { imagePath: '', action: TEKKEN_7_COMBO_MAP.SS },
   SSR: { imagePath: '', action: TEKKEN_7_COMBO_MAP.SSR },
@@ -135,4 +167,4 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = {
     width: 80,
     height: 80,
   },
-} as const;
+};

@@ -3,6 +3,7 @@ export enum GameTypes {
   STREET_FIGHTER_V = 'SFV',
   GUILTY_GEAR_STRIVE = 'GUILTY_GEAR_STRIVE',
   KOF_XV = 'KOF_XV',
+  STREET_FIGHTER_6 = 'STREET_FIGHTER_6',
 }
 
 export const COMBO_TYPES = {

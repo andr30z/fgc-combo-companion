@@ -22,10 +22,10 @@ const Option: React.FC<{
     >
       <Image
         alt="next step"
-        className="h-full scale-100 group-hover:scale-110 ease-in duration-500"
+        className="h-full w-full scale-100 group-hover:scale-110 ease-in duration-500"
         height={230}
-        src={url}
         width={300}
+        src={url}
       />
       {!selected && (
         <div className="absolute top-0 bg-primary h-full w-full opacity-30" />
@@ -44,15 +44,16 @@ const Option: React.FC<{
 export const GameSelect: FC<{
   selectedOption: GameTypes;
   onSelect: OnSelectFunction;
-}> = ({ onSelect, selectedOption }) => {
+}> = (props) => {
+  const { onSelect, selectedOption } = props;
   return (
     <div className="flex flex-col text-light w-full">
       <label className="my-4">
-        <span className="px-4 py-2 font-semibold text-sm bg-secondary text-light rounded-full shadow-sm font-primary font-black">
+        <span className="px-4 py-2 text-sm bg-secondary text-light rounded-full shadow-sm font-primary font-black">
           Select a game:
         </span>
       </label>
-      <div className="flex flex-row gap-4 w-full">
+      <div className="flex flex-row flex-wrap sm:flex-nowrap gap-4 w-full">
         <Option
           option={GameTypes.TEKKEN_7}
           selectedOption={selectedOption}
@@ -61,16 +62,15 @@ export const GameSelect: FC<{
         />
         <Option
           selectedOption={selectedOption}
-          option={GameTypes.GUILTY_GEAR_STRIVE}
+          option={GameTypes.STREET_FIGHTER_6}
           onSelect={onSelect}
-          url="/guilty-gear-strive/guilty-gear-strive-select.jpg"
-          showSoonMessage
+          url="/street-fighter-6/street-fighter-6-select.jpg"
         />
         <Option
           selectedOption={selectedOption}
-          option={GameTypes.STREET_FIGHTER_V}
+          option={GameTypes.GUILTY_GEAR_STRIVE}
           onSelect={onSelect}
-          url="/street-fighter-5/street-fighter-5-select.jpg"
+          url="/guilty-gear-strive/guilty-gear-strive-select.jpg"
           showSoonMessage
         />
       </div>
