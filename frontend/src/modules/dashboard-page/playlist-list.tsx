@@ -15,7 +15,7 @@ import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
 import type { Playlist } from '@/common/types/playlist';
-import { promiseResultWithError } from '@/common/utils/___';
+import { promiseResultWithError } from '@/common/utils/promises';
 import { FC, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { toast } from 'react-hot-toast';
