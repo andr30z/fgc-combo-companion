@@ -2,7 +2,7 @@ import { useBoolean } from '@/common/hooks/boolean';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import type { Combo } from '@/common/types/combo';
-import { promiseResultWithError } from '@/common/utils/Promises';
+import { promiseResultWithError } from '@/common/utils/promises';
 import type { AxiosResponse } from 'axios';
 import Image from 'next/image';
 import { FC, MouseEvent as ReactMouseEvent, useState } from 'react';
