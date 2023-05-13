@@ -3,6 +3,8 @@ export interface ComboStepTranslation {
   imagePath: string | Array<string>;
   width?: number;
   height?: number;
+  style?: string;
+  actionTitle?: string;
 }
 
 export interface ComboTranslationInterface {

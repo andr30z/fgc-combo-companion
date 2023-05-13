@@ -51,6 +51,7 @@ export const STREET_FIGHTER_6_COMBO_MAP = {
   LVL1: 'Super Art 1',
   LVL2: 'Super Art 2',
   LVL3: 'Super Art 3',
+  '>': '>',
 } as const;
 
 export type StreetFighter6MapKey = keyof typeof STREET_FIGHTER_6_COMBO_MAP;
@@ -59,6 +60,12 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = {
   S: {
     imagePath: '',
     action: STREET_FIGHTER_6_COMBO_MAP.S,
+  },
+  '>': {
+    imagePath: '',
+    actionTitle: 'LINK',
+    action: STREET_FIGHTER_6_COMBO_MAP['>'],
+    style: 'bg-transparent text-3xl font-semibold',
   },
   CR: {
     imagePath: '',
