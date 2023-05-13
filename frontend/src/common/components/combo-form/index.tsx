@@ -4,7 +4,7 @@ import { useForm } from '@/common/hooks/form';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import type { Combo } from '@/common/types/combo';
 import { GameTypes } from '@/common/types/game-types';
-import { promiseResultWithError } from '@/common/utils/promises';
+import { promiseResultWithError } from '@/common/utils/___';
 import toast from 'react-hot-toast';
 import { Button } from '../button';
 import { ComboInput } from '../combo-input';
