@@ -33,7 +33,7 @@ export function replaceComboWithSpaceFlagWithinBraces(str: string) {
   return str.replace(/%_#/g, ' ');
 }
 
-export function addSpacesToStringIfBeforePlus(s: string) {
+export function addSpacesToStringBeforeAllPlusSigns(s: string) {
   const pattern = /[a-zA-Z]\+/g;
   const result = s.replace(pattern, '$& ');
   return result;
