@@ -27,7 +27,6 @@ const translatorDirectionary: Record<GameTypes, ComboTranslatorType> = {
   }),
 };
 
-
 export function useComboTranslator({
   combo,
   game,

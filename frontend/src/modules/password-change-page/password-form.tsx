@@ -3,7 +3,7 @@ import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { PasswordChangeForm } from '@/common/components/password-change-form';
 import { useBoolean } from '@/common/hooks/boolean';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
-import { promiseResultWithError } from '@/common/utils/Promises';
+import { promiseResultWithError } from '@/common/utils/promises';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { toast } from 'react-hot-toast';

@@ -2,7 +2,7 @@ import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
 import { AuthProviderTypes } from '@/common/types/auth-types';
 import type { LoginRequest, LoginResponse } from '@/common/types/login';
 import type { User } from '@/common/types/user';
-import { promiseResultWithError } from '@/common/utils/Promises';
+import { promiseResultWithError } from '@/common/utils/promises';
 import type { AxiosResponse } from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { NextAuthOptions, User as NextAuthUser } from 'next-auth';

@@ -5,7 +5,7 @@ import {
   replaceComboWithSpaceFlagWithinBraces,
   replaceSpacesWithinBraces,
   splitMulti,
-} from '../utils/String';
+} from '../utils/string';
 
 type DefaultComboTranslatorParams = {
   combo: string;
