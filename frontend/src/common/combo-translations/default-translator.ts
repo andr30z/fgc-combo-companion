@@ -10,6 +10,7 @@ import {
 type DefaultComboTranslatorParams = {
   combo: string;
   comboSeparators: Array<string>;
+  upperCaseCombo?: boolean;
   map: {
     [x: string]: {
       action: string;
@@ -22,6 +23,7 @@ export function defaultComboTranslator({
   combo,
   map,
   comboSeparators,
+  upperCaseCombo = true,
 }: DefaultComboTranslatorParams) {
   const translation = addSpacesToStringIfBeforePlus(combo)
     .split(',')
@@ -32,7 +34,9 @@ export function defaultComboTranslator({
         replaceSpacesWithinBraces(localStepTranslated),
         comboSeparators,
       ).map((localItem) => {
-        const upperCasedItem = localItem.toUpperCase();
+        const upperCasedItem = upperCaseCombo
+          ? localItem.toUpperCase()
+          : localItem;
         const mapItem = map[upperCasedItem];
 
         if (mapItem) {
