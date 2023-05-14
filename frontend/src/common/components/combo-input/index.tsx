@@ -48,8 +48,8 @@ export const ComboInput: FC<ComboInputInterface> = ({
               Available commands: <br />
               <div>
                 {comboMap.map((command, index) => (
-                  <span key={command}>
-                    {command.toLocaleLowerCase()}
+                  <span key={command + '_' + index}>
+                    {command}
                     {comboMap.length - 1 === index ? '' : ', '}
                   </span>
                 ))}
