@@ -99,7 +99,13 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
         />
         <GameSelect onSelect={setValue('game')} selectedOption={game} />
         <ComboInput combo={combo} onChange={onChange('combo')} />
-        {combo && <ComboTranslation combo={combo} game={game} />}
+        {combo && (
+          <ComboTranslation
+            key={`gameselectkey_${id ?? ''}-${game}`}
+            combo={combo}
+            game={game}
+          />
+        )}
         <footer className="w-full flex items-center justify-center flex-1">
           <Button
             type="submit"

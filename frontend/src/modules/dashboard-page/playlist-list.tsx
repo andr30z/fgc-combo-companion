@@ -8,16 +8,14 @@ import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { Modal } from '@/common/components/modal';
 import { Pagination } from '@/common/components/pagination';
 import { PlaylistForm } from '@/common/components/playlist-form';
-import { useApiQuery } from '@/common/hooks/api-query';
 import { useBoolean } from '@/common/hooks/boolean';
-import { useDebounce } from '@/common/hooks/debounce';
+import { usePaginatedSearch } from '@/common/hooks/paginated-search';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
 import type { Playlist } from '@/common/types/playlist';
 import { promiseResultWithError } from '@/common/utils/promises';
 import { FC, useState } from 'react';
-import { flushSync } from 'react-dom';
 import { toast } from 'react-hot-toast';
 import {
   AiFillDelete,
@@ -30,37 +28,24 @@ import {
 export const PlaylistList: FC<{
   initialPlaylistsData?: null | FGCApiPaginationResponse<Playlist>;
 }> = ({ initialPlaylistsData }) => {
-  const [searchValue, setSearchValue] = useState('');
   const [isLoading, { setFalse: stopLoading, setTrue: startLoading }] =
     useBoolean();
-  const [page, setPage] = useState(0);
   const { user } = useUser();
+
   const {
-    refetch,
     data: playlistsData,
-    isFetching: isLoadingCombos,
-  } = useApiQuery<FGCApiPaginationResponse<Playlist>>({
-    apiConfig: {
-      url: FGC_API_URLS.MY_PLAYLISTS,
-      params: {
-        name: encodeURIComponent(searchValue),
-        sort: 'id,desc',
-        page: page.toString(),
-      },
-    },
+    debouncedResetSearch: refetch,
+    isFetching: isLoadingPlaylists,
+    onSelectPage,
+    searchValue,
+    setSearchValue,
+  } = usePaginatedSearch<Playlist>({
+    queryKey: ['playlists', user?.id],
+    url: FGC_API_URLS.MY_PLAYLISTS,
     initialData: initialPlaylistsData ?? undefined,
-    key: ['playlists', user?.id],
   });
 
   const [selectedItem, setSelectedItem] = useState<Playlist>();
-
-  const debouncedRefetch = useDebounce(() => {
-    flushSync(() => {
-      setPage(0);
-    });
-    setSelectedItem(undefined);
-    refetch();
-  });
 
   const [
     isPlaylistFormOpen,
@@ -95,7 +80,7 @@ export const PlaylistList: FC<{
             className=""
             value={searchValue}
             setValue={setSearchValue}
-            onChange={debouncedRefetch}
+            onChange={refetch}
           />
           <Button
             onClick={openPlaylistForm}
@@ -115,7 +100,7 @@ export const PlaylistList: FC<{
               initialValues={selectedItem}
               onSuccess={() => {
                 setSelectedItem(undefined);
-                debouncedRefetch();
+                refetch();
                 closePlaylistForm();
               }}
             />
@@ -186,7 +171,7 @@ export const PlaylistList: FC<{
         emptyListComponent={
           <div className="flex flex-col flex-1 justify-center items-center min-h-[500px] text-center gap-4">
             <h1 className="text-light font-bold text-5xl">
-              {searchValue.trim().length > 0 && !isLoadingCombos
+              {searchValue.trim().length > 0 && !isLoadingPlaylists
                 ? 'No playlists found for search term: "' + searchValue + '"'
                 : "You don't have any playlists yet."}
             </h1>
@@ -201,15 +186,7 @@ export const PlaylistList: FC<{
 
       {playlistsData ? (
         <div className="mt-5 w-full">
-          <Pagination
-            pagination={playlistsData}
-            onSelectPage={(page) => {
-              flushSync(() => {
-                setPage(page);
-              });
-              refetch();
-            }}
-          />
+          <Pagination pagination={playlistsData} onSelectPage={onSelectPage} />
         </div>
       ) : null}
     </div>
