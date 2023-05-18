@@ -6,7 +6,7 @@ import { useDebounce } from '../debounce';
 
 interface UseComboSearchParams<Data> {
   url: string;
-  queryKey: string | readonly unknown[];
+  queryKey: readonly unknown[];
   enabled?: boolean;
   initialData?: FGCApiPaginationResponse<Data>;
 }
@@ -19,10 +19,10 @@ export function usePaginatedSearch<Data>({
 }: UseComboSearchParams<Data>) {
   const [page, setPage] = useState(0);
   const [searchValue, setSearchValue] = useState('');
-  const { data, refetch, isFetching } = useApiQuery<
+  const { data, isFetching, refetch } = useApiQuery<
     FGCApiPaginationResponse<Data>
   >({
-    key: queryKey,
+    key: [...queryKey, page],
     enabled,
     initialData: initialData,
     apiConfig: {
@@ -30,6 +30,7 @@ export function usePaginatedSearch<Data>({
       params: {
         name: encodeURIComponent(searchValue),
         sort: 'id,desc',
+        size: 30,
         page: page.toString(),
       },
     },
@@ -42,6 +43,7 @@ export function usePaginatedSearch<Data>({
   };
   const debouncedResetSearch = useDebounce(() => {
     onSelectPage(0);
+    refetch();
   });
 
   return {
@@ -51,5 +53,6 @@ export function usePaginatedSearch<Data>({
     onSelectPage,
     setSearchValue,
     debouncedResetSearch,
+    refetch,
   };
 }

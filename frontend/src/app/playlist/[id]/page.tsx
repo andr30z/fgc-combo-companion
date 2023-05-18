@@ -3,9 +3,11 @@ import {
   FGC_API_URLS,
   getFgcApiInstanceWithTokenCookie,
 } from '@/common/services/fgc-api';
-import type { PlaylistWithCombos } from '@/common/types/playlist';
+import { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
+import type { Playlist, PlaylistWithCombos } from '@/common/types/playlist';
 import { promiseResultWithError } from '@/common/utils/promises';
 import { PlaylistDetails } from '@/modules/playlist-page/playlist-details';
+import { PlaylistSideBarMenu } from '@/modules/playlist-page/playlist-sidebar-menu';
 import { cookies } from 'next/headers';
 type PageProps = { params?: { id: string | undefined } };
 
@@ -30,13 +32,33 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export default async function PlaylistPage({ params }: PageProps) {
-  const { result } = await getPlaylistDetails(params?.id ?? '');
+  const fgcInstance = getFgcApiInstanceWithTokenCookie(cookies());
+  const [{ result: playlistCombos }, { result: otherPlaylistsFromUser }] =
+    await Promise.all([
+      getPlaylistDetails(params?.id ?? ''),
+      promiseResultWithError(
+        fgcInstance.get<FGCApiPaginationResponse<Playlist>>(
+          FGC_API_URLS.MY_PLAYLISTS,
+          {
+            params: {
+              sort: 'id,desc',
+              size: '30',
+            },
+          },
+        ),
+      ),
+    ]);
   return (
     <ProtectedContent>
       <PlaylistDetails
         playlistId={params?.id ?? ''}
-        playlistInitialData={result?.data}
-      />
+        playlistInitialData={playlistCombos?.data}
+      >
+        <PlaylistSideBarMenu
+          currentPlaylistOpenId={params?.id ?? ''}
+          playlistsInitialData={otherPlaylistsFromUser?.data}
+        />
+      </PlaylistDetails>
     </ProtectedContent>
   );
 }

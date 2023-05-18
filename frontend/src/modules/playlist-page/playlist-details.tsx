@@ -12,7 +12,7 @@ import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
 import { PlaylistWithCombos } from '@/common/types/playlist';
 import { PlaylistCombo } from '@/common/types/playlist-combo';
-import { FC, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
@@ -20,7 +20,8 @@ const TEN_MINUTES = 10 * 60 * 1000;
 export const PlaylistDetails: FC<{
   playlistInitialData?: PlaylistWithCombos;
   playlistId: string;
-}> = ({ playlistInitialData, playlistId }) => {
+  children: ReactNode;
+}> = ({ playlistInitialData, playlistId, children }) => {
   const { user } = useUser();
   const [selectedCombos, setSelectedCombos] = useState<Array<PlaylistCombo>>(
     [],
@@ -68,14 +69,15 @@ export const PlaylistDetails: FC<{
     );
   };
   return (
-    <div className="w-full h-full min-h-80vh flex flex-col-reverse md:flex-row justify-between gap-2 layout-padding-x mt-5">
+    <div className="w-full h-full min-h-80vh flex relative gap-2 mt-5">
+      {children}
       <LoadingBackdrop isLoading={isLoadingData} />
       {isLoading && !playlistDetails ? (
         <div className="w-[75%] flex items-center justify-center">
           <Spinner color="primary" />
         </div>
       ) : (
-        <main className="w-[75%]">
+        <main className="w-[75%] layout-padding-x">
           <header className="truncate w-full flex flex-col items-start gap-2">
             <h1
               title={playlistDetails?.name}
@@ -105,6 +107,7 @@ export const PlaylistDetails: FC<{
                         await deleteCombosFromPlaylist(
                           selectedCombos.map(({ id }) => id),
                         );
+                        setSelectedCombos([]);
                         endLoadingData();
                         refetch();
                       }}
@@ -180,11 +183,6 @@ export const PlaylistDetails: FC<{
           />
         </main>
       )}
-      <aside className="flex-1">
-        <h5 className="text-xl text-light font-primary font-bold">
-          Other playlists
-        </h5>
-      </aside>
     </div>
   );
 };

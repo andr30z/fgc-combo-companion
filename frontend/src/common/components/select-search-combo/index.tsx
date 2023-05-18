@@ -68,7 +68,7 @@ export const SelectSearchCombo: FC<{
     searchValue,
     setSearchValue,
   } = usePaginatedSearch<Combo>({
-    queryKey: 'COMBO_SEARCH',
+    queryKey: ['COMBO_SEARCH'],
     enabled: isOpen,
     url: FGC_API_URLS.COMBOS,
   });

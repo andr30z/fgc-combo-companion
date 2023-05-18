@@ -26,7 +26,7 @@ import {
 } from 'react-icons/ai';
 
 export const PlaylistList: FC<{
-  initialPlaylistsData?: null | FGCApiPaginationResponse<Playlist>;
+  initialPlaylistsData?: FGCApiPaginationResponse<Playlist>;
 }> = ({ initialPlaylistsData }) => {
   const [isLoading, { setFalse: stopLoading, setTrue: startLoading }] =
     useBoolean();
