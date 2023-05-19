@@ -5,7 +5,7 @@ import { defaultComboTranslator } from './default-translator';
 export const streetFighter6Translator: ComboTranslatorType = (combo) => {
   return defaultComboTranslator({
     combo,
-    comboSeparators: [' ', '.', '/', '+ ', ' +'],
+    comboSeparators: [' ', '.', '/', '+ ', ' +', '+'],
     map: STREET_FIGHTER_6_COMBO_MAP_TRANSLATION,
   });
 };
