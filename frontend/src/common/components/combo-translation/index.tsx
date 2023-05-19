@@ -10,12 +10,14 @@ interface ComboTranslationProps {
   className?: string;
   rendeHeader?: (result: ComboTranslationInterface) => React.ReactNode;
   backgroundColor?:
+    | null
     | 'primary'
     | 'secondary'
     | 'dark'
     | 'secondary-dark'
     | 'light-active';
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  style?: React.CSSProperties;
 }
 
 export const ComboTranslation: FC<ComboTranslationProps> = ({
@@ -25,6 +27,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
   rendeHeader,
   backgroundColor = 'secondary',
   onClick,
+  style,
 }) => {
   const result = useComboTranslator({ combo, game });
   if (!result.combo) {
@@ -42,7 +45,10 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
   return (
     <div
       data-testid={result.combo}
-      className={`text-light rounded p-3 bg-${backgroundColor} flex items-center flex-row flex-wrap gap-1 ${className}`}
+      style={style}
+      className={`text-light rounded p-3 ${
+        backgroundColor ? 'bg-' + backgroundColor : ''
+      } flex items-center flex-row flex-wrap gap-1 ${className}`}
       onClick={onClick}
     >
       {rendeHeader && rendeHeader(result)}
@@ -84,7 +90,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
                 key={step.action + idx.toString()}
                 title={step.actionTitle}
                 className={`${
-                  nonTranslatedComboColors[backgroundColor]
+                  backgroundColor && nonTranslatedComboColors[backgroundColor]
                 } px-[5px] mx-[3px] ${step.style ?? 'text-xl font-semibold'}`}
               >
                 {step.action}{' '}
