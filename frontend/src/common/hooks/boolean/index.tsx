@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export function useBoolean(initialValue = false) {
+export function useBoolean(initialValue: boolean | (() => boolean) = false) {
   const [value, setValue] = useState(initialValue);
 
   const toggle = useCallback(() => {

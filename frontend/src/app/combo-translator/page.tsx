@@ -3,11 +3,13 @@ import { Button } from '@/common/components/button';
 import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { GameSelect } from '@/common/components/game-select';
+import { useBoolean } from '@/common/hooks/boolean';
 import { GameTypes } from '@/common/types/game-types';
 import { get } from 'lodash';
 import { useSearchParams } from 'next/navigation';
 import { startTransition, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { BiCollapse, BiExpand } from 'react-icons/bi';
 import { BsFillShareFill } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
 import { IoMdColorPalette } from 'react-icons/io';
@@ -45,12 +47,24 @@ export default function ComboTranslator() {
   const comboParam = params?.get('combo');
   const gameParam = params?.get('game');
 
-  const gameInitialValue = gameParam ? gameParam : GameTypes.TEKKEN_7;
+  const gameInitialValue = gameParam ? gameParam : GameTypes.STREET_FIGHTER_6;
   const [game, setGame] = useState(
     get(GameTypes, gameInitialValue)
       ? (gameInitialValue as GameTypes)
-      : GameTypes.TEKKEN_7,
+      : GameTypes.STREET_FIGHTER_6,
   );
+  const [isExpandedView, { toggle }] = useBoolean(
+    typeof window !== 'undefined'
+      ? localStorage.getItem('@COMBO-TRANSLATOR:IS_EXPANDED_VIEW') === 'true'
+      : false,
+  );
+  const toggleExpandedView = () => {
+    toggle();
+    localStorage.setItem(
+      '@COMBO-TRANSLATOR:IS_EXPANDED_VIEW',
+      JSON.stringify(!isExpandedView),
+    );
+  };
   const [combo, setCombo] = useState(
     comboParam ? decodeURIComponent(comboParam) : '',
   );
@@ -103,6 +117,17 @@ export default function ComboTranslator() {
                 }}
               />
               <Button
+                rightIcon={
+                  isExpandedView ? (
+                    <BiCollapse size={18} />
+                  ) : (
+                    <BiExpand size={18} />
+                  )
+                }
+                title="Expand/Collapse combo view"
+                onClick={toggleExpandedView}
+              />
+              <Button
                 style={{
                   backgroundColor: bgColor,
                 }}
@@ -141,6 +166,11 @@ export default function ComboTranslator() {
           style={{
             backgroundColor: bgColor,
           }}
+          className={`${
+            isExpandedView
+              ? 'w-full min-h-[250px] justify-start content-center '
+              : ''
+          } `}
           backgroundColor={null}
         />
       ) : (

@@ -55,16 +55,16 @@ export const GameSelect: FC<{
       </label>
       <div className="flex flex-row flex-wrap sm:flex-nowrap gap-4 w-full">
         <Option
-          option={GameTypes.TEKKEN_7}
-          selectedOption={selectedOption}
-          onSelect={onSelect}
-          url="/tekken7/tekken7-select.webp"
-        />
-        <Option
           selectedOption={selectedOption}
           option={GameTypes.STREET_FIGHTER_6}
           onSelect={onSelect}
           url="/street-fighter-6/street-fighter-6-select.jpg"
+        />
+        <Option
+          option={GameTypes.TEKKEN_7}
+          selectedOption={selectedOption}
+          onSelect={onSelect}
+          url="/tekken7/tekken7-select.webp"
         />
         <Option
           selectedOption={selectedOption}

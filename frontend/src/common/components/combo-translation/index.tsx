@@ -90,7 +90,9 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
                 key={step.action + idx.toString()}
                 title={step.actionTitle}
                 className={`${
-                  backgroundColor && nonTranslatedComboColors[backgroundColor]
+                  backgroundColor
+                    ? nonTranslatedComboColors[backgroundColor]
+                    : nonTranslatedComboColors.primary
                 } px-[5px] mx-[3px] ${step.style ?? 'text-xl font-semibold'}`}
               >
                 {step.action}{' '}
