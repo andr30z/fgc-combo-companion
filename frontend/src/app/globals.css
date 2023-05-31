@@ -7,23 +7,37 @@
   padding-right: 2.5rem;
 }
 
+.layout-padding-left {
+  padding-left: 2.5rem;
+}
+
+.layout-padding-right {
+  padding-right: 2.5rem;
+}
+
 @media screen and (max-width: 375px) {
   .layout-padding-x {
     padding-left: 1em;
     padding-right: 1rem;
   }
+  .layout-padding-left {
+    padding-left: 1rem;
+  }
+  .layout-padding-right {
+    padding-right: 1rem;
+  }
 }
 /* width */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #d20606;
+  background: #b3b3b3;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #a80404;
+  background: hsla(0,0%,100%,.5);
 }

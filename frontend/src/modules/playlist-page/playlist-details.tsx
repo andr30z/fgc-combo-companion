@@ -69,7 +69,7 @@ export const PlaylistDetails: FC<{
     );
   };
   return (
-    <div className="w-full h-full min-h-80vh flex relative gap-2 mt-5">
+    <div className="w-full h-full overflow-hidden flex relative gap-2">
       {children}
       <LoadingBackdrop isLoading={isLoadingData} />
       {isLoading && !playlistDetails ? (
@@ -77,7 +77,7 @@ export const PlaylistDetails: FC<{
           <Spinner color="primary" />
         </div>
       ) : (
-        <main className="w-[75%] layout-padding-x">
+        <main className="flex-1 h-[80vh] pr-4 overflow-y-auto rounded-lg">
           <header className="truncate w-full flex flex-col items-start gap-2">
             <h1
               title={playlistDetails?.name}

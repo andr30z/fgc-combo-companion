@@ -9,11 +9,12 @@ module.exports = {
   ],
   theme: {
     extend: {
-      height: {
-        '10vh': '10vh',
-        '80vh': '80vh',
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '3rem',
       },
       height: {
+        '10vh': '10vh',
         '80vh': '80vh',
       },
       minHeight: {
@@ -24,7 +25,7 @@ module.exports = {
         primary: { DEFAULT: '#d20606', darker: '#a80404' },
         secondary: '#da0037',
         dark: '#000000',
-        'secondary-dark': '#363636',
+        'secondary-dark': '#121212',
         'sub-info': '#c3c3c3c3',
         light: {
           DEFAULT: '#fff',

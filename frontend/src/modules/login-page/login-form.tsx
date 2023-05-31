@@ -84,11 +84,11 @@ export const LoginForm = () => {
       <LoadingBackdrop isLoading={loading} />
       <footer className="flex flex-row w-full justify-center items-center">
         <p className="font-primary">
-          <Link href="/forgot" className="hover:text-light text-secondary">
+          <Link href="/forgot" color="secondary">
             Forgot your password?
           </Link>
           <span className="mx-2 text-light">|</span>
-          <Link className="hover:text-light text-secondary" href="/signup">
+          <Link color="secondary" href="/signup">
             Sign up
           </Link>
         </p>
