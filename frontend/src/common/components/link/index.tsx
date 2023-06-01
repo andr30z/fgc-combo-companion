@@ -6,12 +6,14 @@ interface LinkProps {
   children: ReactNode;
   className?: string;
   color?: 'primary' | 'secondary' | 'light' | 'dark' | 'light-active';
+  title?: string;
 }
 export const Link: FC<LinkProps> = ({
   children,
   href,
   className,
   color = 'primary',
+  title,
 }) => {
   const hoverStyleMap = {
     primary: 'hover:text-light',
@@ -23,6 +25,7 @@ export const Link: FC<LinkProps> = ({
   return (
     <NextLink
       href={href}
+      title={title}
       className={`${hoverStyleMap[color]} text-${color} transition-all font-primary ${className}`}
     >
       {children}
