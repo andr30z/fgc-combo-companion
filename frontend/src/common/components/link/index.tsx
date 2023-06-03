@@ -7,6 +7,7 @@ interface LinkProps {
   className?: string;
   color?: 'primary' | 'secondary' | 'light' | 'dark' | 'light-active';
   title?: string;
+  useHoverStyles?: boolean;
 }
 export const Link: FC<LinkProps> = ({
   children,
@@ -14,6 +15,7 @@ export const Link: FC<LinkProps> = ({
   className,
   color = 'primary',
   title,
+  useHoverStyles = true,
 }) => {
   const hoverStyleMap = {
     primary: 'hover:text-light',
@@ -26,7 +28,9 @@ export const Link: FC<LinkProps> = ({
     <NextLink
       href={href}
       title={title}
-      className={`${hoverStyleMap[color]} text-${color} transition-all font-primary ${className}`}
+      className={`${
+        useHoverStyles ? hoverStyleMap[color] : ''
+      } text-${color} transition-all font-primary ${className}`}
     >
       {children}
     </NextLink>

@@ -18,7 +18,7 @@ type PlaylistWithId = Omit<Playlist, 'id' | 'owner' | 'createdAt'> & {
 
 interface PlaylistFormProps {
   initialValues?: Playlist | null;
-  onSuccess?: () => void;
+  onSuccess?: (playlist: Playlist) => void;
 }
 
 export const PlaylistForm: FC<PlaylistFormProps> = ({
@@ -41,13 +41,13 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
       <form
         onSubmit={onSubmit(async (data) => {
           if (name.trim().length === 0) {
-            toast.error('Combo is required');
+            toast.error('Playlist name is required');
             return;
           }
 
           startLoading();
-          const { error } = await promiseResultWithError(
-            fgcApi.request({
+          const { error, result } = await promiseResultWithError(
+            fgcApi.request<Playlist>({
               url: `${
                 id
                   ? FGC_API_URLS.getUpdatePlaylistUrl(id.toString())
@@ -63,7 +63,7 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
             }),
           );
           closeLoading();
-          if (error) {
+          if (error || !result) {
             const errors = error.response?.data?.errors;
             toast.error(
               Array.isArray(errors)
@@ -73,7 +73,7 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
             return;
           }
           if (onSuccess) {
-            onSuccess();
+            onSuccess(result.data);
           }
           toast.success(
             id
@@ -87,7 +87,7 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
           required
           value={name}
           onChange={onChange('name')}
-          label="Combo Name"
+          label="Playlist Name"
         />
         <Input
           value={description || ''}

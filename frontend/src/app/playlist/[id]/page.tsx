@@ -33,24 +33,22 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function PlaylistPage({ params }: PageProps) {
   const fgcInstance = getFgcApiInstanceWithTokenCookie(cookies());
-  const [
-    { result: playlistCombos, error },
-    { result: otherPlaylistsFromUser },
-  ] = await Promise.all([
-    getPlaylistDetails(params?.id ?? ''),
-    promiseResultWithError(
-      fgcInstance.get<FGCApiPaginationResponse<Playlist>>(
-        FGC_API_URLS.MY_PLAYLISTS,
-        {
-          params: {
-            sort: 'id,desc',
-            size: '30',
+  const [{ result: playlistCombos }, { result: otherPlaylistsFromUser }] =
+    await Promise.all([
+      getPlaylistDetails(params?.id ?? ''),
+      promiseResultWithError(
+        fgcInstance.get<FGCApiPaginationResponse<Playlist>>(
+          FGC_API_URLS.MY_PLAYLISTS,
+          {
+            params: {
+              sort: 'id,desc',
+              size: '30',
+            },
           },
-        },
+        ),
       ),
-    ),
-  ]);
-  console.log(error, cookies());
+    ]);
+  // console.log(error, cookies());
   return (
     <ProtectedContent>
       <PlaylistDetails
