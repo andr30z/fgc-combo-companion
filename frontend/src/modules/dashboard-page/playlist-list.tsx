@@ -67,7 +67,7 @@ export const PlaylistList: FC<{
   return (
     <div className="flex flex-col flex-1 w-full h-full mt-6">
       <LoadingBackdrop isLoading={isLoading} />
-      <header className="border-2 border-secondary-dark bg-dark p-3 mb-12 w-full flex flex-col sm:flex-row flex-wrap items-center justify-between gap-2">
+      <header className="rounded-md bg-secondary-dark p-3 mb-12 w-full flex flex-col sm:flex-row flex-wrap items-center justify-between gap-2">
         <h5 className="text-2xl text-light font-primary font-bold">
           Your Playlists
         </h5>
@@ -168,6 +168,7 @@ export const PlaylistList: FC<{
             },
           },
         ]}
+        getRowClassName={() => 'bg-secondary-dark'}
         emptyListComponent={
           <div className="flex flex-col flex-1 justify-center items-center min-h-[500px] text-center gap-4">
             <h1 className="text-light font-bold text-5xl">

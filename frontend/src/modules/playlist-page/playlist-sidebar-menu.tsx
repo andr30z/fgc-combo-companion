@@ -1,12 +1,17 @@
 'use client';
 import { Link } from '@/common/components/link';
 import { PlaylistFormWithModal } from '@/common/components/playlist-form-with-modal';
+import { useUser } from '@/common/hooks/user';
+import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import type { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
 import type { Playlist } from '@/common/types/playlist';
+import { cloneDeep } from 'lodash';
 import { usePathname, useRouter } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { AiFillAppstore, AiFillHome, AiOutlinePlus } from 'react-icons/ai';
 import { FaSearch } from 'react-icons/fa';
+import { useInView } from 'react-intersection-observer';
+import { InfiniteData, useInfiniteQuery, useQueryClient } from 'react-query';
 
 interface PlaylistSideBarMenuProps {
   currentPlaylistOpenId: string;
@@ -18,6 +23,49 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
 }) => {
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useUser();
+  const { ref, inView } = useInView({});
+
+  const queryClient = useQueryClient();
+  const queryKey = ['USER_PLAYLISTS', user?.id];
+  const { data, fetchNextPage, refetch } = useInfiniteQuery<
+    FGCApiPaginationResponse<Playlist>
+  >(
+    queryKey,
+    async ({ pageParam = 0 }) => {
+      const { data } = await fgcApi.get<FGCApiPaginationResponse<Playlist>>(
+        FGC_API_URLS.MY_PLAYLISTS,
+        {
+          params: { page: pageParam, size: 10, sort: 'id,desc' },
+        },
+      );
+      return data;
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.hasNext ? lastPage.currentPage + 1 : undefined;
+      },
+
+      initialData: playlistsInitialData
+        ? {
+            pageParams: [],
+            pages: [cloneDeep(playlistsInitialData)],
+          }
+        : undefined,
+      staleTime: Infinity,
+    },
+  );
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
+
+  const playlistPageData = data?.pages?.map((page) => page.data).flat();
+  const allPages = playlistPageData
+    ? [...new Map(playlistPageData.map((item) => [item.id, item])).values()]
+    : [];
   return (
     <aside className="flex flex-col w-[20%] px-2 pt-4 gap-2 max-h-full overflow-hidden">
       <div className="flex flex-col items-start justify-center gap-4 bg-secondary-dark shadow-black shadow-xl rounded-xl py-4 pl-4">
@@ -47,8 +95,26 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
               Your Playlists
             </span>
             <PlaylistFormWithModal
-              onSuccessSavePlaylistForm={(playlist) => {
+              onSuccessSavePlaylistForm={function update(playlist) {
                 router.push(`/playlist/${playlist.id}`);
+                if (!data?.pages[0]) {
+                  return refetch();
+                }
+                queryClient.setQueryData<
+                  InfiniteData<FGCApiPaginationResponse<Playlist>> | undefined
+                >(
+                  queryKey,
+                  (prev) => {
+                    const newData = prev ? { ...prev } : undefined;
+                    if (!newData) {
+                      return prev;
+                    }
+                    const firstPage = newData.pages[0];
+                    firstPage.data.unshift(playlist);
+                    return newData;
+                  },
+                  {},
+                );
               }}
               renderTriggerOpenForm={(openForm) => (
                 <AiOutlinePlus
@@ -61,7 +127,7 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
               )}
             />
           </div>
-          {playlistsInitialData?.data.map((playlist) => (
+          {allPages?.map((playlist) => (
             <Link
               key={playlist.id}
               className={`text-md font-medium text-left mt-1 line-clamp-2 py-2 w-full px-4 ${
@@ -77,6 +143,7 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
               {playlist.name}
             </Link>
           ))}
+          <div ref={ref} />
         </div>
       </div>
     </aside>

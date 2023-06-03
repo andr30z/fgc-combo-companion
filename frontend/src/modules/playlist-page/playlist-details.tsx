@@ -77,7 +77,7 @@ export const PlaylistDetails: FC<{
           <Spinner color="primary" />
         </div>
       ) : (
-        <main className="flex-1 min-h-full pr-4 overflow-y-auto rounded-lg">
+        <main className="flex-1 min-h-[80vh] pr-4 overflow-y-auto rounded-lg">
           <header className="truncate w-full flex flex-col items-start gap-2">
             <h1
               title={playlistDetails?.name}
