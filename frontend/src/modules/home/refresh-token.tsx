@@ -2,6 +2,7 @@
 
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { LoginResponse } from '@/common/types/login';
+import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { FC, useEffect } from 'react';
 
@@ -28,6 +29,7 @@ export const RefreshToken: FC = () => {
           if (error?.response?.status === 401 && !prevRequest?.sent) {
             prevRequest.sent = true;
             await refreshToken();
+            return axios(prevRequest);
           }
 
           return Promise.reject(error);

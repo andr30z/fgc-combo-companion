@@ -3,7 +3,8 @@ import { User } from '@/common/types/user';
 import { signOut, useSession } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
 import { useQuery, useQueryClient } from 'react-query';
-const ONE_HOUR = 1000 * 60 * 60;
+
+const _20_MINUTES = 20 * 60 * 1000;
 
 interface UseUserParams {
   redirectTo?: string | null;
@@ -27,7 +28,7 @@ export function useUser(
   const {
     data: user,
     isLoading,
-    error,
+    isFetched,
   } = useQuery(
     ['user'],
     async () => {
@@ -36,7 +37,7 @@ export function useUser(
       return result?.data;
     },
     {
-      staleTime: ONE_HOUR,
+      staleTime: _20_MINUTES,
       retry: 3,
       enabled: data !== null,
       onError() {
@@ -49,8 +50,8 @@ export function useUser(
 
   return {
     user,
-    isLoadingUser: isLoading,
-    isLoadingSession: status === 'loading',
-    isAuthenticated: status === 'authenticated' && !error,
+    isLoadingUser: isLoading && !isFetched,
+    isLoadingSession: status === 'loading' && !data,
+    isAuthenticated: !!data,
   };
 }

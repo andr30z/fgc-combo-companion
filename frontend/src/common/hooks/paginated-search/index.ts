@@ -25,6 +25,7 @@ export function usePaginatedSearch<Data>({
     key: [...queryKey, page],
     enabled,
     initialData: initialData,
+    retryMaxCount: 3,
     apiConfig: {
       url: url,
       params: {

@@ -42,7 +42,7 @@ export default async function PlaylistPage({ params }: PageProps) {
           {
             params: {
               sort: 'id,desc',
-              size: '10',
+              size: '20',
             },
           },
         ),
