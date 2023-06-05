@@ -1,4 +1,6 @@
-export async function promiseResultWithError<T>(promise: Promise<T>) {
+export async function promiseResultWithError<T>(
+  promise: Promise<T>,
+): Promise<{ result: T; error: null } | { result: null; error: Error }> {
   try {
     const result = await promise;
     return { result, error: null } as const;

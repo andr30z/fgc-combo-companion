@@ -12,7 +12,7 @@ import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
 import { PlaylistWithCombos } from '@/common/types/playlist';
 import { PlaylistCombo } from '@/common/types/playlist-combo';
-import { FC, ReactNode, useState } from 'react';
+import { FC, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
@@ -20,8 +20,7 @@ const TEN_MINUTES = 10 * 60 * 1000;
 export const PlaylistDetails: FC<{
   playlistInitialData?: PlaylistWithCombos;
   playlistId: string;
-  children: ReactNode;
-}> = ({ playlistInitialData, playlistId, children }) => {
+}> = ({ playlistInitialData, playlistId }) => {
   const { user } = useUser();
   const [selectedCombos, setSelectedCombos] = useState<Array<PlaylistCombo>>(
     [],
@@ -69,15 +68,15 @@ export const PlaylistDetails: FC<{
     );
   };
   return (
-    <div className="w-full h-full flex relative gap-2 max-h-[80vh]">
-      {children}
+    <>
       <LoadingBackdrop isLoading={isLoadingData} />
       {isLoading && !playlistDetails ? (
         <div className="w-[75%] flex items-center justify-center">
           <Spinner color="primary" />
         </div>
       ) : (
-        <main className="flex-1 min-h-[80vh] pr-4 overflow-y-auto rounded-lg">
+        <main className="flex-1 h-[80vh] min-h-[400px] md:pl-0 px-4 overflow-y-auto rounded-lg">
+          <div className="md:hidden portal-playlist-sidebar-trigger" />
           <header className="truncate w-full flex flex-col items-start gap-2">
             <h1
               title={playlistDetails?.name}
@@ -183,6 +182,6 @@ export const PlaylistDetails: FC<{
           />
         </main>
       )}
-    </div>
+    </>
   );
 };

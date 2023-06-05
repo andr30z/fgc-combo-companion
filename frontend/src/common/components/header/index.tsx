@@ -21,7 +21,7 @@ export const Header = () => {
     router.push(hasSession ? '/dashboard/combos' : '/');
   };
   return (
-    <header className="layout-padding-x py-5 bg-dark w-full flex justify-between items-center h-10vh">
+    <header className="layout-padding-x py-5 bg-dark w-full flex justify-between items-center h-10vh min-h-[60px]">
       <Image
         priority
         src="/full-logo.svg"
