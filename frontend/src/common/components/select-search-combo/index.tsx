@@ -51,14 +51,15 @@ export const SelectSearchCombo: FC<{
   onClickRemoveCombo?: (filteredArray: Array<Combo>, comboId: number) => void;
   renderAddIcon?: (triggerModalOpen: () => void) => ReactNode;
   containerClassName?: string;
-}> = ({
-  selectedCombos = [],
-  onFinish,
-  onClickRemoveCombo,
-  label = 'Selected Combos:',
-  renderAddIcon,
-  containerClassName = 'flex flex-col w-full',
-}) => {
+}> = (props) => {
+  const {
+    selectedCombos = [],
+    onClickRemoveCombo,
+    onFinish,
+    label = 'Selected Combos:',
+    renderAddIcon,
+    containerClassName = 'flex flex-col w-full',
+  } = props;
   const [isOpen, { setTrue: openModal, setFalse: closeModal }] = useBoolean();
   const {
     data: combos,
@@ -68,7 +69,7 @@ export const SelectSearchCombo: FC<{
     searchValue,
     setSearchValue,
   } = usePaginatedSearch<Combo>({
-    queryKey: 'COMBO_SEARCH',
+    queryKey: ['COMBO_SEARCH'],
     enabled: isOpen,
     url: FGC_API_URLS.COMBOS,
   });

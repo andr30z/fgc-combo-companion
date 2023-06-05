@@ -208,7 +208,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
           );
         }}
         emptyListComponent={
-          <div className="flex flex-col flex-1 justify-center items-center min-h-[500px] text-center gap-4">
+          <div className="flex flex-col flex-1 justify-center items-center min-h-[400px] text-center gap-4">
             <h1 className="text-light font-bold text-5xl">
               {emptyListMessage}
             </h1>

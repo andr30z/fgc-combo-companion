@@ -4,29 +4,34 @@ import { flushSync } from 'react-dom';
 import { useApiQuery } from '../api-query';
 import { useDebounce } from '../debounce';
 
-interface UseComboSearchParams {
+interface UseComboSearchParams<Data> {
   url: string;
-  queryKey: string;
+  queryKey: readonly unknown[];
   enabled?: boolean;
+  initialData?: FGCApiPaginationResponse<Data>;
 }
 
 export function usePaginatedSearch<Data>({
   url,
   queryKey,
   enabled = true,
-}: UseComboSearchParams) {
+  initialData,
+}: UseComboSearchParams<Data>) {
   const [page, setPage] = useState(0);
   const [searchValue, setSearchValue] = useState('');
-  const { data, refetch, isFetching } = useApiQuery<
+  const { data, isFetching, refetch } = useApiQuery<
     FGCApiPaginationResponse<Data>
   >({
-    key: queryKey,
+    key: [...queryKey, page],
     enabled,
+    initialData: initialData,
+    retryMaxCount: 3,
     apiConfig: {
       url: url,
       params: {
         name: encodeURIComponent(searchValue),
         sort: 'id,desc',
+        size: 30,
         page: page.toString(),
       },
     },
@@ -39,6 +44,7 @@ export function usePaginatedSearch<Data>({
   };
   const debouncedResetSearch = useDebounce(() => {
     onSelectPage(0);
+    refetch();
   });
 
   return {
@@ -48,5 +54,6 @@ export function usePaginatedSearch<Data>({
     onSelectPage,
     setSearchValue,
     debouncedResetSearch,
+    refetch,
   };
 }

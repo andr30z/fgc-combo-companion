@@ -13,7 +13,7 @@ public class V2__CreateComboTable extends BaseJavaMigration {
     Statement statement = connection.createStatement();
     statement.execute(
       "DROP TYPE IF EXISTS gametypes CASCADE;" +
-      "CREATE TYPE gametypes AS ENUM ('TEKKEN_7', 'SFV', 'KOF_XV', 'GUILTY_GEAR_STRIVE');"
+      "CREATE TYPE gametypes AS ENUM ('TEKKEN_7', 'SFV', 'STREET_FIGHTER_6','KOF_XV', 'GUILTY_GEAR_STRIVE');"
     );
     statement.execute(
       "CREATE TABLE combos ( " +

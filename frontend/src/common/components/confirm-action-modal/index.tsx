@@ -33,7 +33,7 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = ({
             e.stopPropagation();
             closeConfirmation();
           }}
-          color="light"
+          color="dark"
           text="No, cancel action"
         />
         <Button
@@ -42,7 +42,7 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = ({
             closeConfirmation();
             onConfirm();
           }}
-          color="secondary"
+          color="primary"
           text="Yes, proceed"
         />
       </footer>

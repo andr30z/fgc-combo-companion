@@ -27,6 +27,11 @@ export const ComboPreview: FC<{
           backgroundColor="secondary"
           className="mt-5"
         />
+        {combo && (
+          <p className="break-words text-xl text-center text-light mt-5">
+            {combo}
+          </p>
+        )}
         {description && (
           <p className="break-words text-xl text-center text-light mt-5">
             {description}
