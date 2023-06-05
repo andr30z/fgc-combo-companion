@@ -1,8 +1,10 @@
 package com.fgc.combo.companion.service.impl;
 
+import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
+import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.Playlist;
 import com.fgc.combo.companion.model.PlaylistCombo;
@@ -27,17 +29,20 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   private final ComboRepository comboRepository;
   private final PlaylistComboRepository playlistComboRepository;
   private final UserService userService;
+  private final ComboMapper comboMapper;
 
   public PlaylistComboServiceImpl(
     PlaylistRepository playlistRepository,
     ComboRepository comboRepository,
     PlaylistComboRepository playlistComboRepository,
-    UserService userService
+    UserService userService,
+    ComboMapper comboMapper
   ) {
     this.playlistRepository = playlistRepository;
     this.comboRepository = comboRepository;
     this.playlistComboRepository = playlistComboRepository;
     this.userService = userService;
+    this.comboMapper = comboMapper;
   }
 
   @Override
@@ -172,5 +177,21 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   @Override
   public void deleteByPlaylist(Playlist playlist) {
     this.playlistComboRepository.deleteByPlaylist(playlist);
+  }
+
+  @Override
+  @Transactional
+  public Playlist createComboAndAddToPlaylist(
+    Playlist playlist,
+    CreateComboDTO createComboDTO
+  ) {
+    Combo combo = comboMapper.toOriginal(createComboDTO);
+    User currentUser = userService.me();
+
+    combo.setOwner(currentUser);
+    combo.setGame(createComboDTO.getGame());
+    this.comboRepository.save(combo);
+    this.addAllCombosToPlaylist(playlist, Collections.singleton(combo.getId()));
+    return playlist;
   }
 }

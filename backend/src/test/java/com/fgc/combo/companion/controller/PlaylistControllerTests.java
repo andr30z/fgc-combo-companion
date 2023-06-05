@@ -7,8 +7,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CompletePlaylistDTO;
+import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboResponseDTO;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.enums.ComboGameTypes;
@@ -505,5 +507,39 @@ public class PlaylistControllerTests {
           thirdPlaylist.getName()
         )
       );
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldCreateNewComboAndAddToPlaylist() throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    System.out.println(playlist.getId());
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .post("/api/v1/playlists/{id}/me/new-combo", playlist.getId())
+            .contentType("application/json")
+            .content(
+              objectMapper.writeValueAsString(
+                CreateComboDTO
+                  .builder()
+                  .name("TEST Name")
+                  .description("Updated description")
+                  .combo("d/f+2")
+                  .game(ComboGameTypes.Constants.TEKKEN_7)
+                  .build()
+              )
+            )
+        )
+        .andReturn();
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+    CompletePlaylistDTO playlistResponse = toPlaylistResposeDTO(
+      mvcResult.getResponse().getContentAsString(),
+      CompletePlaylistDTO.class
+    );
+    Set<PlaylistComboResponseDTO> playlistCombos = playlistResponse.getPlaylistCombos();
+    assertThat(playlistCombos).hasSize(1);
+    String combo = playlistCombos.iterator().next().getCombo().getCombo();
+    assertThat(combo).isEqualTo("d/f+2");
   }
 }

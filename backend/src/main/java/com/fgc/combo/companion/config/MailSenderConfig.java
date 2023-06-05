@@ -12,13 +12,13 @@ public class MailSenderConfig {
 
   private static final int GMAIL_SMTP_PORT = 587;
 
-  @Value("${spring.mail.host}")
+  @Value("${spring.mail.host:test}")
   private String host;
 
-  @Value("${spring.mail.username}")
+  @Value("${spring.mail.username:test}")
   private String username;
 
-  @Value("${spring.mail.password}")
+  @Value("${spring.mail.password:test}")
   private String password;
 
   @Bean
