@@ -5,6 +5,7 @@ import {
 import type { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
 import type { Playlist } from '@/common/types/playlist';
 import { promiseResultWithError } from '@/common/utils/promises';
+import { PlaylistPageProvider } from '@/modules/playlist-page/playlist-page-context';
 import { PlaylistSideBarMenu } from '@/modules/playlist-page/playlist-sidebar-menu';
 import { cookies } from 'next/headers';
 
@@ -30,12 +31,14 @@ export default async function PlaylistLayout({
   );
 
   return (
-    <div className="w-full h-full flex gap-2 max-h-[80vh] min-h-[500px]">
-      <PlaylistSideBarMenu
-        currentPlaylistOpenId={params.id ?? ''}
-        playlistsInitialData={otherPlaylistsFromUser?.data}
-      />
-      {children}
-    </div>
+    <PlaylistPageProvider>
+      <div className="w-full flex gap-2 h-[80vh] min-h-[400px]">
+        <PlaylistSideBarMenu
+          playlistsInitialData={otherPlaylistsFromUser?.data}
+          currentPlaylistOpenId={params.id ?? ''}
+        />
+        {children}
+      </div>
+    </PlaylistPageProvider>
   );
 }

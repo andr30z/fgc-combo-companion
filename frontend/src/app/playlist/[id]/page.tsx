@@ -1,4 +1,3 @@
-import { ProtectedContent } from '@/common/components/with-protected-content';
 import {
   FGC_API_URLS,
   getFgcApiInstanceWithTokenCookie,
@@ -31,13 +30,10 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function PlaylistPage({ params }: PageProps) {
   const { result: playlistCombos } = await getPlaylistDetails(params?.id ?? '');
-  // console.log(error, cookies());
   return (
-    <ProtectedContent>
-      <PlaylistDetails
-        playlistId={params?.id ?? ''}
-        playlistInitialData={playlistCombos?.data}
-      />
-    </ProtectedContent>
+    <PlaylistDetails
+      playlistId={params?.id ?? ''}
+      playlistInitialData={playlistCombos?.data}
+    />
   );
 }

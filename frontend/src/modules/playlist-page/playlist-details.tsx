@@ -7,6 +7,7 @@ import { SelectSearchCombo } from '@/common/components/select-search-combo';
 import { Spinner } from '@/common/components/spinner';
 import { useApiQuery } from '@/common/hooks/api-query';
 import { useBoolean } from '@/common/hooks/boolean';
+import { useHideScrollbar } from '@/common/hooks/hide-scrollbar';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
@@ -14,14 +15,17 @@ import { PlaylistWithCombos } from '@/common/types/playlist';
 import { PlaylistCombo } from '@/common/types/playlist-combo';
 import { FC, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { AiFillDelete, AiFillEdit, AiOutlineMenuUnfold } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
+import { usePlaylistPage } from './playlist-page-context';
 const TEN_MINUTES = 10 * 60 * 1000;
 export const PlaylistDetails: FC<{
   playlistInitialData?: PlaylistWithCombos;
   playlistId: string;
 }> = ({ playlistInitialData, playlistId }) => {
   const { user } = useUser();
+  useHideScrollbar();
+
   const [selectedCombos, setSelectedCombos] = useState<Array<PlaylistCombo>>(
     [],
   );
@@ -37,6 +41,8 @@ export const PlaylistDetails: FC<{
     staleTime: TEN_MINUTES,
     initialData: playlistInitialData,
   });
+
+  const { togglePlaylistPageMobileSideBar } = usePlaylistPage();
 
   const [
     isLoadingData,
@@ -75,8 +81,13 @@ export const PlaylistDetails: FC<{
           <Spinner color="primary" />
         </div>
       ) : (
-        <main className="flex-1 h-[80vh] min-h-[400px] md:pl-0 px-4 overflow-y-auto rounded-lg">
-          <div className="md:hidden portal-playlist-sidebar-trigger" />
+        <main className="flex-1 h-[80vh] md:pl-0 px-4 overflow-y-auto rounded-lg">
+          <AiOutlineMenuUnfold
+            size={35}
+            onClick={togglePlaylistPageMobileSideBar}
+            role="button"
+            className="text-light cursor-pointer hover:text-secondary md:hidden"
+          />
           <header className="truncate w-full flex flex-col items-start gap-2">
             <h1
               title={playlistDetails?.name}

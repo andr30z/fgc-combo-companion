@@ -2,12 +2,10 @@
 import { Link } from '@/common/components/link';
 import { PlaylistFormWithModal } from '@/common/components/playlist-form-with-modal';
 import { useBoolean } from '@/common/hooks/boolean';
-import { useIsClient } from '@/common/hooks/is-client';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import type { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
 import type { Playlist } from '@/common/types/playlist';
-import { Portal } from '@radix-ui/react-portal';
 import { usePathname, useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { flushSync } from 'react-dom';
@@ -15,7 +13,6 @@ import {
   AiFillAppstore,
   AiFillHome,
   AiOutlineClose,
-  AiOutlineMenuUnfold,
   AiOutlinePlus,
 } from 'react-icons/ai';
 import { FaSearch } from 'react-icons/fa';
@@ -25,6 +22,7 @@ import {
 } from 'react-icons/hi';
 import { useInView } from 'react-intersection-observer';
 import { InfiniteData, useInfiniteQuery, useQueryClient } from 'react-query';
+import { usePlaylistPage } from './playlist-page-context';
 
 interface PlaylistSideBarMenuProps {
   currentPlaylistOpenId: string;
@@ -34,14 +32,13 @@ interface PlaylistSideBarMenuProps {
 export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
   playlistsInitialData,
 }) => {
-  const isClient = useIsClient();
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useUser();
   const [isDescendingOrdenation, { toggle: toggleOrdenation }] =
     useBoolean(true);
-  const [isSideBarOpen, { setTrue: openSideBar, setFalse: closeSideBar }] =
-    useBoolean();
+  const { showPlaylistPageMobileSideBar, togglePlaylistPageMobileSideBar } =
+    usePlaylistPage();
   const queryClient = useQueryClient();
   const queryKey = ['USER_PLAYLISTS', user?.id];
   const { data, fetchNextPage, refetch, isFetching } = useInfiniteQuery<
@@ -93,28 +90,13 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
     ? [...new Map(playlistPageData.map((item) => [item.id, item])).values()]
     : [];
 
-  console.log(isClient);
   return (
     <>
-      {isClient && (
-        <Portal
-          container={
-            document.body.querySelector(
-              '.portal-playlist-sidebar-trigger',
-            ) as HTMLElement
-          }
-        >
-          <AiOutlineMenuUnfold
-            size={35}
-            onClick={openSideBar}
-            role="button"
-            className="text-light cursor-pointer hover:text-secondary"
-          />
-        </Portal>
-      )}
       <aside
         className={`${
-          isSideBarOpen ? 'fixed md:relative w-screen inset-0 flex' : 'hidden'
+          showPlaylistPageMobileSideBar
+            ? 'fixed md:relative w-screen inset-0 flex'
+            : 'hidden'
         } md:flex flex-col md:w-[23%] px-2 pt-4 gap-2 max-h-full overflow-hidden bg-dark`}
       >
         <div className="relative flex flex-col items-start justify-center gap-4 bg-secondary-dark shadow-black rounded-xl py-4 pl-4">
@@ -139,7 +121,7 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
             size={22}
             role="button"
             className="text-light hover:bg-opacity-75 cursor-pointer md:hidden top-[15px] right-[10px] absolute"
-            onClick={closeSideBar}
+            onClick={togglePlaylistPageMobileSideBar}
           />
         </div>
         <div className="bg-secondary-dark rounded-xl h-full max-h-full overflow-auto">
@@ -208,7 +190,7 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
                       ? 'bg-white bg-opacity-40 text-white'
                       : 'hover:bg-white hover:bg-opacity-40 hover:text-white'
                   }`}
-                  onClick={closeSideBar}
+                  onClick={togglePlaylistPageMobileSideBar}
                   useHoverStyles={false}
                   title={playlist.name}
                   color="light"
