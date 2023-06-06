@@ -73,6 +73,7 @@ export const PlaylistDetails: FC<{
       ),
     );
   };
+
   return (
     <>
       <LoadingBackdrop isLoading={isLoadingData} />
@@ -88,17 +89,17 @@ export const PlaylistDetails: FC<{
             role="button"
             className="text-light cursor-pointer hover:text-secondary md:hidden"
           />
-          <header className="truncate w-full flex flex-col items-start gap-2">
+          <header className="w-full flex flex-col items-start gap-2">
             <h1
               title={playlistDetails?.name}
-              className="text-6xl text-light font-primary font-bold"
+              className="text-6xl text-light font-primary font-bold truncate w-full"
             >
               {playlistDetails?.name}
             </h1>
             {playlistDetails?.description && (
               <p
                 title={playlistDetails?.description}
-                className="text-sm text-sub-info font-primary"
+                className="text-sm text-sub-info font-primary line-clamp-3 w-full"
               >
                 {playlistDetails?.description}
               </p>

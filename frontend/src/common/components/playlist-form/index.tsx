@@ -90,6 +90,12 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
           label="Playlist Name"
         />
         <Input
+          as="textarea"
+          height="h-[200px]"
+          className="resize-none"
+          inputProps={{
+            rows: 5,
+          }}
           value={description || ''}
           onChange={onChange('description')}
           label="Description"
