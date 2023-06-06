@@ -513,7 +513,6 @@ public class PlaylistControllerTests {
   @WithUserDetails("test@gmail.com")
   void itShouldCreateNewComboAndAddToPlaylist() throws Exception {
     Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
-    System.out.println(playlist.getId());
     MvcResult mvcResult =
       this.mockMvc.perform(
           MockMvcRequestBuilders
@@ -541,5 +540,34 @@ public class PlaylistControllerTests {
     assertThat(playlistCombos).hasSize(1);
     String combo = playlistCombos.iterator().next().getCombo().getCombo();
     assertThat(combo).isEqualTo("d/f+2");
+  }
+
+  @Test
+  @WithUserDetails("secondtestmail@gmail.com")
+  void itShouldNotAddToPlaylistWhenNotUserIsNotOwnerPlaylist()
+    throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    long numberOfCombos = playlistRepository.count();
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .post("/api/v1/playlists/{id}/me/new-combo", playlist.getId())
+            .contentType("application/json")
+            .content(
+              objectMapper.writeValueAsString(
+                CreateComboDTO
+                  .builder()
+                  .name("TEST Name")
+                  .description("Updated description")
+                  .combo("d/f+2")
+                  .game(ComboGameTypes.Constants.TEKKEN_7)
+                  .build()
+              )
+            )
+        )
+        .andReturn();
+    assertThat(mvcResult.getResponse().getStatus())
+      .isEqualTo(HttpStatus.FORBIDDEN.value());
+    assertThat(numberOfCombos).isEqualTo(playlistRepository.count());
   }
 }
