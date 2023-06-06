@@ -1,16 +1,14 @@
 package com.fgc.combo.companion.repository;
 
+import com.fgc.combo.companion.model.Playlist;
+import com.fgc.combo.companion.model.User;
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import com.fgc.combo.companion.model.Playlist;
-import com.fgc.combo.companion.model.User;
 
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
   @EntityGraph(attributePaths = { "owner", "tags" })
@@ -46,5 +44,4 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     String searchParam,
     Pageable pageable
   );
-
 }
