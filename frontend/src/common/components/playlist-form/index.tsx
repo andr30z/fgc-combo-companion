@@ -10,6 +10,7 @@ import { Button } from '../button';
 import { Input } from '../input';
 import { LoadingBackdrop } from '../loading-backdrop';
 import { SelectSearchCombo } from '../select-search-combo';
+import { useInvalidateGlobalSearchQueries } from '@/common/hooks/invalidate-global-search-queries';
 
 type PlaylistWithId = Omit<Playlist, 'id' | 'owner' | 'createdAt'> & {
   id?: string | number;
@@ -32,6 +33,7 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
     tags: [],
     combos: [],
   };
+  const invalidateQueries = useInvalidateGlobalSearchQueries();
   const [{ description, name, id, combos }, { onChange, setValue }, onSubmit] =
     useForm<PlaylistWithId>(initialValues ?? initialForm);
   const [isLoading, { setTrue: startLoading, setFalse: closeLoading }] =
@@ -75,6 +77,8 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
           if (onSuccess) {
             onSuccess(result.data);
           }
+
+          invalidateQueries();
           toast.success(
             id
               ? 'Playlist updated successfully'
@@ -90,6 +94,12 @@ export const PlaylistForm: FC<PlaylistFormProps> = ({
           label="Playlist Name"
         />
         <Input
+          as="textarea"
+          height="h-[200px]"
+          className="resize-none"
+          inputProps={{
+            rows: 5,
+          }}
           value={description || ''}
           onChange={onChange('description')}
           label="Description"

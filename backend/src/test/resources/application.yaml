@@ -1,6 +1,12 @@
 .env:
   prefix: ""
 
+
+email-verification:
+  base-frontend-url: http:localhost:3000/
+password-change:
+  base-frontend-url: http:localhost:3000/
+
 logging:
   level:
     org:

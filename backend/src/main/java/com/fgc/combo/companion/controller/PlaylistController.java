@@ -2,6 +2,7 @@ package com.fgc.combo.companion.controller;
 
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CompletePlaylistDTO;
+import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
@@ -85,6 +86,19 @@ public class PlaylistController {
         this.playlistService.addCombosToPlaylist(
             playlistId,
             addCombosToPlaylistDTO
+          )
+      );
+  }
+
+  @PostMapping("/{playlistId}/me/new-combo")
+  public CompletePlaylistDTO addNewCombosToPlaylist(
+    @PathVariable Long playlistId,
+    @RequestBody @Validated CreateComboDTO createComboDTO
+  ) {
+    return this.playlistMapper.toCompletePlaylistDTO(
+        this.playlistService.createComboAndAddToPlaylist(
+            playlistId,
+            createComboDTO
           )
       );
   }

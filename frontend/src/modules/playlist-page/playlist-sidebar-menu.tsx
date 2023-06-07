@@ -24,6 +24,7 @@ import { useInView } from 'react-intersection-observer';
 import { InfiniteData, useInfiniteQuery, useQueryClient } from 'react-query';
 import { usePlaylistPage } from './playlist-page-context';
 
+const TEN_MINUTES = 10 * 60 * 1000;
 interface PlaylistSideBarMenuProps {
   currentPlaylistOpenId: string;
   playlistsInitialData?: FGCApiPaginationResponse<Playlist>;
@@ -40,12 +41,13 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
   const { showPlaylistPageMobileSideBar, togglePlaylistPageMobileSideBar } =
     usePlaylistPage();
   const queryClient = useQueryClient();
-  const queryKey = ['USER_PLAYLISTS', user?.id];
+  const queryKey = ['USER_PLAYLISTS_SIDEBAR', user?.id];
   const { data, fetchNextPage, refetch, isFetching } = useInfiniteQuery<
     FGCApiPaginationResponse<Playlist>
   >(
     queryKey,
     async ({ pageParam = 1 }) => {
+      console.log('SEARCHING');
       const { data } = await fgcApi.get<FGCApiPaginationResponse<Playlist>>(
         FGC_API_URLS.MY_PLAYLISTS,
         {
@@ -68,7 +70,7 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
             pages: [playlistsInitialData],
           }
         : undefined,
-      staleTime: Infinity,
+      staleTime: TEN_MINUTES,
     },
   );
   const setNewOrdenation = () => {

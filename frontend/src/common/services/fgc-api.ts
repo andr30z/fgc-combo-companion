@@ -55,4 +55,6 @@ export const FGC_API_URLS = {
       .join('&')}`,
   getAddCombosToPlaylistUrl: (playlistId: number | string) =>
     `/v1/playlists/${playlistId}/me/combos`,
+  getCreateAndAddCombosToPlaylistUrl: (playlistId: number | string) =>
+    `/v1/playlists/${playlistId}/me/new-combo`,
 };

@@ -1,4 +1,5 @@
 import { TabContent } from '@/common/components/tabs';
+import { ProtectedContent } from '@/common/components/with-protected-content';
 import {
   FGC_API_URLS,
   getFgcApiInstanceWithTokenCookie,
@@ -26,8 +27,10 @@ export default async function DashboardCombosPage() {
     }),
   );
   return (
-    <TabContent value="combos" className="outline-none layout-padding-x">
-      <CombosList initialComboData={initialComboData?.data} />
-    </TabContent>
+    <ProtectedContent>
+      <TabContent value="combos" className="outline-none layout-padding-x">
+        <CombosList initialComboData={initialComboData?.data} />
+      </TabContent>
+    </ProtectedContent>
   );
 }

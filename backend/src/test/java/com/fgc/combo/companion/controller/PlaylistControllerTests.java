@@ -7,8 +7,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
 import com.fgc.combo.companion.dto.CompletePlaylistDTO;
+import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboResponseDTO;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.enums.ComboGameTypes;
@@ -279,8 +281,8 @@ public class PlaylistControllerTests {
       new HashSet<>()
     );
     MvcResult mvcResult = createPostMvcAction(
-      "/api/v1/playlists/{id}/combos".replace(
-          "{id}",
+      "/api/v1/playlists/{playlistId}/me/combos".replace(
+          "{playlistId}",
           playlistResponseDTO.getId().toString()
         ),
       AddCombosToPlaylistDTO
@@ -312,8 +314,8 @@ public class PlaylistControllerTests {
     throws Exception {
     Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
     MvcResult mvcResult = createPostMvcAction(
-      "/api/v1/playlists/{id}/combos".replace(
-          "{id}",
+      "/api/v1/playlists/{playlistId}/me/combos".replace(
+          "{playlistId}",
           playlist.getId().toString()
         ),
       AddCombosToPlaylistDTO
@@ -346,7 +348,7 @@ public class PlaylistControllerTests {
       this.mockMvc.perform(
           MockMvcRequestBuilders
             .delete(
-              "/api/v1/playlists/{id}/combos?playlistComboId={playlistComboId}",
+              "/api/v1/playlists/{playlistId}/me/combos?playlistComboId={playlistComboId}",
               playlist.getId(),
               defaultCombo.getId()
             )
@@ -375,7 +377,7 @@ public class PlaylistControllerTests {
       this.mockMvc.perform(
           MockMvcRequestBuilders
             .delete(
-              "/api/v1/playlists/{id}/combos?playlistComboId={playlistComboId}",
+              "/api/v1/playlists/{playlistId}/me/combos?playlistComboId={playlistComboId}",
               playlist.getId(),
               playlist.getId()
             )
@@ -393,7 +395,7 @@ public class PlaylistControllerTests {
     MvcResult mvcResult =
       this.mockMvc.perform(
           MockMvcRequestBuilders
-            .delete("/api/v1/playlists/{id}", playlist.getId())
+            .delete("/api/v1/playlists/{id}/me", playlist.getId())
             .contentType("application/json")
         )
         .andReturn();
@@ -409,7 +411,7 @@ public class PlaylistControllerTests {
     MvcResult mvcResult =
       this.mockMvc.perform(
           MockMvcRequestBuilders
-            .delete("/api/v1/playlists/{id}", playlist.getId())
+            .delete("/api/v1/playlists/{id}/me", playlist.getId())
             .contentType("application/json")
         )
         .andReturn();
@@ -427,7 +429,7 @@ public class PlaylistControllerTests {
     MvcResult mvcResult =
       this.mockMvc.perform(
           MockMvcRequestBuilders
-            .put("/api/v1/playlists/{id}", playlistResponseDTO.getId())
+            .put("/api/v1/playlists/{id}/me", playlistResponseDTO.getId())
             .contentType("application/json")
             .content(
               objectMapper.writeValueAsString(
@@ -461,12 +463,12 @@ public class PlaylistControllerTests {
   @WithUserDetails("test@gmail.com")
   void itShouldGetAllPlaylistsBySearchParameters() throws Exception {
     playlistRepository.deleteAll();
-    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
-    Playlist secondPlaylist = createEmptyPlaylist(currentUser, "tESt123");
-    Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL PLAYLIST");
+    Playlist playlist = createEmptyPlaylist(currentUser, "playlist");
+    Playlist secondPlaylist = createEmptyPlaylist(currentUser, "playlist 2");
+    Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL test");
 
     PaginationResponse<PlaylistResponseDTO> response = setupSearchPlaylist(
-      "/api/v1/playlists?name={name}".replace("{name}", playlist.getName())
+      "/api/v1/playlists/me?name={name}".replace("{name}", playlist.getName())
     );
     List<String> responsePlaylistNames = response
       .getData()
@@ -489,7 +491,7 @@ public class PlaylistControllerTests {
     Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL PLAYLIST");
 
     PaginationResponse<PlaylistResponseDTO> response = setupSearchPlaylist(
-      "/api/v1/playlists"
+      "/api/v1/playlists/me"
     );
     List<String> responsePlaylistNames = response
       .getData()
@@ -505,5 +507,67 @@ public class PlaylistControllerTests {
           thirdPlaylist.getName()
         )
       );
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldCreateNewComboAndAddToPlaylist() throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .post("/api/v1/playlists/{id}/me/new-combo", playlist.getId())
+            .contentType("application/json")
+            .content(
+              objectMapper.writeValueAsString(
+                CreateComboDTO
+                  .builder()
+                  .name("TEST Name")
+                  .description("Updated description")
+                  .combo("d/f+2")
+                  .game(ComboGameTypes.Constants.TEKKEN_7)
+                  .build()
+              )
+            )
+        )
+        .andReturn();
+    assertSuccessResponse(mvcResult.getResponse().getStatus());
+    CompletePlaylistDTO playlistResponse = toPlaylistResposeDTO(
+      mvcResult.getResponse().getContentAsString(),
+      CompletePlaylistDTO.class
+    );
+    Set<PlaylistComboResponseDTO> playlistCombos = playlistResponse.getPlaylistCombos();
+    assertThat(playlistCombos).hasSize(1);
+    String combo = playlistCombos.iterator().next().getCombo().getCombo();
+    assertThat(combo).isEqualTo("d/f+2");
+  }
+
+  @Test
+  @WithUserDetails("secondtestmail@gmail.com")
+  void itShouldNotAddToPlaylistWhenNotUserIsNotOwnerPlaylist()
+    throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    long numberOfCombos = playlistRepository.count();
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .post("/api/v1/playlists/{id}/me/new-combo", playlist.getId())
+            .contentType("application/json")
+            .content(
+              objectMapper.writeValueAsString(
+                CreateComboDTO
+                  .builder()
+                  .name("TEST Name")
+                  .description("Updated description")
+                  .combo("d/f+2")
+                  .game(ComboGameTypes.Constants.TEKKEN_7)
+                  .build()
+              )
+            )
+        )
+        .andReturn();
+    assertThat(mvcResult.getResponse().getStatus())
+      .isEqualTo(HttpStatus.FORBIDDEN.value());
+    assertThat(numberOfCombos).isEqualTo(playlistRepository.count());
   }
 }

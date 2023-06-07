@@ -1,4 +1,5 @@
 import { TabContent } from '@/common/components/tabs';
+import { ProtectedContent } from '@/common/components/with-protected-content';
 import {
   FGC_API_URLS,
   getFgcApiInstanceWithTokenCookie,
@@ -28,8 +29,10 @@ export default async function DashboardPlaylistPage() {
     ),
   );
   return (
-    <TabContent value="playlists" className="outline-none layout-padding-x">
-      <PlaylistList initialPlaylistsData={initialPlaylistData?.data} />
-    </TabContent>
+    <ProtectedContent>
+      <TabContent value="playlists" className="outline-none layout-padding-x">
+        <PlaylistList initialPlaylistsData={initialPlaylistData?.data} />
+      </TabContent>
+    </ProtectedContent>
   );
 }

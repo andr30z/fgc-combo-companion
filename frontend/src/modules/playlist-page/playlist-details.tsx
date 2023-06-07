@@ -1,4 +1,6 @@
 'use client';
+import { Button } from '@/common/components/button';
+import { ComboFormWithModal } from '@/common/components/combo-form-with-modal';
 import { ComboListItems } from '@/common/components/combo-list-items';
 import { ConfirmAction } from '@/common/components/confirm-action-modal';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
@@ -13,11 +15,19 @@ import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
 import { PlaylistWithCombos } from '@/common/types/playlist';
 import { PlaylistCombo } from '@/common/types/playlist-combo';
+import Image from 'next/image';
 import { FC, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { AiFillDelete, AiFillEdit, AiOutlineMenuUnfold } from 'react-icons/ai';
+import {
+  AiFillDelete,
+  AiFillEdit,
+  AiFillInfoCircle,
+  AiOutlineMenuUnfold,
+  AiOutlineSearch,
+} from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
 import { usePlaylistPage } from './playlist-page-context';
+import { PopOver } from '@/common/components/pop-over';
 const TEN_MINUTES = 10 * 60 * 1000;
 export const PlaylistDetails: FC<{
   playlistInitialData?: PlaylistWithCombos;
@@ -41,6 +51,9 @@ export const PlaylistDetails: FC<{
     staleTime: TEN_MINUTES,
     initialData: playlistInitialData,
   });
+  const refetchData = () => {
+    refetch();
+  };
 
   const { togglePlaylistPageMobileSideBar } = usePlaylistPage();
 
@@ -56,7 +69,7 @@ export const PlaylistDetails: FC<{
       })
       .then(() => {
         toast.success('Combos added to playlist successfully');
-        refetch();
+        refetchData();
       });
   };
   const orderedCombos = playlistDetails?.playlistCombos?.sort((a, b) => {
@@ -73,6 +86,7 @@ export const PlaylistDetails: FC<{
       ),
     );
   };
+
   return (
     <>
       <LoadingBackdrop isLoading={isLoadingData} />
@@ -88,17 +102,17 @@ export const PlaylistDetails: FC<{
             role="button"
             className="text-light cursor-pointer hover:text-secondary md:hidden"
           />
-          <header className="truncate w-full flex flex-col items-start gap-2">
+          <header className="w-full flex flex-col items-start gap-2">
             <h1
               title={playlistDetails?.name}
-              className="text-6xl text-light font-primary font-bold"
+              className="text-6xl text-light font-primary font-bold truncate w-full"
             >
               {playlistDetails?.name}
             </h1>
             {playlistDetails?.description && (
               <p
                 title={playlistDetails?.description}
-                className="text-sm text-sub-info font-primary"
+                className="text-sm text-sub-info font-primary line-clamp-3 w-full"
               >
                 {playlistDetails?.description}
               </p>
@@ -108,59 +122,93 @@ export const PlaylistDetails: FC<{
                 {playlistDetails?.owner.name} - {combos?.length} combo
                 {combos?.length === 1 ? '' : 's'}
               </p>
-              {currentUserIsPlaylistOwner && (
-                <div className="flex flex-row flex-wrap gap-2">
-                  {selectedCombos.length > 0 && (
-                    <ConfirmAction
-                      onConfirm={async () => {
-                        startLoadingData();
-                        await deleteCombosFromPlaylist(
-                          selectedCombos.map(({ id }) => id),
-                        );
-                        setSelectedCombos([]);
-                        endLoadingData();
-                        refetch();
-                      }}
-                      confirmationText="Are you sure you want to remove the selected combos from this playlist?"
+              <div className="flex flex-row flex-wrap gap-2">
+                {currentUserIsPlaylistOwner && (
+                  <>
+                    <PopOver
+                      trigger={
+                        <button>
+                          <AiFillInfoCircle
+                            size={25}
+                            className="cursor-pointer text-light hover:text-secondary"
+                            title="Playlist command hint"
+                          />
+                        </button>
+                      }
                     >
-                      {({ openConfirmModal }) => (
-                        <AiFillDelete
+                      <p>
+                        <code className="bg-light-darker text-xs p-1">
+                          Ctrl + Mouse Left Click
+                        </code>{' '}
+                        enables multiple row selection
+                      </p>
+                    </PopOver>
+                    <PlaylistFormWithModal
+                      initialValues={playlistDetails}
+                      renderTriggerOpenForm={(openForm) => (
+                        <AiFillEdit
                           size={25}
-                          className="text-light cursor-pointer hover:text-primary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openConfirmModal();
-                          }}
+                          onClick={openForm}
+                          title="Edit playlist"
+                          className="cursor-pointer text-light hover:text-secondary"
                         />
                       )}
-                    </ConfirmAction>
-                  )}
-                  <PlaylistFormWithModal
-                    onSuccessSavePlaylistForm={() => refetch()}
-                    initialValues={playlistDetails}
-                    renderTriggerOpenForm={(openForm) => (
-                      <AiFillEdit
+                    />
+                    <SelectSearchCombo
+                      label=""
+                      containerClassName=""
+                      renderAddIcon={(openSearch) => (
+                        <AiOutlineSearch
+                          title="Search combos to add to this playlist"
+                          className="text-white hover:text-secondary cursor-pointer"
+                          onClick={openSearch}
+                          size={25}
+                        />
+                      )}
+                      onFinish={addCombosToPlaylist}
+                    />
+                    <ComboFormWithModal
+                      customUrl={`${FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
+                        playlistId,
+                      )}`}
+                      renderTriggerOpenForm={(openForm) => (
+                        <IoIosAddCircle
+                          title="Create a new combo and add it to this playlist"
+                          className="text-white hover:text-secondary cursor-pointer"
+                          size={25}
+                          onClick={openForm}
+                        />
+                      )}
+                    />
+                  </>
+                )}
+                {selectedCombos.length > 0 && (
+                  <ConfirmAction
+                    onConfirm={async () => {
+                      startLoadingData();
+                      await deleteCombosFromPlaylist(
+                        selectedCombos.map(({ id }) => id),
+                      );
+                      setSelectedCombos([]);
+                      endLoadingData();
+                      refetchData();
+                    }}
+                    confirmationText="Are you sure you want to remove the selected combos from this playlist?"
+                  >
+                    {({ openConfirmModal }) => (
+                      <AiFillDelete
                         size={25}
-                        onClick={openForm}
-                        title="Edit playlist"
-                        className="cursor-pointer text-light hover:text-secondary"
+                        title="Remove all selected combos from this playlist"
+                        className="text-light cursor-pointer hover:text-primary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openConfirmModal();
+                        }}
                       />
                     )}
-                  />
-                  <SelectSearchCombo
-                    label=""
-                    containerClassName=""
-                    renderAddIcon={(openSearch) => (
-                      <IoIosAddCircle
-                        className="text-white hover:text-secondary cursor-pointer"
-                        onClick={openSearch}
-                        size={25}
-                      />
-                    )}
-                    onFinish={addCombosToPlaylist}
-                  />
-                </div>
-              )}
+                  </ConfirmAction>
+                )}
+              </div>
             </div>
           </header>
           <ComboListItems
@@ -183,9 +231,41 @@ export const PlaylistDetails: FC<{
               });
             }}
             useCreateComboButtonWhenEmpty={false}
-            onSuccessSaveComboForm={refetch}
+            emptyListComponent={
+              <div className="flex flex-col flex-1 justify-center items-center min-h-[400px] text-center gap-4">
+                <h1 className="text-light font-bold text-5xl">
+                  This playlist is empty
+                </h1>
+
+                <ComboFormWithModal
+                  customUrl={FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
+                    playlistId,
+                  )}
+                  onSuccessSaveComboForm={refetchData}
+                  renderTriggerOpenForm={(openForm) => (
+                    <Button
+                      onClick={openForm}
+                      text="Create Combo"
+                      color="light"
+                      useHoverStyles={false}
+                      extraStyles="group/combo"
+                      rightIcon={
+                        <Image
+                          priority
+                          className="group-hover/combo:scale-125 group-hover/combo:transition-all group-hover/combo:duration-300 group-hover/combo:ease-in-out"
+                          alt="FGC Combo"
+                          src="/combo-fist.svg"
+                          height={23}
+                          width={23}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </div>
+            }
             confirmDeleteMsg="Are you sure you want to remove this combo from this playlist?"
-            onSuccessDeleteCombo={refetch}
+            onSuccessDeleteCombo={refetchData}
             deleteComboAction={(playlistComboId) =>
               deleteCombosFromPlaylist([playlistComboId])
             }
