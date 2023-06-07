@@ -1,4 +1,6 @@
 'use client';
+import { Button } from '@/common/components/button';
+import { ComboFormWithModal } from '@/common/components/combo-form-with-modal';
 import { ComboListItems } from '@/common/components/combo-list-items';
 import { ConfirmAction } from '@/common/components/confirm-action-modal';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
@@ -13,9 +15,15 @@ import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
 import { PlaylistWithCombos } from '@/common/types/playlist';
 import { PlaylistCombo } from '@/common/types/playlist-combo';
+import Image from 'next/image';
 import { FC, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { AiFillDelete, AiFillEdit, AiOutlineMenuUnfold } from 'react-icons/ai';
+import {
+  AiFillDelete,
+  AiFillEdit,
+  AiOutlineMenuUnfold,
+  AiOutlineSearch,
+} from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
 import { usePlaylistPage } from './playlist-page-context';
 const TEN_MINUTES = 10 * 60 * 1000;
@@ -41,6 +49,9 @@ export const PlaylistDetails: FC<{
     staleTime: TEN_MINUTES,
     initialData: playlistInitialData,
   });
+  const refetchData = () => {
+    refetch();
+  };
 
   const { togglePlaylistPageMobileSideBar } = usePlaylistPage();
 
@@ -56,7 +67,7 @@ export const PlaylistDetails: FC<{
       })
       .then(() => {
         toast.success('Combos added to playlist successfully');
-        refetch();
+        refetchData();
       });
   };
   const orderedCombos = playlistDetails?.playlistCombos?.sort((a, b) => {
@@ -120,13 +131,14 @@ export const PlaylistDetails: FC<{
                         );
                         setSelectedCombos([]);
                         endLoadingData();
-                        refetch();
+                        refetchData();
                       }}
                       confirmationText="Are you sure you want to remove the selected combos from this playlist?"
                     >
                       {({ openConfirmModal }) => (
                         <AiFillDelete
                           size={25}
+                          title="Remove all selected combos from this playlist"
                           className="text-light cursor-pointer hover:text-primary"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -137,7 +149,6 @@ export const PlaylistDetails: FC<{
                     </ConfirmAction>
                   )}
                   <PlaylistFormWithModal
-                    onSuccessSavePlaylistForm={() => refetch()}
                     initialValues={playlistDetails}
                     renderTriggerOpenForm={(openForm) => (
                       <AiFillEdit
@@ -152,13 +163,27 @@ export const PlaylistDetails: FC<{
                     label=""
                     containerClassName=""
                     renderAddIcon={(openSearch) => (
-                      <IoIosAddCircle
+                      <AiOutlineSearch
+                        title="Search combos to add to this playlist"
                         className="text-white hover:text-secondary cursor-pointer"
                         onClick={openSearch}
                         size={25}
                       />
                     )}
                     onFinish={addCombosToPlaylist}
+                  />
+                  <ComboFormWithModal
+                    customUrl={`${FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
+                      playlistId,
+                    )}`}
+                    renderTriggerOpenForm={(openForm) => (
+                      <IoIosAddCircle
+                        title="Create a new combo and add it to this playlist"
+                        className="text-white hover:text-secondary cursor-pointer"
+                        size={25}
+                        onClick={openForm}
+                      />
+                    )}
                   />
                 </div>
               )}
@@ -184,9 +209,41 @@ export const PlaylistDetails: FC<{
               });
             }}
             useCreateComboButtonWhenEmpty={false}
-            onSuccessSaveComboForm={refetch}
+            emptyListComponent={
+              <div className="flex flex-col flex-1 justify-center items-center min-h-[400px] text-center gap-4">
+                <h1 className="text-light font-bold text-5xl">
+                  This playlist is empty
+                </h1>
+
+                <ComboFormWithModal
+                  customUrl={FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
+                    playlistId,
+                  )}
+                  onSuccessSaveComboForm={refetchData}
+                  renderTriggerOpenForm={(openForm) => (
+                    <Button
+                      onClick={openForm}
+                      text="Create Combo"
+                      color="light"
+                      useHoverStyles={false}
+                      extraStyles="group/combo"
+                      rightIcon={
+                        <Image
+                          priority
+                          className="group-hover/combo:scale-125 group-hover/combo:transition-all group-hover/combo:duration-300 group-hover/combo:ease-in-out"
+                          alt="FGC Combo"
+                          src="/combo-fist.svg"
+                          height={23}
+                          width={23}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </div>
+            }
             confirmDeleteMsg="Are you sure you want to remove this combo from this playlist?"
-            onSuccessDeleteCombo={refetch}
+            onSuccessDeleteCombo={refetchData}
             deleteComboAction={(playlistComboId) =>
               deleteCombosFromPlaylist([playlistComboId])
             }

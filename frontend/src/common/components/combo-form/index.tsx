@@ -13,14 +13,20 @@ import { GameSelect } from '../game-select';
 import { Input } from '../input';
 import { LoadingBackdrop } from '../loading-backdrop';
 import type { FC } from 'react';
+import { useInvalidateGlobalSearchQueries } from '@/common/hooks/invalidate-global-search-queries';
 
 type ComboWithId = Omit<Combo, 'id' | 'owner'> & { id?: string | number };
 interface ComboFormProps {
   initialValues?: ComboWithId;
   onSuccess?: () => void;
+  onSuccessUrl?: string;
 }
 
-export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
+export const ComboForm: FC<ComboFormProps> = ({
+  initialValues,
+  onSuccess,
+  onSuccessUrl,
+}) => {
   const initialForm: ComboWithId = {
     id: '',
     name: '',
@@ -35,6 +41,7 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
   ] = useForm<ComboWithId>(initialValues ?? initialForm);
   const [isLoading, { setTrue: startLoading, setFalse: closeLoading }] =
     useBoolean();
+  const invalidateQueries = useInvalidateGlobalSearchQueries();
   return (
     <>
       <form
@@ -54,13 +61,12 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
           }
 
           startLoading();
+          const defaultUrl = id
+            ? FGC_API_URLS.getUpdateComboUrl(id.toString())
+            : FGC_API_URLS.COMBOS;
           const { error } = await promiseResultWithError(
             fgcApi.request({
-              url: `${
-                id
-                  ? FGC_API_URLS.getUpdateComboUrl(id.toString())
-                  : FGC_API_URLS.COMBOS
-              }`,
+              url: onSuccessUrl ? onSuccessUrl : defaultUrl,
               data: data.values,
               method: id ? 'PUT' : 'POST',
             }),
@@ -78,6 +84,7 @@ export const ComboForm: FC<ComboFormProps> = ({ initialValues, onSuccess }) => {
           if (onSuccess) {
             onSuccess();
           }
+          invalidateQueries();
           toast.success(
             id
               ? 'Combo updated successfully'
