@@ -9,6 +9,8 @@ export default function DashboardLayout(props: { children: React.ReactNode }) {
   return (
     <div className="w-full h-full min-h-80vh flex flex-col items-center gap-2">
       <Tabs
+        // hack to reset inner state
+        key={pathname}
         defaultTab={isPlaylistScreen ? 'playlists' : 'combos'}
         tabs={[
           { id: 'combos', label: 'Combos' },

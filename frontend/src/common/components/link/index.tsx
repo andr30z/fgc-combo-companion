@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode } from 'react';
 import NextLink from 'next/link';
 
-interface LinkProps {
+export interface LinkProps {
   href: string;
   children: ReactNode;
   className?: string;
