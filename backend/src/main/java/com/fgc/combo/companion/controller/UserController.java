@@ -6,6 +6,7 @@ import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
 import com.fgc.combo.companion.dto.UserVerficationSuccessDto;
 import com.fgc.combo.companion.dto.UserVerificationDto;
 import com.fgc.combo.companion.mapper.UserVerificationMapper;
@@ -90,12 +91,14 @@ public class UserController {
     return usersService.findById(id);
   }
 
-  @PutMapping("/{id}")
-  public User updateEmailAndName(
-    @PathVariable Long id,
-    UpdateUserDto updateUserDto
-  ) {
-    return usersService.updateEmailAndName(id, updateUserDto);
+  @PutMapping("/me")
+  public User updateEmailAndName(UpdateUserDto updateUserDto) {
+    return usersService.updateCurrentUserEmailAndName(updateUserDto);
+  }
+
+  @PatchMapping("/me/password")
+  public User updateUserPassword(UpdateUserPasswordDto updateUserPasswordDto) {
+    return usersService.updateCurrentUserPassword(updateUserPasswordDto);
   }
 
   @PostMapping("/email-verification-solicitation")

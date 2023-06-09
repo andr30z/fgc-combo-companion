@@ -18,10 +18,10 @@ import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.Token;
 import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
 import com.fgc.combo.companion.enums.OAuthTypes;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.EntityExistsException;
-import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.UserRepository;
@@ -479,25 +479,6 @@ public class UserServiceImplTests {
 
   @Test
   @DisplayName(
-    "It should not allow to update if logged user is not the current user."
-  )
-  void itShouldNotAllowToUpdateIfLoggedUserIsNotTheCurrentUser() {
-    mockAuthentication();
-    assertThatThrownBy(() -> {
-        long notCurrentUserId = currentUser.getId() + 1;
-        this.underTest.updateEmailAndName(
-            notCurrentUserId,
-            new UpdateUserDto("teste@mail.com", "test123123")
-          );
-      })
-      .isInstanceOf(OperationNotAllowedException.class)
-      .hasMessageContaining("You are not the owner of this account!");
-
-    verify(userRepository, never()).save(Mockito.any());
-  }
-
-  @Test
-  @DisplayName(
     "It should update email and name if logged user is the current user."
   )
   void itShouldUpdateEmailAndName() {
@@ -513,11 +494,54 @@ public class UserServiceImplTests {
     when(userRepository.save(any())).thenReturn(updatedUser);
 
     User returnedUser =
-      this.underTest.updateEmailAndName(currentUser.getId(), updateUserDto);
+      this.underTest.updateCurrentUserEmailAndName(updateUserDto);
 
     verify(userRepository).save(Mockito.any());
     assertThat(returnedUser.getEmail()).isEqualTo(updateUserDto.email());
     assertThat(returnedUser.getName()).isEqualTo(updateUserDto.name());
+  }
+
+  @Test
+  @DisplayName(
+    "It should update email and name if logged user is the current user."
+  )
+  void itShouldUpdateUserPassword() {
+    mockAuthentication();
+    User updatedUser = new User();
+    BeanUtils.copyProperties(currentUser, updatedUser);
+    UpdateUserPasswordDto updateUserPasswordDto = new UpdateUserPasswordDto(
+      currentUser.getPassword(),
+      "test123123"
+    );
+    when(passwordEncoder.matches(any(), any())).thenReturn(true);
+    when(userRepository.save(any())).thenReturn(updatedUser);
+
+    this.underTest.updateCurrentUserPassword(updateUserPasswordDto);
+
+    verify(userRepository).save(Mockito.any());
+  }
+
+  @Test
+  @DisplayName(
+    "It should not update user password if the password does not match."
+  )
+  void itShouldNotUpdateUserPasswordIfThePasswordDoesNotMatch() {
+    mockAuthentication();
+    User updatedUser = new User();
+    BeanUtils.copyProperties(currentUser, updatedUser);
+    UpdateUserPasswordDto updateUserPasswordDto = new UpdateUserPasswordDto(
+      currentUser.getPassword(),
+      "test123123"
+    );
+
+    when(passwordEncoder.matches(any(), any())).thenReturn(false);
+    assertThatThrownBy(() -> {
+        this.underTest.updateCurrentUserPassword(updateUserPasswordDto);
+      })
+      .isInstanceOf(BadRequestException.class)
+      .hasMessageContaining("Password doesn't match!");
+
+    verify(userRepository, never()).save(any());
   }
 
   private void mockAuthentication() {

@@ -7,9 +7,9 @@ import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.Token;
 import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.EntityExistsException;
-import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.model.UserVerification;
@@ -22,7 +22,6 @@ import com.fgc.combo.companion.utils.SecurityCipher;
 import jakarta.transaction.Transactional;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +29,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-
-  private static final int PASSWORD_STRENGTH = 10;
 
   private final UserRepository userRepository;
 
@@ -138,11 +134,8 @@ public class UserServiceImpl implements UserService {
     );
     User user = new User();
     BeanUtils.copyProperties(userDTO, user);
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(
-      PASSWORD_STRENGTH,
-      new SecureRandom()
-    );
-    String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+
+    String encodedPassword = passwordEncoder.encode(user.getPassword());
     user.setPassword(encodedPassword);
     user.setEmailVerified(false);
 
@@ -281,13 +274,30 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User updateEmailAndName(Long id, UpdateUserDto userDTO) {
+  public User updateCurrentUserEmailAndName(UpdateUserDto userDTO) {
     User currentUser = this.me();
-    if (currentUser.getId() != id) throw new OperationNotAllowedException(
-      "You are not the owner of this account!"
-    );
 
     BeanUtils.copyProperties(userDTO, currentUser);
     return this.userRepository.save(currentUser);
+  }
+
+  @Override
+  public User updateCurrentUserPassword(
+    UpdateUserPasswordDto updateUserPasswordDto
+  ) {
+    User currentUser = this.me();
+    if (
+      !passwordEncoder.matches(
+        updateUserPasswordDto.oldPassword(),
+        currentUser.getPassword()
+      )
+    ) {
+      throw new BadRequestException("Password doesn't match!");
+    }
+
+    currentUser.setPassword(
+      passwordEncoder.encode(updateUserPasswordDto.newPassword())
+    );
+    return userRepository.save(currentUser);
   }
 }

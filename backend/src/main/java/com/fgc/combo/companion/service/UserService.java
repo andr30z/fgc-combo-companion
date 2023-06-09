@@ -5,6 +5,7 @@ import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.model.UserVerification;
 import java.util.UUID;
@@ -12,7 +13,8 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserService {
   User create(CreateUserDTO userDTO);
-  User updateEmailAndName(Long id, UpdateUserDto userDTO);
+  User updateCurrentUserEmailAndName(UpdateUserDto userDTO);
+  User updateCurrentUserPassword(UpdateUserPasswordDto updateUserPasswordDto);
 
   User findById(Long id);
 
