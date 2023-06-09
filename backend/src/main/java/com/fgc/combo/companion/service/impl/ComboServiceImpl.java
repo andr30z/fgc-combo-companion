@@ -67,6 +67,7 @@ public class ComboServiceImpl implements ComboService {
     }
 
     BeanUtils.copyProperties(updateComboDTO, combo);
+    combo.setCombo(updateComboDTO.getCombo());
 
     return this.saveCombo(combo);
   }

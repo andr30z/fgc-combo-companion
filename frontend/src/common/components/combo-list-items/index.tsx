@@ -118,6 +118,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
 
           return (
             <ComboPreview
+              key={`${item.id} - ${combo.game}`}
               combo={combo.combo}
               description={combo.description}
               game={combo.game}
