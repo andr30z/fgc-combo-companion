@@ -17,9 +17,11 @@ import com.fgc.combo.companion.dto.CustomUserDetails;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.Token;
+import com.fgc.combo.companion.dto.UpdateUserDto;
 import com.fgc.combo.companion.enums.OAuthTypes;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.EntityExistsException;
+import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.UserRepository;
@@ -41,6 +43,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
@@ -472,6 +475,49 @@ public class UserServiceImplTests {
     User loggedUser = underTest.me();
 
     assertThat(loggedUser.getId()).isEqualTo(currentUser.getId());
+  }
+
+  @Test
+  @DisplayName(
+    "It should not allow to update if logged user is not the current user."
+  )
+  void itShouldNotAllowToUpdateIfLoggedUserIsNotTheCurrentUser() {
+    mockAuthentication();
+    assertThatThrownBy(() -> {
+        long notCurrentUserId = currentUser.getId() + 1;
+        this.underTest.updateEmailAndName(
+            notCurrentUserId,
+            new UpdateUserDto("teste@mail.com", "test123123")
+          );
+      })
+      .isInstanceOf(OperationNotAllowedException.class)
+      .hasMessageContaining("You are not the owner of this account!");
+
+    verify(userRepository, never()).save(Mockito.any());
+  }
+
+  @Test
+  @DisplayName(
+    "It should update email and name if logged user is the current user."
+  )
+  void itShouldUpdateEmailAndName() {
+    mockAuthentication();
+    User updatedUser = new User();
+    BeanUtils.copyProperties(currentUser, updatedUser);
+    UpdateUserDto updateUserDto = new UpdateUserDto(
+      "teste03583045@mail.com",
+      "test123123"
+    );
+    updatedUser.setEmail(updateUserDto.email());
+    updatedUser.setName(updateUserDto.name());
+    when(userRepository.save(any())).thenReturn(updatedUser);
+
+    User returnedUser =
+      this.underTest.updateEmailAndName(currentUser.getId(), updateUserDto);
+
+    verify(userRepository).save(Mockito.any());
+    assertThat(returnedUser.getEmail()).isEqualTo(updateUserDto.email());
+    assertThat(returnedUser.getName()).isEqualTo(updateUserDto.name());
   }
 
   private void mockAuthentication() {

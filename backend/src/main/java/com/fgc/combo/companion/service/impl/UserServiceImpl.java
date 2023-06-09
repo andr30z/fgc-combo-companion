@@ -6,8 +6,10 @@ import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.Token;
+import com.fgc.combo.companion.dto.UpdateUserDto;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.EntityExistsException;
+import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.model.UserVerification;
@@ -276,5 +278,16 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserVerification getUserVerificationToken(UUID token) {
     return this.userVerificationService.getUserVerificationByToken(token);
+  }
+
+  @Override
+  public User updateEmailAndName(Long id, UpdateUserDto userDTO) {
+    User currentUser = this.me();
+    if (currentUser.getId() != id) throw new OperationNotAllowedException(
+      "You are not the owner of this account!"
+    );
+
+    BeanUtils.copyProperties(userDTO, currentUser);
+    return this.userRepository.save(currentUser);
   }
 }
