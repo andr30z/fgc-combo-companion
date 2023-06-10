@@ -6,10 +6,12 @@ import { Link } from '@/common/components/link';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
+import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { toast } from 'react-hot-toast';
 
 export default function SignupPage() {
+  useUser();
   const [
     { email, password, passwordConfirmation, name },
     { onChange },

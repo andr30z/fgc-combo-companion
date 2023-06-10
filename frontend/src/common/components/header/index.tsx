@@ -131,7 +131,7 @@ export const Header = () => {
             <MenuItem
               href="/profile"
               icon={AiOutlineUser}
-              text="Profle"
+              text="Profile"
               onClick={closeMenu}
             />
             <MenuItem
