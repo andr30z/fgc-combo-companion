@@ -28,6 +28,7 @@ export const fgcApi = getFgcApiInstance();
 
 export const FGC_API_URLS = {
   LOGIN: '/v1/users/login',
+  UPDATE_PROFILE: '/v1/users/me',
   REFRESH_TOKEN: '/v1/users/refresh',
   SIGNUP: '/v1/users',
   ME: '/v1/users/me',

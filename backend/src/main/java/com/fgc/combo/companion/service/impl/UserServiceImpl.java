@@ -124,6 +124,17 @@ public class UserServiceImpl implements UserService {
     );
   }
 
+  private void validateUserEmailIsUnique(User user, String newEmail) {
+    Optional<User> userOptional = this.userRepository.findUserByEmail(newEmail);
+    if (
+      userOptional.isPresent() && userOptional.get().getId() != user.getId()
+    ) {
+      throw new BadRequestException(
+        "User with email: " + newEmail + " already exists."
+      );
+    }
+  }
+
   @Override
   @Transactional
   public User create(CreateUserDTO userDTO) {
@@ -276,6 +287,18 @@ public class UserServiceImpl implements UserService {
   @Override
   public User updateCurrentUserEmailAndName(UpdateUserDto userDTO) {
     User currentUser = this.me();
+    boolean isUpdatingEmail = !currentUser.getEmail().equals(userDTO.email());
+    if (isUpdatingEmail) {
+      validateUserEmailIsUnique(currentUser, userDTO.email());
+      currentUser.setEmailVerified(false);
+    }
+
+    boolean hasPassword = currentUser.getPassword() != null;
+    if (!hasPassword && isUpdatingEmail) {
+      throw new BadRequestException(
+        "You need to add a password to your account before changing your email."
+      );
+    }
 
     BeanUtils.copyProperties(userDTO, currentUser);
     return this.userRepository.save(currentUser);

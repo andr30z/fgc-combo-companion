@@ -4,7 +4,7 @@ interface CardProps {
   className?: string;
   children: ReactNode;
   cardTitle?: ReactNode;
-  size?: 'xl' | 'lg' | 'md';
+  size?: 'full' | 'xl' | 'lg' | 'md';
   theme?: 'primary' | 'secondary' | 'secondary-dark' | 'dark';
   shadowSize?: 'none' | 'lg' | 'md' | 'sm';
 }
@@ -21,6 +21,7 @@ export const Card: FC<CardProps> = ({
     xl: 'sm:w-[400px] sm:h-[500px]',
     lg: 'sm:w-[300px] sm:h-[400px]',
     md: 'sm:w-[250px] sm:h-[300px]',
+    full: 'w-full h-full flex-1',
   };
 
   const themes = {

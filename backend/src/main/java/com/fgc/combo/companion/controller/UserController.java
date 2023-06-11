@@ -92,7 +92,7 @@ public class UserController {
   }
 
   @PutMapping("/me")
-  public User updateEmailAndName(UpdateUserDto updateUserDto) {
+  public User updateEmailAndName(@RequestBody @Validated UpdateUserDto updateUserDto) {
     return usersService.updateCurrentUserEmailAndName(updateUserDto);
   }
 
