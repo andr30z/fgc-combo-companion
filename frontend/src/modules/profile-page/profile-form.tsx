@@ -41,7 +41,9 @@ export const ProfileForm: FC<{ user: User }> = ({ user }) => {
           error as Record<string, Array<string>>,
           'response.data.errors',
         );
-        toast.error(formErrors?.join(', ') || 'Something went wrong.');
+        toast.error(formErrors?.join(', ') || 'Something went wrong.', {
+          duration: 10000,
+        });
       },
       onSettled: () => {
         stopLoading();

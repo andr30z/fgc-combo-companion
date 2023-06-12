@@ -73,12 +73,12 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
         return true;
       }
       const fgcApi = getFgcApiInstance();
-
       const { error, result } = await promiseResultWithError(
         fgcApi.post<LoginResponse>(FGC_API_URLS.OAUTH_LOGIN, {
           email: user.email,
           name: user.name,
           authProvider: AuthProviderTypes.GOOGLE,
+          oAuthId: user.id,
         }),
       );
 

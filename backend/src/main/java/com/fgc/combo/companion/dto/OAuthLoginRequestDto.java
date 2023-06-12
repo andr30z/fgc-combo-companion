@@ -24,5 +24,8 @@ public class OAuthLoginRequestDto {
   @NotNull(message = "is required")
   private String authProvider;
 
+  @NotNull(message = "is required")
+  private String oAuthId;
+
   private String name;
 }

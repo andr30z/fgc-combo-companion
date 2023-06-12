@@ -246,8 +246,9 @@ public class UserServiceImpl implements UserService {
         .orElseGet(() -> {
           User oAuthUser = User
             .builder()
-            .email(email)
             .name(loginRequest.getName())
+            .oAuthId(loginRequest.getOAuthId())
+            .email(email)
             .emailVerified(true)
             .build();
           oAuthUser.setAuthProvider(loginRequest.getAuthProvider());

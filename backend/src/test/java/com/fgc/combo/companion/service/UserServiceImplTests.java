@@ -254,7 +254,8 @@ public class UserServiceImplTests {
     OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
       "teste@mail.com",
       OAuthTypes.GOOGLE.name(),
-      "testname"
+      "testname",
+      "123"
     );
     String userMail = loginRequest.getEmail();
     String testName = loginRequest.getName();
@@ -302,7 +303,8 @@ public class UserServiceImplTests {
     OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
       "teste@mail.com",
       OAuthTypes.GOOGLE.name(),
-      "testname"
+      "testname",
+      "123"
     );
     String userMail = loginRequest.getEmail();
     String testName = loginRequest.getName();

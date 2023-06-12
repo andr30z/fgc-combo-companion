@@ -19,7 +19,9 @@ export default function ProfilePage() {
       >
         {
           <TabContent value="profile" className="h-full w-full flex flex-1">
-            {user && <ProfileForm user={user} />}
+            {user && (
+              <ProfileForm key={`${user.email}/${user.name}`} user={user} />
+            )}
           </TabContent>
         }
       </Tabs>

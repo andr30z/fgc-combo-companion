@@ -52,6 +52,9 @@ public class User {
 
   private String name;
 
+  @Column(name = "oauth_id")
+  private String oAuthId;
+
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at")
