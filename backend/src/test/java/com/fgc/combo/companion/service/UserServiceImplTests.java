@@ -491,6 +491,7 @@ public class UserServiceImplTests {
     );
     updatedUser.setEmail(updateUserDto.email());
     updatedUser.setName(updateUserDto.name());
+    when(userRepository.findUserByEmail(any())).thenReturn(Optional.empty());
     when(userRepository.save(any())).thenReturn(updatedUser);
 
     User returnedUser =
@@ -499,6 +500,28 @@ public class UserServiceImplTests {
     verify(userRepository).save(Mockito.any());
     assertThat(returnedUser.getEmail()).isEqualTo(updateUserDto.email());
     assertThat(returnedUser.getName()).isEqualTo(updateUserDto.name());
+  }
+
+  @Test
+  @DisplayName("It should not update when email is taken by another user.")
+  void itShouldUpdateWhenEmailIsTakenBySameUser() {
+    mockAuthentication();
+    User updatedUser = new User();
+    BeanUtils.copyProperties(currentUser, updatedUser);
+
+    String email = "teste03583045@mail.com";
+    UpdateUserDto updateUserDto = new UpdateUserDto(email, "test123123");
+    updatedUser.setEmail(updateUserDto.email());
+    updatedUser.setName(updateUserDto.name());
+
+    when(userRepository.findUserByEmail(any()))
+      .thenReturn(Optional.of(User.builder().id(9973L).email(email).build()));
+
+    assertThatThrownBy(() -> {
+        this.underTest.updateCurrentUserEmailAndName(updateUserDto);
+      })
+      .isInstanceOf(EntityExistsException.class)
+      .hasMessageContaining("User with email: " + email + " already exists.");
   }
 
   @Test

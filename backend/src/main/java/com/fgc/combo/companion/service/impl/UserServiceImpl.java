@@ -124,15 +124,17 @@ public class UserServiceImpl implements UserService {
     );
   }
 
-  private void validateUserEmailIsUnique(User user, String newEmail) {
+  private boolean validateUserEmailIsUnique(User user, String newEmail) {
     Optional<User> userOptional = this.userRepository.findUserByEmail(newEmail);
     if (
       userOptional.isPresent() && userOptional.get().getId() != user.getId()
     ) {
-      throw new BadRequestException(
+      throw new EntityExistsException(
         "User with email: " + newEmail + " already exists."
       );
     }
+
+    return true;
   }
 
   @Override
@@ -288,8 +290,9 @@ public class UserServiceImpl implements UserService {
   public User updateCurrentUserEmailAndName(UpdateUserDto userDTO) {
     User currentUser = this.me();
     boolean isUpdatingEmail = !currentUser.getEmail().equals(userDTO.email());
-    if (isUpdatingEmail) {
-      validateUserEmailIsUnique(currentUser, userDTO.email());
+    if (
+      isUpdatingEmail && validateUserEmailIsUnique(currentUser, userDTO.email())
+    ) {
       currentUser.setEmailVerified(false);
     }
 
