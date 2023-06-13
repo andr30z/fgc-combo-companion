@@ -82,8 +82,12 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
         }),
       );
 
-      setCookies(res, result);
-      return error === null;
+      if (!error) {
+        setCookies(res, result);
+        return true;
+      }
+      res.redirect(`/login?error=${error.response.message}`);
+      throw new Error(error.response.message);
     },
 
     jwt: async (data) => {
