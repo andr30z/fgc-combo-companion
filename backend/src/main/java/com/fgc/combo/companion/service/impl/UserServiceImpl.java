@@ -137,6 +137,18 @@ public class UserServiceImpl implements UserService {
     return true;
   }
 
+  private User createOAuthUser(OAuthLoginRequestDto loginRequest) {
+    User oAuthUser = User
+      .builder()
+      .name(loginRequest.getName())
+      .oAuthId(loginRequest.getOAuthId())
+      .email(loginRequest.getEmail())
+      .emailVerified(true)
+      .build();
+    oAuthUser.setAuthProvider(loginRequest.getAuthProvider());
+    return userRepository.save(oAuthUser);
+  }
+
   @Override
   @Transactional
   public User create(CreateUserDTO userDTO) {
@@ -241,21 +253,19 @@ public class UserServiceImpl implements UserService {
     OAuthLoginRequestDto loginRequest
   ) {
     String email = loginRequest.getEmail();
-    User user =
-      this.userRepository.findUserByEmail(email)
-        .orElseGet(() -> {
-          User oAuthUser = User
-            .builder()
-            .name(loginRequest.getName())
-            .oAuthId(loginRequest.getOAuthId())
-            .email(email)
-            .emailVerified(true)
-            .build();
-          oAuthUser.setAuthProvider(loginRequest.getAuthProvider());
-          return this.userRepository.save(oAuthUser);
-        });
+    Optional<User> user = this.userRepository.findUserByEmail(email);
 
-    return this.login(user, null, null);
+    User loginUser = user.isPresent()
+      ? user.get()
+      : this.createOAuthUser(loginRequest);
+
+    if (
+      loginUser.getOAuthId() != loginRequest.getOAuthId()
+    ) throw new BadRequestException(
+      "You have previously logged in using this email with a different provider."
+    );
+
+    return this.login(loginUser, null, null);
   }
 
   @Override

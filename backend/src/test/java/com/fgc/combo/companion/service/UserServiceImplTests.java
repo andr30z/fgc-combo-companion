@@ -248,6 +248,40 @@ public class UserServiceImplTests {
   }
 
   @Test
+  @DisplayName("It should throw when user has different OAuthId.")
+  void itShouldThrowWhenUserHasDifferentOAuthId() {
+    // given
+    OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
+      "teste@mail.com",
+      OAuthTypes.GOOGLE.name(),
+      "testname_123",
+      "123"
+    );
+    String userMail = loginRequest.getEmail();
+    String testName = loginRequest.getName();
+    Long userId = 1L;
+    User userToLogin = User
+      .builder()
+      .id(userId)
+      .name(testName)
+      .oAuthId("aaskljdklajsdlkjaskldjklasdjklajsdlka")
+      .email(userMail)
+      .build();
+    userToLogin.setAuthProvider(OAuthTypes.GOOGLE.name());
+
+    when(userRepository.findUserByEmail(anyString()))
+      .thenReturn(Optional.of(userToLogin));
+
+    assertThatThrownBy(() -> underTest.oAuthlogin(loginRequest))
+      .isInstanceOf(BadRequestException.class)
+      .hasMessageContaining(
+        "You have previously logged in using this email with a different provider."
+      );
+
+    verify(userRepository, never()).save(Mockito.any());
+  }
+
+  @Test
   @DisplayName("It should login the user successfully via oAuth.")
   void itShouldLoginThroughOAuth() {
     // given
@@ -264,6 +298,7 @@ public class UserServiceImplTests {
       .builder()
       .id(userId)
       .name(testName)
+      .oAuthId(loginRequest.getOAuthId())
       .email(userMail)
       .build();
     userToLogin.setAuthProvider(OAuthTypes.GOOGLE.name());
@@ -313,6 +348,7 @@ public class UserServiceImplTests {
       .builder()
       .id(userId)
       .name(testName)
+      .oAuthId(loginRequest.getOAuthId())
       .email(userMail)
       .build();
     userToLogin.setAuthProvider(OAuthTypes.GOOGLE.name());
