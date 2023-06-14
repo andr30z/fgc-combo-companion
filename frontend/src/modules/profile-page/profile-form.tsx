@@ -66,7 +66,7 @@ export const ProfileForm: FC<{ user: User }> = ({ user }) => {
         value={email}
         onChange={onChange('email')}
       />
-      <Button type="submit" text="Save" extraStyles="mt-4" />
+      <Button type="submit" text="Submit" extraStyles="mt-4" />
     </form>
   );
 };

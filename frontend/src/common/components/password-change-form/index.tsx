@@ -23,13 +23,7 @@ export const PasswordChangeForm: FC<PasswordChangeFormProps> = ({
     newPasswordConfirmation: '',
   });
   return (
-    <Card
-      size="xl"
-      shadowSize="lg"
-      theme="dark"
-      cardTitle="Password change"
-      className="gap-2"
-    >
+    <>
       {useOldPasswordInput && (
         <Input
           label="Old Password"
@@ -82,6 +76,6 @@ export const PasswordChangeForm: FC<PasswordChangeFormProps> = ({
           return onSubmit(oldPassword, newPassword);
         })}
       />
-    </Card>
+    </>
   );
 };

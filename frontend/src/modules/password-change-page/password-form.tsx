@@ -1,4 +1,5 @@
 'use client';
+import { Card } from '@/common/components/card';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { PasswordChangeForm } from '@/common/components/password-change-form';
 import { useBoolean } from '@/common/hooks/boolean';
@@ -22,33 +23,40 @@ export const PasswordForm: FC<PasswordChangePageProps> = ({
 
   return (
     <div className="w-full h-full min-h-80vh flex flex-row justify-center items-center gap-2">
-      <PasswordChangeForm
-        onSubmit={async (_oldPassword, newPassword) => {
-          startLoading();
-          const { error: apiError } = await promiseResultWithError(
-            fgcApi.patch(
-              FGC_API_URLS.PASSWORD_CHANGE,
-              {
-                newPassword,
-              },
-              { params: { token: verificationToken } },
-            ),
-          );
-          stopLoading();
-
-          if (apiError) {
-            toast.error(
-              apiError.response?.data?.errors?.join(', ') ??
-                'Something went wrong. Try again.',
+      <Card
+        size="xl"
+        shadowSize="lg"
+        theme="dark"
+        cardTitle="Password change"
+        className="gap-2"
+      >
+        <PasswordChangeForm
+          onSubmit={async (_oldPassword, newPassword) => {
+            startLoading();
+            const { error: apiError } = await promiseResultWithError(
+              fgcApi.patch(
+                FGC_API_URLS.PASSWORD_CHANGE,
+                {
+                  newPassword,
+                },
+                { params: { token: verificationToken } },
+              ),
             );
-            return;
-          }
+            stopLoading();
 
-          toast.success('Password changed successfully');
-          router.push('/login');
-        }}
-      />
+            if (apiError) {
+              toast.error(
+                apiError.response?.data?.errors?.join(', ') ??
+                  'Something went wrong. Try again.',
+              );
+              return;
+            }
 
+            toast.success('Password changed successfully');
+            router.push('/login');
+          }}
+        />
+      </Card>
       <LoadingBackdrop isLoading={isLoading} />
     </div>
   );

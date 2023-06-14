@@ -32,6 +32,7 @@ export const FGC_API_URLS = {
   REFRESH_TOKEN: '/v1/users/refresh',
   SIGNUP: '/v1/users',
   ME: '/v1/users/me',
+  CHANGE_PASSWORD: '/v1/users/me/password',
   OAUTH_LOGIN: '/v1/users/oauth/login',
   PASSWORD_CHANGE: '/v1/users/password-change',
   PASSWORD_CHANGE_SOLICITATION: '/v1/users/password-change-solicitation',

@@ -1,30 +1,16 @@
 'use client';
 
-import { TabContent, Tabs } from '@/common/components/tabs';
+import { TabContent } from '@/common/components/tabs';
+import { usePageTitle } from '@/common/hooks/page-title';
 import { useUser } from '@/common/hooks/user';
 import { ProfileForm } from '@/modules/profile-page/profile-form';
 
 export default function ProfilePage() {
   const { user } = useUser();
+  usePageTitle('FGC - Profile');
   return (
-    <div className="min-h-80vh w-full flex flex-col">
-      <Tabs
-        rootClassName="h-full w-full flex-1"
-        listContainerClassName="layout-padding-x mb-0"
-        tabs={[
-          { label: 'Profile', id: 'profile' },
-          { label: 'Password', id: 'password' },
-          { label: 'Settings', id: 'settings' },
-        ]}
-      >
-        {
-          <TabContent value="profile" className="h-full w-full flex flex-1">
-            {user && (
-              <ProfileForm key={`${user.email}/${user.name}`} user={user} />
-            )}
-          </TabContent>
-        }
-      </Tabs>
-    </div>
+    <TabContent value="/user/profile" className="h-full w-full flex flex-1">
+      {user && <ProfileForm key={`${user.email}/${user.name}`} user={user} />}
+    </TabContent>
   );
 }
