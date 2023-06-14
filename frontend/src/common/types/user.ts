@@ -6,5 +6,6 @@ export interface User {
   email: string;
   createdAt: string;
   emailVerified: boolean;
+  oauthId: string;
   authProvider?: AuthProviderTypes;
 }

@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import {
   AiOutlineClose,
+  AiOutlineKey,
   AiOutlineLogout,
   AiOutlineMenu,
   AiOutlineUser,
@@ -151,6 +152,12 @@ export const Header = () => {
               href="/combo-translator"
               icon={BiTransfer}
               text="Combo Translator"
+              onClick={closeMenu}
+            />
+            <MenuItem
+              href="/user/profile/password"
+              icon={AiOutlineKey}
+              text="Manage your password"
               onClick={closeMenu}
             />
             <MenuItem

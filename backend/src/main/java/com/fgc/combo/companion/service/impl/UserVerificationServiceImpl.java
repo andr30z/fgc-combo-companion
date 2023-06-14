@@ -11,12 +11,11 @@ import com.fgc.combo.companion.repository.UserVerificationRepository;
 import com.fgc.combo.companion.service.EmailService;
 import com.fgc.combo.companion.service.UserVerificationService;
 import jakarta.transaction.Transactional;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +28,8 @@ public class UserVerificationServiceImpl implements UserVerificationService {
 
   private final EmailService emailService;
 
+  private final PasswordEncoder passwordEncoder;
+
   @Value("${email-verification.base-frontend-url}")
   private String EMAIL_VERIFICATION_FRONTEND_URL;
 
@@ -40,11 +41,13 @@ public class UserVerificationServiceImpl implements UserVerificationService {
   public UserVerificationServiceImpl(
     UserVerificationRepository userVerificationRepository,
     EmailService emailService,
-    UserRepository userRepository
+    UserRepository userRepository,
+    PasswordEncoder passwordEncoder
   ) {
     this.userVerificationRepository = userVerificationRepository;
     this.emailService = emailService;
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   private UserVerification createVerification(
@@ -163,12 +166,11 @@ public class UserVerificationServiceImpl implements UserVerificationService {
       user.getId(),
       user.getEmail()
     );
-    int PASSWORD_STRENGTH = 10;
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(
-      PASSWORD_STRENGTH,
-      new SecureRandom()
-    );
-    user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+
+    user.setAuthProvider(null);
+    user.setOAuthId(null);
+
+    user.setPassword(this.passwordEncoder.encode(newPassword));
     return this.userRepository.save(user);
   }
 

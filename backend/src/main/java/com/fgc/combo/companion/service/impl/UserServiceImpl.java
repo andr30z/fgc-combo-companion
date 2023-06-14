@@ -262,7 +262,7 @@ public class UserServiceImpl implements UserService {
     if (
       !loginRequest.getOAuthId().equals(loginUser.getOAuthId())
     ) throw new BadRequestException(
-      "You have previously logged in using this email with a different provider."
+      "You have previously logged in using this email with a different provider or you removed the provider."
     );
 
     return this.login(loginUser, null, null);

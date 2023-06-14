@@ -64,7 +64,7 @@ public class User {
   private String password;
 
   public void setAuthProvider(String authProvider) {
-    if (authProvider == null) return;
-    this.authProvider = OAuthTypes.valueOf(authProvider);
+    this.authProvider =
+      authProvider == null ? null : OAuthTypes.valueOf(authProvider);
   }
 }

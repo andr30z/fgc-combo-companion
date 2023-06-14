@@ -8,6 +8,7 @@ import { promiseResultWithError } from '@/common/utils/promises';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { toast } from 'react-hot-toast';
+import { useQueryClient } from 'react-query';
 
 interface PasswordChangePageProps {
   verificationToken: string;
@@ -17,6 +18,7 @@ export const PasswordForm: FC<PasswordChangePageProps> = ({
   verificationToken,
 }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [isLoading, { setTrue: startLoading, setFalse: stopLoading }] =
     useBoolean();
@@ -35,7 +37,7 @@ export const PasswordForm: FC<PasswordChangePageProps> = ({
             startLoading();
             const { error: apiError } = await promiseResultWithError(
               fgcApi.patch(
-                FGC_API_URLS.PASSWORD_CHANGE,
+                FGC_API_URLS.CONFIRM_PASSWORD_CHANGE,
                 {
                   newPassword,
                 },
@@ -53,6 +55,7 @@ export const PasswordForm: FC<PasswordChangePageProps> = ({
             }
 
             toast.success('Password changed successfully');
+            queryClient.invalidateQueries(['user']);
             router.push('/login');
           }}
         />

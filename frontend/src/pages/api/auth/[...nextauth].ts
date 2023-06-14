@@ -81,12 +81,15 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
           oAuthId: user.id,
         }),
       );
-
       if (!error) {
         setCookies(res, result);
         return true;
       }
-      res.redirect(`/login?error=${error.response.message}`);
+      res.redirect(
+        `/login?error=${
+          error?.response?.data?.message ?? 'Something went wrong'
+        }`,
+      );
       throw new Error(error.response.message);
     },
 

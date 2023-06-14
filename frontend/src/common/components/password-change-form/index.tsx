@@ -3,7 +3,6 @@ import { useForm } from '@/common/hooks/form';
 import type { FC } from 'react';
 import { toast } from 'react-hot-toast';
 import { Button } from '../button';
-import { Card } from '../card';
 import { Input } from '../input';
 interface PasswordChangeFormProps {
   useOldPasswordInput?: boolean;
@@ -48,7 +47,7 @@ export const PasswordChangeForm: FC<PasswordChangeFormProps> = ({
         type="password"
       />
       <Button
-        extraStyles="w-full mt-3"
+        extraStyles="mt-3 w-full"
         text="Submit"
         onClick={onSubmitForm(async () => {
           let hasError = false;

@@ -24,7 +24,7 @@ public class V1__CreateUserTable extends BaseJavaMigration {
       "name character varying(255) NOT NULL, " +
       "password character varying(255), " +
       "auth_provider oauthtypes, " +
-      "oauth_id character varying(255) NOT NULL, " +
+      "oauth_id character varying(255), " +
       "email_verified BOOL NOT NULL, " +
       "created_at timestamp, " +
       "CONSTRAINT user_pkey PRIMARY KEY (id) );"
