@@ -1,10 +1,8 @@
 package com.fgc.combo.companion.dto;
 
+import com.fgc.combo.companion.model.User;
 import java.time.LocalDateTime;
 import java.util.Set;
-
-import com.fgc.combo.companion.model.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,17 +11,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompletePlaylistDTO {
-    private Long id;
 
-    private String name;
+  private Long id;
 
-    private String description;
+  private String name;
 
-    private LocalDateTime createdAt;
+  private String description;
 
-    private User owner;
+  private LocalDateTime createdAt;
 
-    private Set<PlaylistComboResponseDTO> playlistCombos;
+  private LocalDateTime updatedAt;
 
-    private Set<TagResponseDTO> tags;
+  private User owner;
+
+  private Set<PlaylistComboResponseDTO> playlistCombos;
+
+  private Set<TagResponseDTO> tags;
 }

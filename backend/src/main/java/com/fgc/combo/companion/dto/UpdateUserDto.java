@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.URL;
 public record UpdateUserDto(
   @NotBlank @Email String email,
   @NotBlank String name,
-  @Length(max = 480) String bio,
+  @Length(max = 750) String bio,
   @URL String twitterProfileUrl,
   @URL String instagramProfileUrl,
   @URL String YoutubeProfileUrl

@@ -4,12 +4,9 @@ import { useApiQuery } from '@/common/hooks/api-query';
 import { usePageTitle } from '@/common/hooks/page-title';
 import { useUser } from '@/common/hooks/user';
 import { User } from '@/common/types/user';
-import {
-  AiFillEdit,
-  AiFillInstagram,
-  AiFillTwitterCircle,
-  AiFillYoutube,
-} from 'react-icons/ai';
+import { AiFillEdit, AiOutlineTwitter } from 'react-icons/ai';
+import { FaYoutubeSquare } from 'react-icons/fa';
+import { FiInstagram } from 'react-icons/fi';
 
 const TEN_MINUTES = 1000 * 60 * 10;
 
@@ -39,7 +36,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
         <p className="text-light font-primary text-left">{data.bio}</p>
       )}
 
-      {hasNoSocialMediaLinks && (
+      {!hasNoSocialMediaLinks && (
         <div className="flex flex-row justify-end gap-1">
           {user?.id === currentUser?.id && (
             <Link href="/user/profile" color="light">
@@ -53,7 +50,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
               rel="noreferrer"
               className="text-light font-primary hover:text-secondary cursor-pointer"
             >
-              <AiFillTwitterCircle title="Go to Twitter" size={25} />
+              <AiOutlineTwitter title="Go to Twitter" size={25} />
             </a>
           )}
           {data?.instagramProfileUrl && (
@@ -63,17 +60,17 @@ export const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
               rel="noreferrer"
               className="text-light font-primary hover:text-secondary cursor-pointer"
             >
-              <AiFillInstagram size={25} title="Go to Instagram" />
+              <FiInstagram size={25} title="Go to Instagram" />
             </a>
           )}
-          {data?.instagramProfileUrl && (
+          {data?.youtubeChannelUrl && (
             <a
               href={user?.youtubeChannelUrl}
               target="_blank"
               rel="noreferrer"
               className="text-light font-primary hover:text-secondary cursor-pointer"
             >
-              <AiFillYoutube size={27} title="Go to Youtube" />
+              <FaYoutubeSquare size={27} title="Go to Youtube" />
             </a>
           )}
         </div>

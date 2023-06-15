@@ -20,6 +20,8 @@ public class PlaylistResponseDTO {
 
   private LocalDateTime createdAt;
 
+  private LocalDateTime updatedAt;
+
   private User owner;
 
   private List<TagResponseDTO> tags;
