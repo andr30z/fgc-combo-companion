@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @AllArgsConstructor
@@ -55,13 +56,27 @@ public class User {
   @Column(name = "oauth_id")
   private String oAuthId;
 
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private String password;
+
+  @Column(name = "twitter_profile_url")
+  private String twitterProfileUrl;
+
+  @Column(name = "instagram_profile_url")
+  private String instagramProfileUrl;
+
+  @Column(name = "youtube_channel_url")
+  private String youtubeChannelUrl;
+
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "updated_at")
+  LocalDateTime updatedAt;
+
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at")
   LocalDateTime createdAt;
-
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private String password;
 
   public void setAuthProvider(String authProvider) {
     this.authProvider =

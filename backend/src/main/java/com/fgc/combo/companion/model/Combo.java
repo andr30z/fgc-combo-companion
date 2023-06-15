@@ -27,6 +27,7 @@ import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -63,6 +64,11 @@ public class Combo {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at")
   LocalDateTime createdAt;
+
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "updated_at")
+  LocalDateTime updatedAt;
 
   @ManyToOne
   @JoinColumn(

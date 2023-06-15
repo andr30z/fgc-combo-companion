@@ -12,17 +12,18 @@ public class V3__CreatePlaylistTable extends BaseJavaMigration {
     Connection connection = context.getConnection();
     Statement statement = connection.createStatement();
     statement.execute(
-        "CREATE TABLE playlists ( " +
-            "id bigint NOT NULL," +
-            "description character varying(255)," +
-            "name character varying(255) NOT NULL, " +
-            "created_at timestamp, " +
-            "user_owner_id bigint NOT NULL, " +
-            "CONSTRAINT playlist_pkey PRIMARY KEY (id), " +
-            "CONSTRAINT user_fk FOREIGN KEY (user_owner_id) REFERENCES users(id) ON DELETE CASCADE );");
+      "CREATE TABLE playlists ( " +
+      "id bigint NOT NULL," +
+      "description character varying(255)," +
+      "name character varying(255) NOT NULL, " +
+      "created_at timestamp, " +
+      "updated_at timestamp, " +
+      "user_owner_id bigint NOT NULL, " +
+      "CONSTRAINT playlist_pkey PRIMARY KEY (id), " +
+      "CONSTRAINT user_fk FOREIGN KEY (user_owner_id) REFERENCES users(id) ON DELETE CASCADE );"
+    );
     statement.execute("CREATE SEQUENCE IF NOT EXISTS playlist_seq;");
 
     statement.close();
-
   }
 }

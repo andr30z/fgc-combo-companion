@@ -11,5 +11,5 @@ export interface User {
   bio?: string;
   twitterProfileUrl?: string;
   instagramProfileUrl?: string;
-  youtubeProfileUrl?: string;
+  youtubeChannelUrl?: string;
 }

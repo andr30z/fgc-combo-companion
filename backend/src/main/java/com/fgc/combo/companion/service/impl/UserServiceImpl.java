@@ -298,15 +298,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User updateCurrentUserEmailAndName(UpdateUserDto userDTO) {
+  public User updateCurrentUserProfileData(UpdateUserDto userDTO) {
     User currentUser = this.me();
     boolean isUpdatingEmail = !currentUser.getEmail().equals(userDTO.email());
-    if (
-      isUpdatingEmail && validateUserEmailIsUnique(currentUser, userDTO.email())
-    ) {
-      currentUser.setEmailVerified(false);
-    }
-
     boolean hasPassword = currentUser.getPassword() != null;
     if (!hasPassword && isUpdatingEmail) {
       throw new BadRequestException(
@@ -314,6 +308,11 @@ public class UserServiceImpl implements UserService {
       );
     }
 
+    if (
+      isUpdatingEmail && validateUserEmailIsUnique(currentUser, userDTO.email())
+    ) {
+      currentUser.setEmailVerified(false);
+    }
     BeanUtils.copyProperties(userDTO, currentUser);
     return this.userRepository.save(currentUser);
   }

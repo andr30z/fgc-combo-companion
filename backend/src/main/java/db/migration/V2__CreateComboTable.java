@@ -23,6 +23,7 @@ public class V2__CreateComboTable extends BaseJavaMigration {
       "combo text NOT NULL, " +
       "game gametypes NOT NULL, " +
       "created_at timestamp, " +
+      "updated_at timestamp, " +
       "user_owner_id bigint NOT NULL, " +
       "CONSTRAINT combo_pkey PRIMARY KEY (id), " +
       "CONSTRAINT user_fk FOREIGN KEY (user_owner_id) REFERENCES users(id) ON DELETE CASCADE );"

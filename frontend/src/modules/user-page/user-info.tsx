@@ -27,7 +27,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
   usePageTitle(`${data?.name} - FGC`);
   const hasNoSocialMediaLinks =
     !user?.twitterProfileUrl &&
-    !user?.youtubeProfileUrl &&
+    !user?.youtubeChannelUrl &&
     !user?.instagramProfileUrl;
   return (
     <header className="flex flex-col w-full layout-padding-x gap-2">
@@ -68,7 +68,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
           )}
           {data?.instagramProfileUrl && (
             <a
-              href={user?.youtubeProfileUrl}
+              href={user?.youtubeChannelUrl}
               target="_blank"
               rel="noreferrer"
               className="text-light font-primary hover:text-secondary cursor-pointer"
