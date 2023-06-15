@@ -570,4 +570,29 @@ public class PlaylistControllerTests {
       .isEqualTo(HttpStatus.FORBIDDEN.value());
     assertThat(numberOfCombos).isEqualTo(playlistRepository.count());
   }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
+  void itShouldReturnPlaylistsFromUser() throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
+    Playlist secondPlaylist = createEmptyPlaylist(currentUser, "TEST2");
+    Playlist playlistNotOwnedByCurrentUser = createEmptyPlaylist(
+      setupUser("anothertestuser@test.com"),
+      "TEST3"
+    );
+
+    PaginationResponse<PlaylistResponseDTO> playlistResponse = setupSearchPlaylist(
+      "/api/v1/playlists/users/" + currentUser.getId()
+    );
+
+    List<String> responsePlaylistNames = playlistResponse
+      .getData()
+      .stream()
+      .map(PlaylistResponseDTO::getName)
+      .toList();
+    assertThat(responsePlaylistNames)
+      .contains(playlist.getName(), secondPlaylist.getName());
+    assertThat(responsePlaylistNames)
+      .doesNotContain(playlistNotOwnedByCurrentUser.getName());
+  }
 }

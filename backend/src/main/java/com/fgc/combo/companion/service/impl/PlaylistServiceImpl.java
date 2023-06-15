@@ -185,4 +185,17 @@ public class PlaylistServiceImpl implements PlaylistService {
         createComboDTO
       );
   }
+
+  @Override
+  public PaginationResponse<Playlist> getByOwner(
+    Long userId,
+    Pageable pageable
+  ) {
+    return PaginationResponseMapper.create(
+      this.playlistRepository.findByOwner(
+          userService.findById(userId),
+          pageable
+        )
+    );
+  }
 }

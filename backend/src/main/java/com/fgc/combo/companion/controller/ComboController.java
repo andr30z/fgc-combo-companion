@@ -30,6 +30,16 @@ public class ComboController {
     this.comboMapper = comboMapper;
   }
 
+  @GetMapping("/users/{userId}")
+  public PaginationResponse<ComboResponseDTO> getUserCombos(
+    @PathVariable Long userId,
+    Pageable pageable
+  ) {
+    return this.comboMapper.toPagination(
+        this.comboService.getByOwner(userId, pageable)
+      );
+  }
+
   @GetMapping("/me")
   public PaginationResponse<ComboResponseDTO> getUserCombos(
     PlaylistComboSearchDTO playlistComboSearchDTO,

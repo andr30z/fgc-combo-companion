@@ -8,13 +8,18 @@ import com.fgc.combo.companion.model.Combo;
 import org.springframework.data.domain.Pageable;
 
 public interface ComboService {
+  PaginationResponse<Combo> getByOwner(Long userId, Pageable pageable);
+
   Combo create(CreateComboDTO createComboDTO);
 
   Combo update(Long id, UpdateComboDTO updateComboDTO);
 
   Combo getByIdAndCurrentUser(Long id);
 
-  PaginationResponse<Combo> getAllBySearchParams(PlaylistComboSearchDTO playlistComboSearchDTO, Pageable pageable);
+  PaginationResponse<Combo> getAllBySearchParams(
+    PlaylistComboSearchDTO playlistComboSearchDTO,
+    Pageable pageable
+  );
 
   PaginationResponse<Combo> getAllByCurrentUser(Pageable pageable);
 

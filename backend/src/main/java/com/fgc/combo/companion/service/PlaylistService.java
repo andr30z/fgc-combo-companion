@@ -11,6 +11,8 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 public interface PlaylistService {
+  PaginationResponse<Playlist> getByOwner(Long userId, Pageable pageable);
+
   Playlist getByIdAndCurrentUser(Long id);
 
   PaginationResponse<Playlist> getByCurrentUser(Pageable pageable);
