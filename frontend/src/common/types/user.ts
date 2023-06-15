@@ -8,4 +8,8 @@ export interface User {
   emailVerified: boolean;
   oauthId: string;
   authProvider?: AuthProviderTypes;
+  bio?: string;
+  twitterProfileUrl?: string;
+  instagramProfileUrl?: string;
+  youtubeProfileUrl?: string;
 }
