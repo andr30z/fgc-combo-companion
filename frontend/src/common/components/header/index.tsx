@@ -19,6 +19,7 @@ import type { IconType } from 'react-icons/lib';
 import { AppLogo } from '../app-logo';
 import { Button } from '../button';
 import { Link, LinkProps } from '../link';
+import { FiSettings } from 'react-icons/fi';
 const HideScrollBar = () => {
   useLockBodyScroll();
   return null;
@@ -147,7 +148,6 @@ export const Header = () => {
               icon={BiJoystickButton}
               onClick={closeMenu}
             />
-
             <MenuItem
               href="/combo-translator"
               icon={BiTransfer}
@@ -158,6 +158,12 @@ export const Header = () => {
               href="/user/profile/password"
               icon={AiOutlineKey}
               text="Manage your password"
+              onClick={closeMenu}
+            />
+            <MenuItem
+              href="/user/profile/settings"
+              icon={FiSettings}
+              text="Settings"
               onClick={closeMenu}
             />
             <MenuItem
