@@ -6,6 +6,8 @@ import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.Token;
+import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.EntityExistsException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -20,7 +22,6 @@ import com.fgc.combo.companion.utils.SecurityCipher;
 import jakarta.transaction.Transactional;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -28,15 +29,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-
-  private static final int PASSWORD_STRENGTH = 10;
 
   private final UserRepository userRepository;
 
@@ -126,6 +124,31 @@ public class UserServiceImpl implements UserService {
     );
   }
 
+  private boolean validateUserEmailIsUnique(User user, String newEmail) {
+    Optional<User> userOptional = this.userRepository.findUserByEmail(newEmail);
+    if (
+      userOptional.isPresent() && userOptional.get().getId() != user.getId()
+    ) {
+      throw new EntityExistsException(
+        "User with email: " + newEmail + " already exists."
+      );
+    }
+
+    return true;
+  }
+
+  private User createOAuthUser(OAuthLoginRequestDto loginRequest) {
+    User oAuthUser = User
+      .builder()
+      .name(loginRequest.getName())
+      .oAuthId(loginRequest.getOAuthId())
+      .email(loginRequest.getEmail())
+      .emailVerified(true)
+      .build();
+    oAuthUser.setAuthProvider(loginRequest.getAuthProvider());
+    return userRepository.save(oAuthUser);
+  }
+
   @Override
   @Transactional
   public User create(CreateUserDTO userDTO) {
@@ -136,11 +159,8 @@ public class UserServiceImpl implements UserService {
     );
     User user = new User();
     BeanUtils.copyProperties(userDTO, user);
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(
-      PASSWORD_STRENGTH,
-      new SecureRandom()
-    );
-    String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+
+    String encodedPassword = passwordEncoder.encode(user.getPassword());
     user.setPassword(encodedPassword);
     user.setEmailVerified(false);
 
@@ -233,20 +253,19 @@ public class UserServiceImpl implements UserService {
     OAuthLoginRequestDto loginRequest
   ) {
     String email = loginRequest.getEmail();
-    User user =
-      this.userRepository.findUserByEmail(email)
-        .orElseGet(() -> {
-          User oAuthUser = User
-            .builder()
-            .email(email)
-            .name(loginRequest.getName())
-            .emailVerified(true)
-            .build();
-          oAuthUser.setAuthProvider(loginRequest.getAuthProvider());
-          return this.userRepository.save(oAuthUser);
-        });
+    Optional<User> user = this.userRepository.findUserByEmail(email);
 
-    return this.login(user, null, null);
+    User loginUser = user.isPresent()
+      ? user.get()
+      : this.createOAuthUser(loginRequest);
+
+    if (
+      !loginRequest.getOAuthId().equals(loginUser.getOAuthId())
+    ) throw new BadRequestException(
+      "You have previously logged in using this email with a different provider or you removed the provider."
+    );
+
+    return this.login(loginUser, null, null);
   }
 
   @Override
@@ -276,5 +295,46 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserVerification getUserVerificationToken(UUID token) {
     return this.userVerificationService.getUserVerificationByToken(token);
+  }
+
+  @Override
+  public User updateCurrentUserEmailAndName(UpdateUserDto userDTO) {
+    User currentUser = this.me();
+    boolean isUpdatingEmail = !currentUser.getEmail().equals(userDTO.email());
+    if (
+      isUpdatingEmail && validateUserEmailIsUnique(currentUser, userDTO.email())
+    ) {
+      currentUser.setEmailVerified(false);
+    }
+
+    boolean hasPassword = currentUser.getPassword() != null;
+    if (!hasPassword && isUpdatingEmail) {
+      throw new BadRequestException(
+        "You need to add a password to your account before changing your email."
+      );
+    }
+
+    BeanUtils.copyProperties(userDTO, currentUser);
+    return this.userRepository.save(currentUser);
+  }
+
+  @Override
+  public User updateCurrentUserPassword(
+    UpdateUserPasswordDto updateUserPasswordDto
+  ) {
+    User currentUser = this.me();
+    if (
+      !passwordEncoder.matches(
+        updateUserPasswordDto.oldPassword(),
+        currentUser.getPassword()
+      )
+    ) {
+      throw new BadRequestException("Password doesn't match!");
+    }
+
+    currentUser.setPassword(
+      passwordEncoder.encode(updateUserPasswordDto.newPassword())
+    );
+    return userRepository.save(currentUser);
   }
 }

@@ -25,7 +25,7 @@ export const ComboPreview: FC<{
           combo={combo}
           game={game}
           backgroundColor="secondary"
-          className="mt-5"
+          className="mt-5 justify-center"
         />
         {combo && (
           <p className="break-words text-xl text-center text-light mt-5">

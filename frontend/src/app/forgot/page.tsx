@@ -16,6 +16,7 @@ export default function ForgotPage() {
   const [value, setValue] = useState('');
   const [isLoading, { setFalse: stopLoading, setTrue: startLoading }] =
     useBoolean();
+
   return (
     <div className="w-screen h-full min-h-80vh flex flex-row justify-center items-center gap-2">
       <Card

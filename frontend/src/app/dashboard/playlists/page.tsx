@@ -1,5 +1,5 @@
 import { TabContent } from '@/common/components/tabs';
-import { ProtectedContent } from '@/common/components/with-protected-content';
+import { protectedRouteValidator } from '@/common/server/protected-route-validator';
 import {
   FGC_API_URLS,
   getFgcApiInstanceWithTokenCookie,
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPlaylistPage() {
+  protectedRouteValidator();
   const fgcInstance = getFgcApiInstanceWithTokenCookie(cookies());
   const { result: initialPlaylistData } = await promiseResultWithError(
     fgcInstance.get<FGCApiPaginationResponse<Playlist>>(
@@ -29,10 +30,8 @@ export default async function DashboardPlaylistPage() {
     ),
   );
   return (
-    <ProtectedContent>
-      <TabContent value="playlists" className="outline-none layout-padding-x">
-        <PlaylistList initialPlaylistsData={initialPlaylistData?.data} />
-      </TabContent>
-    </ProtectedContent>
+    <TabContent value="playlists" className="outline-none layout-padding-x">
+      <PlaylistList initialPlaylistsData={initialPlaylistData?.data} />
+    </TabContent>
   );
 }

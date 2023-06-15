@@ -5,15 +5,15 @@ import com.fgc.combo.companion.dto.CreateUserDTO;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
+import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
 import com.fgc.combo.companion.dto.UserVerficationSuccessDto;
 import com.fgc.combo.companion.dto.UserVerificationDto;
 import com.fgc.combo.companion.mapper.UserVerificationMapper;
 import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.service.UserService;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-
 import java.util.UUID;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,6 +91,16 @@ public class UserController {
     return usersService.findById(id);
   }
 
+  @PutMapping("/me")
+  public User updateEmailAndName(@RequestBody @Validated UpdateUserDto updateUserDto) {
+    return usersService.updateCurrentUserEmailAndName(updateUserDto);
+  }
+
+  @PatchMapping("/me/password")
+  public User updateUserPassword(UpdateUserPasswordDto updateUserPasswordDto) {
+    return usersService.updateCurrentUserPassword(updateUserPasswordDto);
+  }
+
   @PostMapping("/email-verification-solicitation")
   public UserVerificationDto createEmailVerification(
     @RequestParam String email
@@ -100,7 +111,9 @@ public class UserController {
   }
 
   @PostMapping("/password-change-solicitation")
-  public UserVerificationDto createPasswordChange(@RequestParam @NotBlank @Email String email) {
+  public UserVerificationDto createPasswordChange(
+    @RequestParam @NotBlank @Email String email
+  ) {
     return this.userVerificationMapper.toDto(
         this.usersService.createPasswordChangeSolicitation(email)
       );

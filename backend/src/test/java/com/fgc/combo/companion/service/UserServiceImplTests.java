@@ -17,6 +17,8 @@ import com.fgc.combo.companion.dto.CustomUserDetails;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.Token;
+import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
 import com.fgc.combo.companion.enums.OAuthTypes;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.EntityExistsException;
@@ -41,6 +43,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
@@ -245,13 +248,14 @@ public class UserServiceImplTests {
   }
 
   @Test
-  @DisplayName("It should login the user successfully via oAuth.")
-  void itShouldLoginThroughOAuth() {
+  @DisplayName("It should throw when user has different OAuthId.")
+  void itShouldThrowWhenUserHasDifferentOAuthId() {
     // given
     OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
       "teste@mail.com",
       OAuthTypes.GOOGLE.name(),
-      "testname"
+      "testname_123",
+      "123"
     );
     String userMail = loginRequest.getEmail();
     String testName = loginRequest.getName();
@@ -260,6 +264,41 @@ public class UserServiceImplTests {
       .builder()
       .id(userId)
       .name(testName)
+      .oAuthId("aaskljdklajsdlkjaskldjklasdjklajsdlka")
+      .email(userMail)
+      .build();
+    userToLogin.setAuthProvider(OAuthTypes.GOOGLE.name());
+
+    when(userRepository.findUserByEmail(anyString()))
+      .thenReturn(Optional.of(userToLogin));
+
+    assertThatThrownBy(() -> underTest.oAuthlogin(loginRequest))
+      .isInstanceOf(BadRequestException.class)
+      .hasMessageContaining(
+        "You have previously logged in using this email with a different provider or you removed the provider."
+      );
+
+    verify(userRepository, never()).save(Mockito.any());
+  }
+
+  @Test
+  @DisplayName("It should login the user successfully via oAuth.")
+  void itShouldLoginThroughOAuth() {
+    // given
+    OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
+      "teste@mail.com",
+      OAuthTypes.GOOGLE.name(),
+      "testname",
+      "123"
+    );
+    String userMail = loginRequest.getEmail();
+    String testName = loginRequest.getName();
+    Long userId = 1L;
+    User userToLogin = User
+      .builder()
+      .id(userId)
+      .name(testName)
+      .oAuthId(loginRequest.getOAuthId())
       .email(userMail)
       .build();
     userToLogin.setAuthProvider(OAuthTypes.GOOGLE.name());
@@ -299,7 +338,8 @@ public class UserServiceImplTests {
     OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
       "teste@mail.com",
       OAuthTypes.GOOGLE.name(),
-      "testname"
+      "testname",
+      "123"
     );
     String userMail = loginRequest.getEmail();
     String testName = loginRequest.getName();
@@ -308,6 +348,7 @@ public class UserServiceImplTests {
       .builder()
       .id(userId)
       .name(testName)
+      .oAuthId(loginRequest.getOAuthId())
       .email(userMail)
       .build();
     userToLogin.setAuthProvider(OAuthTypes.GOOGLE.name());
@@ -472,6 +513,96 @@ public class UserServiceImplTests {
     User loggedUser = underTest.me();
 
     assertThat(loggedUser.getId()).isEqualTo(currentUser.getId());
+  }
+
+  @Test
+  @DisplayName(
+    "It should update email and name if logged user is the current user."
+  )
+  void itShouldUpdateEmailAndName() {
+    mockAuthentication();
+    User updatedUser = new User();
+    BeanUtils.copyProperties(currentUser, updatedUser);
+    UpdateUserDto updateUserDto = new UpdateUserDto(
+      "teste03583045@mail.com",
+      "test123123"
+    );
+    updatedUser.setEmail(updateUserDto.email());
+    updatedUser.setName(updateUserDto.name());
+    when(userRepository.findUserByEmail(any())).thenReturn(Optional.empty());
+    when(userRepository.save(any())).thenReturn(updatedUser);
+
+    User returnedUser =
+      this.underTest.updateCurrentUserEmailAndName(updateUserDto);
+
+    verify(userRepository).save(Mockito.any());
+    assertThat(returnedUser.getEmail()).isEqualTo(updateUserDto.email());
+    assertThat(returnedUser.getName()).isEqualTo(updateUserDto.name());
+  }
+
+  @Test
+  @DisplayName("It should not update when email is taken by another user.")
+  void itShouldUpdateWhenEmailIsTakenBySameUser() {
+    mockAuthentication();
+    User updatedUser = new User();
+    BeanUtils.copyProperties(currentUser, updatedUser);
+
+    String email = "teste03583045@mail.com";
+    UpdateUserDto updateUserDto = new UpdateUserDto(email, "test123123");
+    updatedUser.setEmail(updateUserDto.email());
+    updatedUser.setName(updateUserDto.name());
+
+    when(userRepository.findUserByEmail(any()))
+      .thenReturn(Optional.of(User.builder().id(9973L).email(email).build()));
+
+    assertThatThrownBy(() -> {
+        this.underTest.updateCurrentUserEmailAndName(updateUserDto);
+      })
+      .isInstanceOf(EntityExistsException.class)
+      .hasMessageContaining("User with email: " + email + " already exists.");
+  }
+
+  @Test
+  @DisplayName(
+    "It should update email and name if logged user is the current user."
+  )
+  void itShouldUpdateUserPassword() {
+    mockAuthentication();
+    User updatedUser = new User();
+    BeanUtils.copyProperties(currentUser, updatedUser);
+    UpdateUserPasswordDto updateUserPasswordDto = new UpdateUserPasswordDto(
+      currentUser.getPassword(),
+      "test123123"
+    );
+    when(passwordEncoder.matches(any(), any())).thenReturn(true);
+    when(userRepository.save(any())).thenReturn(updatedUser);
+
+    this.underTest.updateCurrentUserPassword(updateUserPasswordDto);
+
+    verify(userRepository).save(Mockito.any());
+  }
+
+  @Test
+  @DisplayName(
+    "It should not update user password if the password does not match."
+  )
+  void itShouldNotUpdateUserPasswordIfThePasswordDoesNotMatch() {
+    mockAuthentication();
+    User updatedUser = new User();
+    BeanUtils.copyProperties(currentUser, updatedUser);
+    UpdateUserPasswordDto updateUserPasswordDto = new UpdateUserPasswordDto(
+      currentUser.getPassword(),
+      "test123123"
+    );
+
+    when(passwordEncoder.matches(any(), any())).thenReturn(false);
+    assertThatThrownBy(() -> {
+        this.underTest.updateCurrentUserPassword(updateUserPasswordDto);
+      })
+      .isInstanceOf(BadRequestException.class)
+      .hasMessageContaining("Password doesn't match!");
+
+    verify(userRepository, never()).save(any());
   }
 
   private void mockAuthentication() {

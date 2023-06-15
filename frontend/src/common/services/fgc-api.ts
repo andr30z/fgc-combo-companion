@@ -28,11 +28,13 @@ export const fgcApi = getFgcApiInstance();
 
 export const FGC_API_URLS = {
   LOGIN: '/v1/users/login',
+  UPDATE_PROFILE: '/v1/users/me',
   REFRESH_TOKEN: '/v1/users/refresh',
   SIGNUP: '/v1/users',
   ME: '/v1/users/me',
   OAUTH_LOGIN: '/v1/users/oauth/login',
-  PASSWORD_CHANGE: '/v1/users/password-change',
+  PASSWORD_CHANGE: '/v1/users/me/password',
+  CONFIRM_PASSWORD_CHANGE: '/v1/users/password-change',
   PASSWORD_CHANGE_SOLICITATION: '/v1/users/password-change-solicitation',
   EMAIL_VERIFICATION: '/v1/users/email-verification',
   GET_USER_VERIFICATION: '/v1/users/verification',

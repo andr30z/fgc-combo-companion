@@ -73,17 +73,24 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
         return true;
       }
       const fgcApi = getFgcApiInstance();
-
       const { error, result } = await promiseResultWithError(
         fgcApi.post<LoginResponse>(FGC_API_URLS.OAUTH_LOGIN, {
           email: user.email,
           name: user.name,
           authProvider: AuthProviderTypes.GOOGLE,
+          oAuthId: user.id,
         }),
       );
-
-      setCookies(res, result);
-      return error === null;
+      if (!error) {
+        setCookies(res, result);
+        return true;
+      }
+      res.redirect(
+        `/login?error=${
+          error?.response?.data?.message ?? 'Something went wrong'
+        }`,
+      );
+      throw new Error(error.response.message);
     },
 
     jwt: async (data) => {

@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.config;
 
 import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
+import java.security.SecureRandom;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,12 +22,14 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
+  private static final int PASSWORD_STRENGTH = 10;
+
   // @Autowired
   // private CustomUserDetailsServiceImpl customUserDetailsService;
 
   @Bean
   PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+    return new BCryptPasswordEncoder(PASSWORD_STRENGTH, new SecureRandom());
   }
 
   @Bean

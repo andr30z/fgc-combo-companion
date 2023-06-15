@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import {
   AiOutlineClose,
+  AiOutlineKey,
   AiOutlineLogout,
   AiOutlineMenu,
   AiOutlineUser,
@@ -18,6 +19,7 @@ import type { IconType } from 'react-icons/lib';
 import { AppLogo } from '../app-logo';
 import { Button } from '../button';
 import { Link, LinkProps } from '../link';
+import { FiSettings } from 'react-icons/fi';
 const HideScrollBar = () => {
   useLockBodyScroll();
   return null;
@@ -129,9 +131,9 @@ export const Header = () => {
               onClick={closeMenu}
             />
             <MenuItem
-              href="/profile"
+              href="/user/profile"
               icon={AiOutlineUser}
-              text="Profle"
+              text="Profile"
               onClick={closeMenu}
             />
             <MenuItem
@@ -146,11 +148,22 @@ export const Header = () => {
               icon={BiJoystickButton}
               onClick={closeMenu}
             />
-
             <MenuItem
               href="/combo-translator"
               icon={BiTransfer}
               text="Combo Translator"
+              onClick={closeMenu}
+            />
+            <MenuItem
+              href="/user/profile/password"
+              icon={AiOutlineKey}
+              text="Manage your password"
+              onClick={closeMenu}
+            />
+            <MenuItem
+              href="/user/profile/settings"
+              icon={FiSettings}
+              text="Settings"
               onClick={closeMenu}
             />
             <MenuItem
