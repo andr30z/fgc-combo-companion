@@ -150,6 +150,13 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
+  public PaginationResponse<Combo> getByOwner(User user, Pageable pageable) {
+    return PaginationResponseMapper.create(
+      this.comboRepository.findAllByOwner(user, pageable)
+    );
+  }
+
+  @Override
   public PaginationResponse<Combo> getByOwner(Long userId, Pageable pageable) {
     return PaginationResponseMapper.create(
       this.comboRepository.findAllByOwner(

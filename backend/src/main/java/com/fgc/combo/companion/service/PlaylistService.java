@@ -7,10 +7,13 @@ import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.model.Playlist;
+import com.fgc.combo.companion.model.User;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 public interface PlaylistService {
+  PaginationResponse<Playlist> getByOwner(User owner, Pageable pageable);
+  
   PaginationResponse<Playlist> getByOwner(Long userId, Pageable pageable);
 
   Playlist getByIdAndCurrentUser(Long id);
