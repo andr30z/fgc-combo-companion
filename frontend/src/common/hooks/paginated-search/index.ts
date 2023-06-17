@@ -9,6 +9,7 @@ interface UseComboSearchParams<Data> {
   queryKey: readonly unknown[];
   enabled?: boolean;
   initialData?: FGCApiPaginationResponse<Data>;
+  pageSize?: number;
 }
 
 export function usePaginatedSearch<Data>({
@@ -16,6 +17,7 @@ export function usePaginatedSearch<Data>({
   queryKey,
   enabled = true,
   initialData,
+  pageSize = 30,
 }: UseComboSearchParams<Data>) {
   const [page, setPage] = useState(0);
   const [searchValue, setSearchValue] = useState('');
@@ -31,7 +33,7 @@ export function usePaginatedSearch<Data>({
       params: {
         name: encodeURIComponent(searchValue),
         sort: 'id,desc',
-        size: 30,
+        size: pageSize,
         page: page.toString(),
       },
     },

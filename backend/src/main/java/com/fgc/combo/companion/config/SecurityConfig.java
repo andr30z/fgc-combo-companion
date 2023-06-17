@@ -121,7 +121,14 @@ public class SecurityConfig {
         "/api/v1/users/email-verification"
       )
       .permitAll()
-      .requestMatchers(HttpMethod.GET, "/api/v1/users/verification/**")
+      .requestMatchers(
+        HttpMethod.GET,
+        "/api/v1/users/verification/**",
+        "/api/v1/profile/{userId}",
+        "/api/v1/users/{userId}",
+        "/api/v1/playlists/users/{userId}",
+        "/api/v1/combos/users/{userId}"
+      )
       .permitAll()
       .anyRequest()
       .authenticated()

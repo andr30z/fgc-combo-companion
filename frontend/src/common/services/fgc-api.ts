@@ -27,6 +27,10 @@ export function getFgcApiInstanceWithTokenCookie(
 export const fgcApi = getFgcApiInstance();
 
 export const FGC_API_URLS = {
+  USER_PUBLIC_PROFILE: '/v1/profile',
+  USERS: '/v1/users',
+  USER_PLAYLISTS: '/v1/playlists/users',
+  USER_COMBOS: '/v1/combos/users',
   LOGIN: '/v1/users/login',
   UPDATE_PROFILE: '/v1/users/me',
   REFRESH_TOKEN: '/v1/users/refresh',

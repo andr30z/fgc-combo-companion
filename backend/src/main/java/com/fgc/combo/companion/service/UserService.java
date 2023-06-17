@@ -13,12 +13,14 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserService {
   User create(CreateUserDTO userDTO);
-  User updateCurrentUserEmailAndName(UpdateUserDto userDTO);
+  User updateCurrentUserProfileData(UpdateUserDto userDTO);
   User updateCurrentUserPassword(UpdateUserPasswordDto updateUserPasswordDto);
 
   User findById(Long id);
 
   User me();
+
+  User saveUser(User user);
 
   ResponseEntity<LoginResponse> login(
     LoginRequest loginRequest,

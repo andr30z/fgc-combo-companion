@@ -92,8 +92,10 @@ public class UserController {
   }
 
   @PutMapping("/me")
-  public User updateEmailAndName(@RequestBody @Validated UpdateUserDto updateUserDto) {
-    return usersService.updateCurrentUserEmailAndName(updateUserDto);
+  public User updateEmailAndName(
+    @RequestBody @Validated UpdateUserDto updateUserDto
+  ) {
+    return usersService.updateCurrentUserProfileData(updateUserDto);
   }
 
   @PatchMapping("/me/password")

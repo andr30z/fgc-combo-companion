@@ -525,7 +525,11 @@ public class UserServiceImplTests {
     BeanUtils.copyProperties(currentUser, updatedUser);
     UpdateUserDto updateUserDto = new UpdateUserDto(
       "teste03583045@mail.com",
-      "test123123"
+      "test123123",
+      "test123123",
+      null,
+      null,
+      null
     );
     updatedUser.setEmail(updateUserDto.email());
     updatedUser.setName(updateUserDto.name());
@@ -533,7 +537,7 @@ public class UserServiceImplTests {
     when(userRepository.save(any())).thenReturn(updatedUser);
 
     User returnedUser =
-      this.underTest.updateCurrentUserEmailAndName(updateUserDto);
+      this.underTest.updateCurrentUserProfileData(updateUserDto);
 
     verify(userRepository).save(Mockito.any());
     assertThat(returnedUser.getEmail()).isEqualTo(updateUserDto.email());
@@ -548,7 +552,14 @@ public class UserServiceImplTests {
     BeanUtils.copyProperties(currentUser, updatedUser);
 
     String email = "teste03583045@mail.com";
-    UpdateUserDto updateUserDto = new UpdateUserDto(email, "test123123");
+    UpdateUserDto updateUserDto = new UpdateUserDto(
+      email,
+      "test123123",
+      "test123123",
+      null,
+      null,
+      null
+    );
     updatedUser.setEmail(updateUserDto.email());
     updatedUser.setName(updateUserDto.name());
 
@@ -556,7 +567,7 @@ public class UserServiceImplTests {
       .thenReturn(Optional.of(User.builder().id(9973L).email(email).build()));
 
     assertThatThrownBy(() -> {
-        this.underTest.updateCurrentUserEmailAndName(updateUserDto);
+        this.underTest.updateCurrentUserProfileData(updateUserDto);
       })
       .isInstanceOf(EntityExistsException.class)
       .hasMessageContaining("User with email: " + email + " already exists.");
