@@ -10,7 +10,7 @@ export default function ProfilePage() {
   usePageTitle('FGC - Profile');
   return (
     <TabContent value="/user/profile" className="h-full w-full flex flex-1">
-      {user && <ProfileForm key={`${user.email}/${user.name}`} user={user} />}
+      {user && <ProfileForm key={user.updatedAt} user={user} />}
     </TabContent>
   );
 }

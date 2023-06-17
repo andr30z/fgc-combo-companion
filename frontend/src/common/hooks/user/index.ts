@@ -39,7 +39,7 @@ export function useUser(
     {
       staleTime: _20_MINUTES,
       retry: 3,
-      enabled: data !== null,
+      enabled: !!data,
       onError() {
         queryClient.invalidateQueries(['user']);
         toast.error('Failed to load user info');

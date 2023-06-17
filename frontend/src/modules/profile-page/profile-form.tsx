@@ -83,6 +83,7 @@ export const ProfileForm: FC<{ user: User }> = ({ user }) => {
       onSettled: () => {
         stopLoading();
         queryClient.invalidateQueries(['user']);
+        queryClient.invalidateQueries(['user-details']);
       },
     },
   );

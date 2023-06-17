@@ -2,24 +2,25 @@
 import { useBoolean } from '@/common/hooks/boolean';
 import { useClickAway } from '@/common/hooks/click-outside';
 import { useLockBodyScroll } from '@/common/hooks/lock-body-scroll';
+import { useUser } from '@/common/hooks/user';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import {
   AiOutlineClose,
-  AiOutlineKey,
   AiOutlineLogout,
   AiOutlineMenu,
   AiOutlineUser,
 } from 'react-icons/ai';
 import { BiJoystickButton, BiTransfer } from 'react-icons/bi';
 import { CgPlayListCheck } from 'react-icons/cg';
+import { FiSettings } from 'react-icons/fi';
 import type { IconType } from 'react-icons/lib';
+import { RiUserSettingsLine } from 'react-icons/ri';
 import { AppLogo } from '../app-logo';
 import { Button } from '../button';
 import { Link, LinkProps } from '../link';
-import { FiSettings } from 'react-icons/fi';
 const HideScrollBar = () => {
   useLockBodyScroll();
   return null;
@@ -39,7 +40,7 @@ const MenuItem: FC<{
       href={href}
       onClick={onClick}
       color={color}
-      className={`flex flex-row gap-2 text-lg w-full ${
+      className={`select-none flex flex-row gap-2 text-lg w-full ${
         isActive
           ? 'bg-opacity-40 bg-secondary'
           : 'hover:bg-opacity-40 hover:bg-secondary'
@@ -55,7 +56,7 @@ export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, status } = useSession();
-
+  const { user } = useUser({ redirectTo: null });
   const hasSession = !!session;
   const showLoginButton = !hasSession && pathname !== '/login';
   const showSignupButton = !hasSession && pathname !== '/signup';
@@ -131,7 +132,7 @@ export const Header = () => {
               onClick={closeMenu}
             />
             <MenuItem
-              href="/user/profile"
+              href={`/user/${user?.id}`}
               icon={AiOutlineUser}
               text="Profile"
               onClick={closeMenu}
@@ -155,9 +156,9 @@ export const Header = () => {
               onClick={closeMenu}
             />
             <MenuItem
-              href="/user/profile/password"
-              icon={AiOutlineKey}
-              text="Manage your password"
+              href="/user/profile"
+              icon={RiUserSettingsLine}
+              text="Account"
               onClick={closeMenu}
             />
             <MenuItem
