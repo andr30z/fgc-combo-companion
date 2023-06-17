@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,12 +95,6 @@ public class PlaylistControllerTests {
     combo.setGame(ComboGameTypes.TEKKEN_7.name());
 
     defaultCombo = comboRepository.save(combo);
-  }
-
-  @AfterAll
-  void tearDown() {
-    playlistRepository.deleteAll();
-    comboRepository.deleteAll();
   }
 
   @BeforeAll
@@ -350,11 +343,12 @@ public class PlaylistControllerTests {
             .delete(
               "/api/v1/playlists/{playlistId}/me/combos?playlistComboId={playlistComboId}",
               playlist.getId(),
-              defaultCombo.getId()
+              playlistCombo.getId()
             )
             .contentType("application/json")
         )
         .andReturn();
+
     assertSuccessResponse(mvcResult.getResponse().getStatus());
     boolean result = mvcResult
       .getResponse()
