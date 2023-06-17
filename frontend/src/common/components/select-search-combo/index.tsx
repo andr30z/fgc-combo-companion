@@ -4,6 +4,7 @@ import { useBoolean } from '@/common/hooks/boolean';
 import { usePaginatedSearch } from '@/common/hooks/paginated-search';
 import { FGC_API_URLS } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
+import { unionBy } from 'lodash';
 import { FC, ReactNode, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { IoMdAddCircle } from 'react-icons/io';
@@ -14,7 +15,6 @@ import { ComboPreview } from '../combo-preview';
 import { Input } from '../input';
 import { Modal } from '../modal';
 import { Pagination } from '../pagination';
-import { unionBy } from 'lodash';
 
 const ComboItem: FC<{ combo: Combo; onClickIcon: () => void }> = ({
   combo,
@@ -50,6 +50,7 @@ export const SelectSearchCombo: FC<{
   onFinish: (uniqueArray: Array<Combo>, selectedCombos: Array<Combo>) => void;
   onClickRemoveCombo?: (filteredArray: Array<Combo>, comboId: number) => void;
   renderAddIcon?: (triggerModalOpen: () => void) => ReactNode;
+  clearStateAfterSubmit?: boolean;
   containerClassName?: string;
 }> = (props) => {
   const {
@@ -58,6 +59,7 @@ export const SelectSearchCombo: FC<{
     onFinish,
     label = 'Selected Combos:',
     renderAddIcon,
+    clearStateAfterSubmit = true,
     containerClassName = 'flex flex-col w-full',
   } = props;
   const [isOpen, { setTrue: openModal, setFalse: closeModal }] = useBoolean();
@@ -120,9 +122,11 @@ export const SelectSearchCombo: FC<{
                       'id',
                     );
                     onFinish(uniqArray, selectedCombosList);
-                    setSelectedCombosList([]);
-                    setSearchValue('');
                     closeModal();
+                    if (clearStateAfterSubmit) {
+                      setSelectedCombosList([]);
+                      setSearchValue('');
+                    }
                   }}
                 />
               </>
@@ -173,7 +177,7 @@ export const SelectSearchCombo: FC<{
             </div>
           )}
         </div>
-        {selectedCombos.length > 1 ? (
+        {selectedCombos.length > 0 ? (
           <div className="flex flex-row gap-2 flex-wrap">
             {selectedCombos.map((combo) => (
               <ComboItem

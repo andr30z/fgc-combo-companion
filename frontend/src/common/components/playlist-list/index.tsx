@@ -25,7 +25,7 @@ export const PlaylistList: React.FC<PlaylistsProps> = ({
   emptyListMessage = "This playlist doesn't have any combos yet.",
   openPlaylistForm,
 }) => {
-  const { user } = useUser();
+  const { user } = useUser({ redirectTo: null });
   return (
     <ListItems
       items={items ?? []}

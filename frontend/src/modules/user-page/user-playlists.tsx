@@ -21,6 +21,7 @@ export const UserPlaylists: React.FC<UserPlaylistsProps> = ({
     url: FGC_API_URLS.USER_PLAYLISTS + '/' + userId,
     initialData: playlists as FGCApiPaginationResponse<Playlist>,
     enabled: !!userId,
+    pageSize: 10,
   });
 
   return (

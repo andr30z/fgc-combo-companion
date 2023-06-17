@@ -20,6 +20,7 @@ export const UserCombos: React.FC<UserCombosProps> = ({
     url: FGC_API_URLS.USER_COMBOS + '/' + userId,
     initialData: initialComboData as FGCApiPaginationResponse<Combo>,
     enabled: !!userId,
+    pageSize: 10,
   });
   return (
     <TabContent

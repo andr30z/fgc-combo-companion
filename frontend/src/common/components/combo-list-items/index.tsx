@@ -64,7 +64,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
     useBoolean();
   const [isLoading, { setFalse: endLoading, setTrue: startLoading }] =
     useBoolean();
-  const { user } = useUser();
+  const { user } = useUser({ redirectTo: null });
 
   const deleteCombo = (comboId: number) => async () => {
     startLoading();

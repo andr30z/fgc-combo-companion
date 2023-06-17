@@ -1,5 +1,6 @@
 import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
+import { useInvalidateGlobalSearchQueries } from '@/common/hooks/invalidate-global-search-queries';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
 import type { Playlist } from '@/common/types/playlist';
@@ -10,7 +11,6 @@ import { Button } from '../button';
 import { Input } from '../input';
 import { LoadingBackdrop } from '../loading-backdrop';
 import { SelectSearchCombo } from '../select-search-combo';
-import { useInvalidateGlobalSearchQueries } from '@/common/hooks/invalidate-global-search-queries';
 
 type PlaylistWithId = Omit<Playlist, 'id' | 'owner' | 'createdAt'> & {
   id?: string | number;

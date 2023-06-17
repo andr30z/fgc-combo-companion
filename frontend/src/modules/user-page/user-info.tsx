@@ -1,7 +1,6 @@
 'use client';
 import { Link } from '@/common/components/link';
 import { useApiQuery } from '@/common/hooks/api-query';
-import { usePageTitle } from '@/common/hooks/page-title';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS } from '@/common/services/fgc-api';
 import { User } from '@/common/types/user';
@@ -13,16 +12,16 @@ const TEN_MINUTES = 1000 * 60 * 10;
 
 interface UserInfoProps {
   user?: User | null;
+  userId?: string | null;
 }
-export const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
-  const { user: currentUser } = useUser();
+export const UserInfo: React.FC<UserInfoProps> = ({ user, userId }) => {
+  const { user: currentUser } = useUser({ redirectTo: null });
   const { data } = useApiQuery<User>({
-    apiConfig: { url: `${FGC_API_URLS.USERS}/${user?.id}` },
+    apiConfig: { url: `${FGC_API_URLS.USERS}/${userId}` },
     initialData: user,
     key: ['user-details', user?.id],
     staleTime: TEN_MINUTES,
   });
-  usePageTitle(`${data?.name} - FGC`);
 
   const isCurrentUser = user?.id === currentUser?.id;
   return (
