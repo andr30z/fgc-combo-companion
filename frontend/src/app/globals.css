@@ -42,6 +42,16 @@
   background: hsla(0, 0%, 100%, 0.5);
 }
 
+
+
+.line-clamp-4 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+
 .line-clamp-3 {
   display: -webkit-box;
   overflow: hidden;

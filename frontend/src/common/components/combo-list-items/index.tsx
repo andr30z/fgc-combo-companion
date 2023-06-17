@@ -18,6 +18,8 @@ import { LoadingBackdrop } from '../loading-backdrop';
 import { Modal } from '../modal';
 import { get } from 'lodash';
 import type { PlaylistCombo } from '@/common/types/playlist-combo';
+import { UserPreview } from '../user-preview';
+import { Link } from '../link';
 
 type ComboOrPlaylistCombo = Combo | PlaylistCombo;
 interface ComboListItemsProps extends ListItemsProps<ComboOrPlaylistCombo> {
@@ -158,14 +160,26 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                             {combo.name}
                           </h5>
                           {showComboOwner && (
-                            <span className="text-ellipsis truncate text-sub-info font-primary text-sm mt-[1px]">
-                              Created by{' '}
-                              {currentUserIsOwner ? (
-                                <strong>you</strong>
-                              ) : (
-                                combo.owner.name
-                              )}
-                            </span>
+                            <UserPreview
+                              userId={combo.owner.id}
+                              trigger={
+                                <button>
+                                  <Link
+                                    href={`/user/${combo.owner.id}`}
+                                    useHoverStyles={false}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="text-ellipsis truncate text-sub-info font-primary text-sm mt-[1px] hover:decoration-sub-info hover:underline"
+                                  >
+                                    Created by{' '}
+                                    {currentUserIsOwner ? (
+                                      <strong>you</strong>
+                                    ) : (
+                                      combo.owner.name
+                                    )}
+                                  </Link>
+                                </button>
+                              }
+                            />
                           )}
                         </div>
                         {useComboItemHeader && (

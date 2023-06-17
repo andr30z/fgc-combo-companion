@@ -20,9 +20,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class PlaylistComboServiceImpl implements PlaylistComboService {
 
   private final PlaylistRepository playlistRepository;
@@ -130,6 +132,16 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
 
     if (playlistCombos.isEmpty()) throw new BadRequestException(
       "Playlist or combos not found!"
+    );
+
+    log.info(
+      "Removing the following combos: {} from playlist: {} - ID:{}",
+      playlistCombos
+        .stream()
+        .map(playlistCombo -> playlistCombo.getCombo().getId())
+        .toList(),
+      playlist.getName(),
+      playlist.getId()
     );
     this.playlistComboRepository.deletePlaylistCombos(playlistComboIds);
     return playlistCombos

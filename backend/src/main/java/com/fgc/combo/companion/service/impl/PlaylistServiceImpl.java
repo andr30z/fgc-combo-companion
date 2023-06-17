@@ -198,11 +198,6 @@ public class PlaylistServiceImpl implements PlaylistService {
     Long userId,
     Pageable pageable
   ) {
-    return PaginationResponseMapper.create(
-      this.playlistRepository.findByOwner(
-          this.userService.findById(userId),
-          pageable
-        )
-    );
+    return this.getByOwner(this.userService.findById(userId), pageable);
   }
 }

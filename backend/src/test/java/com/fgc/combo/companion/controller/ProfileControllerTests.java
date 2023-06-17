@@ -10,14 +10,10 @@ import com.fgc.combo.companion.enums.ComboGameTypes;
 import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.Playlist;
 import com.fgc.combo.companion.model.User;
-import com.fgc.combo.companion.repository.ComboRepository;
-import com.fgc.combo.companion.repository.PlaylistRepository;
-import com.fgc.combo.companion.repository.UserRepository;
 import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.PlaylistService;
 import com.fgc.combo.companion.service.UserService;
 import java.util.List;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,12 +43,6 @@ public class ProfileControllerTests {
   private WebApplicationContext applicationContext;
 
   @Autowired
-  private UserRepository userRepository;
-
-  @Autowired
-  private ComboRepository comboRepository;
-
-  @Autowired
   private UserService userService;
 
   @Autowired
@@ -60,9 +50,6 @@ public class ProfileControllerTests {
 
   @Autowired
   private ComboService comboService;
-
-  @Autowired
-  private PlaylistRepository playlistRepository;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -126,13 +113,6 @@ public class ProfileControllerTests {
         .owner(randomUser)
         .build()
     );
-  }
-
-  @AfterAll
-  void tearDown() {
-    comboRepository.deleteAll();
-    playlistRepository.deleteAll();
-    userRepository.deleteAll();
   }
 
   @BeforeEach

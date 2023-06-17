@@ -15,5 +15,5 @@ export function useBoolean(initialValue = false) {
     setValue(true);
   }, []);
 
-  return [value, { toggle, setFalse, setTrue }] as const;
+  return [value, { toggle, setFalse, setTrue, setValue }] as const;
 }
