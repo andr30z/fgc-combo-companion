@@ -1,10 +1,8 @@
 import { Button } from '@/common/components/button';
 import { Tabs } from '@/common/components/tabs';
 import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
-import type { Combo } from '@/common/types/combo';
-import type { FGCApiPaginationResponse } from '@/common/types/fgc-api-pagination-response';
-import type { Playlist } from '@/common/types/playlist';
 import type { User } from '@/common/types/user';
+import type { UserProfile } from '@/common/types/user-profile';
 import { promiseResultWithError } from '@/common/utils/promises';
 import { UserCombos } from '@/modules/user-page/user-combos';
 import { UserInfo } from '@/modules/user-page/user-info';
@@ -31,11 +29,9 @@ export default async function UserPage({ params }: PageProps) {
   const id = params?.id;
   const fgcApiInstance = getFgcApiInstance();
   const { result, error } = await promiseResultWithError(
-    fgcApiInstance.get<{
-      user: User;
-      combos: FGCApiPaginationResponse<Combo>;
-      playlists: FGCApiPaginationResponse<Playlist>;
-    }>(`${FGC_API_URLS.USER_PUBLIC_PROFILE}/${id}`),
+    fgcApiInstance.get<UserProfile>(
+      `${FGC_API_URLS.USER_PUBLIC_PROFILE}/${id}`,
+    ),
   );
 
   const is404 = error?.response?.status === 404;
