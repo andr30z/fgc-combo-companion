@@ -63,6 +63,8 @@ public class SecurityConfig {
     return http
       .cors()
       .and()
+      // .anonymous()
+      // .disable()
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
@@ -121,11 +123,13 @@ public class SecurityConfig {
         "/api/v1/users/email-verification"
       )
       .permitAll()
+      .requestMatchers(HttpMethod.GET, "/api/v1/users/me")
+      .authenticated()
       .requestMatchers(
         HttpMethod.GET,
         "/api/v1/users/verification/**",
         "/api/v1/profile/{userId}",
-        "/api/v1/users/{userId}",
+        "/api/v1/users/{id}",
         "/api/v1/playlists/users/{userId}",
         "/api/v1/combos/users/{userId}"
       )
