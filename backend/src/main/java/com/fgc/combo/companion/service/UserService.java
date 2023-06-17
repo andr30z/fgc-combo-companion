@@ -20,6 +20,8 @@ public interface UserService {
 
   User me();
 
+  User saveUser(User user);
+
   ResponseEntity<LoginResponse> login(
     LoginRequest loginRequest,
     String accessToken,
