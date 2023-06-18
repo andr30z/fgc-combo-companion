@@ -23,6 +23,12 @@ export function useForm<T>(initialState: T) {
         [name]: value,
       });
     };
+  const set = <Type extends keyof T>(name: Type, value: T[Type]) => {
+    setState({
+      ...state,
+      [name]: value,
+    });
+  };
   const onSubmit = useCallback(
     (handleSubmit: SubmitFunction<T>) =>
       async (
@@ -36,5 +42,5 @@ export function useForm<T>(initialState: T) {
     [state],
   );
 
-  return [state, { onChange, setValue }, onSubmit] as const;
+  return [state, { onChange, setValue, set }, onSubmit] as const;
 }

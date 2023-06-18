@@ -22,8 +22,6 @@ authentication:
     tokenExpirationMsec: ${TOKEN_EXPIRATION_MSEC}
     tokenSecret: ${TOKEN_SECRET}
     refreshTokenExpirationMsec: ${REFRESH_TOKEN_EXPIRATION_MSEC}
-    accessTokenCookieName: accessToken
-    refreshTokenCookieName: refreshToken
 
 spring:
   jpa:

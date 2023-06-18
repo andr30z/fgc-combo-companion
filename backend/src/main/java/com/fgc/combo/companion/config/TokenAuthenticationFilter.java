@@ -19,10 +19,10 @@ import com.fgc.combo.companion.utils.SecurityCipher;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-  @Value("${authentication.auth.accessTokenCookieName}")
+  @Value("${authentication.auth.accessTokenCookieName:accessToken}")
   private String accessTokenCookieName;
 
-  @Value("${authentication.auth.refreshTokenCookieName}")
+  @Value("${authentication.auth.refreshTokenCookieName:refreshToken}")
   private String refreshTokenCookieName;
 
   @Autowired
