@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.mapper;
 
 import com.fgc.combo.companion.dto.PaginationResponse;
+import java.util.List;
 import java.util.function.Function;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +20,10 @@ public abstract class BaseMapper<M> {
 
   public M toOriginal(Object dto, Class<M> originalClass) {
     return modelMapper.map(dto, originalClass);
+  }
+
+  public <R> List<R> toDTO(List<M> collection, Class<R> dtoClass) {
+    return collection.stream().map(item -> this.toDTO(item, dtoClass)).toList();
   }
 
   public <R> PaginationResponse<R> toPaginationDTO(

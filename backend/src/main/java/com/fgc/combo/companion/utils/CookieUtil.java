@@ -35,7 +35,7 @@ public class CookieUtil {
       .sameSite("None")
       .path("/");
 
-     cookieBuilder.secure(true);
+    //  cookieBuilder.secure(true);
 
     return cookieBuilder.build();
   }

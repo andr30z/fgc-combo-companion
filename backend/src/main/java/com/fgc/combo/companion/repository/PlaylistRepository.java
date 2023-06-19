@@ -44,4 +44,12 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     String searchParam,
     Pageable pageable
   );
+
+  @EntityGraph(attributePaths = { "owner", "tags", "playlistCombos.combo" })
+  @Query(
+    "SELECT p FROM Playlist p WHERE (" +
+    "p.name ILIKE concat('%',COALESCE(?1, p.name),'%') OR " +
+    "p.description ILIKE concat('%',COALESCE(?1, p.description),'%') )"
+  )
+  Page<Playlist> findAllBySearchParam(String searchParam, Pageable pageable);
 }
