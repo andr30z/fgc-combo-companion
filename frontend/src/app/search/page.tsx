@@ -1,9 +1,15 @@
 'use client';
 
 import { Input } from '@/common/components/input';
+import { useApiQuery } from '@/common/hooks/api-query';
+import { useDebounce } from '@/common/hooks/debounce';
 import { useForm } from '@/common/hooks/form';
 import { usePageTitle } from '@/common/hooks/page-title';
+import { FGC_API_URLS } from '@/common/services/fgc-api';
+import { Combo } from '@/common/types/combo';
 import { GameTypes } from '@/common/types/game-types';
+import { Playlist } from '@/common/types/playlist';
+import { User } from '@/common/types/user';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const gameNameMap: Record<GameTypes, string> = {
@@ -14,12 +20,39 @@ const gameNameMap: Record<GameTypes, string> = {
   [GameTypes.GUILTY_GEAR_STRIVE]: 'Guilty Gear Strive',
 };
 
+interface SearchAllResult {
+  users: Array<User>;
+  combos: Array<Combo>;
+  playlists: Array<Playlist>;
+}
+
 export default function SearchPage() {
+  usePageTitle('Search - FGC');
+
   const [{ search, games }, { onChange, set }] = useForm<{
     search: string;
     games: Array<GameTypes>;
   }>({ search: '', games: [] });
-  usePageTitle('Search - FGC');
+
+  const {
+    data: searchResult,
+    refetch,
+    isFetched,
+    isFetching,
+  } = useApiQuery<SearchAllResult>({
+    apiConfig: {
+      url: FGC_API_URLS.SEARCH,
+      params: {
+        search,
+        games,
+      },
+    },
+    key: 'search',
+    enabled: false,
+  });
+
+  console.log(isFetched);
+  const debounceRefetch = useDebounce(refetch);
   const onSelectTag = (tag: GameTypes) => {
     if (games.includes(tag)) {
       return set(
@@ -29,12 +62,17 @@ export default function SearchPage() {
     }
     set('games', [...games, tag]);
   };
+
+  const isInitialMount = !isFetched && !isFetching;
   return (
     <main className="min-h-80vh w-full flex flex-col pt-4">
       <header className="flex flex-col layout-padding-x">
         <Input
           value={search}
-          onChange={onChange('search')}
+          onChange={(event) => {
+            set('search', event.target.value);
+            debounceRefetch();
+          }}
           placeholder="Search for a combo, playlist or user"
           inputGroupClassName="bg-secondary-dark"
           className="bg-secondary-dark text-light"
@@ -61,6 +99,12 @@ export default function SearchPage() {
           })}
         </div>
       </header>
+
+      {isInitialMount && (
+        <p className="text-light font-primary text-lg font-semibold layout-padding-x text-center mt-40">
+          Nothing to list here
+        </p>
+      )}
     </main>
   );
 }
