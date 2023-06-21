@@ -10,6 +10,10 @@ import { Combo } from '@/common/types/combo';
 import { GameTypes } from '@/common/types/game-types';
 import { Playlist } from '@/common/types/playlist';
 import { User } from '@/common/types/user';
+import { ListCombos } from '@/modules/search-page/list-combos';
+import { ListPlaylists } from '@/modules/search-page/list-playlists';
+import { ListUsers } from '@/modules/search-page/list-users';
+import { flushSync } from 'react-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const gameNameMap: Record<GameTypes, string> = {
@@ -29,7 +33,7 @@ interface SearchAllResult {
 export default function SearchPage() {
   usePageTitle('Search - FGC');
 
-  const [{ search, games }, { onChange, set }] = useForm<{
+  const [{ search, games }, { set }] = useForm<{
     search: string;
     games: Array<GameTypes>;
   }>({ search: '', games: [] });
@@ -41,26 +45,31 @@ export default function SearchPage() {
     isFetching,
   } = useApiQuery<SearchAllResult>({
     apiConfig: {
-      url: FGC_API_URLS.SEARCH,
-      params: {
-        search,
-        games,
-      },
+      url: `${FGC_API_URLS.SEARCH}?search=${encodeURIComponent(search)}${games
+        .map((g) => `&games=${g}`)
+        .join('')}`,
     },
-    key: 'search',
+    key: ['search', search, ...games],
     enabled: false,
   });
 
-  console.log(isFetched);
   const debounceRefetch = useDebounce(refetch);
   const onSelectTag = (tag: GameTypes) => {
-    if (games.includes(tag)) {
-      return set(
-        'games',
-        games.filter((t) => t !== tag),
-      );
+    const update = () => {
+      if (games.includes(tag)) {
+        return set(
+          'games',
+          games.filter((t) => t !== tag),
+        );
+      }
+      set('games', [...games, tag]);
+    };
+    if (search.trim().length > 0) {
+      flushSync(update);
+      refetch();
+      return;
     }
-    set('games', [...games, tag]);
+    update();
   };
 
   const isInitialMount = !isFetched && !isFetching;
@@ -70,8 +79,11 @@ export default function SearchPage() {
         <Input
           value={search}
           onChange={(event) => {
-            set('search', event.target.value);
-            debounceRefetch();
+            const value = event.target.value;
+            set('search', value);
+            if (value.trim().length > 0) {
+              debounceRefetch();
+            }
           }}
           placeholder="Search for a combo, playlist or user"
           inputGroupClassName="bg-secondary-dark"
@@ -89,8 +101,8 @@ export default function SearchPage() {
                 onClick={() => onSelectTag(game)}
                 className={`font-primary font-semibold text-xs cursor-pointer hover:bg-opacity-40 select-none p-3 rounded-2xl ${
                   isSelected
-                    ? 'bg-light text-secondary'
-                    : 'bg-secondary-dark text-light'
+                    ? 'bg-light text-secondary hover:text-dark'
+                    : 'bg-secondary-dark text-light hover:text-sub-info'
                 }`}
               >
                 {gameNameMap[game]}
@@ -100,10 +112,16 @@ export default function SearchPage() {
         </div>
       </header>
 
-      {isInitialMount && (
-        <p className="text-light font-primary text-lg font-semibold layout-padding-x text-center mt-40">
-          Nothing to list here
-        </p>
+      <div className="w-full flex flex-col md:flex-row gap-4 layout-padding-x mt-10">
+        {searchResult?.users && searchResult.users.length > 0 && (
+          <ListUsers users={searchResult?.users} />
+        )}
+        {searchResult?.playlists && searchResult.playlists.length > 0 && (
+          <ListPlaylists playlists={searchResult.playlists} />
+        )}
+      </div>
+      {searchResult?.combos && searchResult.combos.length && (
+        <ListCombos combos={searchResult?.combos} />
       )}
     </main>
   );

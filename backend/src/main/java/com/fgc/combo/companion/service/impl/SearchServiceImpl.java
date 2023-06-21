@@ -3,7 +3,6 @@ package com.fgc.combo.companion.service.impl;
 import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
 import com.fgc.combo.companion.dto.SearchAllResourcesDto;
-import com.fgc.combo.companion.enums.ComboGameTypes;
 import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.mapper.PlaylistMapper;
 import com.fgc.combo.companion.model.Combo;
@@ -46,7 +45,7 @@ public class SearchServiceImpl implements SearchService {
   @Override
   public SearchAllResourcesDto searchAllResources(
     String search,
-    List<ComboGameTypes> comboGameTypes
+    List<String> comboGameTypes
   ) {
     Pageable pageable = Pageable.ofSize(MAX_PAGEABLE_SIZE);
     List<User> users = this.userRepository.findAllByName(search, pageable);
@@ -54,10 +53,10 @@ public class SearchServiceImpl implements SearchService {
       ? this.comboRepository.findAllBySearchParam(search, pageable)
       : this.comboRepository.findAllBySearchParamAndComboType(
           search,
-          comboGameTypes.stream().map(ComboGameTypes::name).toList(),
+          comboGameTypes,
           pageable
         );
-
+    System.out.println(comboGameTypes);
     Page<Playlist> playlists =
       this.playlistRepository.findAllBySearchParam(search, pageable);
 

@@ -143,9 +143,9 @@ export const Header = () => {
               onClick={closeMenu}
             />
             <MenuItem
-              href={`/user/${user?.id}`}
+              href="/search"
               icon={AiOutlineSearch}
-              text="Profile"
+              text="Search"
               onClick={closeMenu}
             />
             <MenuItem

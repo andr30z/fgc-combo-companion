@@ -26,12 +26,12 @@ public class SearchController {
   public SearchAllResourcesDto searchAllResources(
     @Validated @NotEmpty @RequestParam(name = "search") String search,
     @Validated @RequestParam(
-      name = "gameTypes",
+      name = "games",
       required = false
     ) List<@ValueOfEnum(
       enumClass = ComboGameTypes.class,
       message = "must be one of: " + ComboGameTypes.Constants.ALL_GAME_TYPES
-    ) ComboGameTypes> comboGameTypes
+    ) String> comboGameTypes
   ) {
     return this.searchService.searchAllResources(
         search,
