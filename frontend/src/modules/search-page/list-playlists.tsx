@@ -1,4 +1,5 @@
 import { Link } from '@/common/components/link';
+import { UserPreview } from '@/common/components/user-preview';
 import { Playlist } from '@/common/types/playlist';
 import type { FC } from 'react';
 
@@ -8,7 +9,7 @@ interface ListPlaylistProps {
 
 export const ListPlaylists: FC<ListPlaylistProps> = ({ playlists }) => {
   return (
-    <section className="flex-1 flex flex-col  gap-2">
+    <section className="flex-1 flex flex-col gap-2">
       <h6 className="font-bold text-light text-3xl">Playlists</h6>
       {playlists.map(({ name, description, owner, id }) => (
         <Link
@@ -28,12 +29,19 @@ export const ListPlaylists: FC<ListPlaylistProps> = ({ playlists }) => {
           >
             {description}
           </p>
-          <p
-            title={owner.name}
-            className="text-sub-info text-xs font-semibold self-end line-clamp-1"
-          >
-            {owner.name}
-          </p>
+          <UserPreview
+            userId={owner.id}
+            trigger={
+              <button>
+                <p
+                  title={owner.name}
+                  className="text-sub-info text-xs font-semibold self-end line-clamp-1"
+                >
+                  {owner.name}
+                </p>
+              </button>
+            }
+          />
         </Link>
       ))}
     </section>

@@ -13,6 +13,7 @@ import { User } from '@/common/types/user';
 import { ListCombos } from '@/modules/search-page/list-combos';
 import { ListPlaylists } from '@/modules/search-page/list-playlists';
 import { ListUsers } from '@/modules/search-page/list-users';
+import { LoadingSearchSkeleton } from '@/modules/search-page/loading-search-skeleton';
 import { flushSync } from 'react-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 
@@ -41,15 +42,15 @@ export default function SearchPage() {
   const {
     data: searchResult,
     refetch,
+    isLoading,
     isFetched,
-    isFetching,
   } = useApiQuery<SearchAllResult>({
     apiConfig: {
       url: `${FGC_API_URLS.SEARCH}?search=${encodeURIComponent(search)}${games
         .map((g) => `&games=${g}`)
         .join('')}`,
     },
-    key: ['search', search, ...games],
+    key: ['search-all'],
     enabled: false,
   });
 
@@ -72,7 +73,28 @@ export default function SearchPage() {
     update();
   };
 
-  const isInitialMount = !isFetched && !isFetching;
+  const hasCombos = searchResult?.combos && searchResult?.combos.length > 0;
+
+  const hasUsers = searchResult?.users && searchResult?.users.length > 0;
+  const hasPlaylists =
+    searchResult?.playlists && searchResult?.playlists.length > 0;
+
+  const listContent =
+    hasCombos || hasUsers || hasPlaylists ? (
+      <>
+        <div className="w-full flex flex-col md:flex-row gap-4 layout-padding-x mt-10 mb-2">
+          {hasUsers && <ListUsers users={searchResult?.users} />}
+          {hasPlaylists && <ListPlaylists playlists={searchResult.playlists} />}
+        </div>
+        {hasCombos && <ListCombos combos={searchResult?.combos} />}
+      </>
+    ) : (
+      <div className="w-full flex justify-center items-center layout-padding-x h-[450px]">
+        <h1 className="text-light text-lg font-bold">
+          Nothing to show here ;-;
+        </h1>
+      </div>
+    );
   return (
     <main className="min-h-80vh w-full flex flex-col pt-4">
       <header className="flex flex-col layout-padding-x">
@@ -112,17 +134,7 @@ export default function SearchPage() {
         </div>
       </header>
 
-      <div className="w-full flex flex-col md:flex-row gap-4 layout-padding-x mt-10">
-        {searchResult?.users && searchResult.users.length > 0 && (
-          <ListUsers users={searchResult?.users} />
-        )}
-        {searchResult?.playlists && searchResult.playlists.length > 0 && (
-          <ListPlaylists playlists={searchResult.playlists} />
-        )}
-      </div>
-      {searchResult?.combos && searchResult.combos.length && (
-        <ListCombos combos={searchResult?.combos} />
-      )}
+      {isLoading && !isFetched ? <LoadingSearchSkeleton /> : listContent}
     </main>
   );
 }

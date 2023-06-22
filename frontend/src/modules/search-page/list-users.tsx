@@ -10,6 +10,12 @@ interface ListUsersProps {
 }
 
 export const ListUsers: FC<ListUsersProps> = ({ users }) => {
+  const onClickSocials =
+    (url: string) => (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open(url, '_blank');
+    };
   return (
     <section className="flex-1 flex flex-col gap-2">
       <h6 className="font-bold text-light text-3xl">Users</h6>
@@ -31,37 +37,30 @@ export const ListUsers: FC<ListUsersProps> = ({ users }) => {
             </p>
             <div className="flex flex-row gap-2 justify-end w-full">
               {twitterProfileUrl && (
-                <a
-                  href={twitterProfileUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-light font-primary hover:text-secondary cursor-pointer"
-                >
-                  <AiOutlineTwitter title="Go to Twitter" size={25} />
-                </a>
+                <span>
+                  <AiOutlineTwitter
+                    onClick={onClickSocials(twitterProfileUrl)}
+                    className="text-light font-primary hover:text-secondary cursor-pointer"
+                    title="Go to Twitter"
+                    size={25}
+                  />
+                </span>
               )}
               {instagramProfileUrl && (
-                <a
-                  href={instagramProfileUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={(e) => e.stopPropagation()}
+                <FiInstagram
+                  size={25}
+                  title="Go to Instagram"
+                  onClick={onClickSocials(instagramProfileUrl)}
                   className="text-light font-primary hover:text-secondary cursor-pointer"
-                >
-                  <FiInstagram size={25} title="Go to Instagram" />
-                </a>
+                />
               )}
               {youtubeChannelUrl && (
-                <a
-                  href={youtubeChannelUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={(e) => e.stopPropagation()}
+                <FaYoutubeSquare
+                  size={27}
+                  title="Go to Youtube"
+                  onClick={onClickSocials(youtubeChannelUrl)}
                   className="text-light font-primary hover:text-secondary cursor-pointer"
-                >
-                  <FaYoutubeSquare size={27} title="Go to Youtube" />
-                </a>
+                />
               )}
             </div>
           </Link>
