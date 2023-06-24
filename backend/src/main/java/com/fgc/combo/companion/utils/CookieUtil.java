@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class CookieUtil {
 
-  @Value("${authentication.auth.accessTokenCookieName}")
+  @Value("${authentication.auth.accessTokenCookieName:accessToken}")
   private String accessTokenCookieName;
 
-  @Value("${authentication.auth.refreshTokenCookieName}")
+  @Value("${authentication.auth.refreshTokenCookieName:refreshToken}")
   private String refreshTokenCookieName;
 
   @Value("${spring.profiles.active:Unknown}")
@@ -35,7 +35,8 @@ public class CookieUtil {
       .sameSite("None")
       .path("/");
 
-     cookieBuilder.secure(true);
+    //comment this line if you want to test on postman/insomnia
+    cookieBuilder.secure(true);
 
     return cookieBuilder.build();
   }

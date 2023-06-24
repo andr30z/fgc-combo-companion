@@ -1,5 +1,7 @@
 package com.fgc.combo.companion.enums;
 
+import java.util.List;
+
 public enum ComboGameTypes {
   TEKKEN_7,
   SFV,
@@ -26,4 +28,12 @@ public enum ComboGameTypes {
       ", " +
       STREET_FIGHTER_6;
   }
+
+  public static final List<ComboGameTypes> GAME_TYPES = List.of(
+    TEKKEN_7,
+    SFV,
+    STREET_FIGHTER_6,
+    GUILTY_GEAR_STRIVE,
+    KOF_XV
+  );
 }

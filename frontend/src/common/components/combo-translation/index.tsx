@@ -41,6 +41,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
 
   return (
     <div
+      title={result.combo}
       data-testid={result.combo}
       className={`text-light rounded p-3 bg-${backgroundColor} flex items-center flex-row flex-wrap gap-1 ${className}`}
       onClick={onClick}

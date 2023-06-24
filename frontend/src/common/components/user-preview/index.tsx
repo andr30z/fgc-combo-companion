@@ -93,7 +93,7 @@ export const UserPreview: React.FC<UserPreviewProps> = ({
                         : ''}
                     </p>
                   </div>
-                  <div className="flex flex-row flex-wrap w-full">
+                  <div className="flex flex-row flex-wrap w-full gap-2">
                     {userProfile?.user?.twitterProfileUrl && (
                       <a
                         href={userProfile?.user?.twitterProfileUrl}

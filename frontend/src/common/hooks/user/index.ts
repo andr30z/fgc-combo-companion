@@ -41,7 +41,7 @@ export function useUser(
       retry: 3,
       enabled: !!data,
       onError() {
-        queryClient.invalidateQueries(['user']);
+        // queryClient.invalidateQueries(['user']);
         toast.error('Failed to load user info');
         onUnauthenticated();
       },

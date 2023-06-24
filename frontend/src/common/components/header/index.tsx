@@ -11,6 +11,7 @@ import {
   AiOutlineClose,
   AiOutlineLogout,
   AiOutlineMenu,
+  AiOutlineSearch,
   AiOutlineUser,
 } from 'react-icons/ai';
 import { BiJoystickButton, BiTransfer } from 'react-icons/bi';
@@ -107,12 +108,22 @@ export const Header = () => {
               />
             )}
             {!showLoginButton && !showSignupButton && !isLoadingSession && (
-              <AiOutlineMenu
-                size={25}
-                role="button"
-                className="cursor-pointer text-light hover:opacity-30"
-                onClick={toggleMenu}
-              />
+              <>
+                <Link
+                  href="/search"
+                  useHoverStyles={false}
+                  color="light"
+                  className="cursor-pointer hover:opacity-30"
+                >
+                  <AiOutlineSearch size={25} role="button" />
+                </Link>
+                <AiOutlineMenu
+                  size={25}
+                  role="button"
+                  className="cursor-pointer text-light hover:opacity-30"
+                  onClick={toggleMenu}
+                />
+              </>
             )}
           </div>
         )}
@@ -129,6 +140,12 @@ export const Header = () => {
               role="button"
               className="cursor-pointer text-light hover:opacity-30 self-end mb-10"
               size={30}
+              onClick={closeMenu}
+            />
+            <MenuItem
+              href="/search"
+              icon={AiOutlineSearch}
+              text="Search"
               onClick={closeMenu}
             />
             <MenuItem

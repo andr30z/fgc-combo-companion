@@ -2,6 +2,7 @@ package com.fgc.combo.companion.repository;
 
 import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +33,20 @@ public interface ComboRepository extends JpaRepository<Combo, Long> {
   @EntityGraph(attributePaths = { "owner", "tags" })
   @Query(
     "SELECT c FROM Combo c WHERE (" +
-    "c.name ILIKE concat('%',COALESCE(?1, c.name),'%') OR " +
+    "c.combo ILIKE concat('%',COALESCE(?1, c.combo),'%') OR c.name ILIKE concat('%',COALESCE(?1, c.name),'%') OR " +
     "c.description ILIKE concat('%',COALESCE(?1, c.description),'%') )"
   )
   Page<Combo> findAllBySearchParam(String searchParam, Pageable pageable);
+
+  @EntityGraph(attributePaths = { "owner", "tags" })
+  @Query(
+    "SELECT c FROM Combo c WHERE " +
+    "CAST(c.game as text) in ?2 and (c.combo ILIKE concat('%',COALESCE(?1, c.combo),'%') OR c.name ILIKE concat('%',COALESCE(?1, c.name),'%') OR " +
+    "c.description ILIKE concat('%',COALESCE(?1, c.description),'%') )"
+  )
+  Page<Combo> findAllBySearchParamAndComboType(
+    String searchParam,
+    List<String> comboGameTypes,
+    Pageable pageable
+  );
 }
