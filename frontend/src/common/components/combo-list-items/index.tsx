@@ -20,6 +20,7 @@ import { get } from 'lodash';
 import type { PlaylistCombo } from '@/common/types/playlist-combo';
 import { UserPreview } from '../user-preview';
 import { Link } from '../link';
+import { AddComboToPlaylist } from '../add-combo-to-playlist';
 
 type ComboOrPlaylistCombo = Combo | PlaylistCombo;
 interface ComboListItemsProps extends ListItemsProps<ComboOrPlaylistCombo> {
@@ -184,6 +185,10 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                         </div>
                         {useComboItemHeader && (
                           <div className="flex flex-row gap-2">
+                            <AddComboToPlaylist
+                              iconSize={27}
+                              comboId={combo.id}
+                            />
                             {currentUserIsOwner && (
                               <AiFillEdit
                                 size={27}

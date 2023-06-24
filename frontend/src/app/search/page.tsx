@@ -82,11 +82,11 @@ export default function SearchPage() {
   const listContent =
     hasCombos || hasUsers || hasPlaylists ? (
       <>
-        <div className="w-full flex flex-col md:flex-row gap-4 layout-padding-x mt-10 mb-2">
+        {hasCombos && <ListCombos combos={searchResult?.combos} />}
+        <div className="max-w-full flex flex-col md:flex-row gap-2 layout-padding-x mt-4 mb-2">
           {hasUsers && <ListUsers users={searchResult?.users} />}
           {hasPlaylists && <ListPlaylists playlists={searchResult.playlists} />}
         </div>
-        {hasCombos && <ListCombos combos={searchResult?.combos} />}
       </>
     ) : (
       <div className="w-full flex justify-center items-center layout-padding-x h-[450px]">

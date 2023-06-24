@@ -1,6 +1,6 @@
 import { Link } from '@/common/components/link';
 import { UserPreview } from '@/common/components/user-preview';
-import { Playlist } from '@/common/types/playlist';
+import type { Playlist } from '@/common/types/playlist';
 import type { FC } from 'react';
 
 interface ListPlaylistProps {
@@ -9,7 +9,7 @@ interface ListPlaylistProps {
 
 export const ListPlaylists: FC<ListPlaylistProps> = ({ playlists }) => {
   return (
-    <section className="flex-1 flex flex-col gap-2">
+    <section className="w-full md:w-1/2 flex flex-col gap-2">
       <h6 className="font-bold text-light text-3xl">Playlists</h6>
       {playlists.map(({ name, description, owner, id }) => (
         <Link

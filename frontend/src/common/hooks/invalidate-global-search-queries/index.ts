@@ -8,6 +8,7 @@ export function useInvalidateGlobalSearchQueries() {
     queryClient.invalidateQueries(['USER_PLAYLISTS_SIDEBAR']);
     queryClient.invalidateQueries(['COMBO_SEARCH']);
     queryClient.invalidateQueries(['PLAYLIST_DETAILS']);
+    queryClient.invalidateQueries(['CURRENT_USER_PLAYLISTS']);
     // queryClient.invalidateQueries(
     //   ['playlists', 'combos', 'USER_PLAYLISTS_SIDEBAR', 'COMBO_SEARCH'],
     //   {
