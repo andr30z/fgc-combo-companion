@@ -96,8 +96,8 @@ export default function SearchPage() {
       </div>
     );
   return (
-    <main className="min-h-80vh w-full flex flex-col pt-4">
-      <header className="flex flex-col layout-padding-x">
+    <main className="min-h-80vh w-full flex flex-col pt-4 relative">
+      <header className="flex flex-col layout-padding-x sticky top-0 z-10 bg-dark p-2">
         <Input
           value={search}
           onChange={(event) => {
