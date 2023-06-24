@@ -29,11 +29,9 @@ spring:
   flyway:
     enabled: false
   application:
-    name: auth-user-service
+    name: fgc-combo-companion-test
   datasource:
     url: jdbc:h2:mem:test_db;MODE=PostgreSQL
-    # username: sa
-    # password: ${AUTH_SERVICE_POSTGRESQL_PASSWORD}
     driver-class-name: org.h2.Driver
   jpa:
     show-sql: true
