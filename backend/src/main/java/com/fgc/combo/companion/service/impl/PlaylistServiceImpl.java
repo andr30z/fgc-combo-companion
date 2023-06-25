@@ -5,6 +5,7 @@ import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
+import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -199,5 +200,10 @@ public class PlaylistServiceImpl implements PlaylistService {
     Pageable pageable
   ) {
     return this.getByOwner(this.userService.findById(userId), pageable);
+  }
+
+  @Override
+  public Playlist reorderPlaylistCombos(Long playlistId, ReorderCombosDto reorderCombosDto) {
+    return this.playlistComboService.reorderPlaylistCombos(this.getByIdAndCurrentUser(playlistId), reorderCombosDto);
   }
 }

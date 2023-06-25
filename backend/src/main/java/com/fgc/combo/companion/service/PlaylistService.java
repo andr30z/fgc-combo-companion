@@ -5,6 +5,7 @@ import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
+import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.model.Playlist;
 import com.fgc.combo.companion.model.User;
@@ -46,4 +47,6 @@ public interface PlaylistService {
     Long playlistId,
     CreateComboDTO createComboDTO
   );
+
+  Playlist reorderPlaylistCombos(Long playlistId, ReorderCombosDto reorderCombosDto);
 }

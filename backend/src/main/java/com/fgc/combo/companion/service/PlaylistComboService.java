@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.service;
 
 import com.fgc.combo.companion.dto.CreateComboDTO;
+import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.Playlist;
 import java.util.List;
@@ -26,4 +27,6 @@ public interface PlaylistComboService {
   );
 
   void deleteByPlaylist(Playlist playlist);
+
+  Playlist reorderPlaylistCombos(Playlist playlist, ReorderCombosDto reorderCombosDto);
 }

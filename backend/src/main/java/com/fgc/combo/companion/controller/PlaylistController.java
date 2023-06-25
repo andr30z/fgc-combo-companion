@@ -7,6 +7,7 @@ import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.mapper.PlaylistMapper;
 import com.fgc.combo.companion.service.PlaylistService;
@@ -130,6 +131,16 @@ public class PlaylistController {
   public CompletePlaylistDTO getPlaylistDetails(@PathVariable Long playlistId) {
     return this.playlistMapper.toCompletePlaylistDTO(
         this.playlistService.getPlaylistWithCombos(playlistId)
+      );
+  }
+
+  @PutMapping("/{playlistId}/me/combos/ordenation")
+  public CompletePlaylistDTO reorderPlaylistCombos(
+    @PathVariable Long playlistId,
+    @RequestBody @Validated ReorderCombosDto reorderCombosDto
+  ) {
+    return this.playlistMapper.toCompletePlaylistDTO(
+        this.playlistService.reorderPlaylistCombos(playlistId, reorderCombosDto)
       );
   }
 }
