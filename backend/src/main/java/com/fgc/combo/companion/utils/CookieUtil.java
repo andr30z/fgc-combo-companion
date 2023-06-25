@@ -36,7 +36,7 @@ public class CookieUtil {
       .path("/");
 
     //comment this line if you want to test on postman/insomnia
-    // cookieBuilder.secure(true);
+    cookieBuilder.secure(true);
 
     return cookieBuilder.build();
   }
