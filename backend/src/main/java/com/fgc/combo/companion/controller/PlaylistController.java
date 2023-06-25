@@ -134,7 +134,7 @@ public class PlaylistController {
       );
   }
 
-  @PutMapping("/{playlistId}/me/combos/ordenation")
+@PutMapping("/{playlistId}/combos/ordenation")
   public CompletePlaylistDTO reorderPlaylistCombos(
     @PathVariable Long playlistId,
     @RequestBody @Validated ReorderCombosDto reorderCombosDto
