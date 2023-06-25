@@ -45,23 +45,21 @@ export const FGC_API_URLS = {
   GET_USER_VERIFICATION: '/v1/users/verification',
   COMBOS: '/v1/combos',
   MY_COMBOS: '/v1/combos/me',
-  getUpdateComboUrl: (comboId: string) => `/v1/combos/${comboId}/me`,
+  getUpdateComboUrl: (comboId: string) => `/v1/combos/${comboId}`,
   PLAYLISTS: '/v1/playlists',
-  getUpdatePlaylistUrl: (playlistId: string) =>
-    `/v1/playlists/${playlistId}/me`,
-  getDeleteComboUrl: (comboId: number) => `/v1/combos/${comboId}/me`,
-  getDeletePlaylistUrl: (playlistId: number) =>
-    `/v1/playlists/${playlistId}/me`,
+  getUpdatePlaylistUrl: (playlistId: string) => `/v1/playlists/${playlistId}`,
+  getDeleteComboUrl: (comboId: number) => `/v1/combos/${comboId}`,
+  getDeletePlaylistUrl: (playlistId: number) => `/v1/playlists/${playlistId}`,
   MY_PLAYLISTS: '/v1/playlists/me',
   getRemoveCombosFromPlaylistUrl: (
     playlistId: number,
     playlistComboIds: Array<number>,
   ) =>
-    `/v1/playlists/${playlistId}/me/combos?${playlistComboIds
+    `/v1/playlists/${playlistId}/combos?${playlistComboIds
       .map((id) => `playlistComboId=${id}`)
       .join('&')}`,
   getAddCombosToPlaylistUrl: (playlistId: number | string) =>
-    `/v1/playlists/${playlistId}/me/combos`,
+    `/v1/playlists/${playlistId}/combos`,
   getCreateAndAddCombosToPlaylistUrl: (playlistId: number | string) =>
-    `/v1/playlists/${playlistId}/me/new-combo`,
+    `/v1/playlists/${playlistId}/new-combo`,
 };
