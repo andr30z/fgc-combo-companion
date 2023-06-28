@@ -7,6 +7,7 @@ import com.fgc.combo.companion.dto.CreatePlaylistDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.mapper.PlaylistMapper;
 import com.fgc.combo.companion.service.PlaylistService;
@@ -72,7 +73,7 @@ public class PlaylistController {
       );
   }
 
-  @PutMapping("/{playlistId}/me")
+  @PutMapping("/{playlistId}")
   public PlaylistResponseDTO update(
     @PathVariable Long playlistId,
     @RequestBody @Validated UpdatePlaylistDTO updatePlaylistDTO
@@ -82,12 +83,12 @@ public class PlaylistController {
       );
   }
 
-  @DeleteMapping("/{playlistId}/me")
+  @DeleteMapping("/{playlistId}")
   public boolean delete(@PathVariable Long playlistId) {
     return this.playlistService.delete(playlistId);
   }
 
-  @PostMapping("/{playlistId}/me/combos")
+  @PostMapping("/{playlistId}/combos")
   public CompletePlaylistDTO addCombosToPlaylist(
     @PathVariable Long playlistId,
     @RequestBody @Validated AddCombosToPlaylistDTO addCombosToPlaylistDTO
@@ -100,7 +101,7 @@ public class PlaylistController {
       );
   }
 
-  @PostMapping("/{playlistId}/me/new-combo")
+  @PostMapping("/{playlistId}/new-combo")
   public CompletePlaylistDTO addNewCombosToPlaylist(
     @PathVariable Long playlistId,
     @RequestBody @Validated CreateComboDTO createComboDTO
@@ -113,7 +114,7 @@ public class PlaylistController {
       );
   }
 
-  @DeleteMapping("/{playlistId}/me/combos")
+  @DeleteMapping("/{playlistId}/combos")
   public boolean deleteCombosFromPlaylist(
     @PathVariable Long playlistId,
     @Validated @NotEmpty @RequestParam(
@@ -130,6 +131,16 @@ public class PlaylistController {
   public CompletePlaylistDTO getPlaylistDetails(@PathVariable Long playlistId) {
     return this.playlistMapper.toCompletePlaylistDTO(
         this.playlistService.getPlaylistWithCombos(playlistId)
+      );
+  }
+
+@PutMapping("/{playlistId}/combos/ordenation")
+  public CompletePlaylistDTO reorderPlaylistCombos(
+    @PathVariable Long playlistId,
+    @RequestBody @Validated ReorderCombosDto reorderCombosDto
+  ) {
+    return this.playlistMapper.toCompletePlaylistDTO(
+        this.playlistService.reorderPlaylistCombos(playlistId, reorderCombosDto)
       );
   }
 }

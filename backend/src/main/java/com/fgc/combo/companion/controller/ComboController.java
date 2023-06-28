@@ -70,7 +70,7 @@ public class ComboController {
     return this.comboMapper.toDTO((this.comboService.create(comboDTO)));
   }
 
-  @PutMapping("/{comboId}/me")
+  @PutMapping("/{comboId}")
   public ComboResponseDTO updateCombo(
     @PathVariable Long comboId,
     @RequestBody @Validated UpdateComboDTO comboDTO
@@ -80,7 +80,7 @@ public class ComboController {
       );
   }
 
-  @DeleteMapping("/{comboId}/me")
+  @DeleteMapping("/{comboId}")
   public boolean deleteCombo(@PathVariable Long comboId) {
     return this.comboService.deleteByIdAndCurrentUser(comboId);
   }

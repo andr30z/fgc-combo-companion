@@ -102,7 +102,9 @@ export default function SearchPage() {
           value={search}
           onChange={(event) => {
             const value = event.target.value;
-            set('search', value);
+            flushSync(() => {
+              set('search', value);
+            });
             if (value.trim().length > 0) {
               debounceRefetch();
             }

@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.service.impl;
 
 import com.fgc.combo.companion.dto.CreateComboDTO;
+import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -18,10 +19,14 @@ import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 @Service
 @Slf4j
@@ -135,7 +140,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
     );
 
     log.info(
-      "Removing the following combos: {} from playlist: {} - ID:{}",
+      "Removing the following combos: {} from playlist: {} - ID: {}",
       playlistCombos
         .stream()
         .map(playlistCombo -> playlistCombo.getCombo().getId())
@@ -150,6 +155,13 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
       .toList();
   }
 
+  private List<PlaylistCombo> mapPlaylistComboPositions(
+    int maxSize,
+    IntFunction<PlaylistCombo> mapper
+  ) {
+    return IntStream.range(0, maxSize).mapToObj(mapper).toList();
+  }
+
   private List<PlaylistCombo> createPlaylistCombos(
     List<Combo> combos,
     Playlist playlist
@@ -158,19 +170,25 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
 
     Set<PlaylistCombo> playlistCombos = playlist.getPlaylistCombos();
 
-    int EMPTY_LIST_MAX_POSITION = playlistCombos.size();
+    Optional<PlaylistCombo> playlistCombo = playlistCombos
+      .stream()
+      .max((playlistCombo1, playlistCombo2) -> {
+        return playlistCombo1.getPosition() - playlistCombo2.getPosition();
+      });
 
-    return IntStream
-      .range(0, combos.size())
-      .mapToObj(index ->
+    final int EMPTY_LIST_MAX_POSITION = playlistCombo.isEmpty()
+      ? playlistCombos.size()
+      : playlistCombo.get().getPosition();
+    return mapPlaylistComboPositions(
+      combos.size(),
+      index ->
         PlaylistCombo
           .builder()
           .combo(combos.get(index))
           .playlist(playlist)
           .position(EMPTY_LIST_MAX_POSITION + index)
           .build()
-      )
-      .toList();
+    );
   }
 
   private Playlist getPlaylist(Long id) {
@@ -204,6 +222,50 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
     combo.setGame(createComboDTO.getGame());
     this.comboRepository.save(combo);
     this.addAllCombosToPlaylist(playlist, Collections.singleton(combo.getId()));
+    return playlist;
+  }
+
+  @Override
+  public Playlist reorderPlaylistCombos(
+    Playlist playlist,
+    ReorderCombosDto reorderCombosDto
+  ) {
+    Set<PlaylistCombo> playlistCombos = playlist.getPlaylistCombos();
+    boolean allPlaylistCombosAreInPlaylist = playlistCombos
+      .stream()
+      .map(PlaylistCombo::getId)
+      .toList()
+      .containsAll(reorderCombosDto.getNewPlaylistCombosOrdenation());
+
+    if (!allPlaylistCombosAreInPlaylist) {
+      throw new BadRequestException(
+        "At least one playlist combo is not in the playlist!"
+      );
+    }
+
+    List<Long> newPlaylistCombos = reorderCombosDto.getNewPlaylistCombosOrdenation();
+    List<PlaylistCombo> reordedCombos = mapPlaylistComboPositions(
+      reorderCombosDto.getNewPlaylistCombosOrdenation().size(),
+      index -> {
+        Long playlistComboId = newPlaylistCombos.get(index);
+        PlaylistCombo playlistCombo = playlistCombos
+          .stream()
+          .filter(pCombo -> pCombo.getId().equals(playlistComboId))
+          .findAny()
+          .orElseThrow(() ->
+            new NotFoundException(
+              "Playlist combo with ID: " + playlistComboId + " was not found!"
+            )
+          );
+        playlistCombo.setPosition(index);
+        return playlistCombo;
+      }
+    );
+
+    playlist.setPlaylistCombos(
+      reordedCombos.stream().collect(Collectors.toSet())
+    );
+    playlistComboRepository.saveAll(reordedCombos);
     return playlist;
   }
 }

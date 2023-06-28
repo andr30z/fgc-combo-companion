@@ -1,14 +1,16 @@
 import { useBoolean } from '@/common/hooks/boolean';
 import { Modal } from '../modal';
-import { ComboTranslation } from '../combo-translation';
+import { ComboTranslation, ComboTranslationProps } from '../combo-translation';
 import type { FC, ReactNode } from 'react';
 import { GameTypes } from '@/common/types/game-types';
-export const ComboPreview: FC<{
-  combo: string;
-  description?: string;
-  game: GameTypes;
-  children: (openComboDetails: () => void) => ReactNode;
-}> = ({ combo, description, game, children: renderTrigger }) => {
+export const ComboPreview: FC<
+  {
+    combo: string;
+    description?: string;
+    game: GameTypes;
+    children: (openComboDetails: () => void) => ReactNode;
+  } & Pick<ComboTranslationProps, 'htmlProps'>
+> = ({ combo, description, game, children: renderTrigger, htmlProps }) => {
   const [
     isComboDetailsOpen,
     { setTrue: openComboDetails, setFalse: closeComboDetails },
@@ -26,6 +28,7 @@ export const ComboPreview: FC<{
           game={game}
           backgroundColor="secondary"
           className="mt-5 justify-center"
+          htmlProps={htmlProps}
         />
         {combo && (
           <p className="break-words text-xl text-center text-light mt-5">

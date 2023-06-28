@@ -11,6 +11,7 @@
     "cypress:headless": "cypress run"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.2.0",
     "@radix-ui/react-dialog": "^1.0.3",
     "@radix-ui/react-popover": "^1.0.5",
     "@radix-ui/react-portal": "^1.0.2",
