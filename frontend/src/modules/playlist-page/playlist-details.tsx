@@ -5,19 +5,16 @@ import { ComboListItems } from '@/common/components/combo-list-items';
 import { ConfirmAction } from '@/common/components/confirm-action-modal';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { PlaylistFormWithModal } from '@/common/components/playlist-form-with-modal';
+import { PopOver } from '@/common/components/pop-over';
 import { SelectSearchCombo } from '@/common/components/select-search-combo';
 import { Spinner } from '@/common/components/spinner';
-import { useApiQuery } from '@/common/hooks/api-query';
-import { useBoolean } from '@/common/hooks/boolean';
 import { useHideScrollbar } from '@/common/hooks/hide-scrollbar';
-import { useUser } from '@/common/hooks/user';
-import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
-import { Combo } from '@/common/types/combo';
-import { PlaylistWithCombos } from '@/common/types/playlist';
-import { PlaylistCombo } from '@/common/types/playlist-combo';
+import { usePlaylistDetails } from '@/common/hooks/playlist-details';
+import { FGC_API_URLS } from '@/common/services/fgc-api';
+import type { PlaylistWithCombos } from '@/common/types/playlist';
+import type { PlaylistCombo } from '@/common/types/playlist-combo';
 import Image from 'next/image';
-import { FC, useState } from 'react';
-import { toast } from 'react-hot-toast';
+import type { FC } from 'react';
 import {
   AiFillDelete,
   AiFillEdit,
@@ -27,65 +24,31 @@ import {
 } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
 import { usePlaylistPage } from './playlist-page-context';
-import { PopOver } from '@/common/components/pop-over';
-const TEN_MINUTES = 10 * 60 * 1000;
 export const PlaylistDetails: FC<{
   playlistInitialData?: PlaylistWithCombos;
   playlistId: string;
 }> = ({ playlistInitialData, playlistId }) => {
-  const { user } = useUser();
-  useHideScrollbar();
-
-  const [selectedCombos, setSelectedCombos] = useState<Array<PlaylistCombo>>(
-    [],
-  );
-  const {
-    data: playlistDetails,
-    isLoading,
-    refetch,
-  } = useApiQuery<PlaylistWithCombos>({
-    key: ['PLAYLIST_DETAILS', playlistId],
-    apiConfig: {
-      url: `${FGC_API_URLS.PLAYLISTS}/${playlistId}`,
-    },
-    staleTime: TEN_MINUTES,
-    initialData: playlistInitialData,
-  });
-  const refetchData = () => {
-    refetch();
-  };
-
   const { togglePlaylistPageMobileSideBar } = usePlaylistPage();
 
-  const [
+  useHideScrollbar();
+  const {
+    addCombosToPlaylist,
+    combos,
+    orderedCombos,
+    currentUserIsPlaylistOwner,
+    deleteCombosFromPlaylist,
+    endLoadingData,
+    isLoading,
     isLoadingData,
-    { setFalse: endLoadingData, setTrue: startLoadingData },
-  ] = useBoolean();
-
-  const addCombosToPlaylist = (combos: Array<Combo>) => {
-    fgcApi
-      .post(FGC_API_URLS.getAddCombosToPlaylistUrl(playlistId), {
-        combos: combos.map(({ id }) => id),
-      })
-      .then(() => {
-        toast.success('Combos added to playlist successfully');
-        refetchData();
-      });
-  };
-  const orderedCombos = playlistDetails?.playlistCombos?.sort((a, b) => {
-    return a.position - b.position;
-  });
-  const combos = orderedCombos?.map((playlistCombo) => playlistCombo.combo);
-  const currentUserIsPlaylistOwner = playlistDetails?.owner.id === user?.id;
-
-  const deleteCombosFromPlaylist = (playlistComboIds: Array<number>) => {
-    return fgcApi.delete(
-      FGC_API_URLS.getRemoveCombosFromPlaylistUrl(
-        playlistDetails?.id as number,
-        playlistComboIds,
-      ),
-    );
-  };
+    startLoadingData,
+    selectedCombos,
+    setSelectedCombos,
+    playlistDetails,
+    refetchData,
+    onSubmitOrdenation,
+    isDraggingCombos,
+    startDragging,
+  } = usePlaylistDetails(playlistId, { playlistInitialData });
 
   return (
     <>
@@ -124,64 +87,62 @@ export const PlaylistDetails: FC<{
               </p>
               <div className="flex flex-row flex-wrap gap-2">
                 {currentUserIsPlaylistOwner && (
-                  <>
-                    <PopOver
-                      trigger={
-                        <button>
-                          <AiFillInfoCircle
-                            size={25}
-                            className="cursor-pointer text-light hover:text-secondary"
-                            title="Playlist command hint"
-                          />
-                        </button>
-                      }
-                    >
-                      <p>
-                        <code className="bg-light-darker text-xs p-1">
-                          Ctrl + Mouse Left Click
-                        </code>{' '}
-                        enables multiple row selection
-                      </p>
-                    </PopOver>
-                    <PlaylistFormWithModal
-                      initialValues={playlistDetails}
-                      renderTriggerOpenForm={(openForm) => (
-                        <AiFillEdit
+                  <PopOver
+                    trigger={
+                      <button>
+                        <AiFillInfoCircle
                           size={25}
-                          onClick={openForm}
-                          title="Edit playlist"
                           className="cursor-pointer text-light hover:text-secondary"
+                          title="Playlist command hint"
                         />
-                      )}
-                    />
-                    <SelectSearchCombo
-                      label=""
-                      containerClassName=""
-                      renderAddIcon={(openSearch) => (
-                        <AiOutlineSearch
-                          title="Search combos to add to this playlist"
-                          className="text-white hover:text-secondary cursor-pointer"
-                          onClick={openSearch}
-                          size={25}
-                        />
-                      )}
-                      onFinish={addCombosToPlaylist}
-                    />
-                    <ComboFormWithModal
-                      customUrl={`${FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
-                        playlistId,
-                      )}`}
-                      renderTriggerOpenForm={(openForm) => (
-                        <IoIosAddCircle
-                          title="Create a new combo and add it to this playlist"
-                          className="text-white hover:text-secondary cursor-pointer"
-                          size={25}
-                          onClick={openForm}
-                        />
-                      )}
-                    />
-                  </>
+                      </button>
+                    }
+                  >
+                    <p>
+                      <code className="bg-light-darker text-xs p-1">
+                        Ctrl + Mouse Left Click
+                      </code>{' '}
+                      enables multiple row selection
+                    </p>
+                  </PopOver>
                 )}
+                <PlaylistFormWithModal
+                  initialValues={playlistDetails}
+                  renderTriggerOpenForm={(openForm) => (
+                    <AiFillEdit
+                      size={25}
+                      onClick={openForm}
+                      title="Edit playlist"
+                      className="cursor-pointer text-light hover:text-secondary"
+                    />
+                  )}
+                />
+                <SelectSearchCombo
+                  label=""
+                  containerClassName=""
+                  renderAddIcon={(openSearch) => (
+                    <AiOutlineSearch
+                      title="Search combos to add to this playlist"
+                      className="text-white hover:text-secondary cursor-pointer"
+                      onClick={openSearch}
+                      size={25}
+                    />
+                  )}
+                  onFinish={addCombosToPlaylist}
+                />
+                <ComboFormWithModal
+                  customUrl={`${FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
+                    playlistId,
+                  )}`}
+                  renderTriggerOpenForm={(openForm) => (
+                    <IoIosAddCircle
+                      title="Create a new combo and add it to this playlist"
+                      className="text-white hover:text-secondary cursor-pointer"
+                      size={25}
+                      onClick={openForm}
+                    />
+                  )}
+                />
                 {selectedCombos.length > 0 && (
                   <ConfirmAction
                     onConfirm={async () => {
@@ -216,6 +177,10 @@ export const PlaylistDetails: FC<{
             showComboDeleteIconValidation={() => {
               return true;
             }}
+            onDragStart={startDragging}
+            className={isDraggingCombos ? 'pb-80' : undefined}
+            onFinishOrdenation={onSubmitOrdenation}
+            enableOrdernation={currentUserIsPlaylistOwner}
             highlitedCombos={selectedCombos}
             onClickComboItem={(combo, event, defaultAction) => {
               if (!event.ctrlKey) {

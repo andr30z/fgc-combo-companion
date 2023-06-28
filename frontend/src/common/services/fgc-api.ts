@@ -62,4 +62,6 @@ export const FGC_API_URLS = {
     `/v1/playlists/${playlistId}/combos`,
   getCreateAndAddCombosToPlaylistUrl: (playlistId: number | string) =>
     `/v1/playlists/${playlistId}/new-combo`,
+  getPlaylistCombosOrdenationUrl: (playlistId: number | string) =>
+    `/v1/playlists/${playlistId}/combos/ordenation`,
 };

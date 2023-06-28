@@ -4,11 +4,10 @@ import { ComboTranslationInterface } from '@/common/types/combo-translation';
 import { GameTypes } from '@/common/types/game-types';
 import Image from 'next/image';
 import { FC, Fragment } from 'react';
-interface ComboTranslationProps {
+export interface ComboTranslationProps {
   game: GameTypes;
   combo: string;
   className?: string;
-  rendeHeader?: (result: ComboTranslationInterface) => React.ReactNode;
   backgroundColor?:
     | 'primary'
     | 'secondary'
@@ -16,6 +15,12 @@ interface ComboTranslationProps {
     | 'secondary-dark'
     | 'light-active';
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  htmlProps?: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >;
+  rendeHeader?: (result: ComboTranslationInterface) => React.ReactNode;
+  renderFooter?: (result: ComboTranslationInterface) => React.ReactNode;
 }
 
 export const ComboTranslation: FC<ComboTranslationProps> = ({
@@ -23,8 +28,10 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
   game,
   className = '',
   rendeHeader,
+  renderFooter,
   backgroundColor = 'secondary',
   onClick,
+  htmlProps,
 }) => {
   const result = useComboTranslator({ combo, game });
   if (!result.combo) {
@@ -45,6 +52,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
       data-testid={result.combo}
       className={`text-light rounded p-3 bg-${backgroundColor} flex items-center flex-row flex-wrap gap-1 ${className}`}
       onClick={onClick}
+      {...htmlProps}
     >
       {rendeHeader && rendeHeader(result)}
       {result.actions.map((action, index) => (
@@ -94,6 +102,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
           })}
         </Fragment>
       ))}
+      {renderFooter && renderFooter(result)}
     </div>
   );
 };

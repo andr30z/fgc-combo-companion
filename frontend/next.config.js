@@ -5,7 +5,7 @@ const nextConfig = {
     appDir: true,
   },
 
-  reactStrictMode: true,
+  reactStrictMode: false,
   webpack(config) {
     // config.resolve.alias[package.name] = path.resolve(__dirname, 'src');
     config.resolve.alias['@'] = path.join(__dirname, 'src');
