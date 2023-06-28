@@ -19,6 +19,7 @@ import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
@@ -169,8 +170,15 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
 
     Set<PlaylistCombo> playlistCombos = playlist.getPlaylistCombos();
 
-    int EMPTY_LIST_MAX_POSITION = playlistCombos.size();
+    Optional<PlaylistCombo> playlistCombo = playlistCombos
+      .stream()
+      .max((playlistCombo1, playlistCombo2) -> {
+        return playlistCombo1.getPosition() - playlistCombo2.getPosition();
+      });
 
+    final int EMPTY_LIST_MAX_POSITION = playlistCombo.isEmpty()
+      ? playlistCombos.size()
+      : playlistCombo.get().getPosition();
     return mapPlaylistComboPositions(
       combos.size(),
       index ->
