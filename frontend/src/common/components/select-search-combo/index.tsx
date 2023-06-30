@@ -78,7 +78,7 @@ export const SelectSearchCombo: FC<{
   const [selectedCombosList, setSelectedCombosList] = useState<Array<Combo>>(
     [],
   );
-  const removeFromSelectedCombos = (comboId: number) => {
+  const removeFromSelectedCombos = (comboId: string) => {
     setSelectedCombosList((past) => {
       return past.filter((combo) => combo.id !== comboId);
     });

@@ -49,7 +49,7 @@ export function useMyPlaylists({
             pages: [initialData],
           }
         : undefined,
-      staleTime: Infinity,
+      staleTime: TEN_MINUTES,
     },
   );
 
