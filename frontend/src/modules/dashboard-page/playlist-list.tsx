@@ -52,7 +52,7 @@ export const PlaylistList: FC<{
     { setFalse: closePlaylistForm, setTrue: openPlaylistForm },
   ] = useBoolean();
 
-  const deletePlaylists = (playlistId: number) => async () => {
+  const deletePlaylists = (playlistId: string) => async () => {
     startLoading();
     const { error } = await promiseResultWithError(
       fgcApi.delete(FGC_API_URLS.getDeletePlaylistUrl(playlistId)),
