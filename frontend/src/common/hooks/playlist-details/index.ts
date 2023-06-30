@@ -13,7 +13,7 @@ import { displayFGCApiErrors } from '@/common/utils/fgc-api';
 const TEN_MINUTES = 10 * 60 * 1000;
 
 export function usePlaylistDetails(
-  playlistId: number | string,
+  playlistId: string,
   { playlistInitialData }: { playlistInitialData?: PlaylistWithCombos } = {},
 ) {
   const { user } = useUser();
@@ -61,11 +61,11 @@ export function usePlaylistDetails(
   const combos = orderedCombos?.map((playlistCombo) => playlistCombo.combo);
   const currentUserIsPlaylistOwner = playlistDetails?.owner.id === user?.id;
 
-  const deleteCombosFromPlaylist = async (playlistComboIds: Array<number>) => {
+  const deleteCombosFromPlaylist = async (playlistComboIds: Array<string>) => {
     return fgcApi
       .delete(
         FGC_API_URLS.getRemoveCombosFromPlaylistUrl(
-          playlistDetails?.id as number,
+          playlistDetails?.id as string,
           playlistComboIds,
         ),
       )
@@ -87,7 +87,7 @@ export function usePlaylistDetails(
     fgcApi
       .put(
         FGC_API_URLS.getPlaylistCombosOrdenationUrl(
-          playlistDetails?.id as number,
+          playlistDetails?.id as string,
         ),
         {
           newPlaylistCombosOrdenation: reordered.map(({ id }) => id),

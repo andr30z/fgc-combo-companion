@@ -16,8 +16,8 @@ public class V5__CreateTagTable extends BaseJavaMigration {
       "id bigint NOT NULL," +
       "color character varying(255) NOT NULL, " +
       "title character varying(255) NOT NULL, " +
-      "combo_id bigint, " +
-      "playlist_id bigint, " +
+      "combo_id uuid, " +
+      "playlist_id uuid, " +
       "created_at timestamp, " +
       "CONSTRAINT tag_pkey PRIMARY KEY (id), " +
       "CONSTRAINT playlist_id FOREIGN KEY (playlist_id) REFERENCES playlists(id) ON DELETE CASCADE, " +

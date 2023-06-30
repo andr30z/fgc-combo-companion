@@ -26,7 +26,7 @@ const LoadingSkeleton: React.FC = () => {
 
 interface UserPreviewProps {
   trigger: React.ReactNode;
-  userId: number;
+  userId: string;
 }
 export const UserPreview: React.FC<UserPreviewProps> = ({
   trigger,

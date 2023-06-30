@@ -2,6 +2,9 @@ package com.fgc.combo.companion.controller;
 
 import com.fgc.combo.companion.dto.UserProfile;
 import com.fgc.combo.companion.service.ProfileService;
+
+import java.util.UUID;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +21,7 @@ public class ProfileController {
   }
 
   @GetMapping("/{userId}")
-  public UserProfile getProfileData(@PathVariable Long userId) {
+  public UserProfile getProfileData(@PathVariable UUID userId) {
     return this.profileService.getPublicProfileData(userId);
   }
 }

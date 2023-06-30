@@ -20,7 +20,7 @@ public class V7__CreateUserVerificationTable extends BaseJavaMigration {
       "id bigint NOT NULL, " +
       "token UUID NOT NULL, " +
       "created_at timestamp, " +
-      "user_id bigint NOT NULL, " +
+      "user_id uuid NOT NULL, " +
       "type userverificationtypes NOT NULL, " +
       "expiry_date timestamp NOT NULL, " +
       "CONSTRAINT user_verifications_pkey PRIMARY KEY (id), " +

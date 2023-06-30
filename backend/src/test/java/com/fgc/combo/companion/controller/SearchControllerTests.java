@@ -124,7 +124,7 @@ public class SearchControllerTests {
 
   @Test
   @DisplayName("It should get all resources by OWNED search param")
-  @WithUserDetails("DEFAULTUSER@EMAIL.COM")
+  @WithUserDetails("currentuser@email.com")
   void itShouldGetByOwnedSearchParam() throws Exception {
     MvcResult mvcResult =
       this.mockMvc.perform(
@@ -170,7 +170,7 @@ public class SearchControllerTests {
 
   @Test
   @DisplayName("It should get all resources by CURRENTUSER search param")
-  @WithUserDetails("DEFAULTUSER@EMAIL.COM")
+  @WithUserDetails("currentuser@email.com")
   void itShouldGetByCurrentUserSearchParam() throws Exception {
     MvcResult mvcResult =
       this.mockMvc.perform(
@@ -214,7 +214,7 @@ public class SearchControllerTests {
   @DisplayName(
     "It should get all resources by CURRENTUSER search param and TEKKEN_7 type"
   )
-  @WithUserDetails("DEFAULTUSER@EMAIL.COM")
+  @WithUserDetails("currentuser@email.com")
   void itShouldGetBySearchParamAndGameTypes() throws Exception {
     MvcResult mvcResult =
       this.mockMvc.perform(

@@ -23,13 +23,12 @@ export default async function PlaylistLayout({
       {
         params: {
           page: 0,
-          sort: 'id,desc',
+          sort: 'updatedAt,desc',
           size: '20',
         },
       },
     ),
   );
-
   return (
     <PlaylistPageProvider>
       <div className="w-full flex gap-2 h-[80vh] min-h-[400px]">

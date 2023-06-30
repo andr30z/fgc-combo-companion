@@ -233,7 +233,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User findById(Long id) {
+  public User findById(UUID id) {
     return this.userRepository.findById(id)
       .orElseThrow(() -> new ResourceNotFoundException("User not found."));
   }

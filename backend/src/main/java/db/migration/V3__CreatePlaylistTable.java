@@ -13,16 +13,15 @@ public class V3__CreatePlaylistTable extends BaseJavaMigration {
     Statement statement = connection.createStatement();
     statement.execute(
       "CREATE TABLE playlists ( " +
-      "id bigint NOT NULL," +
+      "id uuid DEFAULT gen_random_uuid() NOT NULL," +
       "description character varying(255)," +
       "name character varying(255) NOT NULL, " +
       "created_at timestamp, " +
       "updated_at timestamp, " +
-      "user_owner_id bigint NOT NULL, " +
+      "user_owner_id uuid NOT NULL, " +
       "CONSTRAINT playlist_pkey PRIMARY KEY (id), " +
       "CONSTRAINT user_fk FOREIGN KEY (user_owner_id) REFERENCES users(id) ON DELETE CASCADE );"
     );
-    statement.execute("CREATE SEQUENCE IF NOT EXISTS playlist_seq;");
 
     statement.close();
   }

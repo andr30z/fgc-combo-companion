@@ -14,6 +14,8 @@ import com.fgc.combo.companion.service.TagService;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +38,8 @@ public class TagServiceImpl implements TagService {
 
   @Override
   public Tag createTag(CreateTagDTO createTagDTO) {
-    Long comboId = createTagDTO.getComboId();
-    Long playlistId = createTagDTO.getPlaylistId();
+    UUID comboId = createTagDTO.getComboId();
+    UUID playlistId = createTagDTO.getPlaylistId();
     if (comboId == null && playlistId == null) throw new BadRequestException(
       "Combo or playlist id is required"
     );
@@ -50,7 +52,7 @@ public class TagServiceImpl implements TagService {
 
   @Override
   @Transactional
-  public boolean deleteTagsByComboId(Long comboId, List<Long> tagIds) {
+  public boolean deleteTagsByComboId(UUID comboId, List<Long> tagIds) {
     this.tagRepository.deleteTagsByCombo(
         tagIds,
         this.comboService.getByIdAndCurrentUser(comboId)
@@ -61,7 +63,7 @@ public class TagServiceImpl implements TagService {
 
   @Override
   @Transactional
-  public boolean deleteTagsByPlaylistId(Long playlistId, List<Long> tagIds) {
+  public boolean deleteTagsByPlaylistId(UUID playlistId, List<Long> tagIds) {
     this.tagRepository.deleteTagsByPlaylist(
         tagIds,
         this.playlistService.getByIdAndCurrentUser(playlistId)
@@ -71,7 +73,7 @@ public class TagServiceImpl implements TagService {
 
   @Override
   public List<Tag> createManyTagsForCombo(
-    Long comboId,
+    UUID comboId,
     CreateManyTagsDTO createManyTagsDTO
   ) {
     Combo combo = this.comboService.getByIdAndCurrentUser(comboId);
@@ -84,7 +86,7 @@ public class TagServiceImpl implements TagService {
 
   @Override
   public List<Tag> createManyTagsForPlaylist(
-    Long playlistId,
+    UUID playlistId,
     CreateManyTagsDTO createManyTagsDTO
   ) {
     Playlist playlist = this.playlistService.getByIdAndCurrentUser(playlistId);
@@ -112,7 +114,7 @@ public class TagServiceImpl implements TagService {
       );
   }
 
-  private Object getRelation(Long comboId, Long playlistId) {
+  private Object getRelation(UUID comboId, UUID playlistId) {
     Object tagRelation;
     if (comboId == null) {
       return this.comboService.getByIdAndCurrentUser(comboId);

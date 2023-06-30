@@ -1,5 +1,7 @@
 package com.fgc.combo.companion.dto;
 
+import java.util.UUID;
+
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +18,6 @@ public class CreateTagDTO {
   @NotEmpty(message = "Color is required")
   private String color;
 
-  private Long comboId;
-  private Long playlistId;
+  private UUID comboId;
+  private UUID playlistId;
 }

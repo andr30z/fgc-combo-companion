@@ -20,6 +20,7 @@ import jakarta.transaction.Transactional;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,11 +43,11 @@ public class PlaylistServiceImpl implements PlaylistService {
     this.playlistComboService = playlistComboService;
   }
 
-  private Playlist getByIdWithOwnerValidation(Long playlistId) {
+  private Playlist getByIdWithOwnerValidation(UUID playlistId) {
     User currentUser = userService.me();
     Playlist playlist = getPlaylistById(playlistId);
 
-    if (playlist.getOwner().getId() != currentUser.getId()) {
+    if (!playlist.getOwner().getId().equals(currentUser.getId())) {
       throw new OperationNotAllowedException(
         "This playlist belongs to another user!"
       );
@@ -55,14 +56,14 @@ public class PlaylistServiceImpl implements PlaylistService {
     return playlist;
   }
 
-  private Playlist getPlaylistById(Long id) {
+  private Playlist getPlaylistById(UUID id) {
     return this.playlistRepository.findById(id)
       .orElseThrow(() -> new ResourceNotFoundException("Playlist not found!"));
   }
 
   @Override
   public Playlist addCombosToPlaylist(
-    Long playlistId,
+    UUID playlistId,
     AddCombosToPlaylistDTO combos
   ) {
     Playlist playlist = getPlaylistById(playlistId);
@@ -74,7 +75,7 @@ public class PlaylistServiceImpl implements PlaylistService {
   }
 
   @Override
-  public Playlist getPlaylistWithCombos(Long playlistId) {
+  public Playlist getPlaylistWithCombos(UUID playlistId) {
     return this.playlistRepository.findById(playlistId)
       .orElseThrow(() -> new ResourceNotFoundException("Playlist not found!"));
   }
@@ -82,13 +83,13 @@ public class PlaylistServiceImpl implements PlaylistService {
   @Transactional
   @Override
   public boolean deleteCombosFromPlaylist(
-    Long playlistId,
-    List<Long> playlistComboIds
+    UUID playlistId,
+    List<UUID> playlistComboIds
   ) {
     User currentUser = userService.me();
     Playlist playlist = getPlaylistById(playlistId);
 
-    if (playlist.getOwner().getId() != currentUser.getId()) {
+    if (!playlist.getOwner().getId().equals(currentUser.getId())) {
       throw new OperationNotAllowedException(
         "This playlist belongs to another user!"
       );
@@ -120,7 +121,7 @@ public class PlaylistServiceImpl implements PlaylistService {
   }
 
   @Override
-  public Playlist update(Long id, UpdatePlaylistDTO playlistDTO) {
+  public Playlist update(UUID id, UpdatePlaylistDTO playlistDTO) {
     Playlist playlist = getByIdAndCurrentUser(id);
 
     BeanUtils.copyProperties(playlistDTO, playlist);
@@ -128,7 +129,7 @@ public class PlaylistServiceImpl implements PlaylistService {
   }
 
   @Override
-  public Playlist getByIdAndCurrentUser(Long id) {
+  public Playlist getByIdAndCurrentUser(UUID id) {
     return getByIdWithOwnerValidation(id);
   }
 
@@ -141,7 +142,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   @Transactional
-  public boolean delete(Long playlistId) {
+  public boolean delete(UUID playlistId) {
     Playlist playlist = getByIdWithOwnerValidation(playlistId);
     this.playlistComboService.deleteByPlaylist(playlist);
     this.playlistRepository.delete(playlist);
@@ -178,7 +179,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   public Playlist createComboAndAddToPlaylist(
-    Long playlistId,
+    UUID playlistId,
     CreateComboDTO createComboDTO
   ) {
     return this.playlistComboService.createComboAndAddToPlaylist(
@@ -196,14 +197,20 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   public PaginationResponse<Playlist> getByOwner(
-    Long userId,
+    UUID userId,
     Pageable pageable
   ) {
     return this.getByOwner(this.userService.findById(userId), pageable);
   }
 
   @Override
-  public Playlist reorderPlaylistCombos(Long playlistId, ReorderCombosDto reorderCombosDto) {
-    return this.playlistComboService.reorderPlaylistCombos(this.getByIdAndCurrentUser(playlistId), reorderCombosDto);
+  public Playlist reorderPlaylistCombos(
+    UUID playlistId,
+    ReorderCombosDto reorderCombosDto
+  ) {
+    return this.playlistComboService.reorderPlaylistCombos(
+        this.getByIdAndCurrentUser(playlistId),
+        reorderCombosDto
+      );
   }
 }

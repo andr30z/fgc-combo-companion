@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +42,7 @@ public class TagController {
 
   @PostMapping("/combos/{comboId}")
   public ManyTagsReponseDTO createManyTagsForCombo(
-    @PathVariable Long comboId,
+    @PathVariable UUID comboId,
     @Validated @RequestBody CreateManyTagsDTO createManyTagsDTO
   ) {
     return tagMapper.toManyTagsReponseDTO(
@@ -51,7 +52,7 @@ public class TagController {
 
   @PostMapping("/playlists/{playlistId}")
   public ManyTagsReponseDTO createManyTagsForPlaylist(
-    @PathVariable Long playlistId,
+    @PathVariable UUID playlistId,
     @RequestBody @Validated CreateManyTagsDTO createManyTagsDTO
   ) {
     return tagMapper.toManyTagsReponseDTO(
@@ -61,7 +62,7 @@ public class TagController {
 
   @DeleteMapping("/combos/{comboId}")
   public boolean deleteTagsByComboId(
-    @PathVariable Long comboId,
+    @PathVariable UUID comboId,
     @Validated @NotEmpty @RequestParam(name = "tagId") List<Long> tagIds
   ) {
     return tagService.deleteTagsByComboId(comboId, tagIds);
@@ -69,7 +70,7 @@ public class TagController {
 
   @DeleteMapping("/playlists/{playlistId}")
   public boolean deleteTagsByPlaylistId(
-    @PathVariable Long playlistId,
+    @PathVariable UUID playlistId,
     @Validated @NotEmpty @RequestParam(name = "tagId") List<Long> tagIds
   ) {
     return tagService.deleteTagsByPlaylistId(playlistId, tagIds);

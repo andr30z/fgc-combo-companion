@@ -13,6 +13,7 @@ import com.fgc.combo.companion.mapper.PlaylistMapper;
 import com.fgc.combo.companion.service.PlaylistService;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,7 +44,7 @@ public class PlaylistController {
 
   @GetMapping("/users/{userId}")
   public PaginationResponse<PlaylistResponseDTO> getByOwner(
-    @PathVariable Long userId,
+    @PathVariable UUID userId,
     Pageable pageable
   ) {
     return this.playlistMapper.toPagination(
@@ -75,7 +76,7 @@ public class PlaylistController {
 
   @PutMapping("/{playlistId}")
   public PlaylistResponseDTO update(
-    @PathVariable Long playlistId,
+    @PathVariable UUID playlistId,
     @RequestBody @Validated UpdatePlaylistDTO updatePlaylistDTO
   ) {
     return this.playlistMapper.toDTO(
@@ -84,13 +85,13 @@ public class PlaylistController {
   }
 
   @DeleteMapping("/{playlistId}")
-  public boolean delete(@PathVariable Long playlistId) {
+  public boolean delete(@PathVariable UUID playlistId) {
     return this.playlistService.delete(playlistId);
   }
 
   @PostMapping("/{playlistId}/combos")
   public CompletePlaylistDTO addCombosToPlaylist(
-    @PathVariable Long playlistId,
+    @PathVariable UUID playlistId,
     @RequestBody @Validated AddCombosToPlaylistDTO addCombosToPlaylistDTO
   ) {
     return this.playlistMapper.toCompletePlaylistDTO(
@@ -103,7 +104,7 @@ public class PlaylistController {
 
   @PostMapping("/{playlistId}/new-combo")
   public CompletePlaylistDTO addNewCombosToPlaylist(
-    @PathVariable Long playlistId,
+    @PathVariable UUID playlistId,
     @RequestBody @Validated CreateComboDTO createComboDTO
   ) {
     return this.playlistMapper.toCompletePlaylistDTO(
@@ -116,10 +117,10 @@ public class PlaylistController {
 
   @DeleteMapping("/{playlistId}/combos")
   public boolean deleteCombosFromPlaylist(
-    @PathVariable Long playlistId,
+    @PathVariable UUID playlistId,
     @Validated @NotEmpty @RequestParam(
       name = "playlistComboId"
-    ) List<Long> playlistComboIds
+    ) List<UUID> playlistComboIds
   ) {
     return this.playlistService.deleteCombosFromPlaylist(
         playlistId,
@@ -128,15 +129,15 @@ public class PlaylistController {
   }
 
   @GetMapping("/{playlistId}")
-  public CompletePlaylistDTO getPlaylistDetails(@PathVariable Long playlistId) {
+  public CompletePlaylistDTO getPlaylistDetails(@PathVariable UUID playlistId) {
     return this.playlistMapper.toCompletePlaylistDTO(
         this.playlistService.getPlaylistWithCombos(playlistId)
       );
   }
 
-@PutMapping("/{playlistId}/combos/ordenation")
+  @PutMapping("/{playlistId}/combos/ordenation")
   public CompletePlaylistDTO reorderPlaylistCombos(
-    @PathVariable Long playlistId,
+    @PathVariable UUID playlistId,
     @RequestBody @Validated ReorderCombosDto reorderCombosDto
   ) {
     return this.playlistMapper.toCompletePlaylistDTO(

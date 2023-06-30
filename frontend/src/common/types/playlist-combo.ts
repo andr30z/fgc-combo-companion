@@ -1,7 +1,7 @@
 import type { Combo } from './combo';
 
 export interface PlaylistCombo {
-  id: number;
+  id: string;
   position: number;
   combo: Combo;
   addedAt: string;

@@ -48,7 +48,7 @@ export const SelectSearchCombo: FC<{
   selectedCombos?: Array<Combo>;
   label?: string;
   onFinish: (uniqueArray: Array<Combo>, selectedCombos: Array<Combo>) => void;
-  onClickRemoveCombo?: (filteredArray: Array<Combo>, comboId: number) => void;
+  onClickRemoveCombo?: (filteredArray: Array<Combo>, comboId: string) => void;
   renderAddIcon?: (triggerModalOpen: () => void) => ReactNode;
   clearStateAfterSubmit?: boolean;
   containerClassName?: string;
@@ -78,7 +78,7 @@ export const SelectSearchCombo: FC<{
   const [selectedCombosList, setSelectedCombosList] = useState<Array<Combo>>(
     [],
   );
-  const removeFromSelectedCombos = (comboId: number) => {
+  const removeFromSelectedCombos = (comboId: string) => {
     setSelectedCombosList((past) => {
       return past.filter((combo) => combo.id !== comboId);
     });

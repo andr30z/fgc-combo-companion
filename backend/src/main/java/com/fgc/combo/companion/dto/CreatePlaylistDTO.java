@@ -3,6 +3,8 @@ package com.fgc.combo.companion.dto;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +24,5 @@ public class CreatePlaylistDTO {
   private String description;
 
   @Builder.Default
-  private Set<Long> combos = new HashSet<>();
+  private Set<UUID> combos = new HashSet<>();
 }

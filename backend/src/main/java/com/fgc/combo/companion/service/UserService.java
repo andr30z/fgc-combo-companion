@@ -16,7 +16,7 @@ public interface UserService {
   User updateCurrentUserProfileData(UpdateUserDto userDTO);
   User updateCurrentUserPassword(UpdateUserPasswordDto updateUserPasswordDto);
 
-  User findById(Long id);
+  User findById(UUID id);
 
   User me();
 
