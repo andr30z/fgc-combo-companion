@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagResponseDTO {
-    private Long id;
+    private UUID id;
     private String title;
     private String color;
     private LocalDateTime createdAt;
-    private Long comboId;
-    private Long playlistId;
+    private UUID comboId;
+    private UUID playlistId;
 }

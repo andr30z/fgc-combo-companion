@@ -2,6 +2,7 @@ package com.fgc.combo.companion.dto;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 import com.fgc.combo.companion.enums.ComboGameTypes;
 import com.fgc.combo.companion.model.User;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ComboResponseDTO {
 
-    private Long id;
+    private UUID id;
 
     private String name;
 

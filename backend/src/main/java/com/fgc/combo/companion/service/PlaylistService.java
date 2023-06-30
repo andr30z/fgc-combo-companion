@@ -10,31 +10,33 @@ import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
 import com.fgc.combo.companion.model.Playlist;
 import com.fgc.combo.companion.model.User;
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.domain.Pageable;
 
 public interface PlaylistService {
   PaginationResponse<Playlist> getByOwner(User owner, Pageable pageable);
   
-  PaginationResponse<Playlist> getByOwner(Long userId, Pageable pageable);
+  PaginationResponse<Playlist> getByOwner(UUID userId, Pageable pageable);
 
-  Playlist getByIdAndCurrentUser(Long id);
+  Playlist getByIdAndCurrentUser(UUID id);
 
   PaginationResponse<Playlist> getByCurrentUser(Pageable pageable);
 
   Playlist create(CreatePlaylistDTO playlistDTO);
 
-  Playlist update(Long id, UpdatePlaylistDTO playlistDTO);
+  Playlist update(UUID id, UpdatePlaylistDTO playlistDTO);
 
-  boolean delete(Long playlistId);
+  boolean delete(UUID playlistId);
 
   boolean deleteCombosFromPlaylist(
-    Long playlistId,
-    List<Long> playlistComboIds
+    UUID playlistId,
+    List<UUID> playlistComboIds
   );
 
-  Playlist getPlaylistWithCombos(Long playlistId);
+  Playlist getPlaylistWithCombos(UUID playlistId);
 
-  Playlist addCombosToPlaylist(Long playlistId, AddCombosToPlaylistDTO combos);
+  Playlist addCombosToPlaylist(UUID playlistId, AddCombosToPlaylistDTO combos);
 
   Playlist savePlaylist(Playlist playlist);
 
@@ -44,9 +46,9 @@ public interface PlaylistService {
   );
 
   Playlist createComboAndAddToPlaylist(
-    Long playlistId,
+    UUID playlistId,
     CreateComboDTO createComboDTO
   );
 
-  Playlist reorderPlaylistCombos(Long playlistId, ReorderCombosDto reorderCombosDto);
+  Playlist reorderPlaylistCombos(UUID playlistId, ReorderCombosDto reorderCombosDto);
 }

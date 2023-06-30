@@ -4,6 +4,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.webjars.NotFoundException;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
@@ -24,30 +50,6 @@ import com.fgc.combo.companion.repository.ComboRepository;
 import com.fgc.combo.companion.repository.PlaylistComboRepository;
 import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.repository.UserRepository;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.webjars.NotFoundException;
 
 /**
  *
@@ -100,12 +102,16 @@ public class PlaylistControllerTests {
     defaultCombo = comboRepository.save(combo);
   }
 
-  private Playlist createComboAndAddToPlaylist(Playlist playlist, Combo combo) {
+  private Playlist createComboAndAddToPlaylist(
+    Playlist playlist,
+    Combo combo,
+    int position
+  ) {
     PlaylistCombo playlistCombo = playlistComboRepository.save(
       PlaylistCombo
         .builder()
         .playlist(playlist)
-        .position(1)
+        .position(position)
         .combo(combo)
         .build()
     );
@@ -131,7 +137,7 @@ public class PlaylistControllerTests {
         .build();
   }
 
-  private CreatePlaylistDTO createPlaylistDTO(Set<Long> comboIds) {
+  private CreatePlaylistDTO createPlaylistDTO(Set<UUID> comboIds) {
     CreatePlaylistDTO createPlaylistDTO = new CreatePlaylistDTO();
     createPlaylistDTO.setName("TEST");
     createPlaylistDTO.setDescription("TEST DESCRIPTION");
@@ -166,7 +172,7 @@ public class PlaylistControllerTests {
     return playlistRepository.save(playlist);
   }
 
-  private PlaylistResponseDTO doPlaylistCreationTest(Set<Long> comboIds)
+  private PlaylistResponseDTO doPlaylistCreationTest(Set<UUID> comboIds)
     throws Exception {
     final long numberOfPlaylists = playlistRepository.count();
     // Given
@@ -291,6 +297,7 @@ public class PlaylistControllerTests {
     PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
       new HashSet<>()
     );
+
     MvcResult mvcResult = createPostMvcAction(
       "/api/v1/playlists/{playlistId}/combos".replace(
           "{playlistId}",
@@ -302,6 +309,9 @@ public class PlaylistControllerTests {
         .build()
     )
       .andReturn();
+    System.out.println(
+      "------------------------------------------||---------------------------------------"
+    );
     assertSuccessResponse(mvcResult.getResponse().getStatus());
 
     CompletePlaylistDTO playlist = toPlaylistResposeDTO(
@@ -612,7 +622,19 @@ public class PlaylistControllerTests {
   @WithUserDetails("test@gmail.com")
   void itShouldReorderPlaylistCombos() throws Exception {
     Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
-    createComboAndAddToPlaylist(playlist, defaultCombo);
+    createComboAndAddToPlaylist(
+      playlist,
+      comboRepository.save(
+        Combo
+          .builder()
+          .owner(currentUser)
+          .name("Combo 1")
+          .combo("u/f+3+4")
+          .game(ComboGameTypes.TEKKEN_7)
+          .build()
+      ),
+      0
+    );
     playlist =
       createComboAndAddToPlaylist(
         playlist,
@@ -620,19 +642,20 @@ public class PlaylistControllerTests {
           Combo
             .builder()
             .owner(currentUser)
-            .name("TESTCombo_REORDER")
+            .name("Combo 2")
             .combo("u/f+3+4")
             .game(ComboGameTypes.TEKKEN_7)
             .build()
-        )
+        ),
+        1
       );
 
-    List<Long> comboIds = playlist
+    List<UUID> comboIds = playlist
       .getPlaylistCombos()
       .stream()
+      .sorted((o1, o2) -> o1.getPosition().compareTo(o2.getPosition()))
       .map(PlaylistCombo::getId)
-      .collect(Collectors.toList());
-    Collections.reverse(comboIds);
+      .toList();
 
     MvcResult mvcResult =
       this.mockMvc.perform(
@@ -643,7 +666,9 @@ public class PlaylistControllerTests {
               objectMapper.writeValueAsString(
                 ReorderCombosDto
                   .builder()
-                  .newPlaylistCombosOrdenation(comboIds)
+                  .newPlaylistCombosOrdenation(
+                    List.of(comboIds.get(1), comboIds.get(0))
+                  )
                   .build()
               )
             )
@@ -658,20 +683,10 @@ public class PlaylistControllerTests {
     List<PlaylistComboResponseDTO> playlistCombos = playlistResponse
       .getPlaylistCombos()
       .stream()
+      .sorted((o1, o2) -> o1.getPosition().compareTo(o2.getPosition()))
       .toList();
 
-    PlaylistComboResponseDTO firstCombo = playlistCombos
-      .stream()
-      .filter(c -> c.getPosition() == 0)
-      .findFirst()
-      .orElse(null);
-    PlaylistComboResponseDTO secondCombo = playlistCombos
-      .stream()
-      .filter(c -> c.getPosition() == 1)
-      .findFirst()
-      .orElse(null);
-
-    assertEquals(firstCombo.getCombo().getName(), "TESTCombo_REORDER");
-    assertEquals(secondCombo.getCombo().getName(), defaultCombo.getName());
+    assertEquals(playlistCombos.get(0).getCombo().getName(), "Combo 2");
+    assertEquals(playlistCombos.get(1).getCombo().getName(), "Combo 1");
   }
 }

@@ -30,6 +30,7 @@ import com.fgc.combo.companion.utils.CookieUtil;
 import com.fgc.combo.companion.utils.SecurityCipher;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -97,7 +98,7 @@ public class UserServiceImplTests {
   private String userMail = "testemail@gmail.com";
   private String password = "123456";
   private String testName = "Test";
-  private Long userId = 1L;
+  private UUID userId = UUID.randomUUID();
   private User currentUser = User
     .builder()
     .id(userId)
@@ -136,7 +137,7 @@ public class UserServiceImplTests {
     String userMail = "testemail@gmail.com";
     String password = "testepassword";
     String testName = "Test";
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User createdUser = User
       .builder()
       .id(userId)
@@ -170,7 +171,7 @@ public class UserServiceImplTests {
     String userMail = "testemail@gmail.com";
     String password = "testepassword";
     String testName = "Test";
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User createdUser = User
       .builder()
       .id(userId)
@@ -210,7 +211,7 @@ public class UserServiceImplTests {
     String userMail = "testemail@gmail.com";
     String password = "testepassword";
     String testName = "Test";
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User userToLogin = User
       .builder()
       .id(userId)
@@ -259,7 +260,7 @@ public class UserServiceImplTests {
     );
     String userMail = loginRequest.getEmail();
     String testName = loginRequest.getName();
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User userToLogin = User
       .builder()
       .id(userId)
@@ -293,7 +294,7 @@ public class UserServiceImplTests {
     );
     String userMail = loginRequest.getEmail();
     String testName = loginRequest.getName();
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User userToLogin = User
       .builder()
       .id(userId)
@@ -343,7 +344,7 @@ public class UserServiceImplTests {
     );
     String userMail = loginRequest.getEmail();
     String testName = loginRequest.getName();
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User userToLogin = User
       .builder()
       .id(userId)
@@ -389,7 +390,7 @@ public class UserServiceImplTests {
     String userMail = "testemail@gmail.com";
     String password = "testepassword";
     String testName = "Test";
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User userToLogin = User
       .builder()
       .id(userId)
@@ -456,7 +457,7 @@ public class UserServiceImplTests {
     String userMail = "testemail@gmail.com";
     String password = "123456";
     String testName = "Test";
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User user = User
       .builder()
       .id(userId)
@@ -482,7 +483,7 @@ public class UserServiceImplTests {
     String userMail = "testemail@gmail.com";
     String password = "123456";
     String testName = "Test";
-    Long userId = 1L;
+    UUID userId = UUID.randomUUID();
     User user = User
       .builder()
       .id(userId)
@@ -491,7 +492,7 @@ public class UserServiceImplTests {
       .password(password)
       .build();
 
-    when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+    when(userRepository.findById(any())).thenReturn(Optional.of(user));
     var userById = underTest.findById(user.getId());
 
     assertThat(userById.getId()).isEqualTo(user.getId());
@@ -500,7 +501,7 @@ public class UserServiceImplTests {
   @Test
   @DisplayName("Will throw error when user Id doesn't exist.")
   void willThrowWhenUserIdDontExist() {
-    assertThatThrownBy(() -> underTest.findById(anyLong()))
+    assertThatThrownBy(() -> underTest.findById(any()))
       .isInstanceOf(ResourceNotFoundException.class)
       .hasMessageContaining("User not found.");
   }
@@ -564,7 +565,9 @@ public class UserServiceImplTests {
     updatedUser.setName(updateUserDto.name());
 
     when(userRepository.findUserByEmail(any()))
-      .thenReturn(Optional.of(User.builder().id(9973L).email(email).build()));
+      .thenReturn(
+        Optional.of(User.builder().id(UUID.randomUUID()).email(email).build())
+      );
 
     assertThatThrownBy(() -> {
         this.underTest.updateCurrentUserProfileData(updateUserDto);

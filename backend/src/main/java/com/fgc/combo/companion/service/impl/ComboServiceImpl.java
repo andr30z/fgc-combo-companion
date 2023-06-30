@@ -15,6 +15,9 @@ import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
 import com.fgc.combo.companion.utils.URLDecoderUtil;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.UUID;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +56,7 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public Combo update(Long id, UpdateComboDTO updateComboDTO) {
+  public Combo update(UUID id, UpdateComboDTO updateComboDTO) {
     User currentUser = userService.me();
 
     Combo combo =
@@ -82,7 +85,7 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public Combo getByIdAndCurrentUser(Long id) {
+  public Combo getByIdAndCurrentUser(UUID id) {
     User currentUser = this.userService.me();
 
     Combo combo =
@@ -118,7 +121,7 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public boolean deleteByIdAndCurrentUser(Long id) {
+  public boolean deleteByIdAndCurrentUser(UUID id) {
     Combo combo =
       this.comboRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
@@ -157,7 +160,7 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public PaginationResponse<Combo> getByOwner(Long userId, Pageable pageable) {
+  public PaginationResponse<Combo> getByOwner(UUID userId, Pageable pageable) {
     return this.getByOwner(this.userService.findById(userId), pageable);
   }
 }

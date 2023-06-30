@@ -87,7 +87,7 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public User findById(@PathVariable Long id) {
+  public User findById(@PathVariable UUID id) {
     return usersService.findById(id);
   }
 

@@ -17,18 +17,17 @@ public class V2__CreateComboTable extends BaseJavaMigration {
     );
     statement.execute(
       "CREATE TABLE combos ( " +
-      "id bigint NOT NULL," +
+      "id uuid DEFAULT gen_random_uuid() NOT NULL," +
       "description character varying(255)," +
       "name character varying(255) NOT NULL, " +
       "combo text NOT NULL, " +
       "game gametypes NOT NULL, " +
       "created_at timestamp, " +
       "updated_at timestamp, " +
-      "user_owner_id bigint NOT NULL, " +
+      "user_owner_id uuid NOT NULL, " +
       "CONSTRAINT combo_pkey PRIMARY KEY (id), " +
       "CONSTRAINT user_fk FOREIGN KEY (user_owner_id) REFERENCES users(id) ON DELETE CASCADE );"
     );
-    statement.execute("CREATE SEQUENCE IF NOT EXISTS combo_seq;");
 
     statement.close();
   }

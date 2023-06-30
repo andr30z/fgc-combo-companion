@@ -1,5 +1,18 @@
 package com.fgc.combo.companion.service.impl;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
+
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.exception.BadRequestException;
@@ -15,18 +28,9 @@ import com.fgc.combo.companion.repository.PlaylistComboRepository;
 import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.service.PlaylistComboService;
 import com.fgc.combo.companion.service.UserService;
+
 import jakarta.transaction.Transactional;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.IntFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 @Service
 @Slf4j
@@ -53,7 +57,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   }
 
   @Override
-  public List<Combo> getAllCombosInPlaylist(Long playlistId) {
+  public List<Combo> getAllCombosInPlaylist(UUID playlistId) {
     Playlist playlist = getPlaylist(playlistId);
     return getCombosFromPlaylist(playlist);
   }
@@ -66,8 +70,8 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   @Transactional
   @Override
   public List<Combo> addAllCombosToPlaylist(
-    Long playlistId,
-    Set<Long> comboIds
+    UUID playlistId,
+    Set<UUID> comboIds
   ) {
     Playlist playlist = getPlaylist(playlistId);
 
@@ -78,14 +82,14 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   @Override
   public List<Combo> addAllCombosToPlaylist(
     Playlist playlist,
-    Set<Long> comboIds
+    Set<UUID> comboIds
   ) {
     User user = userService.me();
-    if (
-      user.getId() != playlist.getOwner().getId()
-    ) throw new OperationNotAllowedException(
-      "You cannot add combos to this playlist!"
-    );
+    if (!playlist.getOwner().getId().equals(user.getId())) {
+      throw new OperationNotAllowedException(
+        "This playlist belongs to another user!"
+      );
+    }
 
     Set<Combo> combos = new HashSet<>(
       this.comboRepository.findAllById(comboIds)
@@ -117,7 +121,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   @Override
   public List<Combo> removeCombosFromPlaylist(
     Playlist playlist,
-    List<Long> playlistComboIds
+    List<UUID> playlistComboIds
   ) {
     if (playlistComboIds.isEmpty()) throw new BadRequestException(
       "At least one Playlist Combo ID should be informed!"
@@ -126,7 +130,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
     User user = userService.me();
 
     if (
-      playlist.getOwner().getId() != user.getId()
+      !playlist.getOwner().getId().equals(user.getId())
     ) throw new OperationNotAllowedException("This playlist is not yours!");
 
     List<PlaylistCombo> playlistCombos =
@@ -177,7 +181,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
       });
 
     final int EMPTY_LIST_MAX_POSITION = playlistCombo.isEmpty()
-      ? playlistCombos.size()
+      ? 0
       : playlistCombo.get().getPosition();
     return mapPlaylistComboPositions(
       combos.size(),
@@ -191,7 +195,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
     );
   }
 
-  private Playlist getPlaylist(Long id) {
+  private Playlist getPlaylist(UUID id) {
     return this.playlistRepository.findById(id)
       .orElseThrow(() -> new ResourceNotFoundException("Playlist not found!"));
   }
@@ -243,11 +247,20 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
       );
     }
 
-    List<Long> newPlaylistCombos = reorderCombosDto.getNewPlaylistCombosOrdenation();
+    log.info(
+      "Starting ordenation for playlist: {}, with ID: {}",
+      playlist.getName(),
+      playlist.getId()
+    );
+    log.info(
+      "New Ordenation: {}",
+      reorderCombosDto.getNewPlaylistCombosOrdenation()
+    );
+    List<UUID> newPlaylistCombos = reorderCombosDto.getNewPlaylistCombosOrdenation();
     List<PlaylistCombo> reordedCombos = mapPlaylistComboPositions(
       reorderCombosDto.getNewPlaylistCombosOrdenation().size(),
       index -> {
-        Long playlistComboId = newPlaylistCombos.get(index);
+        UUID playlistComboId = newPlaylistCombos.get(index);
         PlaylistCombo playlistCombo = playlistCombos
           .stream()
           .filter(pCombo -> pCombo.getId().equals(playlistComboId))
@@ -257,6 +270,12 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
               "Playlist combo with ID: " + playlistComboId + " was not found!"
             )
           );
+        log.info(
+          "Setting combo: {}, to index: {}, ID: {}",
+          playlistCombo.getCombo().getName(),
+          index,
+          playlistCombo.getId()
+        );
         playlistCombo.setPosition(index);
         return playlistCombo;
       }

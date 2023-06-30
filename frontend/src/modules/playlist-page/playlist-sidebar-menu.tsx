@@ -47,7 +47,6 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
   } = useMyPlaylists({
     initialData: playlistsInitialData,
   });
-
   const { ref } = useInView({
     onChange(inView) {
       if (inView) {

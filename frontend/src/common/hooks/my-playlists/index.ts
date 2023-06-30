@@ -24,14 +24,14 @@ export function useMyPlaylists({
     FGCApiPaginationResponse<Playlist>
   >(
     queryKey,
-    async ({ pageParam = initialData ? 1 : 0 }) => {
+    async ({ pageParam = 0 }) => {
       const { data } = await fgcApi.get<FGCApiPaginationResponse<Playlist>>(
         FGC_API_URLS.MY_PLAYLISTS,
         {
           params: {
             page: pageParam,
             size: 20,
-            sort: `id,${isDescendingOrdenation ? 'desc' : 'asc'}`,
+            sort: `updatedAt,${isDescendingOrdenation ? 'desc' : 'asc'}`,
           },
         },
       );
@@ -42,13 +42,14 @@ export function useMyPlaylists({
         return lastPage.hasNext ? lastPage.currentPage + 1 : undefined;
       },
       enabled,
+
       initialData: initialData
         ? {
-            pageParams: [0],
+            pageParams: [undefined],
             pages: [initialData],
           }
         : undefined,
-      staleTime: TEN_MINUTES,
+      staleTime: Infinity,
     },
   );
 
@@ -63,7 +64,6 @@ export function useMyPlaylists({
   const allPlaylists = playlistPageData
     ? [...new Map(playlistPageData.map((item) => [item.id, item])).values()]
     : [];
-
   return {
     isFetching,
     data,

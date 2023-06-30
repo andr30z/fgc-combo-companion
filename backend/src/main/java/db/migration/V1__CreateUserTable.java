@@ -19,7 +19,7 @@ public class V1__CreateUserTable extends BaseJavaMigration {
 
     statement.execute(
       "CREATE TABLE users ( " +
-      "id bigint NOT NULL," +
+      "id uuid DEFAULT gen_random_uuid() NOT NULL," +
       "email character varying(255) NOT NULL, " +
       "name character varying(255) NOT NULL, " +
       "bio text, " +
@@ -34,7 +34,6 @@ public class V1__CreateUserTable extends BaseJavaMigration {
       "updated_at timestamp, " +
       "CONSTRAINT user_pkey PRIMARY KEY (id) );"
     );
-    statement.execute("CREATE SEQUENCE IF NOT EXISTS user_seq;");
     statement.execute(
       "ALTER TABLE users ADD CONSTRAINT unique_email_users UNIQUE (email);"
     );

@@ -11,6 +11,9 @@ import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.PlaylistService;
 import com.fgc.combo.companion.service.ProfileService;
 import com.fgc.combo.companion.service.UserService;
+
+import java.util.UUID;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +41,7 @@ public class ProfileServiceImpl implements ProfileService {
   }
 
   @Override
-  public UserProfile getPublicProfileData(Long userId) {
+  public UserProfile getPublicProfileData(UUID userId) {
     Pageable defaultPageable = Pageable.ofSize(10);
     User user = userService.findById(userId);
     PaginationResponse<PlaylistResponseDTO> playlistResponseDTO = playlistMapper.toPagination(

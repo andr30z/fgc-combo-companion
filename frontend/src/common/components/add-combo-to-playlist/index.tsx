@@ -9,7 +9,7 @@ import { MdPlaylistAdd } from 'react-icons/md';
 import { useInView } from 'react-intersection-observer';
 
 interface AddComboToPlaylistProps {
-  comboId: number;
+  comboId: string;
   iconSize?: number;
 }
 

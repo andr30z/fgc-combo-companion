@@ -11,7 +11,7 @@ import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { toast } from 'react-hot-toast';
 
 export default function SignupPage() {
-  useUser();
+  useUser({ redirectTo: null });
   const [
     { email, password, passwordConfirmation, name },
     { onChange },

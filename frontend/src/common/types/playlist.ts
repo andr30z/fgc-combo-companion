@@ -1,12 +1,12 @@
 import { PlaylistCombo } from './playlist-combo';
 
 export interface Playlist {
-  id: number;
+  id: string;
   name: string;
   description: string | null;
   createdAt: string;
   owner: {
-    id: number;
+    id: string;
     name: string;
   };
   tags: Array<unknown>;

@@ -33,7 +33,7 @@ interface ComboListItemsProps extends ListItemsProps<ComboOrPlaylistCombo> {
   useComboItemHeader?: boolean;
   isLoadingCombos?: boolean;
   emptyListMessage?: string;
-  highlitedCombos?: Array<number | Combo | PlaylistCombo>;
+  highlitedCombos?: Array<string | Combo | PlaylistCombo>;
   onClickComboItem?: (
     combo: ComboOrPlaylistCombo,
     event: ReactMouseEvent<HTMLDivElement, MouseEvent>,
@@ -43,7 +43,7 @@ interface ComboListItemsProps extends ListItemsProps<ComboOrPlaylistCombo> {
   showComboOwner?: boolean;
   confirmDeleteMsg?: string;
   deleteComboAction?: (
-    comboId: number,
+    comboId: string,
   ) => Promise<AxiosResponse<unknown, unknown>>;
 }
 
@@ -70,7 +70,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
     useBoolean();
   const { user } = useUser({ redirectTo: null });
 
-  const deleteCombo = (comboId: number) => async () => {
+  const deleteCombo = (comboId: string) => async () => {
     startLoading();
     const { error } = await promiseResultWithError(
       deleteComboAction

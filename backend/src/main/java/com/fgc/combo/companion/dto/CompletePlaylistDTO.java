@@ -3,6 +3,8 @@ package com.fgc.combo.companion.dto;
 import com.fgc.combo.companion.model.User;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompletePlaylistDTO {
 
-  private Long id;
+  private UUID id;
 
   private String name;
 

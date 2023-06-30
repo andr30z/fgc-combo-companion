@@ -14,6 +14,7 @@ import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.PlaylistService;
 import com.fgc.combo.companion.service.UserService;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -192,7 +193,7 @@ public class ProfileControllerTests {
     MvcResult mvcResult =
       this.mockMvc.perform(
           MockMvcRequestBuilders
-            .get("/api/v1/profile/9999")
+            .get("/api/v1/profile/{userId}", UUID.randomUUID())
             .contentType("application/json")
         )
         .andReturn();

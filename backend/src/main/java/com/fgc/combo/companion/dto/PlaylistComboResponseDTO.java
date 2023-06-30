@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlaylistComboResponseDTO {
-    private Long id;
+    private UUID id;
 
     private Integer position;
 

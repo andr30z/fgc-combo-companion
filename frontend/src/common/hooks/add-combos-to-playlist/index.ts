@@ -8,8 +8,8 @@ import { useInvalidateGlobalSearchQueries } from '../invalidate-global-search-qu
 
 interface AddCombosToPlaylistParams {
   onSuccess?: (
-    playlistId: number,
-    combos: Array<Combo> | Array<number>,
+    playlistId: string,
+    combos: Array<Combo> | Array<string>,
   ) => void;
 }
 
@@ -22,8 +22,8 @@ export function useAddCombosToPlaylist({
       playlistId,
       combos,
     }: {
-      playlistId: number;
-      combos: Array<Combo> | Array<number>;
+      playlistId: string;
+      combos: Array<Combo> | Array<string>;
     }) => {
       return fgcApi
         .post(FGC_API_URLS.getAddCombosToPlaylistUrl(playlistId), {

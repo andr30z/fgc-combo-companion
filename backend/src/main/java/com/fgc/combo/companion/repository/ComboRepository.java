@@ -4,18 +4,20 @@ import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.User;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ComboRepository extends JpaRepository<Combo, Long> {
+public interface ComboRepository extends JpaRepository<Combo, UUID> {
   @EntityGraph(attributePaths = { "owner", "tags" })
   Page<Combo> findAllByOwner(User user, Pageable pageable);
 
   @EntityGraph(attributePaths = { "owner", "tags" })
-  Optional<Combo> findByIdAndOwner(Long id, User owner);
+  Optional<Combo> findByIdAndOwner(UUID id, User owner);
 
   @EntityGraph(attributePaths = { "owner", "tags" })
   @Query(

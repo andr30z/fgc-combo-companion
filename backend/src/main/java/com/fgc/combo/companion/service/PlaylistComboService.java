@@ -6,19 +6,20 @@ import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.Playlist;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public interface PlaylistComboService {
-  List<Combo> getAllCombosInPlaylist(Long playlistId);
+  List<Combo> getAllCombosInPlaylist(UUID playlistId);
 
   List<Combo> getAllCombosInPlaylist(Playlist playlist);
 
-  List<Combo> addAllCombosToPlaylist(Long playlistId, Set<Long> comboIds);
+  List<Combo> addAllCombosToPlaylist(UUID playlistId, Set<UUID> comboIds);
 
-  List<Combo> addAllCombosToPlaylist(Playlist playlist, Set<Long> comboIds);
+  List<Combo> addAllCombosToPlaylist(Playlist playlist, Set<UUID> comboIds);
 
   List<Combo> removeCombosFromPlaylist(
     Playlist playlist,
-    List<Long> playlistCombosId
+    List<UUID> playlistCombosId
   );
 
   Playlist createComboAndAddToPlaylist(

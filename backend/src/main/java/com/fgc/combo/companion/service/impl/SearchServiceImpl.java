@@ -56,7 +56,6 @@ public class SearchServiceImpl implements SearchService {
           comboGameTypes,
           pageable
         );
-    System.out.println(comboGameTypes);
     Page<Playlist> playlists =
       this.playlistRepository.findAllBySearchParam(search, pageable);
 
