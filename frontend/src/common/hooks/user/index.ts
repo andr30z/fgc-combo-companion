@@ -2,7 +2,7 @@ import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { User } from '@/common/types/user';
 import { signOut, useSession } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 
 const _20_MINUTES = 20 * 60 * 1000;
 
@@ -12,7 +12,6 @@ interface UseUserParams {
 export function useUser(
   { redirectTo }: UseUserParams = { redirectTo: '/login' },
 ) {
-  const queryClient = useQueryClient();
   function onUnauthenticated() {
     if (!redirectTo) {
       return;
@@ -47,11 +46,15 @@ export function useUser(
       },
     },
   );
+  const logout = () => {
+    signOut({ callbackUrl: redirectTo ?? '/' });
+  };
 
   return {
     user,
     isLoadingUser: isLoading && !isFetched,
     isLoadingSession: status === 'loading' && !data,
     isAuthenticated: !!data,
+    logout,
   };
 }

@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -143,5 +144,10 @@ public class UserController {
     return this.userVerificationMapper.toDto(
         this.usersService.getUserVerificationToken(token)
       );
+  }
+
+  @DeleteMapping("/me")
+  public boolean deleteCurrentUser() {
+    return this.usersService.deleteCurrentUser();
   }
 }

@@ -341,4 +341,11 @@ public class UserServiceImpl implements UserService {
   public User saveUser(User user) {
     return this.userRepository.save(user);
   }
+
+  @Override
+  public boolean deleteCurrentUser() {
+    User user = this.me();
+    this.userRepository.delete(user);
+    return true;
+  }
 }

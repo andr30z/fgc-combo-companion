@@ -44,4 +44,6 @@ public interface UserService {
 
   User verifyEmail(UUID token);
   User changePassword(UUID token, String newPassword);
+
+  boolean deleteCurrentUser();
 }

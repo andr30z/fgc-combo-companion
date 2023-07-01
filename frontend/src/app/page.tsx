@@ -17,10 +17,6 @@ export default function Home() {
           Fighting Game Community
         </span>{' '}
         to store/share knowledge over combos in various fighting games.
-        <br />
-        <span className="font-primary font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          More features coming soon.
-        </span>
       </p>
       <PresentationButtons />
       <div className="rounded-full absolute self-auto inset-auto bg-secondary w-full h-1/2 sm:w-2/5 blur-3xl drop-shadow-2xl opacity-20 z-0" />

@@ -2,6 +2,7 @@ package com.fgc.combo.companion.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -617,6 +618,17 @@ public class UserServiceImplTests {
       .hasMessageContaining("Password doesn't match!");
 
     verify(userRepository, never()).save(any());
+  }
+
+  @Test
+  @DisplayName("It should delete the current user.")
+  void itShouldDeleteTheCurrentUser() {
+    mockAuthentication();
+
+    boolean result = this.underTest.deleteCurrentUser();
+    
+    assertTrue(result);
+    verify(userRepository).delete(any());
   }
 
   private void mockAuthentication() {

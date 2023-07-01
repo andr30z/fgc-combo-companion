@@ -64,4 +64,5 @@ export const FGC_API_URLS = {
     `/v1/playlists/${playlistId}/new-combo`,
   getPlaylistCombosOrdenationUrl: (playlistId: string) =>
     `/v1/playlists/${playlistId}/combos/ordenation`,
+  USER_EMAIL_VERIFICATION: '/v1/users/email-verification-solicitation',
 };

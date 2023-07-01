@@ -1,5 +1,4 @@
 import { Button } from '@/common/components/button';
-import { unprotectedOnlyRouteValidator } from '@/common/server/protected-route-validator';
 import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
 import { promiseResultWithError } from '@/common/utils/promises';
 import type { Metadata } from 'next';
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
 type PageProps = { searchParams?: { token: string | undefined } };
 
 export default async function EmailVerification({ searchParams }: PageProps) {
-  unprotectedOnlyRouteValidator();
   const fgcApi = getFgcApiInstance();
 
   const token = searchParams?.token;

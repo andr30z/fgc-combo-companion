@@ -32,7 +32,7 @@ public class V7__CreateUserVerificationTable extends BaseJavaMigration {
       "ALTER TABLE user_verifications ADD CONSTRAINT unique_users_verifications_user_id UNIQUE (user_id);"
     );
     statement.execute(
-      "CREATE UNIQUE INDEX user_verification_token_unique_lower_token_idx on user_verifications (token);"
+      "CREATE UNIQUE INDEX user_verification_token_idx on user_verifications (token);"
     );
 
     statement.close();
