@@ -86,11 +86,6 @@ public class UserController {
     return this.usersService.me();
   }
 
-  @GetMapping("/{id}")
-  public User findById(@PathVariable UUID id) {
-    return usersService.findById(id);
-  }
-
   @PutMapping("/me")
   public User updateEmailAndName(
     @RequestBody @Validated UpdateUserDto updateUserDto

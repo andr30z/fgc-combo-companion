@@ -3,6 +3,7 @@ package com.fgc.combo.companion.service.impl;
 import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
 import com.fgc.combo.companion.dto.SearchAllResourcesDto;
+import com.fgc.combo.companion.dto.UserDto;
 import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.mapper.PlaylistMapper;
 import com.fgc.combo.companion.model.Combo;
@@ -60,7 +61,7 @@ public class SearchServiceImpl implements SearchService {
       this.playlistRepository.findAllBySearchParam(search, pageable);
 
     return new SearchAllResourcesDto(
-      users,
+      users.stream().map(UserDto::new).toList(),
       this.comboMapper.toDTO(combos.getContent(), ComboResponseDTO.class),
       this.playlistMapper.toDTO(
           playlists.getContent(),

@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.fgc.combo.companion.enums.ComboGameTypes;
-import com.fgc.combo.companion.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +29,7 @@ public class ComboResponseDTO {
 
     private String description;
 
-    private User owner;
+    private UserDto owner;
 
     private Set<TagResponseDTO> tags;
 }

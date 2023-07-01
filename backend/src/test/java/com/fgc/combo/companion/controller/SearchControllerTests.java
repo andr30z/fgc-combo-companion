@@ -2,18 +2,8 @@ package com.fgc.combo.companion.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fgc.combo.companion.dto.ComboResponseDTO;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
-import com.fgc.combo.companion.dto.SearchAllResourcesDto;
-import com.fgc.combo.companion.enums.ComboGameTypes;
-import com.fgc.combo.companion.model.Combo;
-import com.fgc.combo.companion.model.Playlist;
-import com.fgc.combo.companion.model.User;
-import com.fgc.combo.companion.service.ComboService;
-import com.fgc.combo.companion.service.PlaylistService;
-import com.fgc.combo.companion.service.UserService;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +21,19 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fgc.combo.companion.dto.ComboResponseDTO;
+import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.SearchAllResourcesDto;
+import com.fgc.combo.companion.dto.UserDto;
+import com.fgc.combo.companion.enums.ComboGameTypes;
+import com.fgc.combo.companion.model.Combo;
+import com.fgc.combo.companion.model.Playlist;
+import com.fgc.combo.companion.model.User;
+import com.fgc.combo.companion.service.ComboService;
+import com.fgc.combo.companion.service.PlaylistService;
+import com.fgc.combo.companion.service.UserService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -161,7 +164,7 @@ public class SearchControllerTests {
     var users = searchAllResourcesDto
       .users()
       .stream()
-      .map(User::getName)
+      .map(UserDto::getName)
       .toList();
 
     assertThat(users).contains("USER owned");
@@ -203,7 +206,7 @@ public class SearchControllerTests {
     var users = searchAllResourcesDto
       .users()
       .stream()
-      .map(User::getName)
+      .map(UserDto::getName)
       .toList();
 
     assertThat(users).doesNotContain("USER owned");

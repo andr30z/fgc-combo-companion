@@ -1,6 +1,5 @@
 package com.fgc.combo.companion.dto;
 
-import com.fgc.combo.companion.model.User;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -24,7 +23,7 @@ public class CompletePlaylistDTO {
 
   private LocalDateTime updatedAt;
 
-  private User owner;
+  private UserDto owner;
 
   private Set<PlaylistComboResponseDTO> playlistCombos;
 

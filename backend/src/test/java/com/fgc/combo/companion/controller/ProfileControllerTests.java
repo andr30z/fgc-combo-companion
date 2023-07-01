@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fgc.combo.companion.dto.ComboResponseDTO;
 import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.UserDto;
 import com.fgc.combo.companion.dto.UserProfile;
 import com.fgc.combo.companion.enums.ComboGameTypes;
 import com.fgc.combo.companion.model.Combo;
@@ -148,7 +149,7 @@ public class ProfileControllerTests {
         .getData()
         .stream()
         .map(PlaylistResponseDTO::getOwner)
-        .map(User::getName)
+        .map(UserDto::getName)
         .toList()
     )
       .contains("CURRENTUSER");
@@ -159,7 +160,7 @@ public class ProfileControllerTests {
         .getData()
         .stream()
         .map(ComboResponseDTO::getOwner)
-        .map(User::getName)
+        .map(UserDto::getName)
         .toList()
     )
       .contains("CURRENTUSER");
@@ -170,7 +171,7 @@ public class ProfileControllerTests {
         .getData()
         .stream()
         .map(PlaylistResponseDTO::getOwner)
-        .map(User::getName)
+        .map(UserDto::getName)
         .toList()
     )
       .doesNotContain("RANDOMBOY");
@@ -181,7 +182,7 @@ public class ProfileControllerTests {
         .getData()
         .stream()
         .map(ComboResponseDTO::getOwner)
-        .map(User::getName)
+        .map(UserDto::getName)
         .toList()
     )
       .doesNotContain("RANDOMBOY");
