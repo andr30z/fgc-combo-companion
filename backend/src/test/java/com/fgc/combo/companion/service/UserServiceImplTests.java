@@ -628,7 +628,7 @@ public class UserServiceImplTests {
     boolean result = this.underTest.deleteCurrentUser();
     
     assertTrue(result);
-    verify(userRepository).delete(any());
+    verify(userRepository).delete(currentUser);
   }
 
   private void mockAuthentication() {
