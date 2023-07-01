@@ -7,6 +7,7 @@ import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.UpdateUserDto;
 import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
+import com.fgc.combo.companion.dto.UserDto;
 import com.fgc.combo.companion.dto.UserVerficationSuccessDto;
 import com.fgc.combo.companion.dto.UserVerificationDto;
 import com.fgc.combo.companion.mapper.UserVerificationMapper;
@@ -87,8 +88,8 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public User findById(@PathVariable UUID id) {
-    return usersService.findById(id);
+  public UserDto findById(@PathVariable UUID id) {
+    return new UserDto(usersService.findById(id));
   }
 
   @PutMapping("/me")
