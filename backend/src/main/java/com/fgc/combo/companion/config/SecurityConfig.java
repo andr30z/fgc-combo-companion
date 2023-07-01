@@ -131,6 +131,7 @@ public class SecurityConfig {
         "/api/v1/profile/{userId}",
         "/api/v1/users/{id}",
         "/api/v1/playlists/users/{userId}",
+        "/api/v1/playlists/{playlistId}",
         "/api/v1/combos/users/{userId}"
       )
       .permitAll()
