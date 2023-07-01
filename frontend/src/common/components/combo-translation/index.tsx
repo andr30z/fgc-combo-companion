@@ -9,6 +9,7 @@ export interface ComboTranslationProps {
   combo: string;
   className?: string;
   backgroundColor?:
+    | null
     | 'primary'
     | 'secondary'
     | 'dark'
@@ -19,6 +20,7 @@ export interface ComboTranslationProps {
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   >;
+  style?: React.CSSProperties;
   rendeHeader?: (result: ComboTranslationInterface) => React.ReactNode;
   renderFooter?: (result: ComboTranslationInterface) => React.ReactNode;
 }
@@ -32,6 +34,7 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
   backgroundColor = 'secondary',
   onClick,
   htmlProps,
+  style,
 }) => {
   const result = useComboTranslator({ combo, game });
   if (!result.combo) {
@@ -50,8 +53,11 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
     <div
       title={result.combo}
       data-testid={result.combo}
-      className={`text-light rounded p-3 bg-${backgroundColor} flex items-center flex-row flex-wrap gap-1 ${className}`}
+      className={`text-light rounded p-3 ${
+        backgroundColor ? 'bg-' + backgroundColor : ''
+      }  flex items-center flex-row flex-wrap gap-1 ${className}`}
       onClick={onClick}
+      style={style}
       {...htmlProps}
     >
       {rendeHeader && rendeHeader(result)}
@@ -93,7 +99,9 @@ export const ComboTranslation: FC<ComboTranslationProps> = ({
                 key={step.action + idx.toString()}
                 title={step.actionTitle}
                 className={`${
-                  nonTranslatedComboColors[backgroundColor]
+                  backgroundColor
+                    ? nonTranslatedComboColors[backgroundColor]
+                    : nonTranslatedComboColors.primary
                 } px-[5px] mx-[3px] ${step.style ?? 'text-xl font-semibold'}`}
               >
                 {step.action}{' '}

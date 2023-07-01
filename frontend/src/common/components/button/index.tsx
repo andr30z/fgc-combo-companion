@@ -18,6 +18,8 @@ export interface ButtonProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   textClassName?: string;
+  style?: React.CSSProperties;
+  title?: string;
 }
 
 const classMappings = {
@@ -58,6 +60,8 @@ export const Button: FC<ButtonProps> = ({
   dataTestId = '',
   type = 'button',
   textClassName = '',
+  style,
+  title,
 }) => {
   const className = `${usePaddingStyles ? 'px-4 py-2' : ''} font-semibold ${
     classMappings[color].default
@@ -77,7 +81,13 @@ export const Button: FC<ButtonProps> = ({
 
   if (renderAsInnerLink) {
     return (
-      <Link data-testid={dataTestId} href={href} className={className}>
+      <Link
+        title={title}
+        style={style}
+        data-testid={dataTestId}
+        href={href}
+        className={className}
+      >
         {children}
       </Link>
     );
@@ -90,6 +100,8 @@ export const Button: FC<ButtonProps> = ({
       className={className}
       onClick={onClick}
       type={type}
+      title={title}
+      style={style}
     >
       {children}
     </button>

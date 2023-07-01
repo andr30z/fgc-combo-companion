@@ -16,6 +16,7 @@ export const STREET_FIGHTER_6_COMBO_MAP = {
   U: 'UP',
   F: 'FORWARD',
   B: 'BACK',
+  ST: 'STANDING',
   S: 'STANDING',
   C: 'CROUCHING',
   CR: 'CROUCHING',
@@ -57,7 +58,15 @@ export const STREET_FIGHTER_6_COMBO_MAP = {
 export type StreetFighter6MapKey = keyof typeof STREET_FIGHTER_6_COMBO_MAP;
 
 export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = {
+  5: {
+    imagePath: '/street-fighter-6/moves/neutral.png',
+    action: STREET_FIGHTER_6_COMBO_MAP[5],
+  },
   S: {
+    imagePath: '',
+    action: STREET_FIGHTER_6_COMBO_MAP.S,
+  },
+  ST: {
     imagePath: '',
     action: STREET_FIGHTER_6_COMBO_MAP.S,
   },

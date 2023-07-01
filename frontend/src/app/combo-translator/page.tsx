@@ -3,13 +3,17 @@ import { Button } from '@/common/components/button';
 import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { GameSelect } from '@/common/components/game-select';
+import { useBoolean } from '@/common/hooks/boolean';
+import { usePageTitle } from '@/common/hooks/page-title';
 import { GameTypes } from '@/common/types/game-types';
 import { get } from 'lodash';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { startTransition, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { BiCollapse, BiExpand } from 'react-icons/bi';
 import { BsFillShareFill } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
+import { IoMdColorPalette } from 'react-icons/io';
 
 const tekken7Combos = [
   'f,n,d,df+2, f,n,d,df+2, f,n,d,df+2, b+2,1 S!, {DASH} f,n,d,df+4,1 {CHAR: KAZUYA}',
@@ -43,16 +47,32 @@ export default function ComboTranslator() {
   const params = useSearchParams();
   const comboParam = params?.get('combo');
   const gameParam = params?.get('game');
+  usePageTitle('Combo Translator - FGC');
 
-  const gameInitialValue = gameParam ? gameParam : GameTypes.TEKKEN_7;
+  const gameInitialValue = gameParam ? gameParam : GameTypes.STREET_FIGHTER_6;
   const [game, setGame] = useState(
     get(GameTypes, gameInitialValue)
       ? (gameInitialValue as GameTypes)
-      : GameTypes.TEKKEN_7,
+      : GameTypes.STREET_FIGHTER_6,
   );
+  const [isExpandedView, { toggle }] = useBoolean(
+    typeof window !== 'undefined'
+      ? localStorage.getItem('@COMBO-TRANSLATOR:IS_EXPANDED_VIEW') === 'true'
+      : false,
+  );
+  const toggleExpandedView = () => {
+    toggle();
+    localStorage.setItem(
+      '@COMBO-TRANSLATOR:IS_EXPANDED_VIEW',
+      JSON.stringify(!isExpandedView),
+    );
+  };
   const [combo, setCombo] = useState(
     comboParam ? decodeURIComponent(comboParam) : '',
   );
+
+  const [bgColor, setBgColor] = useState<string>('#da0037');
+  const colorInputRef = useRef<HTMLInputElement>(null);
 
   const randomCombos = combos[game] || [];
   const setRandomCombo = (): void => {
@@ -81,27 +101,80 @@ export default function ComboTranslator() {
             onClick={setRandomCombo}
           />
           {combo.trim().length > 0 && (
-            <Button
-              color="primary"
-              leftIcon={<BsFillShareFill size={17} />}
-              onClick={() => {
-                navigator.clipboard.writeText(
-                  `${
-                    process.env.NODE_ENV === 'production'
-                      ? 'https://fgc-combo-companion.vercel.app'
-                      : 'http://localhost:3000'
-                  }/combo-translator?combo=${encodeURIComponent(
-                    combo,
-                  )}&game=${game}`,
-                );
-                toast.success('The share link was copied to the clipboard');
-              }}
-            />
+            <>
+              <Button
+                color="primary"
+                leftIcon={<BsFillShareFill size={17} />}
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `${
+                      process.env.NODE_ENV === 'production'
+                        ? 'https://fgc-combo-companion.vercel.app'
+                        : 'http://localhost:3000'
+                    }/combo-translator?combo=${encodeURIComponent(
+                      combo,
+                    )}&game=${game}`,
+                  );
+                  toast.success('The share link was copied to the clipboard');
+                }}
+              />
+              <Button
+                rightIcon={
+                  isExpandedView ? (
+                    <BiCollapse size={18} />
+                  ) : (
+                    <BiExpand size={18} />
+                  )
+                }
+                title="Expand/Collapse combo view"
+                onClick={toggleExpandedView}
+              />
+              <Button
+                style={{
+                  backgroundColor: bgColor,
+                }}
+                useHoverStyles={false}
+                rightIcon={<IoMdColorPalette size={18} />}
+                title="Combo background color"
+                extraStyles="hover:opacity-50"
+                onClick={() => {
+                  if (colorInputRef.current) {
+                    colorInputRef.current.click();
+                  }
+                }}
+              />
+              <input
+                ref={colorInputRef}
+                value={bgColor}
+                type="color"
+                className="opacity-0 cursor-pointer absolute"
+                onChange={(e) => {
+                  e.stopPropagation();
+                  const value = e.currentTarget.value;
+                  startTransition(() => {
+                    setBgColor(value);
+                  });
+                }}
+              />
+            </>
           )}
         </div>
       </div>
       {combo ? (
-        <ComboTranslation key={game} combo={combo} game={game} />
+        <ComboTranslation
+          key={game}
+          combo={combo}
+          game={game}
+          style={{
+            backgroundColor: bgColor,
+          }}
+          className={`${
+            isExpandedView
+              ? 'w-full min-h-[250px] justify-start content-center '
+              : ''
+          } `}
+          backgroundColor={null}
+        />
       ) : (
         <div className="h-[125px]" />
       )}
