@@ -87,87 +87,89 @@ export const PlaylistDetails: FC<{
               </p>
               <div className="flex flex-row flex-wrap gap-2">
                 {currentUserIsPlaylistOwner && (
-                  <PopOver
-                    trigger={
-                      <button>
-                        <AiFillInfoCircle
+                  <>
+                    <PopOver
+                      trigger={
+                        <button>
+                          <AiFillInfoCircle
+                            size={25}
+                            className="cursor-pointer text-light hover:text-secondary"
+                            title="Playlist command hint"
+                          />
+                        </button>
+                      }
+                    >
+                      <p>
+                        <code className="bg-light-darker text-xs p-1">
+                          Ctrl + Mouse Left Click
+                        </code>{' '}
+                        enables multiple row selection
+                      </p>
+                    </PopOver>
+                    <PlaylistFormWithModal
+                      initialValues={playlistDetails}
+                      renderTriggerOpenForm={(openForm) => (
+                        <AiFillEdit
                           size={25}
+                          onClick={openForm}
+                          title="Edit playlist"
                           className="cursor-pointer text-light hover:text-secondary"
-                          title="Playlist command hint"
                         />
-                      </button>
-                    }
-                  >
-                    <p>
-                      <code className="bg-light-darker text-xs p-1">
-                        Ctrl + Mouse Left Click
-                      </code>{' '}
-                      enables multiple row selection
-                    </p>
-                  </PopOver>
-                )}
-                <PlaylistFormWithModal
-                  initialValues={playlistDetails}
-                  renderTriggerOpenForm={(openForm) => (
-                    <AiFillEdit
-                      size={25}
-                      onClick={openForm}
-                      title="Edit playlist"
-                      className="cursor-pointer text-light hover:text-secondary"
+                      )}
                     />
-                  )}
-                />
-                <SelectSearchCombo
-                  label=""
-                  containerClassName=""
-                  renderAddIcon={(openSearch) => (
-                    <AiOutlineSearch
-                      title="Search combos to add to this playlist"
-                      className="text-white hover:text-secondary cursor-pointer"
-                      onClick={openSearch}
-                      size={25}
+                    <SelectSearchCombo
+                      label=""
+                      containerClassName=""
+                      renderAddIcon={(openSearch) => (
+                        <AiOutlineSearch
+                          title="Search combos to add to this playlist"
+                          className="text-white hover:text-secondary cursor-pointer"
+                          onClick={openSearch}
+                          size={25}
+                        />
+                      )}
+                      onFinish={addCombosToPlaylist}
                     />
-                  )}
-                  onFinish={addCombosToPlaylist}
-                />
-                <ComboFormWithModal
-                  customUrl={`${FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
-                    playlistId,
-                  )}`}
-                  renderTriggerOpenForm={(openForm) => (
-                    <IoIosAddCircle
-                      title="Create a new combo and add it to this playlist"
-                      className="text-white hover:text-secondary cursor-pointer"
-                      size={25}
-                      onClick={openForm}
+                    <ComboFormWithModal
+                      customUrl={`${FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
+                        playlistId,
+                      )}`}
+                      renderTriggerOpenForm={(openForm) => (
+                        <IoIosAddCircle
+                          title="Create a new combo and add it to this playlist"
+                          className="text-white hover:text-secondary cursor-pointer"
+                          size={25}
+                          onClick={openForm}
+                        />
+                      )}
                     />
-                  )}
-                />
-                {selectedCombos.length > 0 && (
-                  <ConfirmAction
-                    onConfirm={async () => {
-                      startLoadingData();
-                      await deleteCombosFromPlaylist(
-                        selectedCombos.map(({ id }) => id),
-                      );
-                      setSelectedCombos([]);
-                      endLoadingData();
-                      refetchData();
-                    }}
-                    confirmationText="Are you sure you want to remove the selected combos from this playlist?"
-                  >
-                    {({ openConfirmModal }) => (
-                      <AiFillDelete
-                        size={25}
-                        title="Remove all selected combos from this playlist"
-                        className="text-light cursor-pointer hover:text-primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openConfirmModal();
+                    {selectedCombos.length > 0 && (
+                      <ConfirmAction
+                        onConfirm={async () => {
+                          startLoadingData();
+                          await deleteCombosFromPlaylist(
+                            selectedCombos.map(({ id }) => id),
+                          );
+                          setSelectedCombos([]);
+                          endLoadingData();
+                          refetchData();
                         }}
-                      />
+                        confirmationText="Are you sure you want to remove the selected combos from this playlist?"
+                      >
+                        {({ openConfirmModal }) => (
+                          <AiFillDelete
+                            size={25}
+                            title="Remove all selected combos from this playlist"
+                            className="text-light cursor-pointer hover:text-primary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openConfirmModal();
+                            }}
+                          />
+                        )}
+                      </ConfirmAction>
                     )}
-                  </ConfirmAction>
+                  </>
                 )}
               </div>
             </div>

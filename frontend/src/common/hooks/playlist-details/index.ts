@@ -16,7 +16,7 @@ export function usePlaylistDetails(
   playlistId: string,
   { playlistInitialData }: { playlistInitialData?: PlaylistWithCombos } = {},
 ) {
-  const { user } = useUser();
+  const { user } = useUser({ redirectTo: null });
 
   const [selectedCombos, setSelectedCombos] = useState<Array<PlaylistCombo>>(
     [],
