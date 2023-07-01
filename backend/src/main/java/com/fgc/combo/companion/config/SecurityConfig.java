@@ -117,7 +117,11 @@ public class SecurityConfig {
         "/api/v1/users/password-change-solicitation"
       )
       .permitAll()
-      .requestMatchers(HttpMethod.GET, "/api/v1/users/me", "/api/v1/playlists/me")
+      .requestMatchers(
+        HttpMethod.GET,
+        "/api/v1/users/me",
+        "/api/v1/playlists/me"
+      )
       .authenticated()
       .requestMatchers(
         HttpMethod.PATCH,
@@ -127,15 +131,14 @@ public class SecurityConfig {
       .permitAll()
       .requestMatchers(
         HttpMethod.GET,
-        "/api/v1/users/verification/**",
         "/api/v1/profile/{userId}",
-        "/api/v1/users/{id}",
+        "/api/v1/users/verification/**",
+        "/api/v1/users/{userId}",
         "/api/v1/playlists/{playlistId}",
         "/api/v1/combos/users/{userId}",
         "/api/v1/playlists/users/{userId}"
       )
       .permitAll()
-      
       .anyRequest()
       .authenticated()
       .and()

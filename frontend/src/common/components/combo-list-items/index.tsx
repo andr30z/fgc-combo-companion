@@ -204,10 +204,12 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                               </div>
                               {useComboItemHeader && (
                                 <div className="flex flex-row gap-2">
-                                  <AddComboToPlaylist
-                                    iconSize={27}
-                                    comboId={combo.id}
-                                  />
+                                  {user && (
+                                    <AddComboToPlaylist
+                                      iconSize={27}
+                                      comboId={combo.id}
+                                    />
+                                  )}
                                   {currentUserIsOwner && (
                                     <AiFillEdit
                                       size={27}

@@ -44,12 +44,13 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
     refetch,
     setNewOrdenation,
     queryKey,
+    currentUser,
   } = useMyPlaylists({
     initialData: playlistsInitialData,
   });
   const { ref } = useInView({
     onChange(inView) {
-      if (inView) {
+      if (inView && currentUser) {
         fetchNextPage();
       }
     },
@@ -75,7 +76,7 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
           </Link>
           <Link
             color="light"
-            href="/dashboard/playlists"
+            href="/search"
             className="text-lg font-primary font-semibold text-left flex flex-row items-center gap-1"
           >
             <FaSearch size={23} />
@@ -94,56 +95,62 @@ export const PlaylistSideBarMenu: FC<PlaylistSideBarMenuProps> = ({
             <div className="flex flex-row items-center justify-between px-4 mb-3 sticky top-0 bg-secondary-dark py-4">
               <span className="text-md font-primary font-semibold text-light flex flex-row items-center gap-1">
                 <AiFillAppstore size={17} />
-                <span className="hidden lg:flex">Your Playlists</span>
+                <span className="hidden lg:flex">
+                  {!currentUser
+                    ? 'Log In to see your Playlists'
+                    : 'Your Playlists'}
+                </span>
               </span>
-              <div className="flex items-center flex-row gap-2">
-                <PlaylistFormWithModal
-                  onSuccessSavePlaylistForm={(playlist) => {
-                    router.push(`/playlist/${playlist.id}`);
-                    if (!data?.pages[0]) {
-                      return refetch();
-                    }
-                    queryClient.setQueryData<
-                      | InfiniteData<FGCApiPaginationResponse<Playlist>>
-                      | undefined
-                    >(queryKey, (prev) => {
-                      const newData = prev ? { ...prev } : undefined;
-                      if (!newData) {
-                        return prev;
+              {currentUser && (
+                <div className="flex items-center flex-row gap-2">
+                  <PlaylistFormWithModal
+                    onSuccessSavePlaylistForm={(playlist) => {
+                      router.push(`/playlist/${playlist.id}`);
+                      if (!data?.pages[0]) {
+                        return refetch();
                       }
-                      const firstPage = newData.pages[0];
-                      firstPage.data.unshift(playlist);
-                      return newData;
-                    });
-                  }}
-                  renderTriggerOpenForm={(openForm) => (
-                    <AiOutlinePlus
-                      title="Create new playlist"
-                      size={17}
-                      className="text-light hover:text-secondary cursor-pointer"
+                      queryClient.setQueryData<
+                        | InfiniteData<FGCApiPaginationResponse<Playlist>>
+                        | undefined
+                      >(queryKey, (prev) => {
+                        const newData = prev ? { ...prev } : undefined;
+                        if (!newData) {
+                          return prev;
+                        }
+                        const firstPage = newData.pages[0];
+                        firstPage.data.unshift(playlist);
+                        return newData;
+                      });
+                    }}
+                    renderTriggerOpenForm={(openForm) => (
+                      <AiOutlinePlus
+                        title="Create new playlist"
+                        size={17}
+                        className="text-light hover:text-secondary cursor-pointer"
+                        role="button"
+                        onClick={openForm}
+                      />
+                    )}
+                  />
+                  {isDescendingOrdenation ? (
+                    <HiOutlineSortDescending
                       role="button"
-                      onClick={openForm}
+                      size={17}
+                      title="Descending"
+                      onClick={setNewOrdenation}
+                      className="text-light cursor-pointer hover:opacity-50"
+                    />
+                  ) : (
+                    <HiOutlineSortAscending
+                      role="button"
+                      size={17}
+                      title="Ascending"
+                      onClick={setNewOrdenation}
+                      className="text-light cursor-pointer hover:opacity-50"
                     />
                   )}
-                />
-                {isDescendingOrdenation ? (
-                  <HiOutlineSortDescending
-                    role="button"
-                    size={17}
-                    title="Descending"
-                    onClick={setNewOrdenation}
-                    className="text-light cursor-pointer hover:opacity-50"
-                  />
-                ) : (
-                  <HiOutlineSortAscending
-                    role="button"
-                    size={17}
-                    title="Ascending"
-                    onClick={setNewOrdenation}
-                    className="text-light cursor-pointer hover:opacity-50"
-                  />
-                )}
-              </div>
+                </div>
+              )}
             </div>
             {allPages?.map((playlist) => {
               const isSelected = pathname === `/playlist/${playlist.id}`;

@@ -24,6 +24,8 @@ import {
 } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
 import { usePlaylistPage } from './playlist-page-context';
+import { UserPreview } from '@/common/components/user-preview';
+import { Link } from '@/common/components/link';
 export const PlaylistDetails: FC<{
   playlistInitialData?: PlaylistWithCombos;
   playlistId: string;
@@ -49,7 +51,6 @@ export const PlaylistDetails: FC<{
     isDraggingCombos,
     startDragging,
   } = usePlaylistDetails(playlistId, { playlistInitialData });
-
   return (
     <>
       <LoadingBackdrop isLoading={isLoadingData} />
@@ -81,10 +82,24 @@ export const PlaylistDetails: FC<{
               </p>
             )}
             <div className="w-full justify-between flex flex-row flex-wrap">
-              <p className="text-sub-info font-primary text-md">
-                {playlistDetails?.owner.name} - {combos?.length} combo
-                {combos?.length === 1 ? '' : 's'}
-              </p>
+              <span className="text-sub-info font-primary text-md">
+                {playlistDetails && (
+                  <UserPreview
+                    userId={playlistDetails.owner.id}
+                    trigger={
+                      <Link
+                        href={`/user/${playlistDetails.owner.id}`}
+                        useHoverStyles={false}
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-sub-info"
+                      >
+                        {playlistDetails.owner.name} - {combos?.length} combo
+                        {combos?.length === 1 ? '' : 's'}
+                      </Link>
+                    }
+                  />
+                )}{' '}
+              </span>
               <div className="flex flex-row flex-wrap gap-2">
                 {currentUserIsPlaylistOwner && (
                   <>
@@ -104,6 +119,13 @@ export const PlaylistDetails: FC<{
                           Ctrl + Mouse Left Click
                         </code>{' '}
                         enables multiple row selection
+                      </p>
+                      <br />
+                      <p>
+                        <code className="bg-light-darker text-xs p-1">
+                          Mouse Left Click + HOLD
+                        </code>{' '}
+                        enables multiple combos ordenation
                       </p>
                     </PopOver>
                     <PlaylistFormWithModal
@@ -177,7 +199,7 @@ export const PlaylistDetails: FC<{
           <ComboListItems
             showComboOwner
             showComboDeleteIconValidation={() => {
-              return true;
+              return currentUserIsPlaylistOwner;
             }}
             onDragStart={startDragging}
             className={isDraggingCombos ? 'pb-80' : undefined}
@@ -204,31 +226,33 @@ export const PlaylistDetails: FC<{
                   This playlist is empty
                 </h1>
 
-                <ComboFormWithModal
-                  customUrl={FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
-                    playlistId,
-                  )}
-                  onSuccessSaveComboForm={refetchData}
-                  renderTriggerOpenForm={(openForm) => (
-                    <Button
-                      onClick={openForm}
-                      text="Create Combo"
-                      color="light"
-                      useHoverStyles={false}
-                      extraStyles="group/combo"
-                      rightIcon={
-                        <Image
-                          priority
-                          className="group-hover/combo:scale-125 group-hover/combo:transition-all group-hover/combo:duration-300 group-hover/combo:ease-in-out"
-                          alt="FGC Combo"
-                          src="/combo-fist.svg"
-                          height={23}
-                          width={23}
-                        />
-                      }
-                    />
-                  )}
-                />
+                {currentUserIsPlaylistOwner && (
+                  <ComboFormWithModal
+                    customUrl={FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
+                      playlistId,
+                    )}
+                    onSuccessSaveComboForm={refetchData}
+                    renderTriggerOpenForm={(openForm) => (
+                      <Button
+                        onClick={openForm}
+                        text="Create Combo"
+                        color="light"
+                        useHoverStyles={false}
+                        extraStyles="group/combo"
+                        rightIcon={
+                          <Image
+                            priority
+                            className="group-hover/combo:scale-125 group-hover/combo:transition-all group-hover/combo:duration-300 group-hover/combo:ease-in-out"
+                            alt="FGC Combo"
+                            src="/combo-fist.svg"
+                            height={23}
+                            width={23}
+                          />
+                        }
+                      />
+                    )}
+                  />
+                )}
               </div>
             }
             confirmDeleteMsg="Are you sure you want to remove this combo from this playlist?"

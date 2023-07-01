@@ -10,23 +10,32 @@ const TEN_MINUTES = 10 * 60 * 1000;
 interface MyPlaylistsParams {
   initialData?: FGCApiPaginationResponse<Playlist>;
   enabled?: boolean;
+  userId?: string;
 }
 
 export function useMyPlaylists({
   initialData,
-  enabled = true,
+  enabled,
+  userId,
 }: MyPlaylistsParams = {}) {
   const [isDescendingOrdenation, { toggle: toggleOrdenation }] =
     useBoolean(true);
-  const { user } = useUser();
-  const queryKey = ['CURRENT_USER_PLAYLISTS', user?.id];
+  const { user, isAuthenticated } = useUser({ redirectTo: null });
+  const queryKey = [
+    userId ? 'USER_PLAYLISTS' : 'CURRENT_USER_PLAYLISTS',
+    userId ?? user?.id,
+  ];
+  const isQueryEnabled =
+    enabled !== undefined ? enabled : isAuthenticated || userId !== undefined;
   const { data, fetchNextPage, refetch, isFetching } = useInfiniteQuery<
     FGCApiPaginationResponse<Playlist>
   >(
     queryKey,
     async ({ pageParam = 0 }) => {
       const { data } = await fgcApi.get<FGCApiPaginationResponse<Playlist>>(
-        FGC_API_URLS.MY_PLAYLISTS,
+        userId
+          ? FGC_API_URLS.USER_PLAYLISTS + '/' + userId
+          : FGC_API_URLS.MY_PLAYLISTS,
         {
           params: {
             page: pageParam,
@@ -41,7 +50,7 @@ export function useMyPlaylists({
       getNextPageParam: (lastPage) => {
         return lastPage.hasNext ? lastPage.currentPage + 1 : undefined;
       },
-      enabled,
+      enabled: isQueryEnabled,
 
       initialData: initialData
         ? {
@@ -74,5 +83,6 @@ export function useMyPlaylists({
     toggleOrdenation,
     queryKey,
     allPlaylists,
+    currentUser: user,
   } as const;
 }
