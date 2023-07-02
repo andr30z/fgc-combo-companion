@@ -21,6 +21,9 @@ logging:
         type: TRACE
 
 management:
+  endpoint:
+    metrics:
+      enabled: false
   endpoints:
     jmx:
       exposure:
