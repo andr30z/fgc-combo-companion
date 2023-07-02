@@ -46,11 +46,11 @@ spring:
   application:
     name: template
   datasource:
-    url: ${AUTH_SERVICE_POSTGRESQL_CONNECTION}
-    username: ${AUTH_SERVICE_POSTGRESQL_USERNAME}
-    password: ${AUTH_SERVICE_POSTGRESQL_PASSWORD}
+    url: ${POSTGRESQL_CONNECTION}
+    username: ${POSTGRESQL_USERNAME}
+    password: ${POSTGRESQL_PASSWORD}
   flyway:
     baselineOnMigrate: true
-    url: ${AUTH_SERVICE_POSTGRESQL_CONNECTION}
-    user: ${AUTH_SERVICE_POSTGRESQL_USERNAME}
-    password: ${AUTH_SERVICE_POSTGRESQL_PASSWORD}
+    url: ${POSTGRESQL_CONNECTION}
+    user: ${POSTGRESQL_USERNAME}
+    password: ${POSTGRESQL_PASSWORD}
