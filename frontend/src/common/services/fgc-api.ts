@@ -5,7 +5,6 @@ import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adap
 export const FGC_API_URL = process.env.FGC_API_URL
   ? process.env.FGC_API_URL
   : 'http://localhost:8080/api';
-console.log(FGC_API_URL, process.env.FGC_API_URL);
 export function getFgcApiInstance(
   config?: CreateAxiosDefaults<unknown> | undefined,
 ) {

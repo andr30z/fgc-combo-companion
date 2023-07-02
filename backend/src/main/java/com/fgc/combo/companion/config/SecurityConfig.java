@@ -1,7 +1,6 @@
 package com.fgc.combo.companion.config;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
 
@@ -157,30 +155,31 @@ public class SecurityConfig {
   }
 
   @Profile("default")
-  @Bean
-  CorsConfigurationSource corsFilterDev() {
-      log.info("Registering DEV CORS filter...");
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(true);
-    config.addAllowedOriginPattern("*");
-    config.addAllowedHeader("*");
-    config.addAllowedMethod("*");
-    source.registerCorsConfiguration("/**", config);
-    return source;
+  WebMvcConfigurer corsConfigurerDev() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        log.info("Registering DEV CORS filter...");
+
+        registry
+          .addMapping("/**")
+          .allowedOrigins("http://localhost:3000");
+      }
+    };
   }
 
-  @Profile("production")
   @Bean
-  CorsConfigurationSource corsFilterProd() {
-    log.info("Registering PRODUCTION CORS filter...");
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(true);
-    config.setAllowedOrigins(Arrays.asList("https://fgc-combo-companion.vercel.app"));
-    config.addAllowedHeader("*");
-    config.addAllowedMethod("*");
-    source.registerCorsConfiguration("/**", config);
-    return source;
+  @Profile("production")
+  WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        log.info("Registering PRODUCTION CORS filter...");
+
+        registry
+          .addMapping("/**")
+          .allowedOrigins("https://fgc-combo-companion.vercel.app");
+      }
+    };
   }
 }
