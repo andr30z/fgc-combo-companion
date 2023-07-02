@@ -27,6 +27,7 @@ management:
           enabled: false
 spring:
   jpa:
+    open-in-view: false
     show-sql: true
     hibernate:
       ddl-auto: none
