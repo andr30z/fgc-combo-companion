@@ -21,13 +21,10 @@ logging:
         type: TRACE
 
 management:
-  endpoint:
-    metrics:
-      enabled: false
-  endpoints:
-    jmx:
-      exposure:
-        include: "*"
+    defaults:
+      metrics:
+        export:
+          enabled: false
 spring:
   jpa:
     show-sql: true
