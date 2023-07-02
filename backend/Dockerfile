@@ -1,5 +1,14 @@
+# Build stage
+#
+FROM maven:3.8.2-jdk-11 AS build
+COPY . .
+RUN mvn clean package -DskipTests
+
+#
+# Package stage
+#
 FROM openjdk:17-alpine
-VOLUME /tmp
-ARG JAR_FILE=/target/fgc-combo-companion-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} fgc-combo-companion.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/fgc-combo-companion.jar"]
+COPY --from=build /target/fgc-combo-companion-SNAPSHOT.jar fgc-combo-companion.jar
+# ENV PORT=8080
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","demo.jar"]
