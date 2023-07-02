@@ -47,6 +47,7 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
           }),
         );
         if (error) {
+          console.log(error.response.data);
           throw new Error(
             error.response?.data?.errors?.join(', ') ??
               'Something went wrong while logging in. Try again later.',

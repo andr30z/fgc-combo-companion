@@ -152,6 +152,7 @@ public class SecurityConfig {
   }
 
   @Profile("default")
+  @Bean
   WebMvcConfigurer corsConfigurerDev() {
     return new WebMvcConfigurer() {
       @Override
