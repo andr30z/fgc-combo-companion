@@ -161,6 +161,8 @@ public class SecurityConfig {
         registry
           .addMapping("/**")
           .allowCredentials(true)
+          .allowedHeaders("*")
+          .allowedMethods("*")
           .allowedOrigins("http://localhost:3000");
       }
     };
@@ -177,6 +179,8 @@ public class SecurityConfig {
         registry
           .addMapping("/**")
           .allowCredentials(true)
+          .allowedHeaders("*")
+          .allowedMethods("*")
           .allowedOrigins("https://fgc-combo-companion.vercel.app");
       }
     };
