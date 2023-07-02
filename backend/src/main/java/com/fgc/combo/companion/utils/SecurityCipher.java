@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.utils;
 
+import com.fgc.combo.companion.exception.SecurityCipherDecodeException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -7,21 +8,25 @@ import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.fgc.combo.companion.exception.SecurityCipherDecodeException;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class SecurityCipher {
 
-  private static final String KEYVALUE = "secureKey";
-  private static byte[] key;
-  private static SecretKeySpec secretKey = setKey();
+  @Value("${authentication.auth.secureKey:SECURE_KEY}")
+  private String keyValue;
 
-  private SecurityCipher() {
-    throw new AssertionError("Static!");
+  @Value("${authentication.auth.secureKey}")
+  public void setKeyValue(String name) {
+    SecurityCipher.KEYVALUE = name;
   }
+
+  private static String KEYVALUE;
+  private static byte[] key;
+  private static SecretKeySpec secretKey;
 
   public static SecretKeySpec setKey() {
     MessageDigest sha;
@@ -41,9 +46,9 @@ public class SecurityCipher {
     if (strToEncrypt == null) return null;
 
     try {
+      secretKey = setKey();
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
       cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-      log.info("Encryption Key: {}", key.toString());
       return Base64
         .getEncoder()
         .encodeToString(
@@ -59,14 +64,19 @@ public class SecurityCipher {
     if (strToDecrypt == null) return null;
 
     try {
-      setKey();
+      secretKey = setKey();
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
       cipher.init(Cipher.DECRYPT_MODE, secretKey);
       return new String(
         cipher.doFinal(Base64.getDecoder().decode(strToDecrypt))
       );
     } catch (Exception e) {
-      log.error("Error while decrypting token: {},  encryption key: {} stackTrace: {}", Base64.getDecoder().decode(strToDecrypt), key.toString(), e.getMessage());
+      log.error(
+        "Error while decrypting token: {},  encryption key: {} stackTrace: {}",
+        Base64.getDecoder().decode(strToDecrypt),
+        key.toString(),
+        e.getMessage()
+      );
     }
     if (throwException) throw new SecurityCipherDecodeException(
       "Malformed token"

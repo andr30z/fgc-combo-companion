@@ -3,6 +3,7 @@
 
 authentication:
   auth:
+    secureKey: ${SECURE_KEY}
     secureToken: ${SECURE_TOKEN:true}
     tokenExpirationMsec: ${TOKEN_EXPIRATION_MSEC}
     tokenSecret: ${TOKEN_SECRET}
