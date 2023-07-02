@@ -1,9 +1,5 @@
 package com.fgc.combo.companion.config;
 
-import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
-
-import lombok.extern.slf4j.Slf4j;
-
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -21,8 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+
+import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @EnableWebSecurity
@@ -158,7 +158,7 @@ public class SecurityConfig {
 
   @Profile("default")
   @Bean
-  CorsFilter corsFilterDev() {
+  CorsConfigurationSource corsFilterDev() {
       log.info("Registering DEV CORS filter...");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
@@ -167,12 +167,12 @@ public class SecurityConfig {
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
     source.registerCorsConfiguration("/**", config);
-    return new CorsFilter(source);
+    return source;
   }
 
   @Profile("production")
   @Bean
-  CorsFilter corsFilterProd() {
+  CorsConfigurationSource corsFilterProd() {
     log.info("Registering PRODUCTION CORS filter...");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
@@ -181,6 +181,6 @@ public class SecurityConfig {
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
     source.registerCorsConfiguration("/**", config);
-    return new CorsFilter(source);
+    return source;
   }
 }
