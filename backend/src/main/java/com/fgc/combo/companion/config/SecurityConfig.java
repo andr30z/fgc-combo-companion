@@ -156,7 +156,7 @@ public class SecurityConfig {
       .build();
   }
 
-  // @Profile("default")
+  @Profile("default")
   @Bean
   CorsFilter corsFilterDev() {
       log.info("Registering DEV CORS filter...");
@@ -170,17 +170,17 @@ public class SecurityConfig {
     return new CorsFilter(source);
   }
 
-  // @Profile("production")
-  // @Bean
-  // CorsFilter corsFilterProd() {
-  //   log.info("Registering PRODUCTION CORS filter...");
-  //   UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-  //   CorsConfiguration config = new CorsConfiguration();
-  //   config.setAllowCredentials(true);
-  //   config.setAllowedOrigins(Arrays.asList("https://fgc-combo-companion.vercel.app"));
-  //   config.addAllowedHeader("*");
-  //   config.addAllowedMethod("*");
-  //   source.registerCorsConfiguration("/**", config);
-  //   return new CorsFilter(source);
-  // }
+  @Profile("production")
+  @Bean
+  CorsFilter corsFilterProd() {
+    log.info("Registering PRODUCTION CORS filter...");
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(Arrays.asList("https://fgc-combo-companion.vercel.app"));
+    config.addAllowedHeader("*");
+    config.addAllowedMethod("*");
+    source.registerCorsConfiguration("/**", config);
+    return new CorsFilter(source);
+  }
 }
