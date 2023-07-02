@@ -25,7 +25,11 @@ export function getFgcApiInstanceWithTokenCookie(
   });
 }
 
-export const fgcApi = getFgcApiInstance();
+export const fgcApi = getFgcApiInstance({
+  headers: {
+    'Access-Control-Allow-Credentials': true,
+  },
+});
 
 export const FGC_API_URLS = {
   USER_PUBLIC_PROFILE: '/v1/profile',
