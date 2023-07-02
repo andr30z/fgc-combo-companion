@@ -1,9 +1,15 @@
 package com.fgc.combo.companion.config;
 
 import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
+
+import lombok.extern.slf4j.Slf4j;
+
 import java.security.SecureRandom;
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,6 +26,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class SecurityConfig {
 
   private static final int PASSWORD_STRENGTH = 10;
@@ -149,12 +156,28 @@ public class SecurityConfig {
       .build();
   }
 
+  @Profile("default")
   @Bean
-  CorsFilter corsFilter() {
+  CorsFilter corsFilterDev() {
+      log.info("Registering DEV CORS filter...");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
     config.addAllowedOriginPattern("*");
+    config.addAllowedHeader("*");
+    config.addAllowedMethod("*");
+    source.registerCorsConfiguration("/**", config);
+    return new CorsFilter(source);
+  }
+
+  @Profile("production")
+  @Bean
+  CorsFilter corsFilterProd() {
+    log.info("Registering PRODUCTION CORS filter...");
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(Arrays.asList("https://fgc-combo-companion.vercel.app"));
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
     source.registerCorsConfiguration("/**", config);
