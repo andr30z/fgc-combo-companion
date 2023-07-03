@@ -6,6 +6,7 @@ import { Link } from '@/common/components/link';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
+import { fgcApi } from '@/common/services/fgc-api';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
@@ -59,6 +60,14 @@ export const LoginForm = () => {
 
           if (hasError) {
             return;
+          }
+          try {
+            // eslint-disable-next-line no-console
+            console.log('Pinging fgc api...');
+            await fgcApi.get('/');
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
           }
           startLoading();
           const data = await signIn('fgc-email-password', {
