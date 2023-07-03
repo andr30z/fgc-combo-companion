@@ -29,7 +29,6 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
 
   const mutation = useAddCombosToPlaylist();
 
-  useAddCombosToPlaylist;
   return (
     <Select.Root onOpenChange={setValue}>
       <Select.Trigger>
@@ -38,6 +37,9 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
             title="Add combo to playlist"
             className="outline-none text-light hover:text-opacity-30 select-none pointer-events-auto"
             size={iconSize}
+            onMouseDown={(e) => {
+              e.stopPropagation();
+            }}
           />
         </Select.Value>
         {/* </Select.Value> */}
