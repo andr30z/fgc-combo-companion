@@ -60,7 +60,7 @@ public class ComboServiceImpl implements ComboService {
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
     User currentUser = userService.me();
-    if (combo.getOwner().getId().equals(currentUser.getId())) {
+    if (!combo.getOwner().getId().equals(currentUser.getId())) {
       throw new OperationNotAllowedException(
         "This combo belongs to another user!"
       );
