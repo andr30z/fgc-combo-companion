@@ -169,21 +169,21 @@ public class SecurityConfig {
     };
   }
 
-   @Bean
-   @Profile("production")
-   WebMvcConfigurer corsConfigurer() {
-     return new WebMvcConfigurer() {
-       @Override
-       public void addCorsMappings(CorsRegistry registry) {
-         log.info("Registering PRODUCTION CORS filter...");
+  @Bean
+  @Profile("production")
+  WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        log.info("Registering PRODUCTION CORS filter...");
 
-         registry
-           .addMapping("/**")
-           .allowCredentials(true)
-           .allowedHeaders("*")
-           .allowedMethods("*")
-           .allowedOrigins("https://fgc-combo-companion.xyz");
-       }
-     };
-   }
+        registry
+          .addMapping("/**")
+          .allowCredentials(true)
+          .allowedHeaders("*")
+          .allowedMethods("*")
+          .allowedOriginPatterns("https://*.fgc-combo-companion.xyz");
+      }
+    };
+  }
 }
