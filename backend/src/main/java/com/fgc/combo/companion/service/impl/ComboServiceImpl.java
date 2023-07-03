@@ -14,10 +14,8 @@ import com.fgc.combo.companion.repository.ComboRepository;
 import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
 import com.fgc.combo.companion.utils.URLDecoderUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.UUID;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,13 +55,12 @@ public class ComboServiceImpl implements ComboService {
 
   @Override
   public Combo update(UUID id, UpdateComboDTO updateComboDTO) {
-    User currentUser = userService.me();
-
     Combo combo =
       this.comboRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
-    if (combo.getOwner().getId() != currentUser.getId()) {
+    User currentUser = userService.me();
+    if (combo.getOwner().getId().equals(currentUser.getId())) {
       throw new OperationNotAllowedException(
         "This combo belongs to another user!"
       );
