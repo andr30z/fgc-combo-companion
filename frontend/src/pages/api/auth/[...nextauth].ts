@@ -65,6 +65,10 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
         'accessToken=deleted;Max-Age=0;path=/;',
         'refreshToken=deleted;Max-Age=0;path=/;',
       ]);
+      res.setHeader('Set-Cookie', [
+        'accessToken=deleted;Max-Age=0;path=/;domain=.fgc-combo-companion.xyz;',
+        'refreshToken=deleted;Max-Age=0;path=/;domain=.fgc-combo-companion.xyz;',
+      ]);
     },
   },
   callbacks: {
