@@ -37,7 +37,7 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
             title="Add combo to playlist"
             className="outline-none text-light hover:text-opacity-30 select-none pointer-events-auto"
             size={iconSize}
-            onMouseDown={(e) => {
+            onClick={(e) => {
               e.stopPropagation();
             }}
           />

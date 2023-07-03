@@ -32,7 +32,11 @@ export default function RootLayout({
   const fgcApi = getFgcApiInstance();
   //this request is only beign made because I'm deploying the backend on render.com on free plan
   //so maybe when some user access the page for the first time the api maybe idling
-  promiseResultWithError(fgcApi.get('/')); //pinging api
+  try {
+    fgcApi.get('/'); //pinging api
+  } catch (error) {
+      console.log("PINGING API ");
+  }
   return (
     <html lang="en" className={`${roboto.variable}`}>
       <body className="min-h-screen bg-dark">
