@@ -182,7 +182,7 @@ public class SecurityConfig {
            .allowCredentials(true)
            .allowedHeaders("*")
            .allowedMethods("*")
-           .allowedOrigins("https://www.fgc-combo-companion.xyz");
+           .allowedOrigins("https://fgc-combo-companion.xyz");
        }
      };
    }
