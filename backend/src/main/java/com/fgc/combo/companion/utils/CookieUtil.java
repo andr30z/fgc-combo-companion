@@ -32,7 +32,7 @@ public class CookieUtil {
       .from(cookieSourceName, encryptedToken)
       .maxAge(duration)
       .httpOnly(true)
-      .sameSite("None")
+      .sameSite("Lax")
       .path("/");
 
     //comment this line if you want to test on postman/insomnia
