@@ -29,15 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
   session: Session | null;
 }) {
-  const fgcApi = getFgcApiInstance();
-  //this request is only beign made because I'm deploying the backend on render.com on free plan
-  //so maybe when some user access the page for the first time the api maybe idling
-  try {
-    fgcApi.get('/'); //pinging api
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('PINGING API ');
-  }
+
   return (
     <html lang="en" className={`${roboto.variable}`}>
       <body className="min-h-screen bg-dark">
