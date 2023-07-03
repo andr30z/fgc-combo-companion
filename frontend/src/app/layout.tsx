@@ -29,7 +29,6 @@ export default function RootLayout({
   children: React.ReactNode;
   session: Session | null;
 }) {
-
   return (
     <html lang="en" className={`${roboto.variable}`}>
       <body className="min-h-screen bg-dark">
