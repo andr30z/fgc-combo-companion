@@ -32,6 +32,7 @@ public class CookieUtil {
       .from(cookieSourceName, encryptedToken)
       .maxAge(duration)
       .httpOnly(true)
+      .domain("api.fgc-combo-companion.xyz")
       .sameSite("None")
       .path("/");
 
