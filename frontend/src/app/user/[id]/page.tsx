@@ -8,6 +8,7 @@ import { UserCombos } from '@/modules/user-page/user-combos';
 import { UserInfo } from '@/modules/user-page/user-info';
 import { UserPlaylists } from '@/modules/user-page/user-playlists';
 type PageProps = { params?: { id: string | undefined } };
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: PageProps) {
   const fgcApiInstance = getFgcApiInstance();

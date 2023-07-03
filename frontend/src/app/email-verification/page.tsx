@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: 'FGC - Email Verification',
 };
 type PageProps = { searchParams?: { token: string | undefined } };
+export const revalidate = 0;
 
 export default async function EmailVerification({ searchParams }: PageProps) {
   const fgcApi = getFgcApiInstance();

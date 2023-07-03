@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: 'FGC - Dashboard - Combos',
   description: 'FGC Combo Companion - Dashboard Combo',
 };
+export const revalidate = 0;
 
 export default async function DashboardCombosPage() {
   protectedRouteValidator();

@@ -7,6 +7,8 @@ import { redirect } from 'next/navigation';
 export const metadata: Metadata = {
   title: 'FGC - Password Reset',
 };
+export const revalidate = 0;
+
 type PageProps = { searchParams?: { token: string | undefined } };
 export default async function PasswordChange({ searchParams }: PageProps) {
   const token = searchParams?.token;

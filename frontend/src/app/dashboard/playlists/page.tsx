@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: 'FGC - Dashboard - Playlists',
   description: 'FGC Combo Companion - Dashboard Playlists',
 };
-
+export const revalidate = 0;
 export default async function DashboardPlaylistPage() {
   protectedRouteValidator();
   const fgcInstance = getFgcApiInstanceWithTokenCookie(cookies());

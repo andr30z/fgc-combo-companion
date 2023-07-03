@@ -14,7 +14,7 @@ const getPlaylistDetails = async (id: string) => {
     fgcInstance.get<PlaylistWithCombos>(`${FGC_API_URLS.PLAYLISTS}/${id}`),
   );
 };
-
+export const revalidate = 0;
 export async function generateMetadata({ params }: PageProps) {
   const { result, error } = await getPlaylistDetails(params?.id ?? '');
   if (error) {
