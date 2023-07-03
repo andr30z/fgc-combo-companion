@@ -35,7 +35,8 @@ export default function RootLayout({
   try {
     fgcApi.get('/'); //pinging api
   } catch (error) {
-      console.log("PINGING API ");
+    // eslint-disable-next-line no-console
+    console.log('PINGING API ');
   }
   return (
     <html lang="en" className={`${roboto.variable}`}>
