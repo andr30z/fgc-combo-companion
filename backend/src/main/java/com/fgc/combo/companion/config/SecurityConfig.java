@@ -164,7 +164,7 @@ public class SecurityConfig {
           .allowCredentials(true)
           .allowedHeaders("*")
           .allowedMethods("*")
-          .allowedOrigins("*");
+          .allowedOriginPatterns("*");
       }
     };
   }
