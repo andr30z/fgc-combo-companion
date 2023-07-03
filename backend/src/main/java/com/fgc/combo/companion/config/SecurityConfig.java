@@ -151,7 +151,7 @@ public class SecurityConfig {
       .build();
   }
 
-  @Profile("default")
+  // @Profile("default")
   @Bean
   WebMvcConfigurer corsConfigurerDev() {
     return new WebMvcConfigurer() {
@@ -164,26 +164,26 @@ public class SecurityConfig {
           .allowCredentials(true)
           .allowedHeaders("*")
           .allowedMethods("*")
-          .allowedOrigins("http://localhost:3000");
+          .allowedOrigins("*");
       }
     };
   }
 
-  @Bean
-  @Profile("production")
-  WebMvcConfigurer corsConfigurer() {
-    return new WebMvcConfigurer() {
-      @Override
-      public void addCorsMappings(CorsRegistry registry) {
-        log.info("Registering PRODUCTION CORS filter...");
+  // @Bean
+  // @Profile("production")
+  // WebMvcConfigurer corsConfigurer() {
+  //   return new WebMvcConfigurer() {
+  //     @Override
+  //     public void addCorsMappings(CorsRegistry registry) {
+  //       log.info("Registering PRODUCTION CORS filter...");
 
-        registry
-          .addMapping("/**")
-          .allowCredentials(true)
-          .allowedHeaders("*")
-          .allowedMethods("*")
-          .allowedOrigins("https://fgc-combo-companion.vercel.app");
-      }
-    };
-  }
+  //       registry
+  //         .addMapping("/**")
+  //         .allowCredentials(true)
+  //         .allowedHeaders("*")
+  //         .allowedMethods("*")
+  //         .allowedOrigins("https://fgc-combo-companion.vercel.app");
+  //     }
+  //   };
+  // }
 }
