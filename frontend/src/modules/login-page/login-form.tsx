@@ -6,9 +6,11 @@ import { Link } from '@/common/components/link';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
+import { useUser } from '@/common/hooks/user';
 import { fgcApi } from '@/common/services/fgc-api';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import { FiLogIn } from 'react-icons/fi';
@@ -17,6 +19,14 @@ export const LoginForm = () => {
     email: '',
     password: '',
   });
+  const { user } = useUser({ redirectTo: null });
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(user);
+    if (user) {
+      router.push('/dashboard/combos');
+    }
+  }, [user]);
   const router = useRouter();
   const [loading, { setTrue: startLoading, setFalse: endLoading }] =
     useBoolean();
