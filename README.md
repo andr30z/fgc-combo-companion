@@ -1,8 +1,6 @@
 <img src="./assets/full-logo.svg" />
+<h3 align="center"> The best way to store and share knowledge about combos in fighting games</h3>
 
-<div style="display: flex; align-items: center; justify-content: center; width: 100%; text-align: center;">
-<h3> The best way to store and share knowledge about combos in fighting games</h3>
-</div>
 
 ----
 
