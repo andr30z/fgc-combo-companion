@@ -16,16 +16,17 @@
     <li>Typescript</li>
     <li>Java</li>
     <li>Spring Boot</li>
+    <li>PostgreSQL</li>
     <li>ReactJS</li>
     <li>NextJS</li>
 </ul>
 
 #### How to run locally
 
-<p><strong>1.</strong> Clone the repo</p>
+<p><strong>1. Clone the repo</strong></p>
 
 <p>
-<strong>Frontend setup:</strong>
+<strong>2. Frontend setup:</strong>
 
 You have to create an .env file at the <code>./frontend</code> directory, with the following variables: 
 > GOOGLE_CLIENT_ID=YOUR_CLIENT_ID_IF_YOU_WANT_GOOGLE_LOGIN
@@ -42,10 +43,10 @@ then:
 </p>
 
 <p>
-<strong>Backend setup:</strong>
+<strong>3. Backend setup:</strong>
 
 Required Tools: 
->Java 17 and Postgres 13 or higher
+>Java 17 and PostgreSQL 13 or higher
 
 You have to create an .env file at the <code>./backend/src/main/resources</code> directory, with the following variables: 
 > TOKEN_SECRET=YOUR_RANDOM_TOKEN_SECRET
