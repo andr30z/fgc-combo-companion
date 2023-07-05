@@ -2,9 +2,11 @@
 <img src="./assets/full-logo.svg" />
 </div>
 
-<h4 style="margin-top: 25px; text-align: center; align:center;">
+<center>
+<h4 style="margin-top: 25px;">
  <strong>The best way to store and share knowledge about combos in fighting games</strong>
 </h4>
+</center>
 
 ---
 
