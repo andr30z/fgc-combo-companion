@@ -1,6 +1,5 @@
 package com.fgc.combo.companion.dto;
 
-import com.fgc.combo.companion.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,7 +10,7 @@ public class LoginResponse {
   private SuccessFailure status;
   private String message;
 
-  private User user;
+  private UserDto user;
 
   public enum SuccessFailure {
     SUCCESS,
