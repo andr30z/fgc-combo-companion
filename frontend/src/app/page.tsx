@@ -16,7 +16,7 @@ export default function Home() {
         <span className="font-semibold text-xl text-secondary">
           Fighting Game Community
         </span>{' '}
-        to store/share knowledge over combos in various fighting games.
+        to store/share knowledge about combos in various fighting games.
       </p>
       <PresentationButtons />
       <div className="rounded-full absolute self-auto inset-auto bg-secondary w-full h-1/2 sm:w-2/5 blur-3xl drop-shadow-2xl opacity-20 z-0" />
