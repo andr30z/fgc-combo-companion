@@ -1,12 +1,12 @@
 <div style="display: flex; align-items: center; justify-content: center; width:100%; background:#121212; border-radius: 10px;">
 <img src="./assets/full-logo.svg" />
-</div>
 
-<center>
-<h4 style="margin-top: 25px;">
+<h4 style="margin-top: 25px; text-align:center; align:center;">
  <strong>The best way to store and share knowledge about combos in fighting games</strong>
 </h4>
-</center>
+
+</div>
+
 
 ---
 
