@@ -35,7 +35,7 @@ export default function ChangePasswordPage() {
       });
     },
     {
-      retry: 3,
+      retry: 2,
       onSuccess: () => {
         toast.success('Password updated sucessfully!');
       },
@@ -54,7 +54,7 @@ export default function ChangePasswordPage() {
       className="h-full w-full layout-padding-x flex flex-1 gap-4 flex-col"
     >
       <LoadingBackdrop isLoading={isLoading} />
-      {user?.oauthId && (
+      {user?.isOAuthUser && (
         <>
           <h6 className="text-light font-primary text-xl font-semibold">
             OAuth
@@ -63,7 +63,7 @@ export default function ChangePasswordPage() {
 
           <p className="text-light text-md font-primary">
             If you want to remove your auth provider (eg: google login) and
-            replace it with login and password, you have to request your
+            replace it with login and password, you have to request for a
             password reset first. After that, you&apos;re going to lose your
             auth provider and the only way to enter this account will be through
             login and password.
