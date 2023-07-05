@@ -29,16 +29,14 @@
 <strong>2. Frontend setup:</strong>
 
 You have to create an .env file at the <code>./frontend</code> directory, with the following variables: 
-> GOOGLE_CLIENT_ID=YOUR_CLIENT_ID_IF_YOU_WANT_GOOGLE_LOGIN
-GOOGLE_CLIENT_SECRET=YOUR_CLIENT_SECRET_IF_YOU_WANT_GOOGLE_LOGIN
-NEXTAUTH_URL=http://localhost:3000 //leave it default 
+> GOOGLE_CLIENT_ID=YOUR_CLIENT_ID_IF_YOU_WANT_GOOGLE_LOGIN <br/> 
+> GOOGLE_CLIENT_SECRET=YOUR_CLIENT_SECRET_IF_YOU_WANT_GOOGLE_LOGIN <br/> 
+> NEXTAUTH_URL=http://localhost:3000 //leave it default 
 
 then: 
 
-<code>
-    cd frontend &&
-    yarn && yarn dev
-</code>
+
+<code>cd frontend && yarn && yarn dev</code>
 
 </p>
 
@@ -49,17 +47,17 @@ Required Tools:
 >Java 17 and PostgreSQL 13 or higher
 
 You have to create an .env file at the <code>./backend/src/main/resources</code> directory, with the following variables: 
-> TOKEN_SECRET=YOUR_RANDOM_TOKEN_SECRET
-TOKEN_EXPIRATION_MSEC=00000
-REFRESH_TOKEN_EXPIRATION_MSEC=00000
-SECURE_KEY=YOUR_SECURE_VALUE
-POSTGRESQL_CONNECTION=YOUR_POSTGRES_CONNECTION
-POSTGRESQL_USERNAME=postgres_username
-POSTGRESQL_PASSWORD=postgres_password
-MAIL_SENDER_MAIL_USERNAME=cool_email
-MAIL_SENDER_MAIL_PASSWORD=cool_password_email
-BASE_EMAIL_VERIFICATION_FRONTEND_URL=http://localhost:3000/email-verification
-BASE_PASSWORD_CHANGE_FRONTEND_URL=http://localhost:3000/password-change
+> TOKEN_SECRET=YOUR_RANDOM_TOKEN_SECRET <br/> 
+TOKEN_EXPIRATION_MSEC=00000 <br/> 
+REFRESH_TOKEN_EXPIRATION_MSEC=00000 <br/> 
+SECURE_KEY=YOUR_SECURE_VALUE <br/>
+POSTGRESQL_CONNECTION=YOUR_POSTGRES_CONNECTION <br/>
+POSTGRESQL_USERNAME=postgres_username <br/>
+POSTGRESQL_PASSWORD=postgres_password <br/>
+MAIL_SENDER_MAIL_USERNAME=cool_email <br/>
+MAIL_SENDER_MAIL_PASSWORD=cool_password_email <br/>
+BASE_EMAIL_VERIFICATION_FRONTEND_URL=http://localhost:3000/email-verification <br/>
+BASE_PASSWORD_CHANGE_FRONTEND_URL=http://localhost:3000/password-change <br/>
 </p>
 
 
