@@ -1,9 +1,8 @@
 package com.fgc.combo.companion.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record UpdateUserPasswordDto(
-  @NotBlank @Min(8) String oldPassword,
-  @NotBlank @Min(8) String newPassword
+   @Size(min = 8, message = "should have at least 8 characters.") String oldPassword,
+    @Size(min = 8, message = "should have at least 8 characters.") String newPassword
 ) {}

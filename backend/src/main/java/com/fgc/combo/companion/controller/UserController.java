@@ -84,8 +84,8 @@ public class UserController {
   }
 
   @GetMapping("/me")
-  public User me() {
-    return this.usersService.me();
+  public UserDto me() {
+    return new UserDto(this.usersService.me());
   }
 
   @GetMapping("/{id}")
@@ -94,15 +94,21 @@ public class UserController {
   }
 
   @PutMapping("/me")
-  public User updateEmailAndName(
+  public UserDto updateEmailAndName(
     @RequestBody @Validated UpdateUserDto updateUserDto
   ) {
-    return usersService.updateCurrentUserProfileData(updateUserDto);
+    return new UserDto(
+      usersService.updateCurrentUserProfileData(updateUserDto)
+    );
   }
 
   @PatchMapping("/me/password")
-  public User updateUserPassword(UpdateUserPasswordDto updateUserPasswordDto) {
-    return usersService.updateCurrentUserPassword(updateUserPasswordDto);
+  public UserDto updateUserPassword(
+    @Validated @RequestBody UpdateUserPasswordDto updateUserPasswordDto
+  ) {
+    return new UserDto(
+      usersService.updateCurrentUserPassword(updateUserPasswordDto)
+    );
   }
 
   @PostMapping("/email-verification-solicitation")
