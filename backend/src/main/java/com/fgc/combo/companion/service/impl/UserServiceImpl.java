@@ -322,10 +322,11 @@ public class UserServiceImpl implements UserService {
     UpdateUserPasswordDto updateUserPasswordDto
   ) {
     User currentUser = this.me();
+    System.out.println("updateUserPasswordDto: " + updateUserPasswordDto);
     if (
       !passwordEncoder.matches(
-        currentUser.getPassword(),
-        updateUserPasswordDto.oldPassword()
+        updateUserPasswordDto.oldPassword(),
+        currentUser.getPassword()
       )
     ) {
       throw new BadRequestException("Password doesn't match!");
