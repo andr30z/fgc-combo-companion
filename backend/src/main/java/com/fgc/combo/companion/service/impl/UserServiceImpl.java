@@ -323,6 +323,7 @@ public class UserServiceImpl implements UserService {
     UpdateUserPasswordDto updateUserPasswordDto
   ) {
     User currentUser = this.me();
+    System.out.println("updateUserPasswordDto: " + updateUserPasswordDto);
     if (
       !passwordEncoder.matches(
         updateUserPasswordDto.oldPassword(),

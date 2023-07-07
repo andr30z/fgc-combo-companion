@@ -1,22 +1,7 @@
 package com.fgc.combo.companion.controller;
 
-import com.fgc.combo.companion.dto.ChangePasswordDto;
-import com.fgc.combo.companion.dto.CreateUserDTO;
-import com.fgc.combo.companion.dto.LoginRequest;
-import com.fgc.combo.companion.dto.LoginResponse;
-import com.fgc.combo.companion.dto.MeDto;
-import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
-import com.fgc.combo.companion.dto.UpdateUserDto;
-import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
-import com.fgc.combo.companion.dto.UserDto;
-import com.fgc.combo.companion.dto.UserVerficationSuccessDto;
-import com.fgc.combo.companion.dto.UserVerificationDto;
-import com.fgc.combo.companion.mapper.UserVerificationMapper;
-import com.fgc.combo.companion.model.User;
-import com.fgc.combo.companion.service.UserService;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +16,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fgc.combo.companion.dto.ChangePasswordDto;
+import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.LoginRequest;
+import com.fgc.combo.companion.dto.LoginResponse;
+import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
+import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
+import com.fgc.combo.companion.dto.UserDto;
+import com.fgc.combo.companion.dto.UserVerficationSuccessDto;
+import com.fgc.combo.companion.dto.UserVerificationDto;
+import com.fgc.combo.companion.mapper.UserVerificationMapper;
+import com.fgc.combo.companion.model.User;
+import com.fgc.combo.companion.service.UserService;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -85,8 +87,8 @@ public class UserController {
   }
 
   @GetMapping("/me")
-  public MeDto me() {
-    return new MeDto(this.usersService.me());
+  public UserDto me() {
+    return new UserDto(this.usersService.me());
   }
 
   @GetMapping("/{id}")
@@ -95,15 +97,21 @@ public class UserController {
   }
 
   @PutMapping("/me")
-  public User updateEmailAndName(
+  public UserDto updateEmailAndName(
     @RequestBody @Validated UpdateUserDto updateUserDto
   ) {
-    return usersService.updateCurrentUserProfileData(updateUserDto);
+    return new UserDto(
+      usersService.updateCurrentUserProfileData(updateUserDto)
+    );
   }
 
   @PatchMapping("/me/password")
-  public User updateUserPassword(UpdateUserPasswordDto updateUserPasswordDto) {
-    return usersService.updateCurrentUserPassword(updateUserPasswordDto);
+  public UserDto updateUserPassword(
+    @Validated @RequestBody UpdateUserPasswordDto updateUserPasswordDto
+  ) {
+    return new UserDto(
+      usersService.updateCurrentUserPassword(updateUserPasswordDto)
+    );
   }
 
   @PostMapping("/email-verification-solicitation")

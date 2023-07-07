@@ -1,7 +1,6 @@
 package com.fgc.combo.companion.config;
 
 import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
-import java.security.SecureRandom;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +30,7 @@ public class SecurityConfig {
 
   @Bean
   PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder(PASSWORD_STRENGTH, new SecureRandom());
+    return new BCryptPasswordEncoder(PASSWORD_STRENGTH);
   }
 
   @Bean
