@@ -21,10 +21,10 @@ logging:
         type: TRACE
 
 management:
-    defaults:
-      metrics:
-        export:
-          enabled: false
+  defaults:
+    metrics:
+      export:
+        enabled: false
 spring:
   jpa:
     open-in-view: false
@@ -51,6 +51,8 @@ spring:
     url: ${POSTGRESQL_CONNECTION}
     username: ${POSTGRESQL_USERNAME}
     password: ${POSTGRESQL_PASSWORD}
+    hikari:
+      max-lifetime: 600000 #10minutes
   flyway:
     baselineOnMigrate: true
     url: ${POSTGRESQL_CONNECTION}
