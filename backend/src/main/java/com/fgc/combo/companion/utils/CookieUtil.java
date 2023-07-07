@@ -32,12 +32,12 @@ public class CookieUtil {
       .from(cookieSourceName, encryptedToken)
       .maxAge(duration)
       .httpOnly(true)
-      // .domain("fgc-combo-companion.xyz")
+      .domain("fgc-combo-companion.xyz")
       .sameSite("None")
       .path("/");
 
     //comment this line if you want to test on postman/insomnia
-    // cookieBuilder.secure(true);
+    cookieBuilder.secure(true);
 
     return cookieBuilder.build();
   }
