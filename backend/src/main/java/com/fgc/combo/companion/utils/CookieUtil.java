@@ -32,11 +32,12 @@ public class CookieUtil {
       .from(cookieSourceName, encryptedToken)
       .maxAge(duration)
       .httpOnly(true)
+      //comment this line below if you want to test on postman/insomnia/locally
       .domain("fgc-combo-companion.xyz")
       .sameSite("None")
       .path("/");
 
-    //comment this line if you want to test on postman/insomnia
+    //comment this line below if you want to test on postman/insomnia/locally
     cookieBuilder.secure(true);
 
     return cookieBuilder.build();

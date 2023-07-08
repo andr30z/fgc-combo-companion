@@ -7,6 +7,7 @@ interface CardProps {
   size?: 'full' | 'xl' | 'lg' | 'md';
   theme?: 'primary' | 'secondary' | 'secondary-dark' | 'dark';
   shadowSize?: 'none' | 'lg' | 'md' | 'sm';
+  as?: 'form' | 'div' | 'section' | 'article';
 }
 
 export const Card: FC<CardProps> = ({
@@ -16,7 +17,9 @@ export const Card: FC<CardProps> = ({
   size = 'lg',
   theme = 'secondary-dark',
   shadowSize = 'none',
+  as = 'div',
 }) => {
+  const Component = as;
   const sizes = {
     xl: 'sm:w-[400px] sm:h-[500px]',
     lg: 'sm:w-[300px] sm:h-[400px]',
@@ -35,7 +38,7 @@ export const Card: FC<CardProps> = ({
 
   const sizeClass = size ? sizes[size] : '';
   return (
-    <div
+    <Component
       className={`${className} ${sizeClass} ${themeClass} ${
         shadowSize === 'none' ? '' : 'shadow-' + shadowSize
       } p-5 border-2 flex flex-col justify-center items-center rounded-lg`}
@@ -51,6 +54,6 @@ export const Card: FC<CardProps> = ({
         cardTitle
       )}
       {children}
-    </div>
+    </Component>
   );
 };

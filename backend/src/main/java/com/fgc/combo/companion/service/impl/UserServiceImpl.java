@@ -8,6 +8,7 @@ import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.Token;
 import com.fgc.combo.companion.dto.UpdateUserDto;
 import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
+import com.fgc.combo.companion.dto.UserDto;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.EntityExistsException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
     LoginResponse loginResponse = new LoginResponse(
       LoginResponse.SuccessFailure.SUCCESS,
       "Auth successful. Tokens are created in cookies.",
-      user
+      new UserDto(user)
     );
     return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
   }
@@ -213,7 +214,7 @@ public class UserServiceImpl implements UserService {
     LoginResponse loginResponse = new LoginResponse(
       LoginResponse.SuccessFailure.SUCCESS,
       "Auth successful. Tokens are created in cookies.",
-      this.findByEmail(currentUserEmail)
+      new UserDto(this.findByEmail(currentUserEmail))
     );
     return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
   }

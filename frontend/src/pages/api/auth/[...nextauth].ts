@@ -61,14 +61,17 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
   ],
   events: {
     async signOut() {
-      res.setHeader('Set-Cookie', [
-        'accessToken=deleted;Max-Age=0;path=/;',
-        'refreshToken=deleted;Max-Age=0;path=/;',
-      ]);
-      res.setHeader('Set-Cookie', [
-        'accessToken=deleted;Max-Age=0;path=/;domain=.fgc-combo-companion.xyz;',
-        'refreshToken=deleted;Max-Age=0;path=/;domain=.fgc-combo-companion.xyz;',
-      ]);
+      if (process.env.NODE_ENV === 'production') {
+        res.setHeader('Set-Cookie', [
+          'accessToken=deleted;Max-Age=0;path=/;domain=.fgc-combo-companion.xyz;',
+          'refreshToken=deleted;Max-Age=0;path=/;domain=.fgc-combo-companion.xyz;',
+        ]);
+      } else {
+        res.setHeader('Set-Cookie', [
+          'accessToken=deleted;Max-Age=0;path=/;',
+          'refreshToken=deleted;Max-Age=0;path=/;',
+        ]);
+      }
     },
   },
   callbacks: {

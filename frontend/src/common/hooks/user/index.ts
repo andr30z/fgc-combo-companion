@@ -17,7 +17,6 @@ export function useUser(
       return;
     }
     toast.error('Please log in again!');
-
     signOut({ callbackUrl: redirectTo });
   }
   const { update, data, status } = useSession({
@@ -46,6 +45,7 @@ export function useUser(
       },
     },
   );
+
   const logout = () => {
     signOut({ callbackUrl: redirectTo ?? '/' });
   };

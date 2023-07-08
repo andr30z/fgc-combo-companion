@@ -4,6 +4,7 @@ import com.fgc.combo.companion.dto.ChangePasswordDto;
 import com.fgc.combo.companion.dto.CreateUserDTO;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
+import com.fgc.combo.companion.dto.MeDto;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
 import com.fgc.combo.companion.dto.UpdateUserDto;
 import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
@@ -84,8 +85,8 @@ public class UserController {
   }
 
   @GetMapping("/me")
-  public UserDto me() {
-    return new UserDto(this.usersService.me());
+  public MeDto me() {
+    return new MeDto(this.usersService.me());
   }
 
   @GetMapping("/{id}")

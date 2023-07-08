@@ -1,5 +1,3 @@
-import { AuthProviderTypes } from './auth-types';
-
 export interface User {
   id: string;
   name: string;
@@ -7,8 +5,7 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   emailVerified: boolean;
-  oauthId: string;
-  authProvider?: AuthProviderTypes;
+  isOAuthUser: boolean;
   bio?: string;
   twitterProfileUrl?: string;
   instagramProfileUrl?: string;
