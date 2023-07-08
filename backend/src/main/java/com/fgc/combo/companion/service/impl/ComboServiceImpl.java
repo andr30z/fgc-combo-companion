@@ -125,7 +125,7 @@ public class ComboServiceImpl implements ComboService {
     User me = userService.me();
 
     if (
-      combo.getOwner().getId() != me.getId()
+      !combo.getOwner().getId().equals(me.getId())
     ) throw new OperationNotAllowedException(
       "This combo belongs to another user!"
     );

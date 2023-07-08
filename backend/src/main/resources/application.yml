@@ -16,6 +16,8 @@ password-change:
 
 logging:
   level:
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: TRACE
     org:
       hibernate:
         type: TRACE
@@ -46,13 +48,17 @@ spring:
       matching-strategy: ant-path-matcher
 
   application:
-    name: template
+    name: fgc-combo-companion
   datasource:
     url: ${POSTGRESQL_CONNECTION}
     username: ${POSTGRESQL_USERNAME}
     password: ${POSTGRESQL_PASSWORD}
     hikari:
-      max-lifetime: 600000 #10minutes
+      max-lifetime: 500000 #~8minutes
+      idle-timeout: 300000
+      maximum-pool-size: 15
+      minimum-idle: 15
+      pool-name: fgc-api
   flyway:
     baselineOnMigrate: true
     url: ${POSTGRESQL_CONNECTION}
