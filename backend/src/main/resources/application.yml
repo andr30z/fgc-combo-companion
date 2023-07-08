@@ -53,6 +53,9 @@ spring:
     url: ${POSTGRESQL_CONNECTION}
     username: ${POSTGRESQL_USERNAME}
     password: ${POSTGRESQL_PASSWORD}
+    tomcat:
+      max-idle: 15
+      max-active: 50
     hikari:
       max-lifetime: 500000 #~8minutes
       idle-timeout: 300000
