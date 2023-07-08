@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fgc.combo.companion.model.User;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -38,5 +39,7 @@ public class MeDto {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private boolean emailVerified;
+
+  @JsonProperty(value = "isOAuthUser")
   private boolean isOAuthUser;
 }

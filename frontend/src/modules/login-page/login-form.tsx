@@ -6,10 +6,8 @@ import { Link } from '@/common/components/link';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
-import { useUser } from '@/common/hooks/user';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import { FiLogIn } from 'react-icons/fi';
@@ -18,19 +16,12 @@ export const LoginForm = () => {
     email: '',
     password: '',
   });
-  const { user } = useUser({ redirectTo: null });
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(user);
-    if (user) {
-      window.location.reload();
-    }
-  }, [user]);
   const router = useRouter();
   const [loading, { setTrue: startLoading, setFalse: endLoading }] =
     useBoolean();
   return (
     <Card
+      as="form"
       className="gap-3 shadow-primary shadow-lg w-[80vw]"
       size="xl"
       theme="dark"
@@ -55,6 +46,7 @@ export const LoginForm = () => {
         extraStyles="w-full mt-3"
         color="primary"
         text="Login"
+        type="submit"
         leftIcon={<FiLogIn size={17} />}
         onClick={onSubmit(async ({ values: { email, password } }) => {
           let hasError = false;
@@ -80,8 +72,11 @@ export const LoginForm = () => {
           endLoading();
           if (data?.error) {
             toast.error(data.error);
+          } else {
+            router.push('/dashboard/combos');
           }
-          router.push('/dashboard/combos');
+
+          // router.push('/dashboard/combos');
         })}
       />
       <Button
