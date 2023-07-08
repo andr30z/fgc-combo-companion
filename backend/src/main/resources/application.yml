@@ -55,6 +55,7 @@ spring:
     password: ${POSTGRESQL_PASSWORD}
     hikari:
       max-lifetime: 500000 #~8minutes
+      idle-timeout: 300000
       maximum-pool-size: 15
       minimum-idle: 15
       pool-name: fgc-api
