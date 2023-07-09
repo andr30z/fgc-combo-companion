@@ -1,18 +1,5 @@
 package com.fgc.combo.companion.service.impl;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.IntFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
-
 import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.exception.BadRequestException;
@@ -28,9 +15,20 @@ import com.fgc.combo.companion.repository.PlaylistComboRepository;
 import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.service.PlaylistComboService;
 import com.fgc.combo.companion.service.UserService;
-
 import jakarta.transaction.Transactional;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 @Service
 @Slf4j
@@ -176,9 +174,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
 
     Optional<PlaylistCombo> playlistCombo = playlistCombos
       .stream()
-      .max((playlistCombo1, playlistCombo2) -> {
-        return playlistCombo1.getPosition() - playlistCombo2.getPosition();
-      });
+      .max(Comparator.comparing(PlaylistCombo::getPosition));
 
     final int EMPTY_LIST_MAX_POSITION = playlistCombo.isEmpty()
       ? 0

@@ -27,22 +27,23 @@ export function useMyPlaylists({
   ];
   const isQueryEnabled =
     enabled !== undefined ? enabled : isAuthenticated || userId !== undefined;
+  const getUrlWithParams = (url = '', pageParam = 0) => {
+    return `${url}?page=${pageParam}&size=20&sort=playlistCombos.addedAt,${
+      isDescendingOrdenation ? 'desc' : 'asc'
+    }&sort=updatedAt,${isDescendingOrdenation ? 'desc' : 'asc'}`;
+  };
   const { data, fetchNextPage, refetch, isFetching } = useInfiniteQuery<
     FGCApiPaginationResponse<Playlist>
   >(
     queryKey,
     async ({ pageParam = 0 }) => {
       const { data } = await fgcApi.get<FGCApiPaginationResponse<Playlist>>(
-        userId
-          ? FGC_API_URLS.USER_PLAYLISTS + '/' + userId
-          : FGC_API_URLS.MY_PLAYLISTS,
-        {
-          params: {
-            page: pageParam,
-            size: 20,
-            sort: `updatedAt,${isDescendingOrdenation ? 'desc' : 'asc'}`,
-          },
-        },
+        getUrlWithParams(
+          userId
+            ? FGC_API_URLS.USER_PLAYLISTS + '/' + userId
+            : FGC_API_URLS.MY_PLAYLISTS,
+          pageParam,
+        ),
       );
       return data;
     },

@@ -1,14 +1,15 @@
+import { OnFinishOrdenation } from '@/common/components/list-items';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import type { Combo } from '@/common/types/combo';
 import type { PlaylistWithCombos } from '@/common/types/playlist';
 import type { PlaylistCombo } from '@/common/types/playlist-combo';
+import { displayFGCApiErrors } from '@/common/utils/fgc-api';
+import { get } from 'lodash';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useApiQuery } from '../api-query';
 import { useBoolean } from '../boolean';
 import { useUser } from '../user';
-import { OnFinishOrdenation } from '@/common/components/list-items';
-import { displayFGCApiErrors } from '@/common/utils/fgc-api';
 
 const TEN_MINUTES = 10 * 60 * 1000;
 
@@ -33,6 +34,7 @@ export function usePlaylistDetails(
     data: playlistDetails,
     isLoading,
     refetch,
+    error,
   } = useApiQuery<PlaylistWithCombos>({
     key: ['PLAYLIST_DETAILS', playlistId],
     apiConfig: {
@@ -97,7 +99,22 @@ export function usePlaylistDetails(
       .catch(displayFGCApiErrors);
   };
 
+  const copyPlaylistUrl = () => {
+    toast.success('Playlist link copied to clipboard');
+    navigator.clipboard.writeText(
+      `${
+        process.env.NODE_ENV === 'production'
+          ? 'https://app.fgc-combo-companion.xyz'
+          : 'http://localhost:3000'
+      }/playlist/${playlistDetails?.id}`,
+    );
+  };
+
   return {
+    error,
+    requestErrorStatus: get(error, 'response.status') as unknown as
+      | number
+      | undefined,
     isLoading,
     isLoadingData,
     endLoadingData,
@@ -115,5 +132,6 @@ export function usePlaylistDetails(
     startDragging,
     stopDragging,
     isDraggingCombos,
+    copyPlaylistUrl,
   } as const;
 }

@@ -18,7 +18,7 @@ export const LoadingBackdrop: FC<LoadingBackdropProps> = ({ isLoading }) => {
   }, [isLoading]);
   return isLoading ? (
     <Portal.Root>
-      <div className="absolute top-0 left-0 w-full h-full flex items-end justify-end z-50 bg-dark bg-opacity-50 p-10">
+      <div className="fixed top-0 left-0 w-full h-full flex items-end justify-end z-50 bg-dark bg-opacity-50 p-10">
         <span className="animate-pulse bg-light rounded-full h-10 w-[140px] flex justify-center items-center gap-1">
           <Image
             priority
