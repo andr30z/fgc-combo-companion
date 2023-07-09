@@ -15,6 +15,7 @@ interface PlaylistsProps {
   emptyListMessage?: string;
   useCreatePlaylistButton?: boolean;
   openPlaylistForm?: () => void;
+  showEditButton?: boolean;
 }
 
 export const PlaylistList: React.FC<PlaylistsProps> = ({
@@ -22,6 +23,7 @@ export const PlaylistList: React.FC<PlaylistsProps> = ({
   onEdit,
   onDelete,
   useCreatePlaylistButton = false,
+  showEditButton = true,
   emptyListMessage = "This playlist doesn't have any combos yet.",
   openPlaylistForm,
 }) => {
@@ -61,7 +63,7 @@ export const PlaylistList: React.FC<PlaylistsProps> = ({
                     className="text-light cursor-pointer hover:text-primary"
                   />
                 </Link>
-                {userIsOwner && (
+                {showEditButton && userIsOwner && (
                   <AiFillEdit
                     size={27}
                     className="text-light cursor-pointer hover:text-primary"

@@ -29,7 +29,7 @@ export const UserPlaylists: React.FC<UserPlaylistsProps> = ({
       className="w-full layout-padding-x flex flex-col items-center justify-center"
       value="playlists"
     >
-      <PlaylistList items={playlistData?.data ?? []} />
+      <PlaylistList showEditButton={false} items={playlistData?.data ?? []} />
       {playlistData && (
         <div className="mt-5 w-full">
           <Pagination
