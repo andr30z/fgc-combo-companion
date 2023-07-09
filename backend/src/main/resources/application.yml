@@ -1,6 +1,5 @@
 .env:
   prefix: ""
-
 authentication:
   auth:
     secureKey: ${SECURE_KEY}
@@ -8,6 +7,7 @@ authentication:
     tokenExpirationMsec: ${TOKEN_EXPIRATION_MSEC}
     tokenSecret: ${TOKEN_SECRET}
     refreshTokenExpirationMsec: ${REFRESH_TOKEN_EXPIRATION_MSEC}
+
 
 email-verification:
   base-frontend-url: ${BASE_EMAIL_VERIFICATION_FRONTEND_URL}

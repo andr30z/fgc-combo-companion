@@ -20,9 +20,34 @@ export async function generateMetadata({ params }: PageProps) {
       title: 'User Details - FGC Combo Companion',
     };
   }
+  const user = result.data;
+  const url = `https://app.fgc-combo-companion.xyz/user/${user.id}`;
   return {
     title: `${result.data.name} - FGC Combo Companion`,
     description: `FGC Combo Companion - User - ${result.data.name}`,
+    twitter: {
+      title: user.name,
+      description: 'FGC Combo Companion',
+      creator: user.name,
+      siteId: user.id,
+      site: url,
+      images: '/metatag-logo.png',
+      card: 'summary',
+      // players: {
+      //   height: 20,
+      //   width: 20,
+      //   playerUrl: url,
+      //   streamUrl: url,
+      // },
+    },
+    openGraph: {
+      type: 'website',
+      title: user.name,
+      description: user.bio ?? undefined,
+      url,
+      images: '/metatag-logo.png',
+      siteName: 'FGC Combo Companion',
+    },
   };
 }
 

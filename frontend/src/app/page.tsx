@@ -1,4 +1,28 @@
 import { PresentationButtons } from '@/modules/lading-page/presentation-buttons';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'FGC Combo Companion',
+  description:
+    'The best way to store and share knowledge about combos in fighting games.',
+  twitter: {
+    title: 'FGC Combo Companion',
+    description:
+      'The best way to store and share knowledge about combos in fighting games.',
+    site: 'https://app.fgc-combo-companion.xyz',
+    images: '/metatag-logo.png',
+    card: 'summary',
+  },
+  openGraph: {
+    type: 'website',
+    title: 'FGC Combo Companion',
+    description:
+      'The best way to store and share knowledge about combos in fighting games.',
+    url: 'https://app.fgc-combo-companion.xyz',
+    images: '/metatag-logo.png',
+    siteName: 'FGC Combo Companion',
+  },
+};
 
 export default function Home() {
   return (
@@ -16,7 +40,7 @@ export default function Home() {
         <span className="font-semibold text-xl text-secondary">
           Fighting Game Community
         </span>{' '}
-        to store/share knowledge about combos in various fighting games.
+        to store and share knowledge about combos in fighting games.
       </p>
       <PresentationButtons />
       <div className="rounded-full absolute self-auto inset-auto bg-secondary w-full h-1/2 sm:w-2/5 blur-3xl drop-shadow-2xl opacity-20 z-0" />
