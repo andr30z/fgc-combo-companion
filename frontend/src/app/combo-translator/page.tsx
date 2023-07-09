@@ -3,6 +3,7 @@ import { Button } from '@/common/components/button';
 import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { GameSelect } from '@/common/components/game-select';
+import { LOCAL_STORAGE_KEYS } from '@/common/constants/local-storage-keys';
 import { useBoolean } from '@/common/hooks/boolean';
 import { usePageTitle } from '@/common/hooks/page-title';
 import { GameTypes } from '@/common/types/game-types';
@@ -48,8 +49,15 @@ export default function ComboTranslator() {
   const comboParam = params?.get('combo');
   const gameParam = params?.get('game');
   usePageTitle('Combo Translator - FGC');
-
-  const gameInitialValue = gameParam ? gameParam : GameTypes.STREET_FIGHTER_6;
+  const initialGameTypeSelectFromLocalStorage = get(
+    GameTypes,
+    localStorage.getItem(LOCAL_STORAGE_KEYS.FAVORITE_GAME) ||
+      GameTypes.TEKKEN_7,
+  );
+  const gameInitialValue =
+    gameParam ??
+    initialGameTypeSelectFromLocalStorage ??
+    GameTypes.STREET_FIGHTER_6;
   const [game, setGame] = useState(
     get(GameTypes, gameInitialValue)
       ? (gameInitialValue as GameTypes)

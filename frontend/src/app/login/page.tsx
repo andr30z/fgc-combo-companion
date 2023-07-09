@@ -16,8 +16,8 @@ export default function LoginPage({ searchParams }: PageProps) {
   return (
     <div className="w-full h-full min-h-80vh flex flex-row justify-center items-center gap-2">
       {error ? (
-        <div className="flex flex-col items-center justify-center gap-2">
-          <h4 className="text-light text-2xl">{error}</h4>
+        <div className="flex flex-col items-center justify-center gap-2 px-2">
+          <h4 className="text-light text-2xl text-center">{error}</h4>
           <Button text="Go to login" renderAsInnerLink href="/login" />
         </div>
       ) : (

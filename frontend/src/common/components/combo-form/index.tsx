@@ -14,6 +14,8 @@ import { Input } from '../input';
 import { LoadingBackdrop } from '../loading-backdrop';
 import type { FC } from 'react';
 import { useInvalidateGlobalSearchQueries } from '@/common/hooks/invalidate-global-search-queries';
+import { LOCAL_STORAGE_KEYS } from '@/common/constants/local-storage-keys';
+import { get } from 'lodash';
 
 type ComboWithId = Omit<Combo, 'id' | 'owner'> & { id?: string | number };
 interface ComboFormProps {
@@ -27,10 +29,15 @@ export const ComboForm: FC<ComboFormProps> = ({
   onSuccess,
   onSuccessUrl,
 }) => {
+  const initialGameTypeSelect = get(
+    GameTypes,
+    localStorage.getItem(LOCAL_STORAGE_KEYS.FAVORITE_GAME) ||
+      GameTypes.TEKKEN_7,
+  );
   const initialForm: ComboWithId = {
     id: '',
     name: '',
-    game: GameTypes.TEKKEN_7,
+    game: initialGameTypeSelect || GameTypes.TEKKEN_7,
     combo: '',
     description: '',
   };

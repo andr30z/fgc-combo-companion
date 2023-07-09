@@ -90,6 +90,18 @@ export const ProfileForm: FC<{ user: User }> = ({ user }) => {
   return (
     <form
       onSubmit={onSubmit(async () => {
+        let error = false;
+        if (name.trim().length === 0) {
+          toast.error('Name is required.');
+          error = true;
+        }
+        if (email.trim().length === 0) {
+          toast.error('Email is required.');
+          error = true;
+        }
+        if (error) {
+          return;
+        }
         profileMutation.mutate();
       })}
       className="gap-5 border-none layout-padding-x flex flex-1 flex-col pt-10"
@@ -98,6 +110,7 @@ export const ProfileForm: FC<{ user: User }> = ({ user }) => {
       <Input required label="Name" value={name} onChange={onChange('name')} />
       <Input
         required
+        type="email"
         label="Email"
         value={email}
         onChange={onChange('email')}
