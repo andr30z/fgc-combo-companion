@@ -109,7 +109,7 @@ export default function ComboTranslator() {
                   navigator.clipboard.writeText(
                     `${
                       process.env.NODE_ENV === 'production'
-                        ? 'https://fgc-combo-companion.vercel.app'
+                        ? 'https://app.fgc-combo-companion.xyz'
                         : 'http://localhost:3000'
                     }/combo-translator?combo=${encodeURIComponent(
                       combo,

@@ -16,17 +16,13 @@ export default async function PlaylistLayout({
   children: React.ReactNode;
   params: { id: string };
 }) {
+  const getUrlWithParams = (url = '', pageParam = 0) => {
+    return `${url}?page=${pageParam}&size=20&sort=updatedAt,desc&sort=playlistCombos.addedAt,desc`;
+  };
   const fgcInstance = getFgcApiInstanceWithTokenCookie(cookies());
   const { result: otherPlaylistsFromUser } = await promiseResultWithError(
     fgcInstance.get<FGCApiPaginationResponse<Playlist>>(
-      FGC_API_URLS.MY_PLAYLISTS,
-      {
-        params: {
-          page: 0,
-          sort: 'updatedAt,desc',
-          size: '20',
-        },
-      },
+      getUrlWithParams(FGC_API_URLS.MY_PLAYLISTS, 0),
     ),
   );
   return (

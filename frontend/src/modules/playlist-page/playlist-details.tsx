@@ -26,6 +26,7 @@ import { IoIosAddCircle } from 'react-icons/io';
 import { usePlaylistPage } from './playlist-page-context';
 import { UserPreview } from '@/common/components/user-preview';
 import { Link } from '@/common/components/link';
+import { BsFillShareFill } from 'react-icons/bs';
 export const PlaylistDetails: FC<{
   playlistInitialData?: PlaylistWithCombos;
   playlistId: string;
@@ -50,6 +51,8 @@ export const PlaylistDetails: FC<{
     onSubmitOrdenation,
     isDraggingCombos,
     startDragging,
+    copyPlaylistUrl,
+    requestErrorStatus,
   } = usePlaylistDetails(playlistId, { playlistInitialData });
   return (
     <>
@@ -101,13 +104,21 @@ export const PlaylistDetails: FC<{
                 )}{' '}
               </span>
               <div className="flex flex-row flex-wrap gap-2">
+                {playlistDetails && (
+                  <BsFillShareFill
+                    size={22}
+                    className="cursor-pointer text-light hover:text-secondary"
+                    title="Share playlist"
+                    onClick={copyPlaylistUrl}
+                  />
+                )}
                 {currentUserIsPlaylistOwner && (
                   <>
                     <PopOver
                       trigger={
                         <button>
                           <AiFillInfoCircle
-                            size={25}
+                            size={24}
                             className="cursor-pointer text-light hover:text-secondary"
                             title="Playlist command hint"
                           />
@@ -223,9 +234,17 @@ export const PlaylistDetails: FC<{
             emptyListComponent={
               <div className="flex flex-col flex-1 justify-center items-center min-h-[400px] text-center gap-4">
                 <h1 className="text-light font-bold text-5xl">
-                  This playlist is empty
+                  {requestErrorStatus === 404
+                    ? 'Playlist not found'
+                    : 'This playlist is empty'}
                 </h1>
-
+                {requestErrorStatus === 404 && (
+                  <Button
+                    renderAsInnerLink
+                    href="/dashboard/playlists"
+                    text="Go to Home"
+                  />
+                )}
                 {currentUserIsPlaylistOwner && (
                   <ComboFormWithModal
                     customUrl={FGC_API_URLS.getCreateAndAddCombosToPlaylistUrl(
