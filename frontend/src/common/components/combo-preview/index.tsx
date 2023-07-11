@@ -52,20 +52,23 @@ export const ComboPreview: FC<
           </p>
         )}
         {comboId && (
-          <Button
-            color="primary"
-            leftIcon={<BsFillShareFill size={17} />}
-            onClick={() => {
-              navigator.clipboard.writeText(
-                `${
-                  process.env.NODE_ENV === 'production'
-                    ? 'https://app.fgc-combo-companion.xyz'
-                    : 'http://localhost:3000'
-                }/combo/${comboId}`,
-              );
-              toast.success('The share link was copied to the clipboard');
-            }}
-          />
+          <div className="w-full flex items-center justify-center mt-5">
+            <Button
+              color="primary"
+              leftIcon={<BsFillShareFill size={15} />}
+              text="Share"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${
+                    process.env.NODE_ENV === 'production'
+                      ? 'https://app.fgc-combo-companion.xyz'
+                      : 'http://localhost:3000'
+                  }/combo/${comboId}`,
+                );
+                toast.success('The share link was copied to the clipboard');
+              }}
+            />
+          </div>
         )}
       </Modal>
       {renderTrigger(openComboDetails)}
