@@ -160,4 +160,10 @@ public class ComboServiceImpl implements ComboService {
   public PaginationResponse<Combo> getByOwner(UUID userId, Pageable pageable) {
     return this.getByOwner(this.userService.findById(userId), pageable);
   }
+
+  @Override
+  public Combo getById(UUID id) {
+    return this.comboRepository.findById(id)
+      .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
+  }
 }

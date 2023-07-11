@@ -15,6 +15,8 @@ public interface ComboService {
   PaginationResponse<Combo> getByOwner(User user, Pageable pageable);
   PaginationResponse<Combo> getByOwner(UUID userId, Pageable pageable);
 
+  Combo getById(UUID id);
+
   Combo create(CreateComboDTO createComboDTO);
 
   Combo update(UUID id, UpdateComboDTO updateComboDTO);

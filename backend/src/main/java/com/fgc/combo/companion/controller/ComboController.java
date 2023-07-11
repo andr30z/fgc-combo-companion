@@ -7,9 +7,7 @@ import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.UpdateComboDTO;
 import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.service.ComboService;
-
 import java.util.UUID;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,6 +69,11 @@ public class ComboController {
     @RequestBody @Validated CreateComboDTO comboDTO
   ) {
     return this.comboMapper.toDTO((this.comboService.create(comboDTO)));
+  }
+
+  @GetMapping("/{comboId}")
+  public ComboResponseDTO getComboDetails(@PathVariable UUID comboId) {
+    return this.comboMapper.toDTO((this.comboService.getById(comboId)));
   }
 
   @PutMapping("/{comboId}")
