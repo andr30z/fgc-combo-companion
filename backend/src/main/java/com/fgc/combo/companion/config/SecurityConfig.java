@@ -136,6 +136,7 @@ public class SecurityConfig {
         "/api/v1/users/verification/**",
         "/api/v1/users/{userId}",
         "/api/v1/playlists/{playlistId}",
+        "/api/v1/combos/{comboId}",
         "/api/v1/combos/users/{userId}",
         "/api/v1/playlists/users/{userId}"
       )

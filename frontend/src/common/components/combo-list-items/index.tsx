@@ -139,6 +139,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                     combo={combo.combo}
                     description={combo.description}
                     game={combo.game}
+                    comboId={combo.id}
                   >
                     {(openComboDetails) => (
                       <ComboTranslation

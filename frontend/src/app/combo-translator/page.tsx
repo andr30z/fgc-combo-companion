@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/common/components/button';
+import { ColorPicker } from '@/common/components/color-picker';
 import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { GameSelect } from '@/common/components/game-select';
@@ -9,12 +10,11 @@ import { usePageTitle } from '@/common/hooks/page-title';
 import { GameTypes } from '@/common/types/game-types';
 import { get } from 'lodash';
 import { useSearchParams } from 'next/navigation';
-import { startTransition, useRef, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { BiCollapse, BiExpand } from 'react-icons/bi';
 import { BsFillShareFill } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
-import { IoMdColorPalette } from 'react-icons/io';
 
 const tekken7Combos = [
   'f,n,d,df+2, f,n,d,df+2, f,n,d,df+2, b+2,1 S!, {DASH} f,n,d,df+4,1 {CHAR: KAZUYA}',
@@ -80,7 +80,6 @@ export default function ComboTranslator() {
   );
 
   const [bgColor, setBgColor] = useState<string>('#da0037');
-  const colorInputRef = useRef<HTMLInputElement>(null);
 
   const randomCombos = combos[game] || [];
   const setRandomCombo = (): void => {
@@ -137,32 +136,10 @@ export default function ComboTranslator() {
                 title="Expand/Collapse combo view"
                 onClick={toggleExpandedView}
               />
-              <Button
-                style={{
-                  backgroundColor: bgColor,
-                }}
-                useHoverStyles={false}
-                rightIcon={<IoMdColorPalette size={18} />}
+              <ColorPicker
+                color={bgColor}
+                setColor={setBgColor}
                 title="Combo background color"
-                extraStyles="hover:opacity-50"
-                onClick={() => {
-                  if (colorInputRef.current) {
-                    colorInputRef.current.click();
-                  }
-                }}
-              />
-              <input
-                ref={colorInputRef}
-                value={bgColor}
-                type="color"
-                className="opacity-0 cursor-pointer absolute"
-                onChange={(e) => {
-                  e.stopPropagation();
-                  const value = e.currentTarget.value;
-                  startTransition(() => {
-                    setBgColor(value);
-                  });
-                }}
               />
             </>
           )}
