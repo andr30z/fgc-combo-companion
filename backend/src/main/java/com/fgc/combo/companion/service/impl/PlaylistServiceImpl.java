@@ -144,8 +144,8 @@ public class PlaylistServiceImpl implements PlaylistService {
   @Transactional
   public boolean delete(UUID playlistId) {
     Playlist playlist = getByIdWithOwnerValidation(playlistId);
-    this.playlistComboService.deleteByPlaylist(playlist);
     this.playlistRepository.delete(playlist);
+    this.playlistComboService.deleteByPlaylist(playlist);
 
     return true;
   }

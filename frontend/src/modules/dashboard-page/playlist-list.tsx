@@ -9,6 +9,7 @@ import { Modal } from '@/common/components/modal';
 import { Pagination } from '@/common/components/pagination';
 import { PlaylistForm } from '@/common/components/playlist-form';
 import { useBoolean } from '@/common/hooks/boolean';
+import { useInvalidateGlobalSearchQueries } from '@/common/hooks/invalidate-global-search-queries';
 import { usePaginatedSearch } from '@/common/hooks/paginated-search';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
@@ -51,6 +52,7 @@ export const PlaylistList: FC<{
     isPlaylistFormOpen,
     { setFalse: closePlaylistForm, setTrue: openPlaylistForm },
   ] = useBoolean();
+  const resetQueries = useInvalidateGlobalSearchQueries();
 
   const deletePlaylists = (playlistId: string) => async () => {
     startLoading();
@@ -62,6 +64,8 @@ export const PlaylistList: FC<{
       toast.error(error.message);
       return;
     }
+    toast.success('Playlist deleted successfully!');
+    resetQueries();
   };
 
   return (
