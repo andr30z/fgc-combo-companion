@@ -3,15 +3,60 @@ import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
 import { promiseResultWithError } from '@/common/utils/promises';
 import { ComboDisplay } from '@/modules/combo-page/combo-display';
+import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 type PageProps = { params?: { id: string | undefined } };
-export default async function ComboPage({ params }: PageProps) {
-  const id = params?.id;
+
+function getComboDetails(id: string) {
   const fgcApi = getFgcApiInstance();
-  const { error, result } = await promiseResultWithError(
+  return promiseResultWithError(
     fgcApi.get<Combo>(`${FGC_API_URLS.COMBOS}/${id}`),
   );
+}
 
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { result, error } = await getComboDetails(params?.id ?? '');
+  if (error) {
+    return {
+      title: 'FGC - Playlist Details',
+    };
+  }
+  const combo = result.data;
+  const url = `https://app.fgc-combo-companion.xyz/combo/${combo.id}`;
+  return {
+    title: `Combo - ${combo.name}`,
+    description: `FGC Combo Companion - ${combo.owner.name} - Combo - ${combo.name}`,
+    twitter: {
+      title: combo.name,
+      description: 'FGC Combo Companion',
+      creator: combo.owner.name,
+      siteId: combo.id,
+      site: url,
+      images: '/metatag-logo.png',
+      card: 'summary',
+      // players: {
+      //   height: 20,
+      //   width: 20,
+      //   playerUrl: url,
+      //   streamUrl: url,
+      // },
+    },
+    openGraph: {
+      type: 'website',
+      title: combo.name,
+      description: combo.description ?? undefined,
+      url,
+      images: '/metatag-logo.png',
+      siteName: 'FGC Combo Companion',
+    },
+  };
+}
+
+export default async function ComboPage({ params }: PageProps) {
+  const id = params?.id;
+  const { error, result } = await getComboDetails(id || '');
   const isLoggedUser = cookies().has('accessToken');
   if (error) {
     return (
