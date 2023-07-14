@@ -27,7 +27,7 @@ export default function RootLayout(props: {
 }) {
   return (
     <html lang="en" className={`${roboto.variable}`}>
-      <GoogleAnalytics googleAnalyticsId={process.env.GOOGLE_ANALYTICS} />
+      <GoogleAnalytics googleAnalyticsId={process.env.GOOGLE_ANALYTICS_ID} />
       <body className="min-h-screen bg-dark">
         <QueryApiProvider>
           <AuthProvider session={props.session}>
