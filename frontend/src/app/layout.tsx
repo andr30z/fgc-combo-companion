@@ -1,4 +1,5 @@
 import { Footer } from '@/common/components/footer';
+import { GoogleAnalytics } from '@/common/components/google-analytics';
 import { Header } from '@/common/components/header';
 import { AuthProvider } from '@/modules/home/auth-provider';
 import { QueryApiProvider } from '@/modules/home/query-api-provider';
@@ -26,6 +27,7 @@ export default function RootLayout(props: {
 }) {
   return (
     <html lang="en" className={`${roboto.variable}`}>
+      <GoogleAnalytics googleAnalyticsId={process.env.GOOGLE_ANALYTICS_ID} />
       <body className="min-h-screen bg-dark">
         <QueryApiProvider>
           <AuthProvider session={props.session}>
