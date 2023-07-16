@@ -71,7 +71,6 @@ export const GameSelect: FC<{
           option={GameTypes.GUILTY_GEAR_STRIVE}
           onSelect={onSelect}
           url="/guilty-gear-strive/guilty-gear-strive-select.jpg"
-          showSoonMessage
         />
       </div>
     </div>
