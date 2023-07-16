@@ -17,7 +17,10 @@ export function replaceAllWithNoSeparatorsExceptInBetweenCurlyBracket(
   searchParam: string,
   replacement: string,
 ) {
-  const regex = new RegExp(`(${searchParam})(?![^{]*})`, 'g');
+  const regex = new RegExp(
+    `(${searchParam.replace('.', '\\.')})(?![^{]*})`,
+    'g',
+  );
   return originalString.replace(regex, replacement);
 }
 

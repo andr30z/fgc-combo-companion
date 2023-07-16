@@ -11,15 +11,14 @@ import {
 
 export const guiltyGearStriveTranslator: ComboTranslatorType = (combo) => {
   let comboCopy = combo;
-  // let finalCombo = combo;
+  //add combo keys with #
   for (const [key] of GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP) {
-    console.log(key);
+    // console.log(key);
     comboCopy = replaceAllWithNoSeparatorsExceptInBetweenCurlyBracket(
       comboCopy.toUpperCase(),
       key.toUpperCase(),
       '#{' + `${key}}#`,
     );
-    console.log(comboCopy);
   }
   const splitedResult = splitMulti(
     comboCopy,
@@ -27,21 +26,23 @@ export const guiltyGearStriveTranslator: ComboTranslatorType = (combo) => {
     '',
   );
 
-  console.log(
-    splitedResult.filter((x, index) => {
-      if (index === 0 || splitedResult.length - 1 === index) {
-        return x !== '';
-      }
+  // console.log(
+  //   splitedResult.filter((x, index) => {
+  //     if (index === 0 || splitedResult.length - 1 === index) {
+  //       return x !== '';
+  //     }
 
-      if (x === '' && splitedResult[index + 1] === '') {
-        return false;
-      }
-      return true;
-    }),
-  );
+  //     if (x === '' && splitedResult[index + 1] === '') {
+  //       return false;
+  //     }
+  //     return true;
+  //   }),
+  // );
 
+  //translating
   const finalCombo = splitedResult
     .filter((x, index) => {
+      //removing unecessary spaces
       if (index === 0 || splitedResult.length - 1 === index) {
         return x !== '';
       }
