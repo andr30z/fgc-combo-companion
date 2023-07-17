@@ -47,7 +47,6 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
           }),
         );
         if (error) {
-          console.log(error.response.data);
           throw new Error(
             error.response?.data?.errors?.join(', ') ??
               'Something went wrong while logging in. Try again later.',
@@ -87,6 +86,7 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
           name: user.name,
           authProvider: AuthProviderTypes.GOOGLE,
           oAuthId: user.id,
+          oAuthSecretKey: process.env.OAUTH_SECRET_KEY,
         }),
       );
       if (!error) {
