@@ -27,7 +27,6 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,9 +36,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-
-  @Value("${authentication.auth.oauthkey}")
-  private String oAuthKey;
 
   private final UserRepository userRepository;
 
@@ -257,11 +253,6 @@ public class UserServiceImpl implements UserService {
   public ResponseEntity<LoginResponse> oAuthlogin(
     OAuthLoginRequestDto loginRequest
   ) {
-    log.info(oAuthKey);
-    if (!loginRequest.getOAuthSecretKey().equals(oAuthKey)) {
-      throw new BadRequestException("Secret key doesn't match!");
-    }
-
     String email = loginRequest.getEmail();
     Optional<User> user = this.userRepository.findUserByEmail(email);
 

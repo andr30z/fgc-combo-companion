@@ -15,8 +15,6 @@ logging:
 
 server:
   port: 0
-
-  
 authentication:
   auth:
     secureKey: test
@@ -25,8 +23,6 @@ authentication:
     refreshTokenExpirationMsec: 7776000000
     accessTokenCookieName: accessToken
     refreshTokenCookieName: refreshToken
-    oauthkey: testauthkey
-
 spring:
   mvc:
     pathmatch:

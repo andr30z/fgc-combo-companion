@@ -52,7 +52,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTests {
@@ -122,7 +121,6 @@ public class UserServiceImplTests {
         passwordEncoder,
         userVerificationService
       );
-    ReflectionTestUtils.setField(underTest, "oAuthKey", "testauthkey");
   }
 
   @AfterEach
@@ -259,7 +257,6 @@ public class UserServiceImplTests {
       "teste@mail.com",
       OAuthTypes.GOOGLE.name(),
       "testname_123",
-      "testauthkey",
       "123"
     );
     String userMail = loginRequest.getEmail();
@@ -287,33 +284,6 @@ public class UserServiceImplTests {
   }
 
   @Test
-  @DisplayName(
-    "It should throw when login request token secret are not equals."
-  )
-  void itShouldThrowWhenRequestHasDifferentOAuthToken() {
-    // given
-    OAuthLoginRequestDto loginRequest = new OAuthLoginRequestDto(
-      "teste@mail.com",
-      OAuthTypes.GOOGLE.name(),
-      "testname_123",
-      "DIFFERENT_TOKEN_SECRET",
-      "123"
-    );
-    // String userMail = loginRequest.getEmail();
-    // String testName = loginRequest.getName();
-
-    // when(userRepository.findUserByEmail(anyString()))
-    //   .thenReturn(Optional.of(userToLogin));
-
-    assertThatThrownBy(() -> underTest.oAuthlogin(loginRequest))
-      .isInstanceOf(BadRequestException.class)
-      .hasMessageContaining("Secret key doesn't match!");
-
-    verify(userRepository, never()).findUserByEmail(anyString());
-    verify(userRepository, never()).save(Mockito.any());
-  }
-
-  @Test
   @DisplayName("It should login the user successfully via oAuth.")
   void itShouldLoginThroughOAuth() {
     // given
@@ -321,7 +291,6 @@ public class UserServiceImplTests {
       "teste@mail.com",
       OAuthTypes.GOOGLE.name(),
       "testname",
-      "testauthkey",
       "123"
     );
     String userMail = loginRequest.getEmail();
@@ -372,7 +341,6 @@ public class UserServiceImplTests {
       "teste@mail.com",
       OAuthTypes.GOOGLE.name(),
       "testname",
-      "testauthkey",
       "123"
     );
     String userMail = loginRequest.getEmail();
@@ -658,7 +626,7 @@ public class UserServiceImplTests {
     mockAuthentication();
 
     boolean result = this.underTest.deleteCurrentUser();
-
+    
     assertTrue(result);
     verify(userRepository).delete(currentUser);
   }
