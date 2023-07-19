@@ -11,8 +11,16 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   '623': 'Dragon Punch',
   '236': 'QUARTER CIRCLE FORWARD',
   '41236': 'HALF CIRCLE FORWARD',
+  '21478': '21478',
+  '23698': '23698',
+  '89632': '89632',
+  '87412': '87412',
+  '69874': '69874',
+  '47896': '47896',
   '63214': 'HALF CIRCLE BACK',
+  '421': '421',
   '214': 'QUARTER CIRCLE BACK',
+  '360': '360',
   S: 'SLASH',
   H: 'HEAVY-SLASH',
   P: 'PUNCH',
@@ -164,6 +172,48 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
   }
 >([
   [
+    '21478',
+    {
+      imagePath: '/guilty-gear-strive/moves/21478.png',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP[21478],
+    },
+  ],
+  [
+    '89632',
+    {
+      imagePath: '/guilty-gear-strive/moves/89632.png',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP[89632],
+    },
+  ],
+  [
+    '47896',
+    {
+      imagePath: '/guilty-gear-strive/moves/47896.png',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP[47896],
+    },
+  ],
+  [
+    '23698',
+    {
+      imagePath: '/guilty-gear-strive/moves/23698.png',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP[23698],
+    },
+  ],
+  [
+    '87412',
+    {
+      imagePath: '/guilty-gear-strive/moves/87412.png',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP[87412],
+    },
+  ],
+  [
+    '69874',
+    {
+      imagePath: '/guilty-gear-strive/moves/69874.png',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP[69874],
+    },
+  ],
+  [
     '41236',
     {
       imagePath: '/guilty-gear-strive/moves/41236.png',
@@ -225,6 +275,20 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     {
       imagePath: '/guilty-gear-strive/moves/63214.png',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.HCB,
+    },
+  ],
+  [
+    '421',
+    {
+      imagePath: '/guilty-gear-strive/moves/421.png',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP[421],
+    },
+  ],
+  [
+    '360',
+    {
+      imagePath: '/guilty-gear-strive/moves/360.png',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP[360],
     },
   ],
   [
