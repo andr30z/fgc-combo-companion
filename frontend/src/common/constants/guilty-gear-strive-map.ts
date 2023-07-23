@@ -44,6 +44,13 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   HCF: 'HALF CIRCLE FORWARD',
   HCB: 'HALF CIRCLE BACK',
   XX: 'CANCEL',
+  IAD: 'INSTANT-AIR-DASH',
+  BRC: 'BLUE ROMAN CANCEL',
+  RRC: 'RED ROMAN CANCEL',
+  PRC: 'PURPLE ROMAN CANCEL',
+  YRC: 'YELLOW ROMAN CANCEL',
+  AA: 'ANTI AIR',
+  '/': 'OR',
 } as const;
 
 export type GuiltyGearStriveMapKey = keyof typeof GUILTY_GEAR_STRIVE_COMBO_MAP;
@@ -306,6 +313,41 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     },
   ],
   [
+    'PRC',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.PRC,
+    },
+  ],
+  [
+    'RRC',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.RRC,
+    },
+  ],
+  [
+    'YRC',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.YRC,
+    },
+  ],
+  [
+    'BRC',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.BRC,
+    },
+  ],
+  [
+    'IAD',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.IAD,
+    },
+  ],
+  [
     'DJ.',
     {
       imagePath: '',
@@ -355,7 +397,13 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.XX,
     },
   ],
-
+  [
+    'AA',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.AA,
+    },
+  ],
   [
     'CR',
     {
@@ -480,6 +528,13 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     {
       imagePath: '/guilty-gear-strive/buttons/D.png',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.D,
+    },
+  ],
+  [
+    '/',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP['/'],
     },
   ],
 ]);
