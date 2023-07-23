@@ -1,3 +1,5 @@
+import { ComboStepTranslation } from '../types/combo-translation';
+
 export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   '1': 'DOWN-BACK',
   '2': 'DOWN',
@@ -32,9 +34,11 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   CR: 'CROUCHING',
   'J.': 'JUMPING',
   'JC.': 'JUMP CANCEL',
+  JC: 'JUMP CANCEL',
   'SJ.': 'SUPER JUMP',
   SJC: 'SUPER JUMP CANCEL',
   WS: 'WALL-SPLAT',
+  WB: 'WALL-BREAK',
   DC: 'DASH CANCEL',
   ADC: 'AIR DASH CANCEL',
   PC: 'PUNISH COUNTER',
@@ -50,6 +54,11 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   PRC: 'PURPLE ROMAN CANCEL',
   YRC: 'YELLOW ROMAN CANCEL',
   AA: 'ANTI AIR',
+  whiff: 'WHIFF',
+  dash: 'DASH',
+  delay: 'DELAY',
+  CL: 'CLEAN-HIT',
+  'dl.': 'DELAY',
   '/': 'OR',
 } as const;
 
@@ -170,13 +179,8 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP_TRANSLATION = {
 };
 
 export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
-  GuiltyGearStriveMapKey,
-  {
-    imagePath: string[] | string;
-    action: string;
-    style?: string;
-    actionTitle?: string;
-  }
+  string,
+  ComboStepTranslation
 >([
   [
     '21478',
@@ -232,6 +236,27 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     {
       imagePath: '/guilty-gear-strive/moves/63214.png',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP[63214],
+    },
+  ],
+  [
+    'delay',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.delay,
+    },
+  ],
+  [
+    'whiff',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.whiff,
+    },
+  ],
+  [
+    'dash',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.dash,
     },
   ],
   [
@@ -362,10 +387,24 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     },
   ],
   [
+    'dl.',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP['dl.'],
+    },
+  ],
+  [
     'JC.',
     {
       imagePath: '',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP['JC.'],
+    },
+  ],
+  [
+    'JC',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.JC,
     },
   ],
   [
@@ -398,6 +437,20 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     },
   ],
   [
+    'DC',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.DC,
+    },
+  ],
+  [
+    'WB',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.WB,
+    },
+  ],
+  [
     'AA',
     {
       imagePath: '',
@@ -409,6 +462,13 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     {
       imagePath: '',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.CR,
+    },
+  ],
+  [
+    'CL',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.CL,
     },
   ],
   [
@@ -528,6 +588,27 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     {
       imagePath: '/guilty-gear-strive/buttons/D.png',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.D,
+    },
+  ],
+  [
+    '~',
+    {
+      imagePath: '',
+      action: ' ',
+    },
+  ],
+  [
+    ',',
+    {
+      imagePath: '',
+      action: ' ',
+    },
+  ],
+  [
+    '>',
+    {
+      imagePath: '',
+      action: ' ',
     },
   ],
   [

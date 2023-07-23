@@ -37,11 +37,22 @@ const streetFighter6 = [
   'HCB K, S.MP, S.LK, QCF LP, F.LP, F.LP {CHAR: Jamie}',
 ];
 
+const guiltyGearStrive = [
+  '{CHAR: Faust} 5[D]8 j.D j.H 9 j.D delay j.D j.H 9 j.H{x2}',
+  '{CHAR: Nagoriyuki} 632146S > 66RRC~j.H > [4] > c.S > 2H > 236K > 623HH WS > 236K > 6H',
+  '{CHAR: Potemkin} CH 5H > 236P > 66PRC, c.S > 214H, 632146K~P',
+  '{CHAR: Potemkin} CH 5H > 236P > 66PRC, c.S > 214H, 632146K~P',
+  '{CHAR: Chipp Zanuff} CH 6H > 66 > c.S > 6H > 66 > 2K > 6H > 236S~236S~236K~P',
+  '{CHAR: Sol Badguy} 5[D] > 8, j.D > jc, j.D > j.S > j.D > j.S > jc, j.DD',
+  '{CHAR: Ky Kiske} c.S > 6H > delay > 214S, 665K/2K > 6H > 623H, 2K/c.S WS 623H/214S',
+  '{CHAR: ZATO-1} 236H / 214H~]H[, CH 2H > 214S, delay ]S[, delay 2H > 214K, [6]c.S > [3][2S] > [3][2H], delay ]S[,]H[, delay 2H > 214K, c.S > 2S > 2H > 22H',
+];
+
 const combos = {
   [GameTypes.TEKKEN_7]: tekken7Combos,
   [GameTypes.STREET_FIGHTER_6]: streetFighter6,
   [GameTypes.STREET_FIGHTER_V]: streetFighter6,
-  [GameTypes.GUILTY_GEAR_STRIVE]: streetFighter6,
+  [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStrive,
   [GameTypes.KOF_XV]: streetFighter6,
 };
 export default function ComboTranslator() {
