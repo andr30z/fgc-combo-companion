@@ -12,14 +12,18 @@ interface UseComboTranslatorParams {
 }
 
 const translatorDictionary: Record<GameTypes, ComboTranslatorType> = {
-  TEKKEN_7: tekken7Translator,
-  STREET_FIGHTER_6: streetFighter6Translator,
-  GUILTY_GEAR_STRIVE: guiltyGearStriveTranslator,
-  KOF_XV: () => ({
+  [GameTypes.TEKKEN_7]: tekken7Translator,
+  [GameTypes.STREET_FIGHTER_6]: streetFighter6Translator,
+  [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStriveTranslator,
+  [GameTypes.KOF_XV]: () => ({
     combo: '',
     actions: [],
   }),
-  SFV: () => ({
+  [GameTypes.STREET_FIGHTER_V]: () => ({
+    actions: [],
+    combo: '',
+  }),
+  [GameTypes.DB_FIGHTERZ]: () => ({
     actions: [],
     combo: '',
   }),
