@@ -15,7 +15,7 @@ const Option: FC<{
   const selected = selectedOption === option;
   return (
     <div
-      className={`min-h-[180px] max-h-[280px] min-w-[280px] group overflow-hidden cursor-pointer relative rounded-lg border-4 solid  ${
+      className={`min-h-[180px] max-h-[280px] min-w-[300px] max-w-[300px] group overflow-hidden cursor-pointer relative rounded-lg border-4 solid  ${
         selected ? 'border-primary' : 'border-transparent'
       }`}
       onClick={() => (showSoonMessage ? null : onSelect(option))}
@@ -53,7 +53,7 @@ export const GameSelect: FC<{
           Select a game:
         </span>
       </label>
-      <div className="flex flex-row gap-4 pr-16 w-full overflow-x-auto overflow-y-hidden no-scrollbar relative">
+      <div className="flex flex-row gap-3 pr-16 w-full overflow-x-auto overflow-y-hidden no-scrollbar relative">
         <Option
           option={GameTypes.TEKKEN_7}
           selectedOption={selectedOption}
