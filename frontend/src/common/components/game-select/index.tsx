@@ -15,7 +15,7 @@ const Option: FC<{
   const selected = selectedOption === option;
   return (
     <div
-      className={`min-h-[180px] min-w-[280px] group overflow-hidden cursor-pointer relative rounded-lg border-4 solid  ${
+      className={`min-h-[180px] max-h-[280px] min-w-[280px] group overflow-hidden cursor-pointer relative rounded-lg border-4 solid  ${
         selected ? 'border-primary' : 'border-transparent'
       }`}
       onClick={() => (showSoonMessage ? null : onSelect(option))}
