@@ -54,6 +54,7 @@ const combos = {
   [GameTypes.STREET_FIGHTER_V]: streetFighter6,
   [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStrive,
   [GameTypes.KOF_XV]: streetFighter6,
+  [GameTypes.DB_FIGHTERZ]: streetFighter6,
 };
 export default function ComboTranslator() {
   const params = useSearchParams();
