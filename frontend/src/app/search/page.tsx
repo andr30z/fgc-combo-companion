@@ -117,7 +117,11 @@ export default function SearchPage() {
           iconLeft={<AiOutlineSearch className="text-light" size={27} />}
         />
         <div className="flex flex-row flex-wrap gap-2 w-full mt-4">
-          {[GameTypes.TEKKEN_7, GameTypes.STREET_FIGHTER_6].map((game) => {
+          {[
+            GameTypes.TEKKEN_7,
+            GameTypes.STREET_FIGHTER_6,
+            GameTypes.GUILTY_GEAR_STRIVE,
+          ].map((game) => {
             const isSelected = games.includes(game);
             return (
               <span
