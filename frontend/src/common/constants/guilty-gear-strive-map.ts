@@ -192,7 +192,7 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     {
       imagePath: '',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.xN,
-      regex: /x(\d+)/g,
+      regex: /x(\d+)(?![^{]*})/,
       replaceString: '#{x$1}#',
       uppercaseBeforeTranslation: false,
     },
