@@ -12,8 +12,26 @@ export function replaceAllExceptInBetweenCurlyBracket(
   return originalString.replace(REGEX, `$1${replacement}$2`);
 }
 
-export function splitMulti(str: string, tokens: Array<string>) {
-  const token = tokens[0];
+export function replaceAllWithNoSeparatorsExceptInBetweenCurlyBracket(
+  originalString: string,
+  searchParam: string | RegExp,
+  replacement: string,
+) {
+  const regex = new RegExp(
+    searchParam instanceof RegExp
+      ? searchParam
+      : `(${searchParam.replace('.', '\\.')})(?![^{]*})`,
+    'g',
+  );
+  return originalString.replace(regex, replacement);
+}
+
+export function splitMulti(
+  str: string,
+  tokens: Array<string>,
+  joinToken?: string,
+) {
+  const token = joinToken ? joinToken : tokens[0];
   for (let i = 1; i < tokens.length; i++) {
     str = str.split(tokens[i]).join(token);
   }

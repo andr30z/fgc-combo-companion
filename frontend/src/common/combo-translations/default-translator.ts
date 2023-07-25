@@ -11,12 +11,7 @@ type DefaultComboTranslatorParams = {
   combo: string;
   comboSeparators: Array<string>;
   upperCaseCombo?: boolean;
-  map: {
-    [x: string]: {
-      action: string;
-      imagePath: string | Array<string>;
-    };
-  };
+  map: Map<string, ComboStepTranslation>;
 };
 
 export function defaultComboTranslator({
@@ -37,7 +32,7 @@ export function defaultComboTranslator({
         const upperCasedItem = upperCaseCombo
           ? localItem.toUpperCase()
           : localItem;
-        const mapItem = map[upperCasedItem];
+        const mapItem = map.get(upperCasedItem);
 
         if (mapItem) {
           localStepTranslated = replaceAllExceptInBetweenCurlyBracket(

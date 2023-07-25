@@ -4,24 +4,26 @@ import { tekken7Translator } from '@/common/combo-translations/tekken7';
 import { useMemo } from 'react';
 import { ComboTranslatorType } from '@/common/types/combo-translator';
 import { streetFighter6Translator } from '@/common/combo-translations/street-fighter-6';
+import { guiltyGearStriveTranslator } from '@/common/combo-translations/guilty-gear-strive';
 
 interface UseComboTranslatorParams {
   game: GameTypes;
   combo: string;
 }
 
-const translatorDirectionary: Record<GameTypes, ComboTranslatorType> = {
-  TEKKEN_7: tekken7Translator,
-  STREET_FIGHTER_6: streetFighter6Translator,
-  GUILTY_GEAR_STRIVE: () => ({
+const translatorDictionary: Record<GameTypes, ComboTranslatorType> = {
+  [GameTypes.TEKKEN_7]: tekken7Translator,
+  [GameTypes.STREET_FIGHTER_6]: streetFighter6Translator,
+  [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStriveTranslator,
+  [GameTypes.KOF_XV]: () => ({
     combo: '',
     actions: [],
   }),
-  KOF_XV: () => ({
-    combo: '',
+  [GameTypes.STREET_FIGHTER_V]: () => ({
     actions: [],
+    combo: '',
   }),
-  SFV: () => ({
+  [GameTypes.DB_FIGHTERZ]: () => ({
     actions: [],
     combo: '',
   }),
@@ -32,7 +34,7 @@ export function useComboTranslator({
   game,
 }: UseComboTranslatorParams): ComboTranslationInterface {
   const comboTranslator = (): ComboTranslationInterface => {
-    const translatorFunction = translatorDirectionary[game];
+    const translatorFunction = translatorDictionary[game];
     return translatorFunction
       ? translatorFunction(combo)
       : { actions: [], combo: '' };

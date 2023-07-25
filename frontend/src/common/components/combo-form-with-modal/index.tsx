@@ -21,7 +21,7 @@ export const ComboFormWithModal: FC<ComboFormWithModalProps> = ({
   const [isOpen, { setFalse: closeForm, setTrue: openForm }] = useBoolean();
   return (
     <>
-      <Modal title="Combo Form" isOpen={isOpen} onClose={closeForm}>
+      <Modal title="Combo Form" width="xl" isOpen={isOpen} onClose={closeForm}>
         <ComboForm
           onSuccessUrl={customUrl}
           onSuccess={() => {
