@@ -15,16 +15,16 @@ const Option: FC<{
   const selected = selectedOption === option;
   return (
     <div
-      className={`min-h-[180px] max-h-[280px] min-w-[300px] max-w-[300px] group overflow-hidden cursor-pointer relative rounded-lg border-4 solid  ${
+      className={`min-h-[180px] min-w-[300px] group overflow-hidden cursor-pointer relative rounded-lg border-4 solid  ${
         selected ? 'border-primary' : 'border-transparent'
       }`}
       onClick={() => (showSoonMessage ? null : onSelect(option))}
     >
       <Image
         alt="Fighting game image"
-        className="h-full w-full scale-100 group-hover:scale-110 ease-in duration-500"
-        height={230}
-        width={300}
+        className="scale-100 group-hover:scale-110 ease-in duration-500 min-h-[180px] min-w-[300px]"
+        height="180"
+        width="300"
         src={url}
       />
       {!selected && (
