@@ -36,6 +36,7 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   'JC.': 'JUMP CANCEL',
   JC: 'JUMP CANCEL',
   'SJ.': 'SUPER JUMP',
+  SJ: 'SUPER JUMP',
   SJC: 'SUPER JUMP CANCEL',
   WS: 'WALL-SPLAT',
   WB: 'WALL-BREAK',
@@ -51,6 +52,7 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   IAD: 'INSTANT-AIR-DASH',
   BRC: 'BLUE ROMAN CANCEL',
   RRC: 'RED ROMAN CANCEL',
+  RC: 'ROMAN CANCEL',
   PRC: 'PURPLE ROMAN CANCEL',
   YRC: 'YELLOW ROMAN CANCEL',
   AA: 'ANTI AIR',
@@ -58,8 +60,11 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   dash: 'DASH',
   delay: 'DELAY',
   CL: 'CLEAN-HIT',
-  'dl.': 'DELAY',
+  'CL.': 'CLEAN-HIT',
+  'DL.': 'DELAY',
+  DL: 'DELAY',
   '/': 'OR',
+  xN: 'xN',
 } as const;
 
 export type GuiltyGearStriveMapKey = keyof typeof GUILTY_GEAR_STRIVE_COMBO_MAP;
@@ -182,6 +187,16 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
   string,
   ComboStepTranslation
 >([
+  [
+    'xN',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.xN,
+      regex: /x(\d+)/g,
+      replaceString: '#{x$1}#',
+      uppercaseBeforeTranslation: false,
+    },
+  ],
   [
     '21478',
     {
@@ -359,6 +374,27 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     },
   ],
   [
+    'DL.',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP['DL.'],
+    },
+  ],
+  [
+    'DL',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.DL,
+    },
+  ],
+  [
+    'SJ',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.SJ,
+    },
+  ],
+  [
     'BRC',
     {
       imagePath: '',
@@ -387,17 +423,17 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     },
   ],
   [
-    'dl.',
-    {
-      imagePath: '',
-      action: GUILTY_GEAR_STRIVE_COMBO_MAP['dl.'],
-    },
-  ],
-  [
     'JC.',
     {
       imagePath: '',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP['JC.'],
+    },
+  ],
+  [
+    'CL.',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP['CL.'],
     },
   ],
   [
@@ -455,6 +491,13 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     {
       imagePath: '',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.AA,
+    },
+  ],
+  [
+    'RC',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.RC,
     },
   ],
   [

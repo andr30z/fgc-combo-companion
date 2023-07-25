@@ -14,11 +14,13 @@ export function replaceAllExceptInBetweenCurlyBracket(
 
 export function replaceAllWithNoSeparatorsExceptInBetweenCurlyBracket(
   originalString: string,
-  searchParam: string,
+  searchParam: string | RegExp,
   replacement: string,
 ) {
   const regex = new RegExp(
-    `(${searchParam.replace('.', '\\.')})(?![^{]*})`,
+    searchParam instanceof RegExp
+      ? searchParam
+      : `(${searchParam.replace('.', '\\.')})(?![^{]*})`,
     'g',
   );
   return originalString.replace(regex, replacement);

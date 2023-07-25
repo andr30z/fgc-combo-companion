@@ -13,7 +13,7 @@ export const ComboDisplay: React.FC<ComboDisplayProps> = ({ combo, game }) => {
   return (
     <>
       <ComboTranslation
-        className="justify-self-center my-5"
+        className="justify-center my-5"
         game={game}
         combo={combo}
         style={{

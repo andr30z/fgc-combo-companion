@@ -166,7 +166,7 @@ export default function ComboTranslator() {
           }}
           className={`${
             isExpandedView
-              ? 'w-full min-h-[250px] justify-start content-center '
+              ? 'w-full min-h-[250px] justify-center content-center '
               : ''
           } `}
           backgroundColor={null}
