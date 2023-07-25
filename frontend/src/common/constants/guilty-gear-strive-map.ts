@@ -388,13 +388,6 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     },
   ],
   [
-    'SJ',
-    {
-      imagePath: '',
-      action: GUILTY_GEAR_STRIVE_COMBO_MAP.SJ,
-    },
-  ],
-  [
     'BRC',
     {
       imagePath: '',
@@ -455,6 +448,13 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
     {
       imagePath: '',
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.CH,
+    },
+  ],
+  [
+    'SJ',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP.SJ,
     },
   ],
   [
