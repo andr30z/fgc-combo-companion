@@ -67,7 +67,6 @@ export const guiltyGearStriveTranslator: ComboTranslatorType = (combo) => {
 
   const finalCombo = splitedResult
     .filter((x, index) => {
-      // console.log(x);
       if (index === 0 || splitedResult.length - 1 === index) {
         return x !== '';
       }
