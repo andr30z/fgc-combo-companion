@@ -111,7 +111,11 @@ export const ComboForm: FC<ComboFormProps> = ({
           onChange={onChange('description')}
           label="Description"
         />
-        <GameSelect onSelect={setValue('game')} selectedOption={game} />
+        <GameSelect
+          onSelect={setValue('game')}
+          selectedOption={game}
+          alwaysShowScroll
+        />
         <ComboInput combo={combo} onChange={onChange('combo')} />
         {combo && (
           <ComboTranslation

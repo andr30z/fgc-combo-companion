@@ -32,6 +32,12 @@
   width: 8px;
 }
 
+
+.scroll-bar-sm::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+}
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #b3b3b3;
