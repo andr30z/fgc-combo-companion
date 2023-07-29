@@ -46,7 +46,7 @@ export const GameSelect: FC<{
   onSelect: OnSelectFunction;
   alwaysShowScroll?: boolean;
 }> = (props) => {
-  const { onSelect, selectedOption, alwaysShowScroll } = props;
+  const { onSelect, selectedOption, alwaysShowScroll = true } = props;
   return (
     <div className="flex flex-col text-light w-full">
       <label className="my-4">
@@ -81,7 +81,7 @@ export const GameSelect: FC<{
           selectedOption={selectedOption}
           option={GameTypes.DB_FIGHTERZ}
           onSelect={onSelect}
-          url="/dragon-ball-fighterz/db-fighterz-select.png"
+          url="/dragon-ball-fighterz/dragon-ball-fighterz-select.webp"
           showSoonMessage
         />
         <div

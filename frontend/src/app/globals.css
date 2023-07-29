@@ -35,7 +35,8 @@
 
 .scroll-bar-sm::-webkit-scrollbar {
   width: 5px;
-  height: 8px;
+  height: 5px;
+  opacity: 50;
 }
 
 /* Handle */
