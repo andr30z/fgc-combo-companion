@@ -44,8 +44,9 @@ const Option: FC<{
 export const GameSelect: FC<{
   selectedOption: GameTypes;
   onSelect: OnSelectFunction;
+  alwaysShowScroll?: boolean;
 }> = (props) => {
-  const { onSelect, selectedOption } = props;
+  const { onSelect, selectedOption, alwaysShowScroll = true } = props;
   return (
     <div className="flex flex-col text-light w-full">
       <label className="my-4">
@@ -53,7 +54,11 @@ export const GameSelect: FC<{
           Select a game:
         </span>
       </label>
-      <div className="flex flex-row gap-3 pr-16 w-full overflow-x-auto overflow-y-hidden no-scrollbar relative">
+      <div
+        className={`flex flex-row gap-3 pr-16 w-full ${
+          alwaysShowScroll ? 'py-3 scroll-bar-sm' : 'no-scrollbar'
+        } overflow-y-hidden relative overflow-x-auto`}
+      >
         <Option
           option={GameTypes.TEKKEN_7}
           selectedOption={selectedOption}
@@ -76,12 +81,14 @@ export const GameSelect: FC<{
           selectedOption={selectedOption}
           option={GameTypes.DB_FIGHTERZ}
           onSelect={onSelect}
-          url="/dragon-ball-fighterz/db-fighterz-select.png"
+          url="/dragon-ball-fighterz/dragon-ball-fighterz-select.webp"
           showSoonMessage
         />
         <div
           style={{ boxShadow: '50px 0px 30px 40px #000' }}
-          className="min-h-full min-w-[.01px] xl:hidden  sticky right-0"
+          className={`min-h-full min-w-[.01px] ${
+            alwaysShowScroll ? '' : 'xl:hidden'
+          }  sticky right-0`}
         />
       </div>
     </div>
