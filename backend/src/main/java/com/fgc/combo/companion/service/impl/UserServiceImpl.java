@@ -257,7 +257,6 @@ public class UserServiceImpl implements UserService {
   public ResponseEntity<LoginResponse> oAuthlogin(
     OAuthLoginRequestDto loginRequest
   ) {
-    log.info(oAuthKey);
     if (!loginRequest.getOAuthSecretKey().equals(oAuthKey)) {
       throw new BadRequestException("Secret key doesn't match!");
     }
