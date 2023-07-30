@@ -97,7 +97,7 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
           setSelectedItem(undefined);
           closeForm();
         }}
-        width="lg"
+        width="xl"
       >
         <ComboForm
           onSuccess={() => {
