@@ -56,7 +56,8 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
             {allPlaylists.map((playlist) => (
               <Select.Item
                 key={playlist.id}
-                className="outline-none border-none rounded-[3px] flex items-center h-[25px] w-full select-none text-light hover:bg-light hover:text-secondary-dark px-1"
+                title={playlist.name}
+                className="outline-none border-none rounded-[3px] flex items-center h-[25px] w-full select-none text-light hover:bg-light hover:text-secondary-dark px-1 line-clamp-1"
                 value={playlist.id.toString()}
                 onMouseDown={(e) => {
                   e.stopPropagation();
@@ -66,7 +67,7 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
                   });
                 }}
               >
-                <Select.ItemText className="truncate w-full">
+                <Select.ItemText className="w-full">
                   {playlist.name}
                 </Select.ItemText>
               </Select.Item>
