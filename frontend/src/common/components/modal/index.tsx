@@ -9,9 +9,9 @@ interface ModalProps {
   width?: 'xl' | 'lg' | 'md' | 'sm';
 }
 const widths = {
-  xl: 'w-[90vw]',
-  lg: 'w-[70vw]',
-  md: 'w-[80vw] md:w-[50vw]',
+  xl: 'w-[90vw] md:w-[75vw]',
+  lg: 'w-[80vw] md:w-[65vw]',
+  md: 'w-[65vw] md:w-[50vw]',
   sm: 'w-[50vw] md:w-[30vw]',
 };
 
