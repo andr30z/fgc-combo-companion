@@ -98,7 +98,7 @@ export const PlaylistList: FC<{
               setSelectedItem(undefined);
               closePlaylistForm();
             }}
-            width="lg"
+            width="xl"
           >
             <PlaylistForm
               initialValues={selectedItem}

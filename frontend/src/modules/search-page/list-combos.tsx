@@ -17,6 +17,7 @@ export const ListCombos: FC<ListCombosProps> = ({ combos }) => {
           combo={combo}
           game={game}
           description={description}
+          comboId={id}
         >
           {(openPreview) => (
             <ComboTranslation

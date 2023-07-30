@@ -25,16 +25,24 @@ export function useAddCombosToPlaylist({
       playlistId: string;
       combos: Array<Combo> | Array<string>;
     }) => {
-      return fgcApi
-        .post(FGC_API_URLS.getAddCombosToPlaylistUrl(playlistId), {
-          combos: combos.map((comboOrId) => get(comboOrId, 'id') || comboOrId),
-        })
-        .then(() => {
-          toast.success('Combos added to playlist successfully');
-          if (onSuccess) {
-            onSuccess(playlistId, combos);
-          }
-        });
+      return toast.promise(
+        fgcApi
+          .post(FGC_API_URLS.getAddCombosToPlaylistUrl(playlistId), {
+            combos: combos.map(
+              (comboOrId) => get(comboOrId, 'id') || comboOrId,
+            ),
+          })
+          .then(() => {
+            if (onSuccess) {
+              onSuccess(playlistId, combos);
+            }
+          }),
+        {
+          loading: 'Adding to playlist...',
+          success: 'Added successfully to playlist!',
+          error: 'Something went wrong, try again later!',
+        },
+      );
     },
     {
       retry: 3,

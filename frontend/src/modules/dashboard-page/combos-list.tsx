@@ -80,7 +80,7 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
               setSelectedItem(undefined);
               closeForm();
             }}
-            width="lg"
+            width="xl"
           >
             <ComboForm
               onSuccess={() => {

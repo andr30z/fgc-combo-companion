@@ -10,6 +10,7 @@ import { toast } from 'react-hot-toast';
 import { useApiQuery } from '../api-query';
 import { useBoolean } from '../boolean';
 import { useUser } from '../user';
+import { useDebounce } from '../debounce';
 
 const TEN_MINUTES = 10 * 60 * 1000;
 
@@ -47,6 +48,8 @@ export function usePlaylistDetails(
     refetch();
   };
 
+  const FIVE_SECONDS = 5000;
+  const debouncedRefetchData = useDebounce(refetchData, FIVE_SECONDS);
   const addCombosToPlaylist = (combos: Array<Combo>) => {
     fgcApi
       .post(FGC_API_URLS.getAddCombosToPlaylistUrl(playlistId), {
@@ -95,7 +98,7 @@ export function usePlaylistDetails(
           newPlaylistCombosOrdenation: reordered.map(({ id }) => id),
         },
       )
-      .then(refetchData)
+      .then(debouncedRefetchData)
       .catch(displayFGCApiErrors);
   };
 
