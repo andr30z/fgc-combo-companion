@@ -1,18 +1,6 @@
 package com.fgc.combo.companion.model;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import org.hibernate.annotations.ColumnTransformer;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import com.fgc.combo.companion.enums.ComboGameTypes;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,10 +15,19 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -81,6 +78,11 @@ public class Combo {
   @Fetch(value = FetchMode.JOIN)
   @Builder.Default
   private Set<Tag> tags = new HashSet<>();
+
+  @Column(name = "total_damage")
+  private String totalDamage;
+
+  private String character;
 
   public void setGame(String literalString) {
     this.game = ComboGameTypes.valueOf(literalString);
