@@ -15,6 +15,7 @@ import com.fgc.combo.companion.repository.PlaylistComboRepository;
 import com.fgc.combo.companion.repository.PlaylistRepository;
 import com.fgc.combo.companion.service.PlaylistComboService;
 import com.fgc.combo.companion.service.UserService;
+import com.fgc.combo.companion.utils.ComboCharactersValidation;
 import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.Comparator;
@@ -215,6 +216,15 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
     Playlist playlist,
     CreateComboDTO createComboDTO
   ) {
+    if (
+      createComboDTO.getCharacter() != null &&
+      !ComboCharactersValidation.isComboCharacterValid(
+        createComboDTO.getCharacter(),
+        createComboDTO.getGame()
+      )
+    ) {
+      throw new BadRequestException("Invalid combo character!");
+    }
     Combo combo = comboMapper.toOriginal(createComboDTO);
     User currentUser = userService.me();
 
