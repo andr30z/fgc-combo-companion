@@ -31,5 +31,9 @@ public class ComboResponseDTO {
 
     private UserDto owner;
 
+    private String totalDamage;
+
+    private String character;
+
     private Set<TagResponseDTO> tags;
 }
