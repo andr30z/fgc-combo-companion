@@ -6,6 +6,8 @@ export interface Combo {
   game: GameTypes;
   combo: string;
   description?: string;
+  totalDamage?: string | null;
+  character?: string | null;
   owner: {
     id: string;
     name: string;

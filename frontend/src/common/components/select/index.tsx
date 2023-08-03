@@ -2,16 +2,20 @@
 import * as RadixSelect from '@radix-ui/react-select';
 import { get } from 'lodash';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-
-export const Select: React.FC<{
+export interface SelectProps {
   value: string;
   options: Array<string | { label: string; value: string }>;
   onSelectValue: (value: string) => void;
-}> = (props) => {
-  const { options, value, onSelectValue } = props;
+}
+export const Select: React.FC<SelectProps> = (props) => {
+  const { options: opts, value, onSelectValue } = props;
+  const options = ['Select an option', ...opts];
   return (
-    <RadixSelect.Root onValueChange={onSelectValue}>
-      <RadixSelect.Trigger className="rounded-lg px-[15px] text-sm leading-none min-h-[50px] min-w-[130px] gap-[5px] bg-light flex flex-row items-center justify-between">
+    <RadixSelect.Root
+      value={value ? value : 'Select an option'}
+      onValueChange={onSelectValue}
+    >
+      <RadixSelect.Trigger className="rounded-lg px-[15px] text-sm leading-none min-h-[52px] min-w-[130px] gap-[5px] bg-light flex flex-row items-center justify-between">
         <RadixSelect.Value placeholder={value ? value : 'Select an option'} />
         <RadixSelect.Icon>
           <FaChevronDown className="text-secondary-dark" size={15} />
@@ -20,7 +24,7 @@ export const Select: React.FC<{
       <RadixSelect.Portal>
         <RadixSelect.Content
           onClick={(e) => e.stopPropagation()}
-          className="px-[15px] py-4 overflow-y-hidden min-h-[50px] min-w-[130px] shadow-sm shadow-light-active bg-secondary-dark rounded-lg"
+          className="px-[15px] py-4 overflow-y-hidden min-h-[52px] min-w-[130px] shadow-sm shadow-light-active bg-secondary-dark rounded-lg"
         >
           <RadixSelect.ScrollUpButton className="flex items-center justify-center h-[25px] bg-light  cursor-default">
             <FaChevronUp size={15} />
@@ -33,7 +37,7 @@ export const Select: React.FC<{
                 <RadixSelect.Item
                   key={value}
                   title={label}
-                  className="outline-none border-none rounded-[3px] flex items-center h-[25px] w-full select-none text-light hover:bg-light hover:text-secondary-dark px-1 line-clamp-1"
+                  className="outline-none border-none rounded-[5px] flex items-center h-[30px] w-full select-none text-light hover:bg-light hover:text-secondary-dark px-1 line-clamp-1"
                   value={value}
                 >
                   <RadixSelect.ItemText className="w-full">
