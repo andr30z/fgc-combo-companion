@@ -1,4 +1,6 @@
 import { Button } from '@/common/components/button';
+import { UserPreviewLink } from '@/common/components/user-preview-link';
+import { getCharacterName } from '@/common/constants/game-characters';
 import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
 import { promiseResultWithError } from '@/common/utils/promises';
@@ -81,6 +83,21 @@ export default async function ComboPage({ params }: PageProps) {
         <h1 className="text-light font-primary font-bold text-3xl">
           {combo.name}
         </h1>
+        <UserPreviewLink
+          prefix="Created by"
+          id={combo.owner.id}
+          name={combo.owner.name}
+        />
+        {combo.totalDamage || combo.character ? (
+          <span className="text-sub-info font-primary text-sm">
+            {combo.character
+              ? getCharacterName(combo.game, combo.character)
+              : ''}
+            {combo.totalDamage
+              ? ` ${combo.character ? '-' : ''} ${combo.totalDamage} Damage`
+              : null}
+          </span>
+        ) : null}
         <p className="text-light font-primary font-normal text-sm">
           {combo.description}
         </p>

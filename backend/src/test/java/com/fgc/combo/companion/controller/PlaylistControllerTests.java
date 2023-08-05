@@ -4,12 +4,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
+import com.fgc.combo.companion.dto.CompletePlaylistDTO;
+import com.fgc.combo.companion.dto.CreateComboDTO;
+import com.fgc.combo.companion.dto.CreatePlaylistDTO;
+import com.fgc.combo.companion.dto.PaginationResponse;
+import com.fgc.combo.companion.dto.PlaylistComboResponseDTO;
+import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.ReorderCombosDto;
+import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
+import com.fgc.combo.companion.enums.ComboGameTypes;
+import com.fgc.combo.companion.enums.Tekken7Characters;
+import com.fgc.combo.companion.model.Combo;
+import com.fgc.combo.companion.model.Playlist;
+import com.fgc.combo.companion.model.PlaylistCombo;
+import com.fgc.combo.companion.model.User;
+import com.fgc.combo.companion.repository.ComboRepository;
+import com.fgc.combo.companion.repository.PlaylistComboRepository;
+import com.fgc.combo.companion.repository.PlaylistRepository;
+import com.fgc.combo.companion.repository.UserRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,27 +49,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.webjars.NotFoundException;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
-import com.fgc.combo.companion.dto.CompletePlaylistDTO;
-import com.fgc.combo.companion.dto.CreateComboDTO;
-import com.fgc.combo.companion.dto.CreatePlaylistDTO;
-import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistComboResponseDTO;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
-import com.fgc.combo.companion.dto.ReorderCombosDto;
-import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
-import com.fgc.combo.companion.enums.ComboGameTypes;
-import com.fgc.combo.companion.model.Combo;
-import com.fgc.combo.companion.model.Playlist;
-import com.fgc.combo.companion.model.PlaylistCombo;
-import com.fgc.combo.companion.model.User;
-import com.fgc.combo.companion.repository.ComboRepository;
-import com.fgc.combo.companion.repository.PlaylistComboRepository;
-import com.fgc.combo.companion.repository.PlaylistRepository;
-import com.fgc.combo.companion.repository.UserRepository;
 
 /**
  *
@@ -533,6 +532,38 @@ public class PlaylistControllerTests {
 
   @Test
   @WithUserDetails("test@gmail.com")
+  void itShouldErrorWhenCreatingComboAndCharacterIsNotFromSelectedGame()
+    throws Exception {
+    Playlist playlist = createEmptyPlaylist(currentUser, "TEST__333");
+    MvcResult mvcResult =
+      this.mockMvc.perform(
+          MockMvcRequestBuilders
+            .post("/api/v1/playlists/{id}/new-combo", playlist.getId())
+            .contentType("application/json")
+            .content(
+              objectMapper.writeValueAsString(
+                CreateComboDTO
+                  .builder()
+                  .name("TEST Name")
+                  .description("Updated description")
+                  .combo("d/f+2")
+                  .game(ComboGameTypes.Constants.STREET_FIGHTER_6)
+                  .character(Tekken7Characters.MASTER_RAVEN.name())
+                  .build()
+              )
+            )
+        )
+        .andReturn();
+    assertEquals(
+      mvcResult.getResponse().getStatus(),
+      HttpStatus.BAD_REQUEST.value()
+    );
+    assertThat(mvcResult.getResponse().getContentAsString())
+      .contains("Invalid combo character!");
+  }
+
+  @Test
+  @WithUserDetails("test@gmail.com")
   void itShouldCreateNewComboAndAddToPlaylist() throws Exception {
     Playlist playlist = createEmptyPlaylist(currentUser, "TEST");
     MvcResult mvcResult =
@@ -548,6 +579,7 @@ public class PlaylistControllerTests {
                   .description("Updated description")
                   .combo("d/f+2")
                   .game(ComboGameTypes.Constants.TEKKEN_7)
+                  .character(Tekken7Characters.MASTER_RAVEN.name())
                   .build()
               )
             )

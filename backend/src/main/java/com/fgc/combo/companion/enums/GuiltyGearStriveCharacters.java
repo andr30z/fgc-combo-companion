@@ -1,0 +1,28 @@
+package com.fgc.combo.companion.enums;
+
+public enum GuiltyGearStriveCharacters {
+  SOL_BADGUY,
+  KY_KISKE,
+  MAY,
+  FAUST,
+  POTEMKIN,
+  CHIPP_ZANUFF,
+  ZATO_ONE,
+  MILLIA_RAGE,
+  AXL_LOW,
+  TESTAMENT,
+  BAIKEN,
+  ANJI_MITO,
+  BRIDGET,
+  I_NO,
+  SIN_KISKE,
+  LEO_WHITEFANG,
+  RAMLETHAL_VALENTINE,
+  JACK_O_VALENTINE,
+  GIOVANNA,
+  NAGORIYUKI,
+  GOLDLEWIS_DICKINSON,
+  HAPPY_CHAOS,
+  BEDMAN,
+  ASUKA_R_KREUTZ,
+}

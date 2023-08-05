@@ -25,11 +25,17 @@ public class ComboResponseDTO {
 
     private LocalDateTime createdAt;
     
+    private LocalDateTime updatedAt;
+    
     private ComboGameTypes game;
 
     private String description;
 
     private UserDto owner;
+
+    private String totalDamage;
+
+    private String character;
 
     private Set<TagResponseDTO> tags;
 }

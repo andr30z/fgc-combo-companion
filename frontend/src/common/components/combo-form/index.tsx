@@ -16,6 +16,7 @@ import type { FC } from 'react';
 import { useInvalidateGlobalSearchQueries } from '@/common/hooks/invalidate-global-search-queries';
 import { LOCAL_STORAGE_KEYS } from '@/common/constants/local-storage-keys';
 import { get } from 'lodash';
+import { SelectCharacter } from '../select-character';
 
 type ComboWithId = Omit<Combo, 'id' | 'owner'> & { id?: string | number };
 interface ComboFormProps {
@@ -40,10 +41,12 @@ export const ComboForm: FC<ComboFormProps> = ({
     game: initialGameTypeSelect || GameTypes.TEKKEN_7,
     combo: '',
     description: '',
+    character: '',
+    totalDamage: '',
   };
   const [
-    { combo, description, game, name, id },
-    { onChange, setValue },
+    { combo, description, game, name, id, totalDamage, character },
+    { onChange, setValue, setValues },
     onSubmit,
   ] = useForm<ComboWithId>(initialValues ?? initialForm);
   const [isLoading, { setTrue: startLoading, setFalse: closeLoading }] =
@@ -111,8 +114,20 @@ export const ComboForm: FC<ComboFormProps> = ({
           onChange={onChange('description')}
           label="Description"
         />
+        <Input
+          value={totalDamage || ''}
+          onChange={onChange('totalDamage')}
+          label="Total Damage"
+        />
+        <SelectCharacter
+          game={game}
+          value={character ?? ''}
+          onSelectValue={setValue('character')}
+        />
         <GameSelect
-          onSelect={setValue('game')}
+          onSelect={(game) => {
+            setValues({ character: '', game });
+          }}
           selectedOption={game}
           alwaysShowScroll
         />

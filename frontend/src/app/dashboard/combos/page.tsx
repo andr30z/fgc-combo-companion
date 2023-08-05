@@ -20,11 +20,9 @@ export default async function DashboardCombosPage() {
   protectedRouteValidator();
   const fgcInstance = getFgcApiInstanceWithTokenCookie(cookies());
   const { result: initialComboData } = await promiseResultWithError(
-    fgcInstance.get<FGCApiPaginationResponse<Combo>>(FGC_API_URLS.MY_COMBOS, {
-      params: {
-        sort: 'id,desc',
-      },
-    }),
+    fgcInstance.get<FGCApiPaginationResponse<Combo>>(
+      FGC_API_URLS.MY_COMBOS + '?sort=updatedAt,desc',
+    ),
   );
   return (
     <TabContent value="combos" className="outline-none layout-padding-x">

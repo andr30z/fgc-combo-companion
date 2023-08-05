@@ -21,7 +21,7 @@ public class CreateComboDTO {
 
   @ValueOfEnum(
     enumClass = ComboGameTypes.class,
-    message = "must be one of: "+ComboGameTypes.Constants.ALL_GAME_TYPES
+    message = "must be one of: " + ComboGameTypes.Constants.ALL_GAME_TYPES
   )
   @NotNull(message = "is required")
   private String game;
@@ -31,4 +31,10 @@ public class CreateComboDTO {
 
   @Length(max = 255)
   private String description;
+
+  @Length(max = 255)
+  private String totalDamage;
+
+  @Length(max = 255)
+  private String character;
 }

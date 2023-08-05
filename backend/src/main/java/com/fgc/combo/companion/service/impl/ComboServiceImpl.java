@@ -4,6 +4,7 @@ import com.fgc.combo.companion.dto.CreateComboDTO;
 import com.fgc.combo.companion.dto.PaginationResponse;
 import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
 import com.fgc.combo.companion.dto.UpdateComboDTO;
+import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.mapper.ComboMapper;
@@ -13,6 +14,7 @@ import com.fgc.combo.companion.model.User;
 import com.fgc.combo.companion.repository.ComboRepository;
 import com.fgc.combo.companion.service.ComboService;
 import com.fgc.combo.companion.service.UserService;
+import com.fgc.combo.companion.utils.ComboCharactersValidation;
 import com.fgc.combo.companion.utils.URLDecoderUtil;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -39,12 +41,29 @@ public class ComboServiceImpl implements ComboService {
     this.userService = userService;
   }
 
+  private void validateComboCharacter(String character, String game) {
+ if (
+      character != null &&
+      !ComboCharactersValidation.isComboCharacterValid(
+        character,
+        game
+      )
+    ) {
+      throw new BadRequestException("Invalid combo character!");
+    }
+  }
+
   @Override
   public Combo create(CreateComboDTO createComboDTO) {
+
+    String gameType = createComboDTO.getGame();
+
+    this.validateComboCharacter(createComboDTO.getCharacter(), gameType);
+
     Combo combo = comboMapper.toOriginal(createComboDTO);
     User currentUser = userService.me();
     combo.setOwner(currentUser);
-    combo.setGame(createComboDTO.getGame());
+    combo.setGame(gameType);
     log.info(
       "Creating combo with name: {} and game: {}",
       combo.getName(),
@@ -58,6 +77,8 @@ public class ComboServiceImpl implements ComboService {
     Combo combo =
       this.comboRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
+ 
+    this.validateComboCharacter(updateComboDTO.getCharacter(), updateComboDTO.getGame());
 
     User currentUser = userService.me();
     if (!combo.getOwner().getId().equals(currentUser.getId())) {

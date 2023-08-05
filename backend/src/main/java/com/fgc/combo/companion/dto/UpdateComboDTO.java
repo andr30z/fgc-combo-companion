@@ -25,4 +25,10 @@ public class UpdateComboDTO {
 
   @Length(max = 255)
   private String description;
+
+  @Length(max = 255)
+  private String totalDamage;
+
+  @Length(max = 255)
+  private String character;
 }

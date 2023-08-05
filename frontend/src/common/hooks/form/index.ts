@@ -29,6 +29,10 @@ export function useForm<T>(initialState: T) {
       [name]: value,
     });
   };
+
+  const setValues = (values: Partial<T>) => {
+    setState((pastState) => ({ ...pastState, ...values }));
+  };
   const onSubmit = useCallback(
     (handleSubmit: SubmitFunction<T>) =>
       async (
@@ -42,5 +46,5 @@ export function useForm<T>(initialState: T) {
     [state],
   );
 
-  return [state, { onChange, setValue, set }, onSubmit] as const;
+  return [state, { onChange, setValue, setValues, set }, onSubmit] as const;
 }
