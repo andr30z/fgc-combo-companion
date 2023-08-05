@@ -1,3 +1,4 @@
+import { getCharacterName } from '@/common/constants/game-characters';
 import { useBoolean } from '@/common/hooks/boolean';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
@@ -17,11 +18,10 @@ import { ComboForm } from '../combo-form';
 import { ComboPreview } from '../combo-preview';
 import { ComboTranslation } from '../combo-translation';
 import { ConfirmAction } from '../confirm-action-modal';
-import { Link } from '../link';
 import { ListItems, ListItemsProps } from '../list-items';
 import { LoadingBackdrop } from '../loading-backdrop';
 import { Modal } from '../modal';
-import { UserPreview } from '../user-preview';
+import { UserPreviewLink } from '../user-preview-link';
 
 type ComboOrPlaylistCombo = Combo | PlaylistCombo;
 interface ComboListItemsProps extends ListItemsProps<ComboOrPlaylistCombo> {
@@ -140,6 +140,8 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                     description={combo.description}
                     game={combo.game}
                     comboId={combo.id}
+                    character={combo.character}
+                    totalDamage={combo.totalDamage}
                   >
                     {(openComboDetails) => (
                       <ComboTranslation
@@ -149,8 +151,6 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                         backgroundColor={
                           isComboHighlited ? 'light-active' : 'dark'
                         }
-                        // renderFooter={() => (
-                        // )}
                         game={combo.game}
                         combo={combo.combo}
                         onClick={(e) => {
@@ -171,6 +171,23 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                             ? showComboDeleteIconValidation(item)
                             : currentUserIsOwner;
 
+                          const damageAndCharacter =
+                            combo.totalDamage || combo.character ? (
+                              <span className="text-sub-info font-primary text-sm mt-[1px]">
+                                {combo.character
+                                  ? getCharacterName(
+                                      combo.game,
+                                      combo.character,
+                                    )
+                                  : ''}
+                                {combo.totalDamage
+                                  ? ` ${combo.character ? '-' : ''} ${
+                                      combo.totalDamage
+                                    } Damage`
+                                  : null}
+                              </span>
+                            ) : null;
+
                           return (
                             <header className=" w-full mb-4 items-center flex flex-wrap flex-row justify-between">
                               <div className="flex flex-col max-w-[80%]">
@@ -180,26 +197,12 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                                 >
                                   {combo.name}
                                 </h5>
+                                {damageAndCharacter}
                                 {showComboOwner && (
-                                  <UserPreview
-                                    userId={combo.owner.id}
-                                    trigger={
-                                      <button>
-                                        <Link
-                                          href={`/user/${combo.owner.id}`}
-                                          useHoverStyles={false}
-                                          onClick={(e) => e.stopPropagation()}
-                                          className="text-ellipsis truncate text-sub-info font-primary text-sm mt-[1px] hover:decoration-sub-info hover:underline"
-                                        >
-                                          Created by{' '}
-                                          {currentUserIsOwner ? (
-                                            <strong>you</strong>
-                                          ) : (
-                                            combo.owner.name
-                                          )}
-                                        </Link>
-                                      </button>
-                                    }
+                                  <UserPreviewLink
+                                    id={combo.owner.id}
+                                    name={combo.owner.name}
+                                    prefix="Created by"
                                   />
                                 )}
                               </div>

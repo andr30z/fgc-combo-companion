@@ -6,12 +6,15 @@ import { GameTypes } from '@/common/types/game-types';
 import { Button } from '../button';
 import { BsFillShareFill } from 'react-icons/bs';
 import { toast } from 'react-hot-toast';
+import { getCharacterName } from '@/common/constants/game-characters';
 export const ComboPreview: FC<
   {
     combo: string;
     description?: string;
     game: GameTypes;
     comboId?: string;
+    character?: string | null;
+    totalDamage?: string | null;
     children: (openComboDetails: () => void) => ReactNode;
   } & Pick<ComboTranslationProps, 'htmlProps'>
 > = ({
@@ -21,11 +24,21 @@ export const ComboPreview: FC<
   children: renderTrigger,
   htmlProps,
   comboId,
+  character,
+  totalDamage,
 }) => {
   const [
     isComboDetailsOpen,
     { setTrue: openComboDetails, setFalse: closeComboDetails },
   ] = useBoolean();
+
+  const damageAndCharacter =
+    totalDamage || character ? (
+      <span className="text-light font-primary text-sm mt-[1px]">
+        {character ? getCharacterName(game, character) : ''}
+        {totalDamage ? ` ${character ? '-' : ''} ${totalDamage} Damage` : null}
+      </span>
+    ) : null;
   return (
     <>
       <Modal
@@ -34,6 +47,7 @@ export const ComboPreview: FC<
         onClose={closeComboDetails}
         width="xl"
       >
+        {damageAndCharacter}
         <ComboTranslation
           combo={combo}
           game={game}

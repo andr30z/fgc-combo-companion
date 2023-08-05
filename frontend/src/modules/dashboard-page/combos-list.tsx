@@ -34,12 +34,11 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
     isFetching: isLoadingCombos,
   } = useApiQuery<FGCApiPaginationResponse<Combo>>({
     apiConfig: {
-      url: FGC_API_URLS.MY_COMBOS,
-      params: {
-        name: encodeURIComponent(searchValue),
-        sort: 'id,desc',
-        page: page.toString(),
-      },
+      url:
+        FGC_API_URLS.MY_COMBOS +
+        `?sort=updatedAt,desc&page=${page}&name=${encodeURIComponent(
+          searchValue,
+        )}`,
     },
     initialData: initialComboData ?? undefined,
     key: ['combos', user?.id],
