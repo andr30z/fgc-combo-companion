@@ -25,6 +25,8 @@ public class ComboResponseDTO {
 
     private LocalDateTime createdAt;
     
+    private LocalDateTime updatedAt;
+    
     private ComboGameTypes game;
 
     private String description;
