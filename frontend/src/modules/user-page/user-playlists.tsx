@@ -29,7 +29,11 @@ export const UserPlaylists: React.FC<UserPlaylistsProps> = ({
       className="w-full layout-padding-x flex flex-col items-center justify-center"
       value="playlists"
     >
-      <PlaylistList showEditButton={false} items={playlistData?.data ?? []} />
+      <PlaylistList
+        showEditButton={false}
+        items={playlistData?.data ?? []}
+        emptyListMessage="This user doesn't have any playlists yet"
+      />
       {playlistData && (
         <div className="mt-5 w-full">
           <Pagination
