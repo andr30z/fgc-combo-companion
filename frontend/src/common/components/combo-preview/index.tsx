@@ -1,12 +1,11 @@
-import { useBoolean } from '@/common/hooks/boolean';
-import { Modal } from '../modal';
-import { ComboTranslation, ComboTranslationProps } from '../combo-translation';
-import type { FC, ReactNode } from 'react';
-import { GameTypes } from '@/common/types/game-types';
-import { Button } from '../button';
-import { BsFillShareFill } from 'react-icons/bs';
-import { toast } from 'react-hot-toast';
 import { getCharacterName } from '@/common/constants/game-characters';
+import { useBoolean } from '@/common/hooks/boolean';
+import { GameTypes } from '@/common/types/game-types';
+import type { FC, ReactNode } from 'react';
+import { BsFillShareFill } from 'react-icons/bs';
+import { ComboTranslation, ComboTranslationProps } from '../combo-translation';
+import { CopyTextButton } from '../copy-text-button';
+import { Modal } from '../modal';
 export const ComboPreview: FC<
   {
     combo: string;
@@ -34,7 +33,7 @@ export const ComboPreview: FC<
 
   const damageAndCharacter =
     totalDamage || character ? (
-      <span className="text-light font-primary text-sm mt-[1px]">
+      <span className="text-light font-primary text-lg mt-[1px]">
         {character ? getCharacterName(game, character) : ''}
         {totalDamage ? ` ${character ? '-' : ''} ${totalDamage} Damage` : null}
       </span>
@@ -67,20 +66,11 @@ export const ComboPreview: FC<
         )}
         {comboId && (
           <div className="w-full flex items-center justify-center mt-5">
-            <Button
-              color="primary"
-              leftIcon={<BsFillShareFill size={15} />}
+            <CopyTextButton
+              buttonIcon={<BsFillShareFill size={15} />}
+              textToCopy={`/combo/${comboId}`}
+              isAppUrlCopy
               text="Share"
-              onClick={() => {
-                navigator.clipboard.writeText(
-                  `${
-                    process.env.NODE_ENV === 'production'
-                      ? 'https://app.fgc-combo-companion.xyz'
-                      : 'http://localhost:3000'
-                  }/combo/${comboId}`,
-                );
-                toast.success('The share link was copied to the clipboard');
-              }}
             />
           </div>
         )}

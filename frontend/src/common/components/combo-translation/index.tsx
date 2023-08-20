@@ -21,8 +21,12 @@ export interface ComboTranslationProps {
     HTMLDivElement
   >;
   style?: React.CSSProperties;
-  rendeHeader?: (result: ComboTranslationInterface) => React.ReactNode;
-  renderFooter?: (result: ComboTranslationInterface) => React.ReactNode;
+  rendeHeader?: (
+    comboTranslationResult: ComboTranslationInterface,
+  ) => React.ReactNode;
+  renderFooter?: (
+    comboTranslationResult: ComboTranslationInterface,
+  ) => React.ReactNode;
 }
 
 export const ComboTranslation: FC<ComboTranslationProps> = ({
