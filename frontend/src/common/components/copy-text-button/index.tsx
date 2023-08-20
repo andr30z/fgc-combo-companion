@@ -36,7 +36,9 @@ export const CopyTextButton: React.FC<CopyTextButtonProps> = ({
         element.value = getCopyText();
         document.body.appendChild(element);
         element.select();
+        element.focus();
         document.execCommand('copy');
+        element.blur();
         document.body.removeChild(element);
         navigator?.clipboard?.writeText(getCopyText());
         toast.success('The share link was copied to the clipboard');
