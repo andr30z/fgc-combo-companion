@@ -3,6 +3,7 @@ import { Button } from '@/common/components/button';
 import { ColorPicker } from '@/common/components/color-picker';
 import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
+import { CopyTextButton } from '@/common/components/copy-text-button';
 import { GameSelect } from '@/common/components/game-select';
 import { LOCAL_STORAGE_KEYS } from '@/common/constants/local-storage-keys';
 import { useBoolean } from '@/common/hooks/boolean';
@@ -11,7 +12,6 @@ import { GameTypes } from '@/common/types/game-types';
 import { get } from 'lodash';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from 'react-hot-toast';
 import { BiCollapse, BiExpand } from 'react-icons/bi';
 import { BsFillShareFill } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
@@ -121,21 +121,12 @@ export default function ComboTranslator() {
           />
           {combo.trim().length > 0 && (
             <>
-              <Button
-                color="primary"
-                leftIcon={<BsFillShareFill size={17} />}
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `${
-                      process.env.NODE_ENV === 'production'
-                        ? 'https://app.fgc-combo-companion.xyz'
-                        : 'http://localhost:3000'
-                    }/combo-translator?combo=${encodeURIComponent(
-                      combo,
-                    )}&game=${game}`,
-                  );
-                  toast.success('The share link was copied to the clipboard');
-                }}
+              <CopyTextButton
+                isAppUrlCopy
+                buttonIcon={<BsFillShareFill size={17} />}
+                textToCopy={`/combo-translator?combo=${encodeURIComponent(
+                  combo,
+                )}&game=${game}`}
               />
               <Button
                 rightIcon={
