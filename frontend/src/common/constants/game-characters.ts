@@ -111,6 +111,7 @@ export const GAME_CHARACTERS_MAP = new Map<
       { label: 'Happy Chaos', value: 'HAPPY_CHAOS' },
       { label: 'Bedman?', value: 'BEDMAN' },
       { label: 'Asuka R Kreutz', value: 'ASUKA_R_KREUTZ' },
+      { label: 'Johnny', value: 'JOHNNY' },
     ],
   ],
 ]);

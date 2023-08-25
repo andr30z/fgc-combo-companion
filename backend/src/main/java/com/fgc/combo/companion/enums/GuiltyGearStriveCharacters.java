@@ -25,4 +25,5 @@ public enum GuiltyGearStriveCharacters {
   HAPPY_CHAOS,
   BEDMAN,
   ASUKA_R_KREUTZ,
+  JOHNNY
 }
