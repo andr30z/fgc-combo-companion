@@ -6,15 +6,15 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
-import com.fgc.combo.companion.dto.CompletePlaylistDTO;
-import com.fgc.combo.companion.dto.CreateComboDTO;
-import com.fgc.combo.companion.dto.CreatePlaylistDTO;
+import com.fgc.combo.companion.dto.AddCombosToPlaylistDto;
+import com.fgc.combo.companion.dto.CompletePlaylistDto;
+import com.fgc.combo.companion.dto.CreateComboDto;
+import com.fgc.combo.companion.dto.CreatePlaylistDto;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistComboResponseDTO;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.PlaylistComboResponseDto;
+import com.fgc.combo.companion.dto.PlaylistResponseDto;
 import com.fgc.combo.companion.dto.ReorderCombosDto;
-import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
+import com.fgc.combo.companion.dto.UpdatePlaylistDto;
 import com.fgc.combo.companion.enums.ComboGameTypes;
 import com.fgc.combo.companion.enums.Tekken7Characters;
 import com.fgc.combo.companion.model.Combo;
@@ -136,8 +136,8 @@ public class PlaylistControllerTests {
         .build();
   }
 
-  private CreatePlaylistDTO createPlaylistDTO(Set<UUID> comboIds) {
-    CreatePlaylistDTO createPlaylistDTO = new CreatePlaylistDTO();
+  private CreatePlaylistDto createPlaylistDTO(Set<UUID> comboIds) {
+    CreatePlaylistDto createPlaylistDTO = new CreatePlaylistDto();
     createPlaylistDTO.setName("TEST");
     createPlaylistDTO.setDescription("TEST DESCRIPTION");
     createPlaylistDTO.setCombos(comboIds);
@@ -171,19 +171,19 @@ public class PlaylistControllerTests {
     return playlistRepository.save(playlist);
   }
 
-  private PlaylistResponseDTO doPlaylistCreationTest(Set<UUID> comboIds)
+  private PlaylistResponseDto doPlaylistCreationTest(Set<UUID> comboIds)
     throws Exception {
     final long numberOfPlaylists = playlistRepository.count();
     // Given
-    CreatePlaylistDTO playlist = createPlaylistDTO(comboIds);
+    CreatePlaylistDto playlist = createPlaylistDTO(comboIds);
 
     MvcResult mvcResult = createPostMvcAction("/api/v1/playlists", playlist)
       .andReturn();
 
     assertSuccessResponse(mvcResult.getResponse().getStatus());
-    PlaylistResponseDTO expectedResult = toPlaylistResposeDTO(
+    PlaylistResponseDto expectedResult = toPlaylistResposeDTO(
       mvcResult.getResponse().getContentAsString(),
-      PlaylistResponseDTO.class
+      PlaylistResponseDto.class
     );
     assertThat(playlistRepository.count()).isGreaterThan(numberOfPlaylists);
     assertThat(expectedResult.getId()).isNotNull();
@@ -192,7 +192,7 @@ public class PlaylistControllerTests {
     return expectedResult;
   }
 
-  private PaginationResponse<PlaylistResponseDTO> setupSearchPlaylist(
+  private PaginationResponse<PlaylistResponseDto> setupSearchPlaylist(
     String url
   ) throws Exception {
     MvcResult mvcResult =
@@ -202,9 +202,9 @@ public class PlaylistControllerTests {
         .andReturn();
 
     assertSuccessResponse(mvcResult.getResponse().getStatus());
-    PaginationResponse<PlaylistResponseDTO> response = objectMapper.readValue(
+    PaginationResponse<PlaylistResponseDto> response = objectMapper.readValue(
       mvcResult.getResponse().getContentAsString(),
-      new TypeReference<PaginationResponse<PlaylistResponseDTO>>() {}
+      new TypeReference<PaginationResponse<PlaylistResponseDto>>() {}
     );
     return response;
   }
@@ -212,7 +212,7 @@ public class PlaylistControllerTests {
   @Test
   @WithUserDetails("test@gmail.com")
   void itShouldCreateAPlaylist() throws Exception {
-    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+    PlaylistResponseDto playlistResponseDTO = doPlaylistCreationTest(
       new HashSet<>()
     );
     Playlist createdPlaylist =
@@ -242,7 +242,7 @@ public class PlaylistControllerTests {
         .build()
     );
     List<Combo> createdCombos = comboRepository.saveAll(combos);
-    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+    PlaylistResponseDto playlistResponseDTO = doPlaylistCreationTest(
       createdCombos.stream().map(Combo::getId).collect(Collectors.toSet())
     );
 
@@ -267,7 +267,7 @@ public class PlaylistControllerTests {
   @Test
   @WithUserDetails("test@gmail.com")
   void itShouldGetPlaylistDetails() throws Exception {
-    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+    PlaylistResponseDto playlistResponseDTO = doPlaylistCreationTest(
       new HashSet<>()
     );
     MvcResult mvcResult =
@@ -278,9 +278,9 @@ public class PlaylistControllerTests {
         )
         .andReturn();
     assertSuccessResponse(mvcResult.getResponse().getStatus());
-    CompletePlaylistDTO playlist = toPlaylistResposeDTO(
+    CompletePlaylistDto playlist = toPlaylistResposeDTO(
       mvcResult.getResponse().getContentAsString(),
-      CompletePlaylistDTO.class
+      CompletePlaylistDto.class
     );
 
     assertThat(playlist.getId()).isEqualTo(playlistResponseDTO.getId());
@@ -293,7 +293,7 @@ public class PlaylistControllerTests {
   @Test
   @WithUserDetails("test@gmail.com")
   void itShouldAddCombosToPlaylist() throws Exception {
-    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+    PlaylistResponseDto playlistResponseDTO = doPlaylistCreationTest(
       new HashSet<>()
     );
 
@@ -302,7 +302,7 @@ public class PlaylistControllerTests {
           "{playlistId}",
           playlistResponseDTO.getId().toString()
         ),
-      AddCombosToPlaylistDTO
+      AddCombosToPlaylistDto
         .builder()
         .combos(Set.of(defaultCombo.getId()))
         .build()
@@ -313,9 +313,9 @@ public class PlaylistControllerTests {
     );
     assertSuccessResponse(mvcResult.getResponse().getStatus());
 
-    CompletePlaylistDTO playlist = toPlaylistResposeDTO(
+    CompletePlaylistDto playlist = toPlaylistResposeDTO(
       mvcResult.getResponse().getContentAsString(),
-      CompletePlaylistDTO.class
+      CompletePlaylistDto.class
     );
 
     assertThat(
@@ -338,7 +338,7 @@ public class PlaylistControllerTests {
           "{playlistId}",
           playlist.getId().toString()
         ),
-      AddCombosToPlaylistDTO
+      AddCombosToPlaylistDto
         .builder()
         .combos(Set.of(defaultCombo.getId()))
         .build()
@@ -443,7 +443,7 @@ public class PlaylistControllerTests {
   @Test
   @WithUserDetails("test@gmail.com")
   void itShouldUpdatePlaylist() throws Exception {
-    PlaylistResponseDTO playlistResponseDTO = doPlaylistCreationTest(
+    PlaylistResponseDto playlistResponseDTO = doPlaylistCreationTest(
       new HashSet<>()
     );
 
@@ -454,7 +454,7 @@ public class PlaylistControllerTests {
             .contentType("application/json")
             .content(
               objectMapper.writeValueAsString(
-                UpdatePlaylistDTO
+                UpdatePlaylistDto
                   .builder()
                   .name("Updated name")
                   .description("Updated description")
@@ -464,9 +464,9 @@ public class PlaylistControllerTests {
         )
         .andReturn();
     assertSuccessResponse(mvcResult.getResponse().getStatus());
-    PlaylistResponseDTO updatedPlaylistResponseDTO = toPlaylistResposeDTO(
+    PlaylistResponseDto updatedPlaylistResponseDTO = toPlaylistResposeDTO(
       mvcResult.getResponse().getContentAsString(),
-      PlaylistResponseDTO.class
+      PlaylistResponseDto.class
     );
 
     Playlist updatedPlaylist = playlistRepository
@@ -488,13 +488,13 @@ public class PlaylistControllerTests {
     Playlist secondPlaylist = createEmptyPlaylist(currentUser, "playlist 2");
     Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL test");
 
-    PaginationResponse<PlaylistResponseDTO> response = setupSearchPlaylist(
+    PaginationResponse<PlaylistResponseDto> response = setupSearchPlaylist(
       "/api/v1/playlists/me?name={name}".replace("{name}", playlist.getName())
     );
     List<String> responsePlaylistNames = response
       .getData()
       .stream()
-      .map(PlaylistResponseDTO::getName)
+      .map(PlaylistResponseDto::getName)
       .toList();
 
     assertThat(responsePlaylistNames)
@@ -511,13 +511,13 @@ public class PlaylistControllerTests {
     Playlist secondPlaylist = createEmptyPlaylist(currentUser, "tESt123");
     Playlist thirdPlaylist = createEmptyPlaylist(currentUser, "COOL PLAYLIST");
 
-    PaginationResponse<PlaylistResponseDTO> response = setupSearchPlaylist(
+    PaginationResponse<PlaylistResponseDto> response = setupSearchPlaylist(
       "/api/v1/playlists/me"
     );
     List<String> responsePlaylistNames = response
       .getData()
       .stream()
-      .map(PlaylistResponseDTO::getName)
+      .map(PlaylistResponseDto::getName)
       .toList();
 
     assertThat(responsePlaylistNames)
@@ -542,7 +542,7 @@ public class PlaylistControllerTests {
             .contentType("application/json")
             .content(
               objectMapper.writeValueAsString(
-                CreateComboDTO
+                CreateComboDto
                   .builder()
                   .name("TEST Name")
                   .description("Updated description")
@@ -573,7 +573,7 @@ public class PlaylistControllerTests {
             .contentType("application/json")
             .content(
               objectMapper.writeValueAsString(
-                CreateComboDTO
+                CreateComboDto
                   .builder()
                   .name("TEST Name")
                   .description("Updated description")
@@ -586,11 +586,11 @@ public class PlaylistControllerTests {
         )
         .andReturn();
     assertSuccessResponse(mvcResult.getResponse().getStatus());
-    CompletePlaylistDTO playlistResponse = toPlaylistResposeDTO(
+    CompletePlaylistDto playlistResponse = toPlaylistResposeDTO(
       mvcResult.getResponse().getContentAsString(),
-      CompletePlaylistDTO.class
+      CompletePlaylistDto.class
     );
-    Set<PlaylistComboResponseDTO> playlistCombos = playlistResponse.getPlaylistCombos();
+    Set<PlaylistComboResponseDto> playlistCombos = playlistResponse.getPlaylistCombos();
     assertThat(playlistCombos).hasSize(1);
     String combo = playlistCombos.iterator().next().getCombo().getCombo();
     assertThat(combo).isEqualTo("d/f+2");
@@ -609,7 +609,7 @@ public class PlaylistControllerTests {
             .contentType("application/json")
             .content(
               objectMapper.writeValueAsString(
-                CreateComboDTO
+                CreateComboDto
                   .builder()
                   .name("TEST Name")
                   .description("Updated description")
@@ -635,14 +635,14 @@ public class PlaylistControllerTests {
       "TEST3"
     );
 
-    PaginationResponse<PlaylistResponseDTO> playlistResponse = setupSearchPlaylist(
+    PaginationResponse<PlaylistResponseDto> playlistResponse = setupSearchPlaylist(
       "/api/v1/playlists/users/" + currentUser.getId()
     );
 
     List<String> responsePlaylistNames = playlistResponse
       .getData()
       .stream()
-      .map(PlaylistResponseDTO::getName)
+      .map(PlaylistResponseDto::getName)
       .toList();
     assertThat(responsePlaylistNames)
       .contains(playlist.getName(), secondPlaylist.getName());
@@ -708,11 +708,11 @@ public class PlaylistControllerTests {
         .andReturn();
 
     assertSuccessResponse(mvcResult.getResponse().getStatus());
-    CompletePlaylistDTO playlistResponse = toPlaylistResposeDTO(
+    CompletePlaylistDto playlistResponse = toPlaylistResposeDTO(
       mvcResult.getResponse().getContentAsString(),
-      CompletePlaylistDTO.class
+      CompletePlaylistDto.class
     );
-    List<PlaylistComboResponseDTO> playlistCombos = playlistResponse
+    List<PlaylistComboResponseDto> playlistCombos = playlistResponse
       .getPlaylistCombos()
       .stream()
       .sorted((o1, o2) -> o1.getPosition().compareTo(o2.getPosition()))

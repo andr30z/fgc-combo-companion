@@ -1,9 +1,9 @@
 package com.fgc.combo.companion.service.impl;
 
-import com.fgc.combo.companion.dto.CreateComboDTO;
+import com.fgc.combo.companion.dto.CreateComboDto;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
-import com.fgc.combo.companion.dto.UpdateComboDTO;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDto;
+import com.fgc.combo.companion.dto.UpdateComboDto;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
@@ -54,7 +54,7 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public Combo create(CreateComboDTO createComboDTO) {
+  public Combo create(CreateComboDto createComboDTO) {
 
     String gameType = createComboDTO.getGame();
 
@@ -73,7 +73,7 @@ public class ComboServiceImpl implements ComboService {
   }
 
   @Override
-  public Combo update(UUID id, UpdateComboDTO updateComboDTO) {
+  public Combo update(UUID id, UpdateComboDto updateComboDTO) {
     Combo combo =
       this.comboRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
@@ -120,7 +120,7 @@ public class ComboServiceImpl implements ComboService {
 
   @Override
   public PaginationResponse<Combo> getAllByOwnerAndSearchParam(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
+    PlaylistComboSearchDto playlistComboSearchDTO,
     Pageable pageable
   ) {
     String name = URLDecoderUtil.decodeParamToUTF8(
@@ -157,7 +157,7 @@ public class ComboServiceImpl implements ComboService {
 
   @Override
   public PaginationResponse<Combo> getAllBySearchParams(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
+    PlaylistComboSearchDto playlistComboSearchDTO,
     Pageable pageable
   ) {
     String name = URLDecoderUtil.decodeParamToUTF8(

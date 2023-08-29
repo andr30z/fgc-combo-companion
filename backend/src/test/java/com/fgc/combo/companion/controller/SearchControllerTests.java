@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fgc.combo.companion.dto.ComboResponseDTO;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.ComboResponseDto;
+import com.fgc.combo.companion.dto.PlaylistResponseDto;
 import com.fgc.combo.companion.dto.SearchAllResourcesDto;
 import com.fgc.combo.companion.dto.UserDto;
 import com.fgc.combo.companion.enums.ComboGameTypes;
@@ -145,7 +145,7 @@ public class SearchControllerTests {
     );
 
     assertThat(
-      searchAllResourcesDto.combos().stream().map(ComboResponseDTO::getName)
+      searchAllResourcesDto.combos().stream().map(ComboResponseDto::getName)
     )
       .containsAll(
         List.of("OWNED BY CURRENT USER", "NOT OWNED BY CURRENT USER")
@@ -155,7 +155,7 @@ public class SearchControllerTests {
       searchAllResourcesDto
         .playlists()
         .stream()
-        .map(PlaylistResponseDTO::getName)
+        .map(PlaylistResponseDto::getName)
     )
       .containsAll(
         List.of("OWNED BY CURRENT USER", "NOT OWNED BY CURRENT USER")
@@ -191,7 +191,7 @@ public class SearchControllerTests {
     );
 
     assertThat(
-      searchAllResourcesDto.combos().stream().map(ComboResponseDTO::getName)
+      searchAllResourcesDto.combos().stream().map(ComboResponseDto::getName)
     )
       .doesNotContain("OWNED BY CURRENT USER", "NOT OWNED BY CURRENT USER");
 
@@ -199,7 +199,7 @@ public class SearchControllerTests {
       searchAllResourcesDto
         .playlists()
         .stream()
-        .map(PlaylistResponseDTO::getName)
+        .map(PlaylistResponseDto::getName)
     )
       .doesNotContain("OWNED BY CURRENT USER", "NOT OWNED BY CURRENT USER");
 
@@ -239,7 +239,7 @@ public class SearchControllerTests {
     );
 
     assertThat(
-      searchAllResourcesDto.combos().stream().map(ComboResponseDTO::getGame)
+      searchAllResourcesDto.combos().stream().map(ComboResponseDto::getGame)
     )
       .containsOnly(ComboGameTypes.TEKKEN_7);
   }

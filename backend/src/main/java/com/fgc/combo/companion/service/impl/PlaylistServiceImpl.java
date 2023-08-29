@@ -1,12 +1,12 @@
 package com.fgc.combo.companion.service.impl;
 
-import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
-import com.fgc.combo.companion.dto.CreateComboDTO;
-import com.fgc.combo.companion.dto.CreatePlaylistDTO;
+import com.fgc.combo.companion.dto.AddCombosToPlaylistDto;
+import com.fgc.combo.companion.dto.CreateComboDto;
+import com.fgc.combo.companion.dto.CreatePlaylistDto;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDto;
 import com.fgc.combo.companion.dto.ReorderCombosDto;
-import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
+import com.fgc.combo.companion.dto.UpdatePlaylistDto;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
 import com.fgc.combo.companion.exception.ResourceNotFoundException;
 import com.fgc.combo.companion.mapper.PaginationResponseMapper;
@@ -64,7 +64,7 @@ public class PlaylistServiceImpl implements PlaylistService {
   @Override
   public Playlist addCombosToPlaylist(
     UUID playlistId,
-    AddCombosToPlaylistDTO combos
+    AddCombosToPlaylistDto combos
   ) {
     Playlist playlist = getPlaylistById(playlistId);
     this.playlistComboService.addAllCombosToPlaylist(
@@ -103,7 +103,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   @Transactional
-  public Playlist create(CreatePlaylistDTO playlistDTO) {
+  public Playlist create(CreatePlaylistDto playlistDTO) {
     User currentUser = userService.me();
 
     Playlist playlist = new Playlist();
@@ -121,7 +121,7 @@ public class PlaylistServiceImpl implements PlaylistService {
   }
 
   @Override
-  public Playlist update(UUID id, UpdatePlaylistDTO playlistDTO) {
+  public Playlist update(UUID id, UpdatePlaylistDto playlistDTO) {
     Playlist playlist = getByIdAndCurrentUser(id);
 
     BeanUtils.copyProperties(playlistDTO, playlist);
@@ -157,7 +157,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   public PaginationResponse<Playlist> getByCurrentUserPlaylistAndSearchParam(
-    PlaylistComboSearchDTO playlistSearchResponseDTO,
+    PlaylistComboSearchDto playlistSearchResponseDTO,
     Pageable pageable
   ) {
     String name = playlistSearchResponseDTO.getName() != null
@@ -180,7 +180,7 @@ public class PlaylistServiceImpl implements PlaylistService {
   @Override
   public Playlist createComboAndAddToPlaylist(
     UUID playlistId,
-    CreateComboDTO createComboDTO
+    CreateComboDto createComboDTO
   ) {
     return this.playlistComboService.createComboAndAddToPlaylist(
         this.getByIdAndCurrentUser(playlistId),

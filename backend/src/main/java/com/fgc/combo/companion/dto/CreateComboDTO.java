@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateComboDTO {
+public class CreateComboDto {
 
   @NotEmpty
   private String name;

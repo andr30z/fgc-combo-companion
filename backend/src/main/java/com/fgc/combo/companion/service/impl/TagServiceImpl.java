@@ -1,7 +1,7 @@
 package com.fgc.combo.companion.service.impl;
 
-import com.fgc.combo.companion.dto.CreateManyTagsDTO;
-import com.fgc.combo.companion.dto.CreateTagDTO;
+import com.fgc.combo.companion.dto.CreateManyTagsDto;
+import com.fgc.combo.companion.dto.CreateTagDto;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.Playlist;
@@ -37,7 +37,7 @@ public class TagServiceImpl implements TagService {
   }
 
   @Override
-  public Tag createTag(CreateTagDTO createTagDTO) {
+  public Tag createTag(CreateTagDto createTagDTO) {
     UUID comboId = createTagDTO.getComboId();
     UUID playlistId = createTagDTO.getPlaylistId();
     if (comboId == null && playlistId == null) throw new BadRequestException(
@@ -74,7 +74,7 @@ public class TagServiceImpl implements TagService {
   @Override
   public List<Tag> createManyTagsForCombo(
     UUID comboId,
-    CreateManyTagsDTO createManyTagsDTO
+    CreateManyTagsDto createManyTagsDTO
   ) {
     Combo combo = this.comboService.getByIdAndCurrentUser(comboId);
     List<Tag> tags = this.createManyTags(createManyTagsDTO, combo);
@@ -87,7 +87,7 @@ public class TagServiceImpl implements TagService {
   @Override
   public List<Tag> createManyTagsForPlaylist(
     UUID playlistId,
-    CreateManyTagsDTO createManyTagsDTO
+    CreateManyTagsDto createManyTagsDTO
   ) {
     Playlist playlist = this.playlistService.getByIdAndCurrentUser(playlistId);
     List<Tag> tags = this.createManyTags(createManyTagsDTO, playlist);
@@ -98,7 +98,7 @@ public class TagServiceImpl implements TagService {
   }
 
   private List<Tag> createManyTags(
-    CreateManyTagsDTO createManyTagsDTO,
+    CreateManyTagsDto createManyTagsDTO,
     Object tagRelation
   ) {
     return this.tagRepository.saveAll(

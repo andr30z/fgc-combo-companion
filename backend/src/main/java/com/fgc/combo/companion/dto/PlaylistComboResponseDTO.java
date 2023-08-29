@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlaylistComboResponseDTO {
+public class PlaylistComboResponseDto {
     private UUID id;
 
     private Integer position;
 
-    private ComboResponseDTO combo;
+    private ComboResponseDto combo;
 
     private LocalDateTime addedAt;
 }

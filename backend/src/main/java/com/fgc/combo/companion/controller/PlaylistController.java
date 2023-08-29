@@ -1,14 +1,14 @@
 package com.fgc.combo.companion.controller;
 
-import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
-import com.fgc.combo.companion.dto.CompletePlaylistDTO;
-import com.fgc.combo.companion.dto.CreateComboDTO;
-import com.fgc.combo.companion.dto.CreatePlaylistDTO;
+import com.fgc.combo.companion.dto.AddCombosToPlaylistDto;
+import com.fgc.combo.companion.dto.CompletePlaylistDto;
+import com.fgc.combo.companion.dto.CreateComboDto;
+import com.fgc.combo.companion.dto.CreatePlaylistDto;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDto;
+import com.fgc.combo.companion.dto.PlaylistResponseDto;
 import com.fgc.combo.companion.dto.ReorderCombosDto;
-import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
+import com.fgc.combo.companion.dto.UpdatePlaylistDto;
 import com.fgc.combo.companion.mapper.PlaylistMapper;
 import com.fgc.combo.companion.service.PlaylistService;
 import jakarta.validation.constraints.NotEmpty;
@@ -43,7 +43,7 @@ public class PlaylistController {
   }
 
   @GetMapping("/users/{userId}")
-  public PaginationResponse<PlaylistResponseDTO> getByOwner(
+  public PaginationResponse<PlaylistResponseDto> getByOwner(
     @PathVariable UUID userId,
     Pageable pageable
   ) {
@@ -53,8 +53,8 @@ public class PlaylistController {
   }
 
   @GetMapping("/me")
-  public PaginationResponse<PlaylistResponseDTO> getByCurrentUserAndSearchParam(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
+  public PaginationResponse<PlaylistResponseDto> getByCurrentUserAndSearchParam(
+    PlaylistComboSearchDto playlistComboSearchDTO,
     Pageable pageable
   ) {
     return this.playlistMapper.toPagination(
@@ -66,8 +66,8 @@ public class PlaylistController {
   }
 
   @PostMapping
-  public PlaylistResponseDTO create(
-    @RequestBody @Validated CreatePlaylistDTO createPlaylistDTO
+  public PlaylistResponseDto create(
+    @RequestBody @Validated CreatePlaylistDto createPlaylistDTO
   ) {
     return this.playlistMapper.toDTO(
         this.playlistService.create(createPlaylistDTO)
@@ -75,9 +75,9 @@ public class PlaylistController {
   }
 
   @PutMapping("/{playlistId}")
-  public PlaylistResponseDTO update(
+  public PlaylistResponseDto update(
     @PathVariable UUID playlistId,
-    @RequestBody @Validated UpdatePlaylistDTO updatePlaylistDTO
+    @RequestBody @Validated UpdatePlaylistDto updatePlaylistDTO
   ) {
     return this.playlistMapper.toDTO(
         this.playlistService.update(playlistId, updatePlaylistDTO)
@@ -90,9 +90,9 @@ public class PlaylistController {
   }
 
   @PostMapping("/{playlistId}/combos")
-  public CompletePlaylistDTO addCombosToPlaylist(
+  public CompletePlaylistDto addCombosToPlaylist(
     @PathVariable UUID playlistId,
-    @RequestBody @Validated AddCombosToPlaylistDTO addCombosToPlaylistDTO
+    @RequestBody @Validated AddCombosToPlaylistDto addCombosToPlaylistDTO
   ) {
     return this.playlistMapper.toCompletePlaylistDTO(
         this.playlistService.addCombosToPlaylist(
@@ -103,9 +103,9 @@ public class PlaylistController {
   }
 
   @PostMapping("/{playlistId}/new-combo")
-  public CompletePlaylistDTO addNewCombosToPlaylist(
+  public CompletePlaylistDto addNewCombosToPlaylist(
     @PathVariable UUID playlistId,
-    @RequestBody @Validated CreateComboDTO createComboDTO
+    @RequestBody @Validated CreateComboDto createComboDTO
   ) {
     return this.playlistMapper.toCompletePlaylistDTO(
         this.playlistService.createComboAndAddToPlaylist(
@@ -129,14 +129,14 @@ public class PlaylistController {
   }
 
   @GetMapping("/{playlistId}")
-  public CompletePlaylistDTO getPlaylistDetails(@PathVariable UUID playlistId) {
+  public CompletePlaylistDto getPlaylistDetails(@PathVariable UUID playlistId) {
     return this.playlistMapper.toCompletePlaylistDTO(
         this.playlistService.getPlaylistWithCombos(playlistId)
       );
   }
 
   @PutMapping("/{playlistId}/combos/ordenation")
-  public CompletePlaylistDTO reorderPlaylistCombos(
+  public CompletePlaylistDto reorderPlaylistCombos(
     @PathVariable UUID playlistId,
     @RequestBody @Validated ReorderCombosDto reorderCombosDto
   ) {

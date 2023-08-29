@@ -3,7 +3,7 @@ package com.fgc.combo.companion.dto;
 import lombok.Data;
 
 @Data
-public class PlaylistComboSearchDTO {
+public class PlaylistComboSearchDto {
 
   private String name;
 }

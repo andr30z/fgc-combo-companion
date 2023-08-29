@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fgc.combo.companion.dto.CreateManyTagsDTO;
-import com.fgc.combo.companion.dto.CreateTagDTO;
-import com.fgc.combo.companion.dto.ManyTagsReponseDTO;
-import com.fgc.combo.companion.dto.TagResponseDTO;
+import com.fgc.combo.companion.dto.CreateManyTagsDto;
+import com.fgc.combo.companion.dto.CreateTagDto;
+import com.fgc.combo.companion.dto.ManyTagsReponseDto;
+import com.fgc.combo.companion.dto.TagResponseDto;
 import com.fgc.combo.companion.mapper.TagMapper;
 import com.fgc.combo.companion.service.TagService;
 
@@ -34,16 +34,16 @@ public class TagController {
   }
 
   @PostMapping
-  public TagResponseDTO createTag(
-    @Validated @RequestBody CreateTagDTO createTagDTO
+  public TagResponseDto createTag(
+    @Validated @RequestBody CreateTagDto createTagDTO
   ) {
     return tagMapper.toDTO(tagService.createTag(createTagDTO));
   }
 
   @PostMapping("/combos/{comboId}")
-  public ManyTagsReponseDTO createManyTagsForCombo(
+  public ManyTagsReponseDto createManyTagsForCombo(
     @PathVariable UUID comboId,
-    @Validated @RequestBody CreateManyTagsDTO createManyTagsDTO
+    @Validated @RequestBody CreateManyTagsDto createManyTagsDTO
   ) {
     return tagMapper.toManyTagsReponseDTO(
       tagService.createManyTagsForCombo(comboId, createManyTagsDTO)
@@ -51,9 +51,9 @@ public class TagController {
   }
 
   @PostMapping("/playlists/{playlistId}")
-  public ManyTagsReponseDTO createManyTagsForPlaylist(
+  public ManyTagsReponseDto createManyTagsForPlaylist(
     @PathVariable UUID playlistId,
-    @RequestBody @Validated CreateManyTagsDTO createManyTagsDTO
+    @RequestBody @Validated CreateManyTagsDto createManyTagsDTO
   ) {
     return tagMapper.toManyTagsReponseDTO(
       tagService.createManyTagsForPlaylist(playlistId, createManyTagsDTO)

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagResponseDTO {
+public class TagResponseDto {
     private UUID id;
     private String title;
     private String color;

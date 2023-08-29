@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 @Data
 @Builder
-public class UpdatePlaylistDTO {
+public class UpdatePlaylistDto {
 
   @NotEmpty
   private String name;

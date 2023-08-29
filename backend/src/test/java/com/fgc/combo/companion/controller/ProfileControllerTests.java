@@ -3,8 +3,8 @@ package com.fgc.combo.companion.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fgc.combo.companion.dto.ComboResponseDTO;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.ComboResponseDto;
+import com.fgc.combo.companion.dto.PlaylistResponseDto;
 import com.fgc.combo.companion.dto.UserDto;
 import com.fgc.combo.companion.dto.UserProfile;
 import com.fgc.combo.companion.enums.ComboGameTypes;
@@ -148,7 +148,7 @@ public class ProfileControllerTests {
         .playlists()
         .getData()
         .stream()
-        .map(PlaylistResponseDTO::getOwner)
+        .map(PlaylistResponseDto::getOwner)
         .map(UserDto::getName)
         .toList()
     )
@@ -159,7 +159,7 @@ public class ProfileControllerTests {
         .combos()
         .getData()
         .stream()
-        .map(ComboResponseDTO::getOwner)
+        .map(ComboResponseDto::getOwner)
         .map(UserDto::getName)
         .toList()
     )
@@ -170,7 +170,7 @@ public class ProfileControllerTests {
         .playlists()
         .getData()
         .stream()
-        .map(PlaylistResponseDTO::getOwner)
+        .map(PlaylistResponseDto::getOwner)
         .map(UserDto::getName)
         .toList()
     )
@@ -181,7 +181,7 @@ public class ProfileControllerTests {
         .combos()
         .getData()
         .stream()
-        .map(ComboResponseDTO::getOwner)
+        .map(ComboResponseDto::getOwner)
         .map(UserDto::getName)
         .toList()
     )

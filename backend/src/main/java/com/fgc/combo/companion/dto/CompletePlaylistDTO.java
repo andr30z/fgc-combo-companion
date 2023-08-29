@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompletePlaylistDTO {
+public class CompletePlaylistDto {
 
   private UUID id;
 
@@ -25,7 +25,7 @@ public class CompletePlaylistDTO {
 
   private UserDto owner;
 
-  private Set<PlaylistComboResponseDTO> playlistCombos;
+  private Set<PlaylistComboResponseDto> playlistCombos;
 
-  private Set<TagResponseDTO> tags;
+  private Set<TagResponseDto> tags;
 }

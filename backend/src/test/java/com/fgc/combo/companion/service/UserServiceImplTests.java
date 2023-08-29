@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.CreateUserDto;
 import com.fgc.combo.companion.dto.CustomUserDetails;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
@@ -133,8 +133,8 @@ public class UserServiceImplTests {
   }
 
   @Test
-  @DisplayName("It should create an user.")
-  void itShouldCreateAnUser()
+  @DisplayName("It should create a user.")
+  void itShouldCreateAUser()
     throws JsonProcessingException, InterruptedException {
     // given
     String userMail = "testemail@gmail.com";
@@ -153,7 +153,7 @@ public class UserServiceImplTests {
     when(userVerificationService.sendVerificationEmail(any())).thenReturn(null);
 
     underTest.create(
-      new CreateUserDTO(
+      new CreateUserDto(
         createdUser.getEmail(),
         createdUser.getName(),
         createdUser.getPassword()
@@ -191,7 +191,7 @@ public class UserServiceImplTests {
     // then
     assertThatThrownBy(() ->
         underTest.create(
-          new CreateUserDTO(
+          new CreateUserDto(
             createdUser.getEmail(),
             createdUser.getName(),
             createdUser.getPassword()
@@ -484,7 +484,7 @@ public class UserServiceImplTests {
   }
 
   @Test
-  @DisplayName("It should return an user by his access token")
+  @DisplayName("It should return a user by his access token")
   void getTokenUser() {
     // given
     String userMail = "testemail@gmail.com";
@@ -511,7 +511,7 @@ public class UserServiceImplTests {
   }
 
   @Test
-  @DisplayName("It should return an user by Id.")
+  @DisplayName("It should return a user by Id.")
   void itShouldFindUserById() {
     String userMail = "testemail@gmail.com";
     String password = "123456";

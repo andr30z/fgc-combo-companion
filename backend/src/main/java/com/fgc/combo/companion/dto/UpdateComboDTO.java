@@ -8,7 +8,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-public class UpdateComboDTO {
+public class UpdateComboDto {
 
   @NotEmpty
   private String name;

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ManyTagsReponseDTO {
+public class ManyTagsReponseDto {
 
-  private List<TagResponseDTO> tags;
+  private List<TagResponseDto> tags;
 }

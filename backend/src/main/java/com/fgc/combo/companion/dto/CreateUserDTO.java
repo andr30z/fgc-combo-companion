@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 @Setter
 @AllArgsConstructor
 @Builder
-public class CreateUserDTO {
+public class CreateUserDto {
     @NotBlank
     @Email
     private String email;

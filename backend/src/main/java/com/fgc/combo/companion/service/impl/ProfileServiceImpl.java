@@ -1,8 +1,8 @@
 package com.fgc.combo.companion.service.impl;
 
-import com.fgc.combo.companion.dto.ComboResponseDTO;
+import com.fgc.combo.companion.dto.ComboResponseDto;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistResponseDTO;
+import com.fgc.combo.companion.dto.PlaylistResponseDto;
 import com.fgc.combo.companion.dto.UserProfile;
 import com.fgc.combo.companion.mapper.ComboMapper;
 import com.fgc.combo.companion.mapper.PlaylistMapper;
@@ -44,11 +44,11 @@ public class ProfileServiceImpl implements ProfileService {
   public UserProfile getPublicProfileData(UUID userId) {
     Pageable defaultPageable = Pageable.ofSize(10);
     User user = userService.findById(userId);
-    PaginationResponse<PlaylistResponseDTO> playlistResponseDTO = playlistMapper.toPagination(
+    PaginationResponse<PlaylistResponseDto> playlistResponseDTO = playlistMapper.toPagination(
       playlistService.getByOwner(user, defaultPageable)
     );
 
-    PaginationResponse<ComboResponseDTO> combResponseDTO = comboMapper.toPagination(
+    PaginationResponse<ComboResponseDto> combResponseDTO = comboMapper.toPagination(
       comboService.getByOwner(user, defaultPageable)
     );
 
