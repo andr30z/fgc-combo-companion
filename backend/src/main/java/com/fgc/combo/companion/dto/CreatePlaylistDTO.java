@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreatePlaylistDTO {
+public class CreatePlaylistDto {
 
   @NotEmpty
   private String name;

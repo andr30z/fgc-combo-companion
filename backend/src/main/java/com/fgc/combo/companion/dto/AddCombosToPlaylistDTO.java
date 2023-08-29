@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddCombosToPlaylistDTO {
+public class AddCombosToPlaylistDto {
 
   @NotEmpty
   private Set<UUID> combos;

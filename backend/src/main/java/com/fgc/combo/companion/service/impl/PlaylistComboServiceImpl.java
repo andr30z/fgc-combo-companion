@@ -1,6 +1,6 @@
 package com.fgc.combo.companion.service.impl;
 
-import com.fgc.combo.companion.dto.CreateComboDTO;
+import com.fgc.combo.companion.dto.CreateComboDto;
 import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.exception.BadRequestException;
 import com.fgc.combo.companion.exception.OperationNotAllowedException;
@@ -214,7 +214,7 @@ public class PlaylistComboServiceImpl implements PlaylistComboService {
   @Transactional
   public Playlist createComboAndAddToPlaylist(
     Playlist playlist,
-    CreateComboDTO createComboDTO
+    CreateComboDto createComboDTO
   ) {
     if (
       createComboDTO.getCharacter() != null &&

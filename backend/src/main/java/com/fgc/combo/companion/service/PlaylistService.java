@@ -1,12 +1,12 @@
 package com.fgc.combo.companion.service;
 
-import com.fgc.combo.companion.dto.AddCombosToPlaylistDTO;
-import com.fgc.combo.companion.dto.CreateComboDTO;
-import com.fgc.combo.companion.dto.CreatePlaylistDTO;
+import com.fgc.combo.companion.dto.AddCombosToPlaylistDto;
+import com.fgc.combo.companion.dto.CreateComboDto;
+import com.fgc.combo.companion.dto.CreatePlaylistDto;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDto;
 import com.fgc.combo.companion.dto.ReorderCombosDto;
-import com.fgc.combo.companion.dto.UpdatePlaylistDTO;
+import com.fgc.combo.companion.dto.UpdatePlaylistDto;
 import com.fgc.combo.companion.model.Playlist;
 import com.fgc.combo.companion.model.User;
 import java.util.List;
@@ -23,9 +23,9 @@ public interface PlaylistService {
 
   PaginationResponse<Playlist> getByCurrentUser(Pageable pageable);
 
-  Playlist create(CreatePlaylistDTO playlistDTO);
+  Playlist create(CreatePlaylistDto playlistDTO);
 
-  Playlist update(UUID id, UpdatePlaylistDTO playlistDTO);
+  Playlist update(UUID id, UpdatePlaylistDto playlistDTO);
 
   boolean delete(UUID playlistId);
 
@@ -36,18 +36,18 @@ public interface PlaylistService {
 
   Playlist getPlaylistWithCombos(UUID playlistId);
 
-  Playlist addCombosToPlaylist(UUID playlistId, AddCombosToPlaylistDTO combos);
+  Playlist addCombosToPlaylist(UUID playlistId, AddCombosToPlaylistDto combos);
 
   Playlist savePlaylist(Playlist playlist);
 
   PaginationResponse<Playlist> getByCurrentUserPlaylistAndSearchParam(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
+    PlaylistComboSearchDto playlistComboSearchDTO,
     Pageable pageable
   );
 
   Playlist createComboAndAddToPlaylist(
     UUID playlistId,
-    CreateComboDTO createComboDTO
+    CreateComboDto createComboDTO
   );
 
   Playlist reorderPlaylistCombos(UUID playlistId, ReorderCombosDto reorderCombosDto);

@@ -1,9 +1,9 @@
 package com.fgc.combo.companion.service;
 
-import com.fgc.combo.companion.dto.CreateComboDTO;
+import com.fgc.combo.companion.dto.CreateComboDto;
 import com.fgc.combo.companion.dto.PaginationResponse;
-import com.fgc.combo.companion.dto.PlaylistComboSearchDTO;
-import com.fgc.combo.companion.dto.UpdateComboDTO;
+import com.fgc.combo.companion.dto.PlaylistComboSearchDto;
+import com.fgc.combo.companion.dto.UpdateComboDto;
 import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.User;
 
@@ -17,14 +17,14 @@ public interface ComboService {
 
   Combo getById(UUID id);
 
-  Combo create(CreateComboDTO createComboDTO);
+  Combo create(CreateComboDto createComboDTO);
 
-  Combo update(UUID id, UpdateComboDTO updateComboDTO);
+  Combo update(UUID id, UpdateComboDto updateComboDTO);
 
   Combo getByIdAndCurrentUser(UUID id);
 
   PaginationResponse<Combo> getAllBySearchParams(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
+    PlaylistComboSearchDto playlistComboSearchDTO,
     Pageable pageable
   );
 
@@ -35,7 +35,7 @@ public interface ComboService {
   boolean deleteByIdAndCurrentUser(UUID id);
 
   PaginationResponse<Combo> getAllByOwnerAndSearchParam(
-    PlaylistComboSearchDTO playlistComboSearchDTO,
+    PlaylistComboSearchDto playlistComboSearchDTO,
     Pageable pageable
   );
 }

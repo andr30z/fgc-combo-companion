@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTagDTO {
+public class CreateTagDto {
 
   @NotEmpty(message = "Title is required")
   private String title;

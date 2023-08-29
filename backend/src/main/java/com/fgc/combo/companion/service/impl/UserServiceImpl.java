@@ -1,6 +1,6 @@
 package com.fgc.combo.companion.service.impl;
 
-import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.CreateUserDto;
 import com.fgc.combo.companion.dto.CustomUserDetails;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public User create(CreateUserDTO userDTO) {
+  public User create(CreateUserDto userDTO) {
     Optional<User> userOptional =
       this.userRepository.findUserByEmail(userDTO.getEmail());
     if (userOptional.isPresent()) throw new EntityExistsException(

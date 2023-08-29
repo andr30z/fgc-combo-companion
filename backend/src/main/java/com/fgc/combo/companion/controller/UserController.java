@@ -1,7 +1,7 @@
 package com.fgc.combo.companion.controller;
 
 import com.fgc.combo.companion.dto.ChangePasswordDto;
-import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.CreateUserDto;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.MeDto;
@@ -48,7 +48,7 @@ public class UserController {
   }
 
   @PostMapping
-  public User create(@RequestBody @Validated CreateUserDTO createUserDTO) {
+  public User create(@RequestBody @Validated CreateUserDto createUserDTO) {
     return this.usersService.create(createUserDTO);
   }
 

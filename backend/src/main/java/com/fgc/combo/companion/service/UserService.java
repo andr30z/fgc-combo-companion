@@ -1,6 +1,6 @@
 package com.fgc.combo.companion.service;
 
-import com.fgc.combo.companion.dto.CreateUserDTO;
+import com.fgc.combo.companion.dto.CreateUserDto;
 import com.fgc.combo.companion.dto.LoginRequest;
 import com.fgc.combo.companion.dto.LoginResponse;
 import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
@@ -12,7 +12,7 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
-  User create(CreateUserDTO userDTO);
+  User create(CreateUserDto userDTO);
   User updateCurrentUserProfileData(UpdateUserDto userDTO);
   User updateCurrentUserPassword(UpdateUserPasswordDto updateUserPasswordDto);
 

@@ -1,6 +1,6 @@
 package com.fgc.combo.companion.service;
 
-import com.fgc.combo.companion.dto.CreateComboDTO;
+import com.fgc.combo.companion.dto.CreateComboDto;
 import com.fgc.combo.companion.dto.ReorderCombosDto;
 import com.fgc.combo.companion.model.Combo;
 import com.fgc.combo.companion.model.Playlist;
@@ -24,7 +24,7 @@ public interface PlaylistComboService {
 
   Playlist createComboAndAddToPlaylist(
     Playlist playlist,
-    CreateComboDTO createComboDTO
+    CreateComboDto createComboDTO
   );
 
   void deleteByPlaylist(Playlist playlist);

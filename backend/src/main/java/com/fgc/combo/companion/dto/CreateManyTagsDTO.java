@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateManyTagsDTO {
+public class CreateManyTagsDto {
 
   @NotEmpty
   private List<@Valid CreateTag> tags;

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ComboResponseDTO {
+public class ComboResponseDto {
 
     private UUID id;
 
@@ -37,5 +37,5 @@ public class ComboResponseDTO {
 
     private String character;
 
-    private Set<TagResponseDTO> tags;
+    private Set<TagResponseDto> tags;
 }
