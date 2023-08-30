@@ -13,8 +13,8 @@ public class ComboMapper extends BaseMapper<Combo> {
     super(modelMapper);
   }
 
-  public ComboResponseDto toDTO(Combo combo) {
-    return this.toDTO(combo, ComboResponseDto.class);
+  public ComboResponseDto toDto(Combo combo) {
+    return this.toDto(combo, ComboResponseDto.class);
   }
 
   public Combo toOriginal(Object comboDTO) {
@@ -24,6 +24,6 @@ public class ComboMapper extends BaseMapper<Combo> {
   public PaginationResponse<ComboResponseDto> toPagination(
     PaginationResponse<Combo> comboPagination
   ) {
-    return this.toPaginationDTO(comboPagination, ComboResponseDto.class);
+    return this.toPaginationDto(comboPagination, ComboResponseDto.class);
   }
 }

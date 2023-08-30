@@ -14,12 +14,12 @@ public class PlaylistMapper extends BaseMapper<Playlist> {
     super(modelMapper);
   }
 
-  public PlaylistResponseDto toDTO(Playlist playlist) {
-    return super.toDTO(playlist, PlaylistResponseDto.class);
+  public PlaylistResponseDto toDto(Playlist playlist) {
+    return super.toDto(playlist, PlaylistResponseDto.class);
   }
 
-  public CompletePlaylistDto toCompletePlaylistDTO(Playlist playlist) {
-    return super.toDTO(playlist, CompletePlaylistDto.class);
+  public CompletePlaylistDto toCompletePlaylistDto(Playlist playlist) {
+    return super.toDto(playlist, CompletePlaylistDto.class);
   }
 
   public Playlist toOriginal(Object playlistDTO) {
@@ -29,6 +29,6 @@ public class PlaylistMapper extends BaseMapper<Playlist> {
   public PaginationResponse<PlaylistResponseDto> toPagination(
     PaginationResponse<Playlist> playlistPagination
   ) {
-    return super.toPaginationDTO(playlistPagination, PlaylistResponseDto.class);
+    return super.toPaginationDto(playlistPagination, PlaylistResponseDto.class);
   }
 }

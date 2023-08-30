@@ -68,12 +68,12 @@ public class ComboController {
   public ComboResponseDto getByDTO(
     @RequestBody @Validated CreateComboDto comboDTO
   ) {
-    return this.comboMapper.toDTO((this.comboService.create(comboDTO)));
+    return this.comboMapper.toDto((this.comboService.create(comboDTO)));
   }
 
   @GetMapping("/{comboId}")
   public ComboResponseDto getComboDetails(@PathVariable UUID comboId) {
-    return this.comboMapper.toDTO((this.comboService.getById(comboId)));
+    return this.comboMapper.toDto((this.comboService.getById(comboId)));
   }
 
   @PutMapping("/{comboId}")
@@ -81,7 +81,7 @@ public class ComboController {
     @PathVariable UUID comboId,
     @RequestBody @Validated UpdateComboDto comboDTO
   ) {
-    return this.comboMapper.toDTO(
+    return this.comboMapper.toDto(
         (this.comboService.update(comboId, comboDTO))
       );
   }

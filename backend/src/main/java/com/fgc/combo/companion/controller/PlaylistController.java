@@ -69,7 +69,7 @@ public class PlaylistController {
   public PlaylistResponseDto create(
     @RequestBody @Validated CreatePlaylistDto createPlaylistDTO
   ) {
-    return this.playlistMapper.toDTO(
+    return this.playlistMapper.toDto(
         this.playlistService.create(createPlaylistDTO)
       );
   }
@@ -79,7 +79,7 @@ public class PlaylistController {
     @PathVariable UUID playlistId,
     @RequestBody @Validated UpdatePlaylistDto updatePlaylistDTO
   ) {
-    return this.playlistMapper.toDTO(
+    return this.playlistMapper.toDto(
         this.playlistService.update(playlistId, updatePlaylistDTO)
       );
   }
@@ -94,7 +94,7 @@ public class PlaylistController {
     @PathVariable UUID playlistId,
     @RequestBody @Validated AddCombosToPlaylistDto addCombosToPlaylistDTO
   ) {
-    return this.playlistMapper.toCompletePlaylistDTO(
+    return this.playlistMapper.toCompletePlaylistDto(
         this.playlistService.addCombosToPlaylist(
             playlistId,
             addCombosToPlaylistDTO
@@ -107,7 +107,7 @@ public class PlaylistController {
     @PathVariable UUID playlistId,
     @RequestBody @Validated CreateComboDto createComboDTO
   ) {
-    return this.playlistMapper.toCompletePlaylistDTO(
+    return this.playlistMapper.toCompletePlaylistDto(
         this.playlistService.createComboAndAddToPlaylist(
             playlistId,
             createComboDTO
@@ -130,7 +130,7 @@ public class PlaylistController {
 
   @GetMapping("/{playlistId}")
   public CompletePlaylistDto getPlaylistDetails(@PathVariable UUID playlistId) {
-    return this.playlistMapper.toCompletePlaylistDTO(
+    return this.playlistMapper.toCompletePlaylistDto(
         this.playlistService.getPlaylistWithCombos(playlistId)
       );
   }
@@ -140,7 +140,7 @@ public class PlaylistController {
     @PathVariable UUID playlistId,
     @RequestBody @Validated ReorderCombosDto reorderCombosDto
   ) {
-    return this.playlistMapper.toCompletePlaylistDTO(
+    return this.playlistMapper.toCompletePlaylistDto(
         this.playlistService.reorderPlaylistCombos(playlistId, reorderCombosDto)
       );
   }
