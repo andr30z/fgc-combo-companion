@@ -15,13 +15,13 @@ email-verification:
 password-change:
   base-frontend-url: ${BASE_PASSWORD_CHANGE_FRONTEND_URL}
 
-logging:
-  level:
-    com.zaxxer.hikari.HikariConfig: DEBUG
-    com.zaxxer.hikari: TRACE
-    org:
-      hibernate:
-        type: TRACE
+# logging:
+#   level:
+#     com.zaxxer.hikari.HikariConfig: DEBUG
+#     com.zaxxer.hikari: TRACE
+#     org:
+#       hibernate:
+#         type: TRACE
 
 management:
   defaults:

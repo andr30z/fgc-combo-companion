@@ -9,7 +9,7 @@ FROM maven:3.8.4-openjdk-17 as build
 COPY . .
 #
 # # Build a release artifact.
-RUN mvn clean package -Dmaven.test.skip
+RUN mvn clean package
 
 
 #
