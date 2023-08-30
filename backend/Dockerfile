@@ -22,7 +22,7 @@ RUN mvn clean package
 FROM openjdk:17-jdk-alpine
 
 # Copy the jar to the production image from the builder stage.
-COPY --from=build /target/fgc-0.0.1-SNAPSHOT.jar fgc.jar
+COPY --from=build /target/fgc-1.0.0-SNAPSHOT.jar fgc.jar
 
 # ENV PORT=8080
 EXPOSE 8080
