@@ -62,8 +62,8 @@ public class SearchServiceImpl implements SearchService {
 
     return new SearchAllResourcesDto(
       users.stream().map(UserDto::new).toList(),
-      this.comboMapper.toDTO(combos.getContent(), ComboResponseDto.class),
-      this.playlistMapper.toDTO(
+      this.comboMapper.toDto(combos.getContent(), ComboResponseDto.class),
+      this.playlistMapper.toDto(
           playlists.getContent(),
           PlaylistResponseDto.class
         )

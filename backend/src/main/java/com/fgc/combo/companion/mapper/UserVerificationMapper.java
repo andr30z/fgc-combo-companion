@@ -13,6 +13,6 @@ public class UserVerificationMapper extends BaseMapper<UserVerification> {
   }
 
   public UserVerificationDto toDto(UserVerification userVerification) {
-    return this.toDTO(userVerification, UserVerificationDto.class);
+    return this.toDto(userVerification, UserVerificationDto.class);
   }
 }

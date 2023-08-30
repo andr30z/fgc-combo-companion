@@ -37,7 +37,7 @@ public class TagController {
   public TagResponseDto createTag(
     @Validated @RequestBody CreateTagDto createTagDTO
   ) {
-    return tagMapper.toDTO(tagService.createTag(createTagDTO));
+    return tagMapper.toDto(tagService.createTag(createTagDTO));
   }
 
   @PostMapping("/combos/{comboId}")
@@ -45,7 +45,7 @@ public class TagController {
     @PathVariable UUID comboId,
     @Validated @RequestBody CreateManyTagsDto createManyTagsDTO
   ) {
-    return tagMapper.toManyTagsReponseDTO(
+    return tagMapper.toManyTagsReponseDto(
       tagService.createManyTagsForCombo(comboId, createManyTagsDTO)
     );
   }
@@ -55,7 +55,7 @@ public class TagController {
     @PathVariable UUID playlistId,
     @RequestBody @Validated CreateManyTagsDto createManyTagsDTO
   ) {
-    return tagMapper.toManyTagsReponseDTO(
+    return tagMapper.toManyTagsReponseDto(
       tagService.createManyTagsForPlaylist(playlistId, createManyTagsDTO)
     );
   }

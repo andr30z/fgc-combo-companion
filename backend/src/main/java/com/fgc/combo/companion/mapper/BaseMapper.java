@@ -14,7 +14,7 @@ public abstract class BaseMapper<M> {
     this.modelMapper = modelMapper;
   }
 
-  public <R> R toDTO(Object model, Class<R> dtoClass) {
+  public <R> R toDto(Object model, Class<R> dtoClass) {
     return this.modelMapper.map(model, dtoClass);
   }
 
@@ -22,11 +22,11 @@ public abstract class BaseMapper<M> {
     return modelMapper.map(dto, originalClass);
   }
 
-  public <R> List<R> toDTO(List<M> collection, Class<R> dtoClass) {
-    return collection.stream().map(item -> this.toDTO(item, dtoClass)).toList();
+  public <R> List<R> toDto(List<M> collection, Class<R> dtoClass) {
+    return collection.stream().map(item -> this.toDto(item, dtoClass)).toList();
   }
 
-  public <R> PaginationResponse<R> toPaginationDTO(
+  public <R> PaginationResponse<R> toPaginationDto(
     PaginationResponse<?> pagination,
     Function<? super Object, R> mapperFunction
   ) {
@@ -39,12 +39,12 @@ public abstract class BaseMapper<M> {
     return convertedPagination;
   }
 
-  public <R, T> PaginationResponse<R> toPaginationDTO(
+  public <R, T> PaginationResponse<R> toPaginationDto(
     PaginationResponse<T> pagination,
     Class<R> targetClass
   ) {
     Function<? super Object, R> mapperFunction = item ->
-      toDTO(item, targetClass);
-    return toPaginationDTO(pagination, mapperFunction);
+      toDto(item, targetClass);
+    return toPaginationDto(pagination, mapperFunction);
   }
 }

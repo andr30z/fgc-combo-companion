@@ -14,13 +14,13 @@ public class TagMapper extends BaseMapper<Tag> {
     super(modelMapper);
   }
 
-  public TagResponseDto toDTO(Tag tag) {
-    return this.toDTO(tag, TagResponseDto.class);
+  public TagResponseDto toDto(Tag tag) {
+    return this.toDto(tag, TagResponseDto.class);
   }
 
-  public ManyTagsReponseDto toManyTagsReponseDTO(List<Tag> tags) {
+  public ManyTagsReponseDto toManyTagsReponseDto(List<Tag> tags) {
     return new ManyTagsReponseDto(
-      tags.stream().map(tag -> this.toDTO(tag)).toList()
+      tags.stream().map(tag -> this.toDto(tag)).toList()
     );
   }
 }
