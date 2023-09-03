@@ -49,7 +49,7 @@ const guiltyGearStrive = [
 ];
 
 const dragonBallFighterZ = [
-  '{CHAR: Goku} {CORNER COMBO} 2M > 5M > jc.MLL > jc.LL > j.236M > DR',
+  '{CHAR: Goku} 2M > 5M > jc > j.MLL2H > SD > j.MLL2H > jc > j.LLL',
   '{CHAR: Android 17} 5M > 2M > 3H > 236L~MMM~H > 214M~MMM~2S',
   '{CHAR: BEERUS} {CORNER COMBO} 2M > 5M > jc.MLL > jc.LL > j.236M > DR',
   '{CHAR: Majin Buu} 2M > 5M > 5H > SD > j.M > j.H > 214L > j.L > j.L > jump > j.M > j.L > j.2H > j.S > 236L',
