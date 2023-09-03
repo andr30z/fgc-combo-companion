@@ -6,12 +6,18 @@ import type { FC } from 'react';
 type OnSelectFunction = (option: GameTypes) => void;
 
 const Option: FC<{
-  url: string;
+  imageSource: string;
   showSoonMessage?: boolean;
   option: GameTypes;
   onSelect: OnSelectFunction;
   selectedOption?: GameTypes;
-}> = ({ url, showSoonMessage = false, option, onSelect, selectedOption }) => {
+}> = ({
+  imageSource,
+  showSoonMessage = false,
+  option,
+  onSelect,
+  selectedOption,
+}) => {
   const selected = selectedOption === option;
   return (
     <div
@@ -25,7 +31,7 @@ const Option: FC<{
         className="scale-100 group-hover:scale-110 ease-in duration-500 min-h-[180px] min-w-[300px]"
         height="180"
         width="300"
-        src={url}
+        src={imageSource}
       />
       {!selected && (
         <div className="absolute top-0 bg-primary h-full w-full opacity-30" />
@@ -63,25 +69,32 @@ export const GameSelect: FC<{
           option={GameTypes.TEKKEN_7}
           selectedOption={selectedOption}
           onSelect={onSelect}
-          url="/tekken7/tekken7-select.webp"
+          imageSource="/tekken7/tekken7-select.webp"
         />
         <Option
           selectedOption={selectedOption}
           option={GameTypes.STREET_FIGHTER_6}
           onSelect={onSelect}
-          url="/street-fighter-6/street-fighter-6-select.jpg"
+          imageSource="/street-fighter-6/street-fighter-6-select.jpg"
         />
         <Option
           selectedOption={selectedOption}
           option={GameTypes.GUILTY_GEAR_STRIVE}
           onSelect={onSelect}
-          url="/guilty-gear-strive/guilty-gear-strive-select.jpg"
+          imageSource="/guilty-gear-strive/guilty-gear-strive-select.jpg"
         />
         <Option
           selectedOption={selectedOption}
           option={GameTypes.DB_FIGHTERZ}
           onSelect={onSelect}
-          url="/dragon-ball-fighterz/dragon-ball-fighterz-select.webp"
+          imageSource="/dragon-ball-fighterz/dragon-ball-fighterz-select.webp"
+        />
+        <Option
+          selectedOption={selectedOption}
+          option={GameTypes.MORTAL_KOMBAT_1}
+          onSelect={onSelect}
+          showSoonMessage
+          imageSource="/mortal-kombat-1/mortal-kombat-1-select.jpg"
         />
         <div
           style={{ boxShadow: '50px 0px 30px 40px #000' }}
