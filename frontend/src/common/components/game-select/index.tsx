@@ -82,7 +82,6 @@ export const GameSelect: FC<{
           option={GameTypes.DB_FIGHTERZ}
           onSelect={onSelect}
           url="/dragon-ball-fighterz/dragon-ball-fighterz-select.webp"
-          showSoonMessage
         />
         <div
           style={{ boxShadow: '50px 0px 30px 40px #000' }}

@@ -48,13 +48,25 @@ const guiltyGearStrive = [
   '{CHAR: ZATO-1} 236H / 214H~]H[, CH 2H > 214S, delay ]S[, delay 2H > 214K, [6]c.S > [3][2S] > [3][2H], delay ]S[,]H[, delay 2H > 214K, c.S > 2S > 2H > 22H',
 ];
 
+const dragonBallFighterZ = [
+  '{CHAR: Goku} {CORNER COMBO} 2M > 5M > jc.MLL > jc.LL > j.236M > DR',
+  '{CHAR: Android 17} 5M > 2M > 3H > 236L~MMM~H > 214M~MMM~2S',
+  '{CHAR: BEERUS} {CORNER COMBO} 2M > 5M > jc.MLL > jc.LL > j.236M > DR',
+  '{CHAR: Majin Buu} 2M > 5M > 5H > superdash > j.M > j.H > 214L > j.L > j.L > jump > j.M > j.L > j.2H > j.S > 236L',
+  '{CHAR: GT Goku} 2M > 5M > 2S > 5L > jump M > j.L > j.L > jump > j.M > j.H > 214L > delay dr',
+  '{CHAR: Adult Gohan} 2M > 5H > SD > 236[L] > 5L(2) > 3H > jc.LL2H > jc.LLS > SD > j.LLS > 214L',
+  '{CHAR: Vegeta} {CORNER COMBO} 2L/5L > 5M > 2M > 236M > 2M > 5M > jc.ML > jc.MS, j.LLS, j.LL delay S > 5L > 5S(2) > 5H > SD > j.MS > 5LLL > 214M',
+  '{CHAR: Broly} {CORNER COMBO} 5LL > 5M > 2M > 236S > 5LL > 5M > 5[S](3) > 5H > SD > j.ML > jc.LL > j.214M > Vanish > delay 214LM',
+  '{CHAR: Cell} 2M > 5M > jc.MLL > jc.MLL2H > SD > j.LLLS > j.236L',
+];
+
 const combos = {
   [GameTypes.TEKKEN_7]: tekken7Combos,
+  [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStrive,
+  [GameTypes.DB_FIGHTERZ]: dragonBallFighterZ,
   [GameTypes.STREET_FIGHTER_6]: streetFighter6,
   [GameTypes.STREET_FIGHTER_V]: streetFighter6,
-  [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStrive,
   [GameTypes.KOF_XV]: streetFighter6,
-  [GameTypes.DB_FIGHTERZ]: streetFighter6,
 };
 export default function ComboTranslator() {
   const params = useSearchParams();
