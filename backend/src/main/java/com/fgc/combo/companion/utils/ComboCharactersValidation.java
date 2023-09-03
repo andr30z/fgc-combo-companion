@@ -1,6 +1,7 @@
 package com.fgc.combo.companion.utils;
 
 import com.fgc.combo.companion.enums.ComboGameTypes;
+import com.fgc.combo.companion.enums.DragonBallFighterZCharacters;
 import com.fgc.combo.companion.enums.GuiltyGearStriveCharacters;
 import com.fgc.combo.companion.enums.StreetFighter6Characters;
 import com.fgc.combo.companion.enums.Tekken7Characters;
@@ -34,7 +35,16 @@ public class ComboCharactersValidation {
         .stream()
         .map(GuiltyGearStriveCharacters::name)
         .toList()
+    ),
+    Map.entry(
+      ComboGameTypes.DB_FIGHTERZ,
+      Arrays
+        .asList(DragonBallFighterZCharacters.values())
+        .stream()
+        .map(DragonBallFighterZCharacters::name)
+        .toList()
     )
+
   );
 
   public static boolean isComboCharacterValid(

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fgc.combo.companion.enums.ComboGameTypes;
+import com.fgc.combo.companion.enums.DragonBallFighterZCharacters;
 import com.fgc.combo.companion.enums.GuiltyGearStriveCharacters;
 import com.fgc.combo.companion.enums.StreetFighter6Characters;
 import com.fgc.combo.companion.enums.Tekken7Characters;
@@ -55,6 +56,13 @@ public class ComboCharactersValidationTests {
           this.assertAllCharactersAreFromGame(
               GuiltyGearStriveCharacters.values(),
               ComboGameTypes.GUILTY_GEAR_STRIVE
+            )
+        ),
+          () ->
+        assertTrue(
+          this.assertAllCharactersAreFromGame(
+              DragonBallFighterZCharacters.values(),
+              ComboGameTypes.DB_FIGHTERZ
             )
         )
     );
