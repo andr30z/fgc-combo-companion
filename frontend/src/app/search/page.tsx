@@ -24,6 +24,7 @@ const gameNameMap: Record<GameTypes, string> = {
   [GameTypes.KOF_XV]: 'KOF XV',
   [GameTypes.GUILTY_GEAR_STRIVE]: 'Guilty Gear Strive',
   [GameTypes.DB_FIGHTERZ]: 'Dragon Ball FighterZ',
+  [GameTypes.MORTAL_KOMBAT_1]: 'Mortal Kombat 1',
 };
 
 interface SearchAllResult {
@@ -121,6 +122,7 @@ export default function SearchPage() {
             GameTypes.TEKKEN_7,
             GameTypes.STREET_FIGHTER_6,
             GameTypes.GUILTY_GEAR_STRIVE,
+            GameTypes.DB_FIGHTERZ,
           ].map((game) => {
             const isSelected = games.includes(game);
             return (

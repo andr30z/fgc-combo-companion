@@ -6,7 +6,8 @@ import { TEKKEN_7_COMBO_MAP } from '@/common/constants/tekken7-notation-map';
 import { GameTypes } from '@/common/types/game-types';
 import { STREET_FIGHTER_6_COMBO_MAP } from '@/common/constants/street-fighter-6-notation-map';
 import { get } from 'lodash';
-import { GUILTY_GEAR_STRIVE_COMBO_MAP } from '@/common/constants/guilty-gear-strive-map';
+import { GUILTY_GEAR_STRIVE_COMBO_MAP } from '@/common/constants/guilty-gear-strive-notation-map';
+import { DB_FIGHTERZ_COMBO_MAP } from '@/common/constants/db-fighterz-notation-map';
 interface ComboInputInterface {
   combo: string;
   game?: GameTypes;
@@ -18,6 +19,7 @@ const comboMapsDirectionary = {
   [GameTypes.TEKKEN_7]: TEKKEN_7_COMBO_MAP,
   [GameTypes.STREET_FIGHTER_6]: STREET_FIGHTER_6_COMBO_MAP,
   [GameTypes.GUILTY_GEAR_STRIVE]: GUILTY_GEAR_STRIVE_COMBO_MAP,
+  [GameTypes.DB_FIGHTERZ]: DB_FIGHTERZ_COMBO_MAP,
 } as const;
 
 export const ComboInput: FC<ComboInputInterface> = ({
