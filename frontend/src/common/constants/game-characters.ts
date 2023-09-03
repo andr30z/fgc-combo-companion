@@ -114,6 +114,187 @@ export const GAME_CHARACTERS_MAP = new Map<
       { label: 'Johnny', value: 'JOHNNY' },
     ],
   ],
+  [
+    GameTypes.DB_FIGHTERZ,
+    [
+      {
+        label: 'Android 16',
+        value: 'ANDROID_16',
+      },
+      {
+        label: 'Android 17',
+        value: 'ANDROID_17',
+      },
+      {
+        label: 'Android 18',
+        value: 'ANDROID_18',
+      },
+      {
+        label: 'Android 21',
+        value: 'ANDROID_21',
+      },
+      {
+        label: 'Android 21 (Lab Coat)',
+        value: 'ANDROID_21_LAB_COAT',
+      },
+      {
+        label: 'Bardock',
+        value: 'BARDOCK',
+      },
+      {
+        label: 'Beerus',
+        value: 'BEERUS',
+      },
+      {
+        label: 'Broly',
+        value: 'BROLY',
+      },
+      {
+        label: 'Broly (DBS)',
+        value: 'BROLY_DBS',
+      },
+      {
+        label: 'Captain Ginyu',
+        value: 'CAPTAIN_GINYU',
+      },
+      {
+        label: 'Cell',
+        value: 'CELL',
+      },
+      {
+        label: 'Cooler',
+        value: 'COOLER',
+      },
+      {
+        label: 'Frieza',
+        value: 'FRIEZA',
+      },
+      {
+        label: 'Gogeta SS4',
+        value: 'GOGETA_SS4',
+      },
+      {
+        label: 'Gogeta SSGSS',
+        value: 'GOGETA_SSGSS',
+      },
+      {
+        label: 'Gohan Adult',
+        value: 'GOHAN_ADULT',
+      },
+      {
+        label: 'Gohan Teen',
+        value: 'GOHAN_TEEN',
+      },
+      {
+        label: 'Goku',
+        value: 'GOKU',
+      },
+      {
+        label: 'Goku (GT)',
+        value: 'GOKU_GT',
+      },
+      {
+        label: 'Goku SSGSS',
+        value: 'GOKU_SSGSS',
+      },
+      {
+        label: 'Goku SUPER SAIYAN',
+        value: 'GOKU_SUPER_SAIYAN',
+      },
+      {
+        label: 'Goku Ultra Instinct',
+        value: 'GOKU_ULTRA_INSTINCT',
+      },
+      {
+        label: 'Goku Black',
+        value: 'GOKU_BLACK',
+      },
+      {
+        label: 'Gotenks',
+        value: 'GOTENKS',
+      },
+      {
+        label: 'Hit',
+        value: 'HIT',
+      },
+      {
+        label: 'Janemba',
+        value: 'JANEMBA',
+      },
+      {
+        label: 'Jiren',
+        value: 'JIREN',
+      },
+      {
+        label: 'Kefla',
+        value: 'KEFLA',
+      },
+      {
+        label: 'Kid Buu',
+        value: 'KID_BUU',
+      },
+      {
+        label: 'Krillin',
+        value: 'KRILLIN',
+      },
+      {
+        label: 'Majin Buu',
+        value: 'MAJIN_BUU',
+      },
+      {
+        label: 'Master Roshi',
+        value: 'MASTER_ROSHI',
+      },
+      {
+        label: 'Nappa',
+        value: 'NAPPA',
+      },
+      {
+        label: 'Piccolo',
+        value: 'PICCOLO',
+      },
+      {
+        label: 'Super Baby 2',
+        value: 'SUPER_BABY_2',
+      },
+      {
+        label: 'Tien',
+        value: 'TIEN',
+      },
+      {
+        label: 'Trunks',
+        value: 'TRUNKS',
+      },
+      {
+        label: 'Vegeta',
+        value: 'VEGETA',
+      },
+      {
+        label: 'Vegeta SSGSS',
+        value: 'VEGETA_SSGSS',
+      },
+      {
+        label: 'Vegeta Super Saiyan',
+        value: 'VEGETA_SUPER_SAIYAN',
+      },
+      {
+        label: 'Vegito SSGSS',
+        value: 'VEGITO_SSGSS',
+      },
+      {
+        label: 'Videl',
+        value: 'VIDEL',
+      },
+      {
+        label: 'Yamcha',
+        value: 'YAMCHA',
+      },
+      {
+        label: 'Zamasu (Fused)',
+        value: 'ZAMASU_FUSED',
+      },
+    ],
+  ],
 ]);
 
 export function getCharacterName(game: GameTypes, character: string) {

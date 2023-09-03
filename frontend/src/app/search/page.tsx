@@ -121,6 +121,7 @@ export default function SearchPage() {
             GameTypes.TEKKEN_7,
             GameTypes.STREET_FIGHTER_6,
             GameTypes.GUILTY_GEAR_STRIVE,
+            GameTypes.DB_FIGHTERZ,
           ].map((game) => {
             const isSelected = games.includes(game);
             return (
