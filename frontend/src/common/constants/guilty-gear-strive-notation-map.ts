@@ -67,6 +67,7 @@ export const GUILTY_GEAR_STRIVE_COMBO_MAP = {
   xN: 'xN',
   LAND: 'LAND',
   '▷': 'LAND',
+  '(N)': '(N)',
 } as const;
 
 export type GuiltyGearStriveMapKey = keyof typeof GUILTY_GEAR_STRIVE_COMBO_MAP;
@@ -82,6 +83,16 @@ export const GUILTY_GEAR_STRIVE_COMBO_NOTATION_MAP = new Map<
       action: GUILTY_GEAR_STRIVE_COMBO_MAP.xN,
       regex: /x(\d+)(?![^{]*})/,
       replaceString: '#{x$1}#',
+      uppercaseBeforeTranslation: false,
+    },
+  ],
+  [
+    '(N)',
+    {
+      imagePath: '',
+      action: GUILTY_GEAR_STRIVE_COMBO_MAP['(N)'],
+      regex: /\((\d+)\)(?![^{]*})/,
+      replaceString: '#{($1)}#',
       uppercaseBeforeTranslation: false,
     },
   ],

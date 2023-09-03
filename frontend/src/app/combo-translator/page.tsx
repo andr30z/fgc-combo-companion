@@ -52,7 +52,7 @@ const dragonBallFighterZ = [
   '{CHAR: Goku} {CORNER COMBO} 2M > 5M > jc.MLL > jc.LL > j.236M > DR',
   '{CHAR: Android 17} 5M > 2M > 3H > 236L~MMM~H > 214M~MMM~2S',
   '{CHAR: BEERUS} {CORNER COMBO} 2M > 5M > jc.MLL > jc.LL > j.236M > DR',
-  '{CHAR: Majin Buu} 2M > 5M > 5H > superdash > j.M > j.H > 214L > j.L > j.L > jump > j.M > j.L > j.2H > j.S > 236L',
+  '{CHAR: Majin Buu} 2M > 5M > 5H > SD > j.M > j.H > 214L > j.L > j.L > jump > j.M > j.L > j.2H > j.S > 236L',
   '{CHAR: GT Goku} 2M > 5M > 2S > 5L > jump M > j.L > j.L > jump > j.M > j.H > 214L > delay dr',
   '{CHAR: Adult Gohan} 2M > 5H > SD > 236[L] > 5L(2) > 3H > jc.LL2H > jc.LLS > SD > j.LLS > 214L',
   '{CHAR: Vegeta} {CORNER COMBO} 2L/5L > 5M > 2M > 236M > 2M > 5M > jc.ML > jc.MS, j.LLS, j.LL delay S > 5L > 5S(2) > 5H > SD > j.MS > 5LLL > 214M',

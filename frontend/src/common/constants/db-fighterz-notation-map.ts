@@ -78,6 +78,7 @@ export const DB_FIGHTERZ_COMBO_MAP = {
   '▷': 'LAND',
   MICRODASH: 'MICRODASH',
   JUMP: 'JUMP',
+  '(N)': '(N)',
 } as const;
 
 export type DragonBallFighterZMapKey = keyof typeof DB_FIGHTERZ_COMBO_MAP;
@@ -93,6 +94,16 @@ export const DRAGON_BALL_FIGHTERZ_NOTATION_MAP = new Map<
       action: DB_FIGHTERZ_COMBO_MAP.xN,
       regex: /x(\d+)(?![^{]*})/,
       replaceString: '#{x$1}#',
+      uppercaseBeforeTranslation: false,
+    },
+  ],
+  [
+    '(N)',
+    {
+      imagePath: '',
+      action: DB_FIGHTERZ_COMBO_MAP['(N)'],
+      regex: /\((\d+)\)(?![^{]*})/,
+      replaceString: '#{($1)}#',
       uppercaseBeforeTranslation: false,
     },
   ],
