@@ -5,7 +5,7 @@ export interface ComboStepTranslation {
   height?: number;
   style?: string;
   actionTitle?: string;
-  regex?: RegExp;
+  regex?: RegExp | string;
   replaceString?: string;
   uppercaseBeforeTranslation?: boolean;
 }
