@@ -97,7 +97,6 @@ function replaceHoldReleaseInput(combo: string, type: 'RELEASE' | 'HOLD') {
  * FUCK ALL ARC SYSTEM GAMES COMBO NOTATIONS
  *
  *
- * Maybe use this function as default combo translator for all games?
  * @author andr30z
  **/
 export function arcSystemGamesComboTranslator(
@@ -108,21 +107,56 @@ export function arcSystemGamesComboTranslator(
   let comboCopy = replaceHoldReleaseInput(combo, 'HOLD');
   comboCopy = replaceHoldReleaseInput(comboCopy, 'RELEASE');
 
+  return defaultTranslator(comboCopy, notationsMap);
+}
+
+type TranslationOptions = {
+  uppercaseBeforeTranslation?: boolean;
+  upperCaseMapKeys?: boolean;
+  comboSeparators?: Array<string>;
+  uppercaseTranslationWhenFindingMapKeys?: boolean;
+  formatComboBeforeSeparation?: (combo: string) => string;
+};
+
+/**
+ * Maybe use this function as default combo translator for all games?
+ * @param combo
+ * @param notationsMap
+ */
+export function defaultTranslator(
+  combo: string,
+  notationsMap: Map<string, ComboStepTranslation>,
+  {
+    uppercaseBeforeTranslation = true,
+    comboSeparators = [', ', ' ,'],
+    upperCaseMapKeys = true,
+    uppercaseTranslationWhenFindingMapKeys = true,
+    formatComboBeforeSeparation,
+  }: TranslationOptions = {},
+): ComboTranslationInterface {
+  let comboCopy = combo;
   //mark combo translations
   for (const [key] of notationsMap) {
     const mapItem = notationsMap.get(key);
-    const upperCasedItem = mapItem?.uppercaseBeforeTranslation ?? true;
+    const upperCasedItem =
+      mapItem?.uppercaseBeforeTranslation ?? uppercaseBeforeTranslation;
     comboCopy = replaceAllWithNoSeparatorsExceptInBetweenCurlyBracket(
       upperCasedItem ? comboCopy.toUpperCase() : comboCopy,
-      mapItem?.regex ? mapItem?.regex : key.toUpperCase(),
+      mapItem?.regex
+        ? mapItem?.regex
+        : upperCaseMapKeys
+        ? key.toUpperCase()
+        : key,
       mapItem?.replaceString ? mapItem?.replaceString : `#{${key}}#`,
     );
   }
 
   //break combo in pieces
   const splitedResult = splitMulti(
-    replaceSpacesWithinBraces(comboCopy),
-    [' ', ', ', ' ,', ' >', '> ', '}#'],
+    formatComboBeforeSeparation
+      ? formatComboBeforeSeparation(comboCopy)
+      : replaceSpacesWithinBraces(comboCopy),
+    [' ', ' >', '> ', '}#', ...comboSeparators],
     '',
   );
 
@@ -159,12 +193,17 @@ export function arcSystemGamesComboTranslator(
     })
     .map((localItem) => {
       //remove combo translation flags and perfom replacements
-      const upperCasedItem = replaceComboWithSpaceFlagWithinBraces(localItem)
-        .toUpperCase()
+      let translationItem = replaceComboWithSpaceFlagWithinBraces(localItem);
+
+      if (uppercaseTranslationWhenFindingMapKeys) {
+        translationItem = translationItem.toUpperCase();
+      }
+
+      translationItem = translationItem
         .replace(',{', '')
         .replace('#{', '')
         .replace('}#', '');
-      const mapItem = notationsMap.get(upperCasedItem);
+      const mapItem = notationsMap.get(translationItem);
 
       if (mapItem) {
         return mapItem;
