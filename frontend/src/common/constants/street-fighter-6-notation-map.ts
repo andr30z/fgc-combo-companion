@@ -35,11 +35,7 @@ export const STREET_FIGHTER_6_COMBO_MAP = {
   HCF: 'HALF CIRCLE FORWARD',
   HCB: 'HALF CIRCLE BACK',
   P: 'PUNCH',
-  PP: '2 PUNCH BUTTONS',
-  PPP: 'ALL PUNCHES',
   K: 'KICK',
-  KK: '2 KICK BUTTONS',
-  KKK: 'ALL KICKS',
   LP: 'LIGHT PUNCH',
   MP: 'MEDIUM PUNCH',
   HP: 'HEAVY PUNCH',
@@ -64,228 +60,20 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = new Map<
   ComboStepTranslation
 >([
   [
-    '5',
-    {
-      imagePath: '/street-fighter-6/moves/neutral.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[5],
-    },
-  ],
-  [
-    'S',
-    {
-      imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.S,
-    },
-  ],
-  [
-    'ST',
-    {
-      imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.S,
-    },
-  ],
-  [
-    '>',
-    {
-      imagePath: '',
-      actionTitle: 'LINK',
-      action: STREET_FIGHTER_6_COMBO_MAP['>'],
-      style: 'bg-transparent text-3xl font-semibold',
-    },
-  ],
-  [
-    'CR',
-    {
-      imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.CR,
-    },
-  ],
-  [
-    'C',
-    {
-      imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.C,
-    },
-  ],
-  [
-    'J',
-    {
-      imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.J,
-    },
-  ],
-  [
-    '6',
-    {
-      imagePath: '/street-fighter-6/moves/forward.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[6],
-    },
-  ],
-  [
-    'F',
-    {
-      imagePath: '/street-fighter-6/moves/forward.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.F,
-    },
-  ],
-  [
-    '8',
-    {
-      imagePath: '/street-fighter-6/moves/up.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[8],
-    },
-  ],
-  [
-    'U',
-    {
-      imagePath: '/street-fighter-6/moves/up.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.U,
-    },
-  ],
-  [
-    '2',
-    {
-      imagePath: '/street-fighter-6/moves/down.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[2],
-    },
-  ],
-  [
-    'D',
-    {
-      imagePath: '/street-fighter-6/moves/down.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.D,
-    },
-  ],
-  [
-    '4',
-    {
-      imagePath: '/street-fighter-6/moves/back.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[4],
-    },
-  ],
-  [
-    'B',
-    {
-      imagePath: '/street-fighter-6/moves/back.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.B,
-    },
-  ],
-  [
-    '3',
-    {
-      imagePath: '/street-fighter-6/moves/downforward.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[3],
-    },
-  ],
-  [
-    'DF',
-    {
-      imagePath: '/street-fighter-6/moves/downforward.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.DF,
-    },
-  ],
-  [
-    '1',
-    {
-      imagePath: '/street-fighter-6/moves/downback.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[1],
-    },
-  ],
-  [
-    'DB',
-    {
-      imagePath: '/street-fighter-6/moves/downback.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.DB,
-    },
-  ],
-  [
-    '9',
-    {
-      imagePath: '/street-fighter-6/moves/upforward.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[9],
-    },
-  ],
-  [
-    'UF',
-    {
-      imagePath: '/street-fighter-6/moves/upforward.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.UF,
-    },
-  ],
-  [
-    '7',
-    {
-      imagePath: '/street-fighter-6/moves/upbackward.png',
-      action: STREET_FIGHTER_6_COMBO_MAP[7],
-    },
-  ],
-  [
-    'UB',
-    {
-      imagePath: '/street-fighter-6/moves/upbackward.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.UB,
-    },
-  ],
-  [
-    '236',
+    '63214',
     {
       imagePath: [
-        '/street-fighter-6/moves/down.png',
-        '/street-fighter-6/moves/downforward.png',
         '/street-fighter-6/moves/forward.png',
-      ],
-      action: STREET_FIGHTER_6_COMBO_MAP[236],
-    },
-  ],
-  [
-    'QCF',
-    {
-      imagePath: [
-        '/street-fighter-6/moves/down.png',
         '/street-fighter-6/moves/downforward.png',
-        '/street-fighter-6/moves/forward.png',
-      ],
-      action: STREET_FIGHTER_6_COMBO_MAP.QCF,
-    },
-  ],
-  [
-    '214',
-    {
-      imagePath: [
         '/street-fighter-6/moves/down.png',
         '/street-fighter-6/moves/downback.png',
         '/street-fighter-6/moves/back.png',
       ],
-      action: STREET_FIGHTER_6_COMBO_MAP[214],
+      action: STREET_FIGHTER_6_COMBO_MAP.HCB,
     },
   ],
-  [
-    'QCB',
-    {
-      imagePath: [
-        '/street-fighter-6/moves/down.png',
-        '/street-fighter-6/moves/downback.png',
-        '/street-fighter-6/moves/back.png',
-      ],
-      action: STREET_FIGHTER_6_COMBO_MAP.QCB,
-    },
-  ],
-  ['CH', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.CH }],
   [
     '41236',
-    {
-      imagePath: [
-        '/street-fighter-6/moves/back.png',
-        '/street-fighter-6/moves/downback.png',
-        '/street-fighter-6/moves/down.png',
-        '/street-fighter-6/moves/downforward.png',
-        '/street-fighter-6/moves/forward.png',
-      ],
-      action: STREET_FIGHTER_6_COMBO_MAP[41236],
-    },
-  ],
-  [
-    'HCF',
     {
       imagePath: [
         '/street-fighter-6/moves/back.png',
@@ -297,17 +85,19 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = new Map<
       action: STREET_FIGHTER_6_COMBO_MAP.HCF,
     },
   ],
+  ['LVL3', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.LVL3 }],
+  ['LVL2', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.LVL2 }],
+  ['LVL1', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.LVL1 }],
+  ['DRC', { imagePath: '', action: 'DRIVE RUSH CANCEL' }],
   [
-    '63214',
+    '623',
     {
       imagePath: [
         '/street-fighter-6/moves/forward.png',
-        '/street-fighter-6/moves/downforward.png',
         '/street-fighter-6/moves/down.png',
-        '/street-fighter-6/moves/downback.png',
-        '/street-fighter-6/moves/back.png',
+        '/street-fighter-6/moves/downforward.png',
       ],
-      action: STREET_FIGHTER_6_COMBO_MAP[63214],
+      action: STREET_FIGHTER_6_COMBO_MAP.DP,
     },
   ],
   [
@@ -324,30 +114,108 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = new Map<
     },
   ],
   [
-    'K',
-    {
-      imagePath: '/street-fighter-6/buttons/kick.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.K,
-    },
-  ],
-  [
-    'P',
-    {
-      imagePath: '/street-fighter-6/buttons/punch.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.P,
-    },
-  ],
-  [
-    '623',
+    'HCF',
     {
       imagePath: [
-        '/street-fighter-6/moves/forward.png',
+        '/street-fighter-6/moves/back.png',
+        '/street-fighter-6/moves/downback.png',
         '/street-fighter-6/moves/down.png',
         '/street-fighter-6/moves/downforward.png',
+        '/street-fighter-6/moves/forward.png',
       ],
-      action: STREET_FIGHTER_6_COMBO_MAP.DP,
+      action: STREET_FIGHTER_6_COMBO_MAP.HCF,
     },
   ],
+  [
+    'QCB',
+    {
+      imagePath: [
+        '/street-fighter-6/moves/down.png',
+        '/street-fighter-6/moves/downback.png',
+        '/street-fighter-6/moves/back.png',
+      ],
+      action: STREET_FIGHTER_6_COMBO_MAP.QCB,
+    },
+  ],
+  [
+    '214',
+    {
+      imagePath: [
+        '/street-fighter-6/moves/down.png',
+        '/street-fighter-6/moves/downback.png',
+        '/street-fighter-6/moves/back.png',
+      ],
+      action: STREET_FIGHTER_6_COMBO_MAP.QCB,
+    },
+  ],
+  [
+    'QCF',
+    {
+      imagePath: [
+        '/street-fighter-6/moves/down.png',
+        '/street-fighter-6/moves/downforward.png',
+        '/street-fighter-6/moves/forward.png',
+      ],
+      action: STREET_FIGHTER_6_COMBO_MAP.QCF,
+    },
+  ],
+  [
+    '236',
+    {
+      imagePath: [
+        '/street-fighter-6/moves/down.png',
+        '/street-fighter-6/moves/downforward.png',
+        '/street-fighter-6/moves/forward.png',
+      ],
+      action: STREET_FIGHTER_6_COMBO_MAP.QCF,
+    },
+  ],
+  ['DI', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.DI }],
+  ['DR', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.DR }],
+  ['XX', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.XX }],
+  [
+    'MK',
+    {
+      imagePath: '/street-fighter-6/buttons/mid_kick.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.MK,
+    },
+  ],
+  [
+    'HK',
+    {
+      imagePath: '/street-fighter-6/buttons/heavy_kick.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.HK,
+    },
+  ],
+  [
+    'LK',
+    {
+      imagePath: '/street-fighter-6/buttons/light_kick.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.LK,
+    },
+  ],
+  [
+    'HP',
+    {
+      imagePath: '/street-fighter-6/buttons/heavy_punch.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.HP,
+    },
+  ],
+  [
+    'MP',
+    {
+      imagePath: '/street-fighter-6/buttons/mid_punch.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.MP,
+    },
+  ],
+  [
+    'LP',
+    {
+      imagePath: '/street-fighter-6/buttons/light_punch.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.LP,
+    },
+  ],
+  ['PC', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.PC }],
   [
     'DP',
     {
@@ -359,100 +227,152 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = new Map<
       action: STREET_FIGHTER_6_COMBO_MAP.DP,
     },
   ],
+  ['CH', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.CH }],
   [
-    'PC',
+    'UB',
+    {
+      imagePath: '/street-fighter-6/moves/upbackward.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.UB,
+    },
+  ],
+  [
+    'UF',
+    {
+      imagePath: '/street-fighter-6/moves/upforward.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.UF,
+    },
+  ],
+  [
+    'DB',
+    {
+      imagePath: '/street-fighter-6/moves/downback.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.DB,
+    },
+  ],
+  [
+    'DF',
+    {
+      imagePath: '/street-fighter-6/moves/downforward.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.DF,
+    },
+  ],
+  ['CR', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.CR }],
+  ['ST', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.ST }],
+  [
+    '>',
     {
       imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.PC,
+      actionTitle: 'LINK',
+      action: '>',
+      style: 'bg-transparent text-3xl font-semibold',
     },
   ],
-  ['PPP', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.PPP }],
+  ['S', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.ST }],
   [
-    'PP',
+    '5',
     {
-      imagePath: [
-        '/street-fighter-6/buttons/punch.png',
-        '/street-fighter-6/buttons/punch.png',
-      ],
-      action: STREET_FIGHTER_6_COMBO_MAP.PP,
-    },
-  ],
-  ['KKK', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.KKK }],
-  [
-    'KK',
-    {
-      imagePath: [
-        '/street-fighter-6/buttons/kick.png',
-        '/street-fighter-6/buttons/kick.png',
-      ],
-      action: STREET_FIGHTER_6_COMBO_MAP.KK,
+      imagePath: '/street-fighter-6/moves/neutral.png',
+      action: STREET_FIGHTER_6_COMBO_MAP[5],
     },
   ],
   [
-    'LP',
+    'P',
     {
-      imagePath: '/street-fighter-6/buttons/light_punch.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.LP,
+      imagePath: '/street-fighter-6/buttons/punch.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.P,
     },
   ],
   [
-    'MP',
+    'K',
     {
-      imagePath: '/street-fighter-6/buttons/mid_punch.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.MP,
+      imagePath: '/street-fighter-6/buttons/kick.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.K,
     },
   ],
   [
-    'HP',
+    '7',
     {
-      imagePath: '/street-fighter-6/buttons/heavy_punch.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.HP,
+      imagePath: '/street-fighter-6/moves/upbackward.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.UB,
     },
   ],
   [
-    'LK',
+    '9',
     {
-      imagePath: '/street-fighter-6/buttons/light_kick.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.LK,
+      imagePath: '/street-fighter-6/moves/upforward.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.UF,
     },
   ],
   [
-    'HK',
+    '1',
     {
-      imagePath: '/street-fighter-6/buttons/heavy_kick.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.HK,
+      imagePath: '/street-fighter-6/moves/downback.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.DB,
     },
   ],
   [
-    'MK',
+    '3',
     {
-      imagePath: '/street-fighter-6/buttons/mid_kick.png',
-      action: STREET_FIGHTER_6_COMBO_MAP.MK,
-    },
-  ],
-  ['XX', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.XX }],
-  ['DRC', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.DRC }],
-  ['DR', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.DR }],
-  ['DI', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.DI }],
-  [
-    'LVL1',
-    {
-      imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.LVL1,
+      imagePath: '/street-fighter-6/moves/downforward.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.DF,
     },
   ],
   [
-    'LVL2',
+    'B',
     {
-      imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.LVL2,
+      imagePath: '/street-fighter-6/moves/back.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.B,
     },
   ],
   [
-    'LVL3',
+    '4',
     {
-      imagePath: '',
-      action: STREET_FIGHTER_6_COMBO_MAP.LVL3,
+      imagePath: '/street-fighter-6/moves/back.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.B,
     },
   ],
+  [
+    'D',
+    {
+      imagePath: '/street-fighter-6/moves/down.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.D,
+    },
+  ],
+  [
+    '2',
+    {
+      imagePath: '/street-fighter-6/moves/down.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.D,
+    },
+  ],
+  [
+    'U',
+    {
+      imagePath: '/street-fighter-6/moves/up.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.U,
+    },
+  ],
+  [
+    '8',
+    {
+      imagePath: '/street-fighter-6/moves/up.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.U,
+    },
+  ],
+  [
+    'F',
+    {
+      imagePath: '/street-fighter-6/moves/forward.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.F,
+    },
+  ],
+  [
+    '6',
+    {
+      imagePath: '/street-fighter-6/moves/forward.png',
+      action: STREET_FIGHTER_6_COMBO_MAP.F,
+    },
+  ],
+  ['J', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.J }],
+  ['C', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.C }],
 ]);
