@@ -27,6 +27,7 @@ export const STREET_FIGHTER_6_COMBO_MAP = {
   DF: 'DOWN-FORWARD',
   DB: 'DOWN-BACK',
   UF: 'UP-FORWAD',
+  JC: 'JUMP CANCEL',
   PC: 'PUNISH COUNTER',
   UB: 'UP-BACK',
   QCF: 'QUARTER CIRCLE FORWARD',
@@ -228,6 +229,7 @@ export const STREET_FIGHTER_6_COMBO_MAP_TRANSLATION = new Map<
     },
   ],
   ['CH', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.CH }],
+  ['JC', { imagePath: '', action: STREET_FIGHTER_6_COMBO_MAP.JC }],
   [
     'UB',
     {
