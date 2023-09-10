@@ -35,7 +35,7 @@ export const ComboPreview: FC<
 
   const damageAndCharacter =
     totalDamage || character ? (
-      <span className="text-light font-primary text-lg mt-[1px]">
+      <span className="text-light font-primary text-lg mt-[1px] mb-5">
         {character ? getCharacterName(game, character) : ''}
         {totalDamage ? ` ${character ? '-' : ''} ${totalDamage} Damage` : null}
       </span>
@@ -54,7 +54,7 @@ export const ComboPreview: FC<
           combo={combo}
           game={game}
           backgroundColor="secondary"
-          className="mt-5 justify-center"
+          className="justify-center"
           htmlProps={htmlProps}
         />
         {combo && (

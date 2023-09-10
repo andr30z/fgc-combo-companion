@@ -98,7 +98,7 @@ export default async function ComboPage({ params }: PageProps) {
               : null}
           </span>
         ) : null}
-        <p className="text-light font-primary font-normal text-sm">
+        <p className="text-light font-primary font-normal text-sm mb-5">
           {combo.description}
         </p>
       </div>
