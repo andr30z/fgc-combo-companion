@@ -1,11 +1,12 @@
 import { getCharacterName } from '@/common/constants/game-characters';
 import { useBoolean } from '@/common/hooks/boolean';
 import { GameTypes } from '@/common/types/game-types';
-import type { FC, ReactNode } from 'react';
+import { type FC, type ReactNode, useRef } from 'react';
 import { BsFillShareFill } from 'react-icons/bs';
 import { ComboTranslation, ComboTranslationProps } from '../combo-translation';
 import { CopyTextButton } from '../copy-text-button';
 import { Modal } from '../modal';
+import { DownloadComponentImageButton } from '../download-component-image-button';
 export const ComboPreview: FC<
   {
     combo: string;
@@ -30,6 +31,7 @@ export const ComboPreview: FC<
     isComboDetailsOpen,
     { setTrue: openComboDetails, setFalse: closeComboDetails },
   ] = useBoolean();
+  const comboTranslatorRef = useRef<HTMLDivElement>(null);
 
   const damageAndCharacter =
     totalDamage || character ? (
@@ -48,6 +50,7 @@ export const ComboPreview: FC<
       >
         {damageAndCharacter}
         <ComboTranslation
+          ref={comboTranslatorRef}
           combo={combo}
           game={game}
           backgroundColor="secondary"
@@ -64,16 +67,21 @@ export const ComboPreview: FC<
             {description}
           </p>
         )}
-        {comboId && (
-          <div className="w-full flex items-center justify-center mt-5">
+        <div className="w-full flex flex-row items-center justify-center gap-2 flex-wrap mt-5">
+          {comboId && (
             <CopyTextButton
               buttonIcon={<BsFillShareFill size={15} />}
               textToCopy={`/combo/${comboId}`}
               isAppUrlCopy
               text="Share"
             />
-          </div>
-        )}
+          )}
+          <DownloadComponentImageButton<HTMLDivElement>
+            componentRef={comboTranslatorRef}
+            title="Download Combo"
+            text="Download Combo"
+          />
+        </div>
       </Modal>
       {renderTrigger(openComboDetails)}
     </>

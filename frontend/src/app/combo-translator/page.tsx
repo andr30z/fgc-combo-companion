@@ -4,6 +4,7 @@ import { ColorPicker } from '@/common/components/color-picker';
 import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { CopyTextButton } from '@/common/components/copy-text-button';
+import { DownloadComponentImageButton } from '@/common/components/download-component-image-button';
 import { GameSelect } from '@/common/components/game-select';
 import { LOCAL_STORAGE_KEYS } from '@/common/constants/local-storage-keys';
 import { useBoolean } from '@/common/hooks/boolean';
@@ -11,7 +12,7 @@ import { usePageTitle } from '@/common/hooks/page-title';
 import { GameTypes } from '@/common/types/game-types';
 import { get } from 'lodash';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BiCollapse, BiExpand } from 'react-icons/bi';
 import { BsFillShareFill } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
@@ -71,6 +72,7 @@ const combos = {
 };
 export default function ComboTranslator() {
   const params = useSearchParams();
+  const comboTranslatorRef = useRef<HTMLDivElement>(null);
   const comboParam = params?.get('combo');
   const gameParam = params?.get('game');
   usePageTitle('Combo Translator - FGC');
@@ -152,6 +154,10 @@ export default function ComboTranslator() {
                 title="Expand/Collapse combo view"
                 onClick={toggleExpandedView}
               />
+              <DownloadComponentImageButton<HTMLDivElement>
+                componentRef={comboTranslatorRef}
+                title="Download combo"
+              />
               <ColorPicker
                 color={bgColor}
                 setColor={setBgColor}
@@ -163,6 +169,7 @@ export default function ComboTranslator() {
       </div>
       {combo ? (
         <ComboTranslation
+          ref={comboTranslatorRef}
           key={game}
           combo={combo}
           game={game}

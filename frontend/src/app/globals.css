@@ -1,7 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
 .layout-padding-x {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
