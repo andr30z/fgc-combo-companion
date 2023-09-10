@@ -19,12 +19,12 @@ export const ComboDisplay: React.FC<ComboDisplayProps> = ({ combo, game }) => {
         ref={comboTranslatorRef}
         game={game}
         combo={combo}
-        className="justify-center my-5"
+        className="justify-center"
         style={{
           backgroundColor: color,
         }}
       />
-      <p className="text-light text-center font-primary font-normal text-md">
+      <p className="text-light text-center font-primary font-normal text-md my-5">
         {combo}
       </p>
       <div className="w-full flex items-center justify-center flex-row flex-wrap gap-2">
@@ -38,6 +38,7 @@ export const ComboDisplay: React.FC<ComboDisplayProps> = ({ combo, game }) => {
           componentRef={comboTranslatorRef}
           title="Download Combo"
           text="Download Combo"
+          color="secondary"
         />
       </div>
     </>
