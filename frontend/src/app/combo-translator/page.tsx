@@ -4,7 +4,7 @@ import { ColorPicker } from '@/common/components/color-picker';
 import { ComboInput } from '@/common/components/combo-input';
 import { ComboTranslation } from '@/common/components/combo-translation';
 import { CopyTextButton } from '@/common/components/copy-text-button';
-import { DownloadComponentImage } from '@/common/components/download-component-image';
+import { DownloadComponentImageButton } from '@/common/components/download-component-image-button';
 import { GameSelect } from '@/common/components/game-select';
 import { LOCAL_STORAGE_KEYS } from '@/common/constants/local-storage-keys';
 import { useBoolean } from '@/common/hooks/boolean';
@@ -154,8 +154,7 @@ export default function ComboTranslator() {
                 title="Expand/Collapse combo view"
                 onClick={toggleExpandedView}
               />
-              <DownloadComponentImage<HTMLDivElement>
-                key={`${game} - ${combo}`}
+              <DownloadComponentImageButton<HTMLDivElement>
                 componentRef={comboTranslatorRef}
                 title="Download combo"
               />

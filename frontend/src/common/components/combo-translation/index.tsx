@@ -3,7 +3,7 @@ import { useComboTranslator } from '@/common/hooks/combo-translator';
 import { ComboTranslationInterface } from '@/common/types/combo-translation';
 import { GameTypes } from '@/common/types/game-types';
 import Image from 'next/image';
-import { forwardRef, Fragment, useId } from 'react';
+import { forwardRef, Fragment } from 'react';
 export interface ComboTranslationProps {
   game: GameTypes;
   combo: string;
@@ -48,8 +48,6 @@ export const ComboTranslation = forwardRef<
     ref,
   ) => {
     const result = useComboTranslator({ combo, game });
-    const componentId = useId();
-
     if (!result.combo) {
       return null;
     }
@@ -81,7 +79,7 @@ export const ComboTranslation = forwardRef<
               if (step.action.trim().length === 0) {
                 return (
                   <Image
-                    key={step.action + idx.toString() + componentId}
+                    key={step.action + idx.toString()}
                     alt="next step"
                     width={10}
                     height={20}
@@ -97,7 +95,7 @@ export const ComboTranslation = forwardRef<
                   : [step.imagePath];
                 return stepArray.map((imagePath, idx) => (
                   <Image
-                    key={imagePath + step.action + idx.toString() + componentId}
+                    key={imagePath + step.action + idx.toString()}
                     src={imagePath}
                     alt={step.action}
                     title={step.action}
@@ -110,7 +108,7 @@ export const ComboTranslation = forwardRef<
               return (
                 <span
                   data-testid={'combo-action-' + step.action}
-                  key={step.action + idx.toString() + componentId}
+                  key={step.action + idx.toString()}
                   title={step.actionTitle}
                   className={`${
                     backgroundColor
