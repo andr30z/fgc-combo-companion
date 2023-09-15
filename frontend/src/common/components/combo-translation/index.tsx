@@ -16,6 +16,7 @@ export interface ComboTranslationProps {
     | 'secondary-dark'
     | 'light-active';
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   htmlProps?: React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
@@ -44,6 +45,7 @@ export const ComboTranslation = forwardRef<
       onClick,
       htmlProps,
       style,
+      onMouseDown,
     },
     ref,
   ) => {
@@ -69,6 +71,7 @@ export const ComboTranslation = forwardRef<
           backgroundColor ? 'bg-' + backgroundColor : ''
         }  flex items-center flex-row flex-wrap gap-1 ${className}`}
         onClick={onClick}
+        onMouseDown={onMouseDown}
         style={style}
         {...htmlProps}
       >

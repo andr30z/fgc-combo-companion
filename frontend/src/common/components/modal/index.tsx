@@ -18,6 +18,7 @@ const widths = {
 export const Modal = memo<ModalProps>(
   ({ children, title, isOpen, onClose, width = 'md' }) => {
     const selectedSize = widths[width];
+
     return (
       <Dialog.Root modal open={isOpen}>
         <Dialog.Portal>
@@ -29,6 +30,10 @@ export const Modal = memo<ModalProps>(
             className="bg-black bg-opacity-70 data-[state=open]:animate-overlayShow fixed inset-0"
           />
           <Dialog.Content
+            onEscapeKeyDown={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             className={`data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[95vh] ${selectedSize} max-w-[100vw] sm:max-w-[95vw] translate-x-[-50%] translate-y-[-50%] rounded-[6px] py-0 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] bg-dark border-secondary-dark border-2 focus:outline-none overflow-auto`}
           >
             <header className="mb-3 sticky z-50 top-0 w-full bg-dark flex flex-row items-center justify-between h-[70px] border-b-2 px-6 border-secondary-dark">

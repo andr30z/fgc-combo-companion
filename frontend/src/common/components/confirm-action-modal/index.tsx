@@ -1,7 +1,8 @@
-import type { FC } from 'react';
+import { useBoolean } from '@/common/hooks/boolean';
+import { type FC } from 'react';
 import { Button } from '../button';
 import { Modal } from '../modal';
-import { useBoolean } from '@/common/hooks/boolean';
+import { Root } from '@radix-ui/react-portal';
 
 interface ConfirmActionModalProps {
   onConfirm: () => void;
@@ -19,14 +20,14 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = ({
 }) => {
   return (
     <Modal
-      width="md"
+      width="xl"
       isOpen={isOpen}
       title={modalTitle}
       onClose={closeConfirmation}
     >
-      <main className="flex items-center my-4 border-b-2 border-b-secondary-dark pb-5">
+      <div className="flex items-center my-4 border-b-2 border-b-secondary-dark pb-5">
         <p className="text-2xl text-light text-left">{confirmationText}</p>
-      </main>
+      </div>
       <footer className="w-full flex justify-end gap-2 mt-5">
         <Button
           onClick={(e) => {
@@ -62,11 +63,21 @@ export const ConfirmAction: FC<
     useBoolean();
   return (
     <>
-      <ConfirmActionModal
-        {...props}
-        isOpen={isOpen}
-        closeConfirmation={closeConfirm}
-      />
+      <Root>
+        <div
+          className="hidden"
+          onClick={(e) => {
+            //this div only exists to avoid the click event bubbling inside the combo list component...
+            e.stopPropagation();
+          }}
+        >
+          <ConfirmActionModal
+            {...props}
+            isOpen={isOpen}
+            closeConfirmation={closeConfirm}
+          />
+        </div>
+      </Root>
       {props.children({
         closeConfirmActionModal: closeConfirm,
         openConfirmModal: openConfirm,

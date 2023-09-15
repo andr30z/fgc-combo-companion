@@ -42,7 +42,6 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
             }}
           />
         </Select.Value>
-        {/* </Select.Value> */}
       </Select.Trigger>
       <Select.Portal>
         <Select.Content
