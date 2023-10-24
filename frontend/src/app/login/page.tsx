@@ -1,5 +1,4 @@
 import { Button } from '@/common/components/button';
-import { unprotectedOnlyRouteValidator } from '@/common/server/protected-route-validator';
 import { LoginForm } from '@/modules/login-page/login-form';
 import type { Metadata } from 'next';
 
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
 type PageProps = { searchParams?: { error: string | undefined } };
 
 export default function LoginPage({ searchParams }: PageProps) {
-  unprotectedOnlyRouteValidator();
   const error = searchParams?.error;
   return (
     <div className="w-full h-full min-h-80vh flex flex-row justify-center items-center gap-2">
