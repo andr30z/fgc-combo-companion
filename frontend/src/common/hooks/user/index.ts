@@ -49,6 +49,7 @@ export function useUser(
       },
     },
   );
+  console.log(data, user)
 
   const logout = () => {
     signOut({ callbackUrl: redirectTo ?? '/' });
