@@ -6,8 +6,7 @@ import { Link } from '@/common/components/link';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
 import { useBoolean } from '@/common/hooks/boolean';
 import { useForm } from '@/common/hooks/form';
-import { useUser } from '@/common/hooks/user';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
@@ -17,12 +16,11 @@ export const LoginForm = () => {
     email: '',
     password: '',
   });
-  const { isLoadingUser, user } = useUser({ redirectTo: '/login' });
+  const { status } = useSession();
   const router = useRouter();
   const [loading, { setTrue: startLoading, setFalse: endLoading }] =
     useBoolean();
-
-  if (user) {
+  if (status === 'authenticated') {
     router.push('/dashboard/combos');
     return <></>;
   }
@@ -94,7 +92,7 @@ export const LoginForm = () => {
         leftIcon={<FcGoogle size={17} />}
       />
       <hr className="bg-light w-full" />
-      <LoadingBackdrop isLoading={isLoadingUser || loading} />
+      <LoadingBackdrop isLoading={loading} />
       <footer className="flex flex-row w-full justify-center items-center">
         <p className="font-primary">
           <Link href="/forgot" color="secondary">

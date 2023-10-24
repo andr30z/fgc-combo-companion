@@ -50,7 +50,6 @@ export function useUser(
     },
   );
   // eslint-disable-next-line no-console
-  console.log(data, user);
 
   const logout = () => {
     signOut({ callbackUrl: redirectTo ?? '/' });
