@@ -1,6 +1,7 @@
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import { User } from '@/common/types/user';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 
@@ -12,12 +13,15 @@ interface UseUserParams {
 export function useUser(
   { redirectTo }: UseUserParams = { redirectTo: '/login' },
 ) {
+  const router = useRouter();
   function onUnauthenticated() {
     if (!redirectTo) {
       return;
     }
     toast.error('Please log in again!');
-    signOut({ callbackUrl: redirectTo });
+    signOut({ redirect: false }).then(() => {
+      router.push(redirectTo);
+    });
   }
   const { update, data, status } = useSession({
     required: true,
