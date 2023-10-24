@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
 import { AuthProviderTypes } from '@/common/types/auth-types';
 import type { LoginRequest, LoginResponse } from '@/common/types/login';
@@ -59,7 +60,7 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
     }),
   ],
   events: {
-    async signOut() {
+    async signOut({ session, token }) {
       if (process.env.NODE_ENV === 'production') {
         res.setHeader('Set-Cookie', [
           'accessToken=deleted;Max-Age=0;path=/;domain=.fgc-combo-companion.xyz;',
@@ -71,6 +72,11 @@ const getAuthOption: NextAuthOptionsCallback = (_, res) => ({
           'refreshToken=deleted;Max-Age=0;path=/;',
         ]);
       }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      session = {} as any;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      token = {} as any;
     },
   },
   callbacks: {

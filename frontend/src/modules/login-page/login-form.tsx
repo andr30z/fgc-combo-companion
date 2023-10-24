@@ -17,7 +17,7 @@ export const LoginForm = () => {
     email: '',
     password: '',
   });
-  const { isLoadingUser, user } = useUser({ redirectTo: '/' });
+  const { isLoadingUser, user } = useUser({ redirectTo: '/login' });
   const router = useRouter();
   const [loading, { setTrue: startLoading, setFalse: endLoading }] =
     useBoolean();
