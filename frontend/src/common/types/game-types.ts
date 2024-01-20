@@ -1,5 +1,6 @@
 export enum GameTypes {
   TEKKEN_7 = 'TEKKEN_7',
+  TEKKEN_8 = 'TEKKEN_8',
   STREET_FIGHTER_V = 'SFV',
   GUILTY_GEAR_STRIVE = 'GUILTY_GEAR_STRIVE',
   KOF_XV = 'KOF_XV',

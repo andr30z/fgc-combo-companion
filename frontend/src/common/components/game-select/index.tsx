@@ -91,11 +91,18 @@ export const GameSelect: FC<{
         />
         <Option
           selectedOption={selectedOption}
+          option={GameTypes.TEKKEN_8}
+          onSelect={onSelect}
+          showSoonMessage
+          imageSource="/tekken8/tekken8-select.png"
+        />
+        {/* <Option
+          selectedOption={selectedOption}
           option={GameTypes.MORTAL_KOMBAT_1}
           onSelect={onSelect}
           showSoonMessage
           imageSource="/mortal-kombat-1/mortal-kombat-1-select.jpg"
-        />
+        /> */}
         <div
           style={{ boxShadow: '50px 0px 30px 40px #000' }}
           className={`min-h-full min-w-[.01px] ${
