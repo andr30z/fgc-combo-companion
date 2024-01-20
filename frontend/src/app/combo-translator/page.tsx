@@ -69,6 +69,7 @@ const combos = {
   [GameTypes.STREET_FIGHTER_V]: streetFighter6,
   [GameTypes.KOF_XV]: streetFighter6,
   [GameTypes.MORTAL_KOMBAT_1]: streetFighter6,
+  [GameTypes.TEKKEN_8]: tekken7Combos,
 };
 export default function ComboTranslator() {
   const params = useSearchParams();

@@ -14,6 +14,7 @@ interface UseComboTranslatorParams {
 
 const translatorDictionary: Record<GameTypes, ComboTranslatorType> = {
   [GameTypes.TEKKEN_7]: tekken7Translator,
+  [GameTypes.TEKKEN_8]: tekken7Translator,
   [GameTypes.MORTAL_KOMBAT_1]: tekken7Translator,
   [GameTypes.STREET_FIGHTER_6]: streetFighter6Translator,
   [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStriveTranslator,
