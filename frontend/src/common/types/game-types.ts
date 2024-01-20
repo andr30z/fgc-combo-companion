@@ -11,6 +11,7 @@ export enum GameTypes {
 
 export const COMBO_TYPES = {
   [GameTypes.TEKKEN_7]: 'Tekken 7',
+  [GameTypes.TEKKEN_8]: 'Tekken 8',
   [GameTypes.STREET_FIGHTER_V]: 'Street Fighter V',
   [GameTypes.GUILTY_GEAR_STRIVE]: 'Guilty Gear Strive',
   [GameTypes.KOF_XV]: 'KOF XV',
