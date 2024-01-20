@@ -19,6 +19,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 const gameNameMap: Record<GameTypes, string> = {
   [GameTypes.TEKKEN_7]: 'Tekken 7',
+  [GameTypes.TEKKEN_8]: 'Tekken 8',
   [GameTypes.STREET_FIGHTER_6]: 'Street Fighter 6',
   [GameTypes.STREET_FIGHTER_V]: 'Street Fighter V',
   [GameTypes.KOF_XV]: 'KOF XV',
