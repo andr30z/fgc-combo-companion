@@ -120,10 +120,11 @@ export default function SearchPage() {
         />
         <div className="flex flex-row flex-wrap gap-2 w-full mt-4">
           {[
-            GameTypes.TEKKEN_7,
+            GameTypes.TEKKEN_8,
             GameTypes.STREET_FIGHTER_6,
             GameTypes.GUILTY_GEAR_STRIVE,
             GameTypes.DB_FIGHTERZ,
+            GameTypes.TEKKEN_7,
           ].map((game) => {
             const isSelected = games.includes(game);
             return (
