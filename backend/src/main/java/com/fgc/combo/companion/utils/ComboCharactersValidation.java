@@ -5,6 +5,8 @@ import com.fgc.combo.companion.enums.DragonBallFighterZCharacters;
 import com.fgc.combo.companion.enums.GuiltyGearStriveCharacters;
 import com.fgc.combo.companion.enums.StreetFighter6Characters;
 import com.fgc.combo.companion.enums.Tekken7Characters;
+import com.fgc.combo.companion.enums.Tekken8Characters;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,14 @@ public class ComboCharactersValidation {
         .asList(Tekken7Characters.values())
         .stream()
         .map(Tekken7Characters::name)
+        .toList()
+    ),
+    Map.entry(
+      ComboGameTypes.TEKKEN_8,
+      Arrays
+        .asList(Tekken8Characters.values())
+        .stream()
+        .map(Tekken8Characters::name)
         .toList()
     ),
     Map.entry(
