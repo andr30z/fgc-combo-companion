@@ -27,6 +27,17 @@ const tekken7Combos = [
   '[ 3,4 ] {BT} b+2,3, b+2,4,2 S!, f,f+3, f,f+4 {CHAR: MASTER RAVEN}',
   'SS 2,1, df+3 df+1  df+3  db+2,4 S!, wr 2+4 {CHAR: ARMOR KING}',
 ];
+const tekken8Combos = [
+  '{CHAR: Raven} CH ws2, f,f3, ff4, 1, f,f3, 1, qcf1,2 T!, DASH b2,4,2',
+  '{CHAR: Reina} f,n,d,df+2, uf1, df, ws3, df1, f+2,3,F, 1+2 T!, f,3, 3+4',
+  '{CHAR: Jin} f,n,d,df+2, f,n,d,df+2, b3,F,1, b3,F,1,3',
+  '{CHAR: Feng Wei} f+3,4, d/f+1, d/f+4,3, d/f 4 2 1+2, dash, 3 1+2',
+  '{CHAR: Jack 8} d/f+2, n,2, f,F+2, b+1, d/f+1,1, ff, f+3 D, {Gamma Howl} 4',
+  '{CHAR: Devil Jin} f,n,d,d/f,4,1+2, b,f+2,1,D/F+2, 2+3 HEAT, b,f,2,1,4,1+2',
+  '{CHAR: Kazuya} f,n,d,d/f,2, dash, 3,1,4, dash, 3,1,DF+1+2 T!, dash f,n,d,DF,4,4',
+  '{CHAR: Paul Phoenix} df+2, df+4, df+1, df+4, 4,1,B, 1+2, fff n,2',
+  '{CHAR: Azucena} uf+4, df+3, df+1, d+2,3, 1+2 TORNADO, f2,1,4',
+];
 
 const streetFighter6 = [
   'C.LP PC, C.MK > DP HP {CHAR: RYU}',
@@ -69,7 +80,7 @@ const combos = {
   [GameTypes.STREET_FIGHTER_V]: streetFighter6,
   [GameTypes.KOF_XV]: streetFighter6,
   [GameTypes.MORTAL_KOMBAT_1]: streetFighter6,
-  [GameTypes.TEKKEN_8]: tekken7Combos,
+  [GameTypes.TEKKEN_8]: tekken8Combos,
 };
 export default function ComboTranslator() {
   const params = useSearchParams();
@@ -80,12 +91,14 @@ export default function ComboTranslator() {
   const initialGameTypeSelectFromLocalStorage = get(
     GameTypes,
     localStorage.getItem(LOCAL_STORAGE_KEYS.FAVORITE_GAME) ||
-      GameTypes.TEKKEN_7,
+      GameTypes.TEKKEN_8,
   );
+
   const gameInitialValue =
     gameParam ??
     initialGameTypeSelectFromLocalStorage ??
     GameTypes.STREET_FIGHTER_6;
+
   const [game, setGame] = useState(
     get(GameTypes, gameInitialValue)
       ? (gameInitialValue as GameTypes)

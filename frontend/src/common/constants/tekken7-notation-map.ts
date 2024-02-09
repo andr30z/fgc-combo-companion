@@ -76,7 +76,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     'sugarcoatkaz',
     {
-      imagePath: '/tekken7/special/sugar-coat-kaz.png',
+      imagePath: '/tekken/tekken7/special/sugar-coat-kaz.png',
       action: TEKKEN_7_COMBO_MAP.sugarcoatkaz,
       width: 80,
       height: 80,
@@ -85,7 +85,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '1+2+3+4',
     {
-      imagePath: '/tekken7/buttons/1+2+3+4.svg',
+      imagePath: '/tekken/tekken7/buttons/1+2+3+4.svg',
       action: TEKKEN_7_COMBO_MAP['1+2+3+4'],
       regex: /1\+2\+3\+4/,
     },
@@ -93,7 +93,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '2+3+4',
     {
-      imagePath: '/tekken7/buttons/2+3+4.svg',
+      imagePath: '/tekken/tekken7/buttons/2+3+4.svg',
       action: TEKKEN_7_COMBO_MAP['2+3+4'],
       regex: /(2\+3\+4)(?![^{]*})/,
     },
@@ -101,7 +101,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '1+3+4',
     {
-      imagePath: '/tekken7/buttons/1+3+4.svg',
+      imagePath: '/tekken/tekken7/buttons/1+3+4.svg',
       action: TEKKEN_7_COMBO_MAP['1+3+4'],
       regex: /(1\+3\+4)(?![^{]*})/,
     },
@@ -109,7 +109,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '1+2+3',
     {
-      imagePath: '/tekken7/buttons/1+2+3.svg',
+      imagePath: '/tekken/tekken7/buttons/1+2+3.svg',
       action: TEKKEN_7_COMBO_MAP['1+2+3'],
       regex: /(1\+2\+3)(?![^{]*})/,
     },
@@ -117,7 +117,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '1+2+4',
     {
-      imagePath: '/tekken7/buttons/1+2+4.svg',
+      imagePath: '/tekken/tekken7/buttons/1+2+4.svg',
       action: TEKKEN_7_COMBO_MAP['1+2+4'],
       regex: /(1\+2\+4)(?![^{]*})/,
     },
@@ -139,7 +139,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '1+2',
     {
-      imagePath: '/tekken7/buttons/1+2.svg',
+      imagePath: '/tekken/tekken7/buttons/1+2.svg',
       action: TEKKEN_7_COMBO_MAP['1+2'],
       regex: /(1\+2)(?![^{]*})/,
     },
@@ -147,7 +147,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '1+3',
     {
-      imagePath: '/tekken7/buttons/1+3.svg',
+      imagePath: '/tekken/tekken7/buttons/1+3.svg',
       action: TEKKEN_7_COMBO_MAP['1+3'],
       regex: /(1\+3)(?![^{]*})/,
     },
@@ -155,7 +155,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '1+4',
     {
-      imagePath: '/tekken7/buttons/1+4.svg',
+      imagePath: '/tekken/tekken7/buttons/1+4.svg',
       action: TEKKEN_7_COMBO_MAP['1+4'],
       regex: /(1\+4)(?![^{]*})/,
     },
@@ -163,7 +163,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '2+3',
     {
-      imagePath: '/tekken7/buttons/2+3.svg',
+      imagePath: '/tekken/tekken7/buttons/2+3.svg',
       action: TEKKEN_7_COMBO_MAP['2+3'],
       regex: /(2\+3)(?![^{]*})/,
     },
@@ -171,7 +171,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '2+4',
     {
-      imagePath: '/tekken7/buttons/2+4.svg',
+      imagePath: '/tekken/tekken7/buttons/2+4.svg',
       action: TEKKEN_7_COMBO_MAP['2+4'],
       regex: /(2\+4)(?![^{]*})/,
     },
@@ -179,7 +179,7 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   [
     '3+4',
     {
-      imagePath: '/tekken7/buttons/3+4.svg',
+      imagePath: '/tekken/tekken7/buttons/3+4.svg',
       action: TEKKEN_7_COMBO_MAP['3+4'],
       regex: /(3\+4)(?![^{]*})/,
     },
@@ -188,9 +188,9 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
     'qcf',
     {
       imagePath: [
-        '/tekken7/moves/d.svg',
-        '/tekken7/moves/df.svg',
-        '/tekken7/moves/f.svg',
+        '/tekken/moves/d.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/moves/f.svg',
       ],
       action: TEKKEN_7_COMBO_MAP.qcf,
     },
@@ -199,9 +199,9 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
     'qcb',
     {
       imagePath: [
-        '/tekken7/moves/d.svg',
-        '/tekken7/moves/db.svg',
-        '/tekken7/moves/b.svg',
+        '/tekken/moves/d.svg',
+        '/tekken/moves/db.svg',
+        '/tekken/moves/b.svg',
       ],
       action: TEKKEN_7_COMBO_MAP.qcb,
     },
@@ -210,11 +210,11 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
     'hcf',
     {
       imagePath: [
-        '/tekken7/moves/b.svg',
-        '/tekken7/moves/db.svg',
-        '/tekken7/moves/d.svg',
-        '/tekken7/moves/df.svg',
-        '/tekken7/moves/f.svg',
+        '/tekken/moves/b.svg',
+        '/tekken/moves/db.svg',
+        '/tekken/moves/d.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/moves/f.svg',
       ],
       action: TEKKEN_7_COMBO_MAP.hcf,
     },
@@ -223,51 +223,39 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
     'hcb',
     {
       imagePath: [
-        '/tekken7/moves/f.svg',
-        '/tekken7/moves/df.svg',
-        '/tekken7/moves/d.svg',
-        '/tekken7/moves/db.svg',
-        '/tekken7/moves/b.svg',
+        '/tekken/moves/f.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/moves/d.svg',
+        '/tekken/moves/db.svg',
+        '/tekken/moves/b.svg',
       ],
       action: TEKKEN_7_COMBO_MAP.hcb,
     },
   ],
-  [
-    'd/f',
-    { imagePath: '/tekken7/moves/df.svg', action: TEKKEN_7_COMBO_MAP.df },
-  ],
-  [
-    'd/b',
-    { imagePath: '/tekken7/moves/db.svg', action: TEKKEN_7_COMBO_MAP.db },
-  ],
-  [
-    'u/f',
-    { imagePath: '/tekken7/moves/uf.svg', action: TEKKEN_7_COMBO_MAP.uf },
-  ],
-  [
-    'u/b',
-    { imagePath: '/tekken7/moves/ub.svg', action: TEKKEN_7_COMBO_MAP.ub },
-  ],
+  ['d/f', { imagePath: '/tekken/moves/df.svg', action: TEKKEN_7_COMBO_MAP.df }],
+  ['d/b', { imagePath: '/tekken/moves/db.svg', action: TEKKEN_7_COMBO_MAP.db }],
+  ['u/f', { imagePath: '/tekken/moves/uf.svg', action: TEKKEN_7_COMBO_MAP.uf }],
+  ['u/b', { imagePath: '/tekken/moves/ub.svg', action: TEKKEN_7_COMBO_MAP.ub }],
   [
     'D/F',
-    { imagePath: '/tekken7/moves/dfp.svg', action: TEKKEN_7_COMBO_MAP.DF },
+    { imagePath: '/tekken/moves/dfp.svg', action: TEKKEN_7_COMBO_MAP.DF },
   ],
   [
     'D/B',
-    { imagePath: '/tekken7/moves/dbp.svg', action: TEKKEN_7_COMBO_MAP.DB },
+    { imagePath: '/tekken/moves/dbp.svg', action: TEKKEN_7_COMBO_MAP.DB },
   ],
   [
     'U/F',
-    { imagePath: '/tekken7/moves/ufp.svg', action: TEKKEN_7_COMBO_MAP.UF },
+    { imagePath: '/tekken/moves/ufp.svg', action: TEKKEN_7_COMBO_MAP.UF },
   ],
   [
     'U/B',
-    { imagePath: '/tekken7/moves/ubp.svg', action: TEKKEN_7_COMBO_MAP.UB },
+    { imagePath: '/tekken/moves/ubp.svg', action: TEKKEN_7_COMBO_MAP.UB },
   ],
   [
     'S!',
     {
-      imagePath: '/tekken7/special/screw.png',
+      imagePath: '/tekken/tekken7/special/screw.png',
       action: TEKKEN_7_COMBO_MAP['S!'],
     },
   ],
@@ -292,22 +280,10 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   ['CL', { imagePath: '', action: TEKKEN_7_COMBO_MAP.cl }],
   ['CH', { imagePath: '', action: TEKKEN_7_COMBO_MAP.ch }],
   ['ch', { imagePath: '', action: TEKKEN_7_COMBO_MAP.ch }],
-  [
-    'DF',
-    { imagePath: '/tekken7/moves/dfp.svg', action: TEKKEN_7_COMBO_MAP.DF },
-  ],
-  [
-    'DB',
-    { imagePath: '/tekken7/moves/dbp.svg', action: TEKKEN_7_COMBO_MAP.DB },
-  ],
-  [
-    'UF',
-    { imagePath: '/tekken7/moves/ufp.svg', action: TEKKEN_7_COMBO_MAP.UF },
-  ],
-  [
-    'UB',
-    { imagePath: '/tekken7/moves/ubp.svg', action: TEKKEN_7_COMBO_MAP.UB },
-  ],
+  ['DF', { imagePath: '/tekken/moves/dfp.svg', action: TEKKEN_7_COMBO_MAP.DF }],
+  ['DB', { imagePath: '/tekken/moves/dbp.svg', action: TEKKEN_7_COMBO_MAP.DB }],
+  ['UF', { imagePath: '/tekken/moves/ufp.svg', action: TEKKEN_7_COMBO_MAP.UF }],
+  ['UB', { imagePath: '/tekken/moves/ubp.svg', action: TEKKEN_7_COMBO_MAP.UB }],
 
   ['RA', { imagePath: '', action: TEKKEN_7_COMBO_MAP.ra }],
   ['ra', { imagePath: '', action: TEKKEN_7_COMBO_MAP.ra }],
@@ -317,44 +293,44 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
   ['wr', { imagePath: '', action: TEKKEN_7_COMBO_MAP.wr }],
   ['WS', { imagePath: '', action: TEKKEN_7_COMBO_MAP.ws }],
   ['ws', { imagePath: '', action: TEKKEN_7_COMBO_MAP.ws }],
-  ['df', { imagePath: '/tekken7/moves/df.svg', action: TEKKEN_7_COMBO_MAP.df }],
-  ['db', { imagePath: '/tekken7/moves/db.svg', action: TEKKEN_7_COMBO_MAP.db }],
-  ['uf', { imagePath: '/tekken7/moves/uf.svg', action: TEKKEN_7_COMBO_MAP.uf }],
-  ['ub', { imagePath: '/tekken7/moves/ub.svg', action: TEKKEN_7_COMBO_MAP.ub }],
-  ['f', { imagePath: '/tekken7/moves/f.svg', action: TEKKEN_7_COMBO_MAP.f }],
-  ['d', { imagePath: '/tekken7/moves/d.svg', action: TEKKEN_7_COMBO_MAP.d }],
-  ['b', { imagePath: '/tekken7/moves/b.svg', action: TEKKEN_7_COMBO_MAP.b }],
-  ['F', { imagePath: '/tekken7/moves/fp.svg', action: TEKKEN_7_COMBO_MAP.F }],
-  ['n', { imagePath: '/tekken7/moves/n.svg', action: TEKKEN_7_COMBO_MAP.n }],
-  ['D', { imagePath: '/tekken7/moves/dp.svg', action: TEKKEN_7_COMBO_MAP.D }],
-  ['U', { imagePath: '/tekken7/moves/up.svg', action: TEKKEN_7_COMBO_MAP.U }],
-  ['u', { imagePath: '/tekken7/moves/u.svg', action: TEKKEN_7_COMBO_MAP.u }],
-  ['B', { imagePath: '/tekken7/moves/bp.svg', action: TEKKEN_7_COMBO_MAP.B }],
+  ['df', { imagePath: '/tekken/moves/df.svg', action: TEKKEN_7_COMBO_MAP.df }],
+  ['db', { imagePath: '/tekken/moves/db.svg', action: TEKKEN_7_COMBO_MAP.db }],
+  ['uf', { imagePath: '/tekken/moves/uf.svg', action: TEKKEN_7_COMBO_MAP.uf }],
+  ['ub', { imagePath: '/tekken/moves/ub.svg', action: TEKKEN_7_COMBO_MAP.ub }],
+  ['f', { imagePath: '/tekken/moves/f.svg', action: TEKKEN_7_COMBO_MAP.f }],
+  ['d', { imagePath: '/tekken/moves/d.svg', action: TEKKEN_7_COMBO_MAP.d }],
+  ['b', { imagePath: '/tekken/moves/b.svg', action: TEKKEN_7_COMBO_MAP.b }],
+  ['F', { imagePath: '/tekken/moves/fp.svg', action: TEKKEN_7_COMBO_MAP.F }],
+  ['n', { imagePath: '/tekken/moves/n.svg', action: TEKKEN_7_COMBO_MAP.n }],
+  ['D', { imagePath: '/tekken/moves/dp.svg', action: TEKKEN_7_COMBO_MAP.D }],
+  ['U', { imagePath: '/tekken/moves/up.svg', action: TEKKEN_7_COMBO_MAP.U }],
+  ['u', { imagePath: '/tekken/moves/u.svg', action: TEKKEN_7_COMBO_MAP.u }],
+  ['B', { imagePath: '/tekken/moves/bp.svg', action: TEKKEN_7_COMBO_MAP.B }],
   [
     '1',
     {
-      imagePath: '/tekken7/buttons/1.svg',
+      imagePath: '/tekken/tekken7/buttons/1.svg',
       action: TEKKEN_7_COMBO_MAP[1],
     },
   ],
   [
     '2',
     {
-      imagePath: '/tekken7/buttons/2.svg',
+      imagePath: '/tekken/tekken7/buttons/2.svg',
       action: TEKKEN_7_COMBO_MAP[2],
     },
   ],
   [
     '3',
     {
-      imagePath: '/tekken7/buttons/3.svg',
+      imagePath: '/tekken/tekken7/buttons/3.svg',
       action: TEKKEN_7_COMBO_MAP[3],
     },
   ],
   [
     '4',
     {
-      imagePath: '/tekken7/buttons/4.svg',
+      imagePath: '/tekken/tekken7/buttons/4.svg',
       action: TEKKEN_7_COMBO_MAP[4],
     },
   ],

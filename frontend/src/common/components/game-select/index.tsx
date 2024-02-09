@@ -66,10 +66,10 @@ export const GameSelect: FC<{
         } overflow-y-hidden relative overflow-x-auto`}
       >
         <Option
-          option={GameTypes.TEKKEN_7}
           selectedOption={selectedOption}
+          option={GameTypes.TEKKEN_8}
           onSelect={onSelect}
-          imageSource="/tekken7/tekken7-select.webp"
+          imageSource="/tekken/tekken8/tekken8-select.png"
         />
         <Option
           selectedOption={selectedOption}
@@ -90,11 +90,10 @@ export const GameSelect: FC<{
           imageSource="/dragon-ball-fighterz/dragon-ball-fighterz-select.webp"
         />
         <Option
+          option={GameTypes.TEKKEN_7}
           selectedOption={selectedOption}
-          option={GameTypes.TEKKEN_8}
           onSelect={onSelect}
-          showSoonMessage
-          imageSource="/tekken8/tekken8-select.png"
+          imageSource="/tekken/tekken7/tekken7-select.webp"
         />
         {/* <Option
           selectedOption={selectedOption}
