@@ -33,7 +33,7 @@ public class CookieUtil {
       .maxAge(duration)
       .httpOnly(true)
       //comment this line below if you want to test on postman/insomnia/locally
-      // .domain("fgc-combo-companion.xyz")
+      .domain("fgc-combo-companion.xyz")
       .sameSite("None")
       .path("/");
 
