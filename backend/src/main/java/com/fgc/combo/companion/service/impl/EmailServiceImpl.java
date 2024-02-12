@@ -46,6 +46,7 @@ public class EmailServiceImpl implements EmailService {
       email.setStatus(MailStatus.ERROR.name());
       log.error("Failed to send email", mailException);
     }
+
     return this.emailRepository.save(email);
   }
 }
