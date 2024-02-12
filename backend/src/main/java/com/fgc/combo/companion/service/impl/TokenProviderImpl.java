@@ -44,7 +44,7 @@ public class TokenProviderImpl implements TokenProvider {
     return new Token(
         Token.TokenType.ACCESS,
         token,
-        duration,
+        tokenExpirationMsec,
         LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
   }
 
@@ -65,7 +65,7 @@ public class TokenProviderImpl implements TokenProvider {
     return new Token(
         Token.TokenType.REFRESH,
         token,
-        duration,
+        refreshTokenExpirationMsec,
         LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
   }
 
