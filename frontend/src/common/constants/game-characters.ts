@@ -100,6 +100,7 @@ export const GAME_CHARACTERS_MAP = new Map<
   [
     GameTypes.STREET_FIGHTER_6,
     [
+      { label: 'ED', value: 'ED' },
       { label: 'Blanka', value: 'BLANKA' },
       { label: 'Cammy', value: 'CAMMY' },
       { label: 'Chun Li', value: 'CHUN_LI' },
