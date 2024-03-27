@@ -38,7 +38,7 @@ public interface ComboRepository extends JpaRepository<Combo, UUID> {
     "c.combo ILIKE concat('%',COALESCE(?1, c.combo),'%') OR " +
     "c.name ILIKE concat('%',COALESCE(?1, c.name),'%') OR " +
     "c.character ILIKE concat('%',COALESCE(?1, c.character),'%') OR " +
-    "c.description ILIKE concat('%',COALESCE(?1, c.description),'%') )"
+    "c.description ILIKE concat('%',COALESCE(?1, c.description),'%') ) order by c.createdAt DESC, c.name ASC"
   )
   Page<Combo> findAllBySearchParam(String searchParam, Pageable pageable);
 
@@ -49,7 +49,7 @@ public interface ComboRepository extends JpaRepository<Combo, UUID> {
     "(c.combo ILIKE concat('%',COALESCE(?1, c.combo),'%') OR " +
     "c.name ILIKE concat('%',COALESCE(?1, c.name),'%') OR " +
     "c.character ILIKE concat('%',COALESCE(?1, c.character),'%') OR " +
-    "c.description ILIKE concat('%',COALESCE(?1, c.description),'%') )"
+    "c.description ILIKE concat('%',COALESCE(?1, c.description),'%') ) order by c.createdAt DESC, c.name ASC"
   )
   Page<Combo> findAllBySearchParamAndComboType(
     String searchParam,

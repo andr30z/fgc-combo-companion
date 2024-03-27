@@ -51,7 +51,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, UUID> {
   @Query(
     "SELECT p FROM Playlist p WHERE (" +
     "p.name ILIKE concat('%',COALESCE(?1, p.name),'%') OR " +
-    "p.description ILIKE concat('%',COALESCE(?1, p.description),'%') )"
+    "p.description ILIKE concat('%',COALESCE(?1, p.description),'%') ) order by p.createdAt DESC, p.name ASC"
   )
   Page<Playlist> findAllBySearchParam(String searchParam, Pageable pageable);
 }
