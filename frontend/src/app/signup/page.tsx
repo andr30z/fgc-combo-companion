@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/common/components/button';
 import { Card } from '@/common/components/card';
+import { GoogleLogin } from '@/common/components/google-login-button';
 import { Input } from '@/common/components/input';
 import { Link } from '@/common/components/link';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
@@ -29,9 +30,10 @@ export default function SignupPage() {
   return (
     <div className="w-screen h-full min-h-80vh flex flex-row justify-center items-center gap-2">
       <Card
-        className="gap-3 shadow-primary shadow-lg w-[80vw]"
+        className="min-h-[550px] gap-5 shadow-primary shadow-lg w-[80vw]"
         size="xl"
         theme="dark"
+        as="form"
       >
         {hasCreated ? (
           <>
@@ -83,63 +85,65 @@ export default function SignupPage() {
               placeholder="Password confirmation"
               required
             />
-            <Button
-              onClick={onSubmit(
-                async ({
-                  values: { email, name, password, passwordConfirmation },
-                }) => {
-                  let hasError = false;
+            <footer className="flex flex-col w-full justify-center items-center gap-3 text-center">
+              <Button
+                onClick={onSubmit(
+                  async ({
+                    values: { email, name, password, passwordConfirmation },
+                  }) => {
+                    let hasError = false;
 
-                  if (!email.includes('@') || email.trim().length === 0) {
-                    toast.error('Email must be valid');
-                    hasError = true;
-                  }
+                    if (!email.includes('@') || email.trim().length === 0) {
+                      toast.error('Email must be valid');
+                      hasError = true;
+                    }
 
-                  if (password.trim().length < 8) {
-                    toast.error('Password must be at least 8 characters');
-                    hasError = true;
-                  }
+                    if (password.trim().length < 8) {
+                      toast.error('Password must be at least 8 characters');
+                      hasError = true;
+                    }
 
-                  if (password !== passwordConfirmation) {
-                    toast.error('Passwords must match');
-                    hasError = true;
-                  }
+                    if (password !== passwordConfirmation) {
+                      toast.error('Passwords must match');
+                      hasError = true;
+                    }
 
-                  if (name.trim().length === 0) {
-                    toast.error('Name must be at least 3 characters');
-                    hasError = true;
-                  }
+                    if (name.trim().length === 0) {
+                      toast.error('Name must be at least 3 characters');
+                      hasError = true;
+                    }
 
-                  if (hasError) {
-                    return;
-                  }
-                  startLoading();
-                  return fgcApi
-                    .post(FGC_API_URLS.SIGNUP, {
-                      email,
-                      name,
-                      password,
-                    })
-                    .then(() => {
-                      toast.success('Account created successfully');
-                      setCreatedTrue();
-                    })
-                    .catch((e) => {
-                      const error = e.response?.data?.errors;
-                      toast.error(
-                        Array.isArray(error)
-                          ? error.join(', ')
-                          : 'Something went wrong, please try again later.',
-                      );
-                    })
-                    .finally(closeLoading);
-                },
-              )}
-              extraStyles="w-full mt-3"
-              color="primary"
-              text="Create account"
-            />
-            <footer className="flex flex-row w-full justify-center items-center">
+                    if (hasError) {
+                      return;
+                    }
+                    startLoading();
+                    return fgcApi
+                      .post(FGC_API_URLS.SIGNUP, {
+                        email,
+                        name,
+                        password,
+                      })
+                      .then(() => {
+                        toast.success('Account created successfully');
+                        setCreatedTrue();
+                      })
+                      .catch((e) => {
+                        const error = e.response?.data?.errors;
+                        toast.error(
+                          Array.isArray(error)
+                            ? error.join(', ')
+                            : 'Something went wrong, please try again later.',
+                        );
+                      })
+                      .finally(closeLoading);
+                  },
+                )}
+                extraStyles="w-full mt-3 border-solid border-2 border-primary hover:border-light"
+                color="primary"
+                text="Create account"
+                type="submit"
+              />
+              <GoogleLogin extraStyles="w-full py-0" />
               <Link href="/login">Already have an account? Log In</Link>
             </footer>
           </>

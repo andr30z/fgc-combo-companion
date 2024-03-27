@@ -54,7 +54,7 @@ export default function SearchPage() {
         .join('')}`,
     },
     key: ['search-all'],
-    enabled: false,
+    enabled: true,
   });
 
   const debounceRefetch = useDebounce(refetch);
@@ -68,12 +68,8 @@ export default function SearchPage() {
       }
       set('games', [...games, tag]);
     };
-    if (search.trim().length > 0) {
-      flushSync(update);
-      refetch();
-      return;
-    }
-    update();
+    flushSync(update);
+    debounceRefetch();
   };
 
   const hasCombos = searchResult?.combos && searchResult?.combos.length > 0;
@@ -108,9 +104,7 @@ export default function SearchPage() {
             flushSync(() => {
               set('search', value);
             });
-            if (value.trim().length > 0) {
-              debounceRefetch();
-            }
+            debounceRefetch();
           }}
           placeholder="Search for a combo, playlist or user"
           inputGroupClassName="bg-secondary-dark"
