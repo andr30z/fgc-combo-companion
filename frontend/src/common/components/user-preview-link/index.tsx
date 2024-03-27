@@ -6,8 +6,9 @@ import { UserPreview } from '../user-preview';
 export const UserPreviewLink: React.FC<{
   name: string;
   id: string;
-  prefix?: string;
-}> = ({ id, name, prefix }) => {
+  prefix?: React.ReactNode;
+  sufix?: React.ReactNode;
+}> = ({ id, name, prefix, sufix }) => {
   const { user } = useUser({ redirectTo: null });
   const currentUserIsOwner = user?.id === id;
   return (
@@ -21,7 +22,7 @@ export const UserPreviewLink: React.FC<{
             onClick={(e) => e.stopPropagation()}
             className="text-ellipsis truncate text-sub-info font-primary text-sm mt-[1px] hover:decoration-sub-info hover:underline"
           >
-            {prefix} {currentUserIsOwner ? <strong>you</strong> : name}
+            {prefix} {currentUserIsOwner ? <strong>you</strong> : name} {sufix}
           </Link>
         </button>
       }
