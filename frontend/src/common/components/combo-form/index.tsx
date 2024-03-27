@@ -18,7 +18,9 @@ import { LOCAL_STORAGE_KEYS } from '@/common/constants/local-storage-keys';
 import { get } from 'lodash';
 import { SelectCharacter } from '../select-character';
 
-type ComboWithId = Omit<Combo, 'id' | 'owner'> & { id?: string | number };
+type ComboWithId = Omit<Combo, 'id' | 'owner' | 'createdAt'> & {
+  id?: string | number;
+};
 interface ComboFormProps {
   initialValues?: ComboWithId;
   onSuccess?: () => void;
