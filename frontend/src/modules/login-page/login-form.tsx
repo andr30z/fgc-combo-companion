@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/common/components/button';
 import { Card } from '@/common/components/card';
+import { GoogleLogin } from '@/common/components/google-login-button';
 import { Input } from '@/common/components/input';
 import { Link } from '@/common/components/link';
 import { LoadingBackdrop } from '@/common/components/loading-backdrop';
@@ -9,7 +10,6 @@ import { useForm } from '@/common/hooks/form';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import { FcGoogle } from 'react-icons/fc';
 import { FiLogIn } from 'react-icons/fi';
 export const LoginForm = () => {
   const [{ email, password }, { onChange }, onSubmit] = useForm({
@@ -84,13 +84,7 @@ export const LoginForm = () => {
           // router.push('/dashboard/combos');
         })}
       />
-      <Button
-        extraStyles="w-full"
-        color="dark"
-        text="Continue with Google"
-        onClick={() => signIn('google', { callbackUrl: '/dashboard/combos' })}
-        leftIcon={<FcGoogle size={17} />}
-      />
+      <GoogleLogin extraStyles="w-full" />
       <hr className="bg-light w-full" />
       <LoadingBackdrop isLoading={loading} />
       <footer className="flex flex-row w-full justify-center items-center">
