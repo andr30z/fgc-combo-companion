@@ -5,7 +5,6 @@ import { UserPreviewLink } from '@/common/components/user-preview-link';
 import { getCharacterName } from '@/common/constants/game-characters';
 import type { Combo } from '@/common/types/combo';
 import { formatRelative } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import type { FC } from 'react';
 interface ListCombosProps {
   combos: Array<Combo>;
