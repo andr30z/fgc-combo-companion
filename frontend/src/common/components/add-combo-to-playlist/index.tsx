@@ -18,7 +18,9 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
   iconSize = 30,
 }) => {
   const [enabled, { setValue }] = useBoolean();
-  const { allPlaylists, fetchNextPage } = useMyPlaylists({ enabled });
+  const { allPlaylists, fetchNextPage, isFetching } = useMyPlaylists({
+    enabled,
+  });
   const [ref] = useInView({
     onChange(inView) {
       if (inView) {
@@ -29,6 +31,7 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
 
   const mutation = useAddCombosToPlaylist();
 
+  console.log(allPlaylists, 'askdljalksjd');
   return (
     <Select.Root onOpenChange={setValue}>
       <Select.Trigger>
@@ -52,25 +55,37 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
             <FaChevronUp size={23} />
           </Select.ScrollUpButton>
           <Select.Viewport>
-            {allPlaylists.map((playlist) => (
+            {allPlaylists.length === 0 && !isFetching ? (
               <Select.Item
-                key={playlist.id}
-                title={playlist.name}
+                title="No playlists found"
                 className="outline-none border-none rounded-[3px] flex items-center h-[25px] w-full select-none text-light hover:bg-light hover:text-secondary-dark px-1 line-clamp-1"
-                value={playlist.id.toString()}
-                onMouseDown={(e) => {
-                  e.stopPropagation();
-                  mutation.mutate({
-                    playlistId: playlist.id,
-                    combos: [comboId],
-                  });
-                }}
+                value="No playlists found"
               >
                 <Select.ItemText className="w-full">
-                  {playlist.name}
+                  No playlists found
                 </Select.ItemText>
               </Select.Item>
-            ))}
+            ) : (
+              allPlaylists.map((playlist) => (
+                <Select.Item
+                  key={playlist.id}
+                  title={playlist.name}
+                  className="outline-none border-none rounded-[3px] flex items-center h-[25px] w-full select-none text-light hover:bg-light hover:text-secondary-dark px-1 line-clamp-1"
+                  value={playlist.id.toString()}
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    mutation.mutate({
+                      playlistId: playlist.id,
+                      combos: [comboId],
+                    });
+                  }}
+                >
+                  <Select.ItemText className="w-full">
+                    {playlist.name}
+                  </Select.ItemText>
+                </Select.Item>
+              ))
+            )}
             <span ref={ref} />
           </Select.Viewport>
 

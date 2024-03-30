@@ -43,14 +43,14 @@ export const ListCombos: FC<ListCombosProps> = ({ combos }) => {
                 game={game}
                 rendeHeader={() => (
                   <header className="flex flex-row items-center justify-between w-full mb-2">
-                    <div className="font-bold w-full">
+                    <div className="font-bold w-[80%] md:w-[90%]">
                       <h6
                         title={name}
                         className="text-light text-lg line-clamp-2"
                       >
                         {name}
                       </h6>
-                      <span className="text-sub-info font-primary text-sm text-left">
+                      <div className="text-sub-info font-primary text-sm text-left">
                         <UserPreviewLink
                           id={ownerId}
                           name={ownerName}
@@ -62,14 +62,14 @@ export const ListCombos: FC<ListCombosProps> = ({ combos }) => {
                           }
                         />
                         {totalDamage || character ? (
-                          <>
+                          <span>
                             {character ? getCharacterName(game, character) : ''}
                             {totalDamage
                               ? ` ${character ? '-' : ''} ${totalDamage} Damage`
                               : null}
-                          </>
+                          </span>
                         ) : null}
-                      </span>
+                      </div>
                     </div>
                     <aside className="flex flex-row gap-2 items-center">
                       <AddComboToPlaylist comboId={id} />
