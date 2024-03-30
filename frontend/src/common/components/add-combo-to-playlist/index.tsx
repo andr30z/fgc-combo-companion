@@ -47,6 +47,7 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
       </Select.Trigger>
       <Select.Portal>
         <Select.Content
+          position="popper"
           onClick={(e) => e.stopPropagation()}
           className="overflow-y-hidden min-h-[100px] w-[140px] bg-secondary-dark shadow-sm shadow-light-active"
         >

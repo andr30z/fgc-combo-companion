@@ -1,12 +1,13 @@
 'use client';
 import * as Popover from '@radix-ui/react-popover';
 import type { FC, ReactNode } from 'react';
-export const PopOver: FC<{ children: ReactNode; trigger: ReactNode }> = ({
-  children,
-  trigger,
-}) => {
+type Props = {
+  children?: ReactNode;
+  trigger?: ReactNode;
+} & Partial<Popover.PopoverProps>;
+export const PopOver: FC<Props> = ({ children, trigger, ...rest }) => {
   return (
-    <Popover.Root>
+    <Popover.Root {...rest}>
       <Popover.Trigger asChild>{trigger}</Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
