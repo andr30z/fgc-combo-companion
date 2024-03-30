@@ -31,7 +31,6 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
 
   const mutation = useAddCombosToPlaylist();
 
-  console.log(allPlaylists, 'askdljalksjd');
   return (
     <Select.Root onOpenChange={setValue}>
       <Select.Trigger>
