@@ -20,7 +20,7 @@ export const UserPreviewLink: React.FC<{
             href={`/user/${id}`}
             useHoverStyles={false}
             onClick={(e) => e.stopPropagation()}
-            className="text-ellipsis truncate text-sub-info font-primary text-sm mt-[1px] hover:decoration-sub-info hover:underline"
+            className="line-clamp-1 text-sub-info font-primary text-sm mt-[1px] hover:decoration-sub-info hover:underline text-left flex flex-row flex-wrap"
           >
             {prefix} {currentUserIsOwner ? <strong>you</strong> : name} {sufix}
           </Link>
