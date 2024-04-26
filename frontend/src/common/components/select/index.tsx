@@ -10,6 +10,7 @@ export interface SelectProps {
 export const Select: React.FC<SelectProps> = (props) => {
   const { options: opts, value, onSelectValue } = props;
   const options = ['Select an option', ...opts];
+
   return (
     <RadixSelect.Root
       value={value ? value : 'Select an option'}
@@ -23,8 +24,11 @@ export const Select: React.FC<SelectProps> = (props) => {
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
         <RadixSelect.Content
+          onEscapeKeyDown={(e) => {
+            e.stopPropagation();
+          }}
           onClick={(e) => e.stopPropagation()}
-          className="px-[15px] py-4 overflow-y-hidden min-h-[52px] min-w-[130px] shadow-sm shadow-light-active bg-secondary-dark rounded-lg"
+          className="px-[15px] py-4 overflow-y-hidden min-h-[52px] min-w-[130px] shadow-sm shadow-light-active bg-secondary-dark rounded-lg w-full"
         >
           <RadixSelect.ScrollUpButton className="flex items-center justify-center h-[25px] bg-light  cursor-default">
             <FaChevronUp size={15} />
