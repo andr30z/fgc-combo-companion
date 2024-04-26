@@ -2,6 +2,7 @@ package com.fgc.combo.companion.enums;
 
 public enum GuiltyGearStriveCharacters {
   SOL_BADGUY,
+  ABA,
   KY_KISKE,
   MAY,
   FAUST,
