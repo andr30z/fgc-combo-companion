@@ -127,6 +127,7 @@ export const GAME_CHARACTERS_MAP = new Map<
     GameTypes.GUILTY_GEAR_STRIVE,
     [
       { label: 'Sol Badguy', value: 'SOL_BADGUY' },
+      { label: 'A.B.A', value: 'ABA' },
       { label: 'Ky Kiske', value: 'KY_KISKE' },
       { label: 'May', value: 'MAY' },
       { label: 'Faust', value: 'FAUST' },

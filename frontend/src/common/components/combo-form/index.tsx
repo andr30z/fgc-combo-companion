@@ -133,7 +133,7 @@ export const ComboForm: FC<ComboFormProps> = ({
           selectedOption={game}
           alwaysShowScroll
         />
-        <ComboInput combo={combo} onChange={onChange('combo')} />
+        <ComboInput game={game} combo={combo} onChange={onChange('combo')} />
         {combo && (
           <ComboTranslation
             key={`gameselectkey_${id ?? ''}-${game}`}

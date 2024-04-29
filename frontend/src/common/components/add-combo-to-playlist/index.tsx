@@ -21,6 +21,7 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
   const { allPlaylists, fetchNextPage, isFetching } = useMyPlaylists({
     enabled,
   });
+  console.log(allPlaylists);
   const [ref] = useInView({
     onChange(inView) {
       if (inView) {
@@ -34,16 +35,14 @@ export const AddComboToPlaylist: React.FC<AddComboToPlaylistProps> = ({
   return (
     <Select.Root onOpenChange={setValue}>
       <Select.Trigger>
-        <Select.Value>
-          <MdPlaylistAdd
-            title="Add combo to playlist"
-            className="outline-none text-light hover:text-opacity-30 select-none pointer-events-auto"
-            size={iconSize}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
-        </Select.Value>
+        <MdPlaylistAdd
+          title="Add combo to playlist"
+          className="outline-none text-light hover:text-opacity-30 select-none pointer-events-auto"
+          size={iconSize}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        />
       </Select.Trigger>
       <Select.Portal>
         <Select.Content
