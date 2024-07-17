@@ -18,6 +18,9 @@ public class CookieUtil {
 
   @Value("${authentication.auth.refreshTokenCookieName:refreshToken}")
   private String refreshTokenCookieName;
+ 
+  @Value("${authentication.auth.tokenCookieDomain:fgc-combo-companion.xyz}")
+  private String tokenCookieDomain;
 
   @Value("${spring.profiles.active:Unknown}")
   private String activeProfile;
@@ -33,7 +36,7 @@ public class CookieUtil {
       .maxAge(duration)
       .httpOnly(true)
       //comment this line below if you want to test on postman/insomnia/locally
-      .domain("fgc-combo-companion.xyz")
+      .domain(tokenCookieDomain)
       .sameSite("None")
       .path("/");
 
