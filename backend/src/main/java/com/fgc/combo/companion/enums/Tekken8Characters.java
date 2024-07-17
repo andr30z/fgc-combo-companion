@@ -32,5 +32,7 @@ public enum Tekken8Characters {
   ZAFINA,
   DEVIL_JIN,
   VICTOR,
-  REINA
+  REINA,
+  EDDY,
+  LIDIA_SOBIESKA
 }

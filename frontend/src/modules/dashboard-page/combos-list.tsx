@@ -70,6 +70,7 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
           <Button
             onClick={openForm}
             color="primary"
+            title="Create combo"
             rightIcon={<AiOutlinePlus size={22} />}
           />
           <Modal
