@@ -22,5 +22,6 @@ public enum StreetFighter6Characters {
   ZANGIEF,
   RASHID,
   AKI,
-  AKUMA
+  AKUMA,
+  M_BISON
 }

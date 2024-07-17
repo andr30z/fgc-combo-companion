@@ -8,6 +8,7 @@ authentication:
     tokenExpirationMsec: ${TOKEN_EXPIRATION_MSEC}
     tokenSecret: ${TOKEN_SECRET}
     refreshTokenExpirationMsec: ${REFRESH_TOKEN_EXPIRATION_MSEC}
+    tokenCookieDomain: ${TOKEN_COOKIE_DOMAIN:fgc-combo-companion.xyz}
 
 
 email-verification:

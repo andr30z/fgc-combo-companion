@@ -95,12 +95,15 @@ export const GAME_CHARACTERS_MAP = new Map<
       { label: 'Devil Jin', value: 'DEVIL_JIN' },
       { label: 'Victor', value: 'VICTOR' },
       { label: 'Reina', value: 'REINA' },
+      { label: 'Eddy', value: 'EDDY' },
+      { label: 'Lidia Sobieska', value: 'LIDIA_SOBIESKA' },
     ],
   ],
   [
     GameTypes.STREET_FIGHTER_6,
     [
       { label: 'ED', value: 'ED' },
+      { label: 'M. Bison', value: 'M_BISON' },
       { label: 'Blanka', value: 'BLANKA' },
       { label: 'Cammy', value: 'CAMMY' },
       { label: 'Chun Li', value: 'CHUN_LI' },
@@ -129,6 +132,7 @@ export const GAME_CHARACTERS_MAP = new Map<
     [
       { label: 'Sol Badguy', value: 'SOL_BADGUY' },
       { label: 'A.B.A', value: 'ABA' },
+      { label: 'Slayer', value: 'SLAYER' },
       { label: 'Ky Kiske', value: 'KY_KISKE' },
       { label: 'May', value: 'MAY' },
       { label: 'Faust', value: 'FAUST' },

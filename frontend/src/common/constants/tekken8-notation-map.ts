@@ -69,6 +69,11 @@ export const TEKKEN_8_COMBO_MAP = {
   'BB!': 'BALCONY-BREAK',
   sugarcoatkaz: "I'M NOT GONNA SUGARCOAT IT",
   cl: 'CLEAN HIT',
+  '~': 'INPUT IN QUICK SUCCESSION',
+  HD: 'HEAT-DASH',
+  'WBL!': 'WALL-BLAST',
+  'WBO!': 'WALL-BOUND',
+  'FBO!': 'FLOOR-BLAST',
 } as const;
 
 export type Tekken8MapKey = keyof typeof TEKKEN_8_COMBO_MAP;
@@ -331,6 +336,23 @@ export const TEKKEN_8_COMBO_MAP_TRANSLATION = new Map<
   ['FB!', { imagePath: '', action: TEKKEN_8_COMBO_MAP['FB!'] }],
   ['WB!', { imagePath: '', action: TEKKEN_8_COMBO_MAP['WB!'] }],
   ['BB!', { imagePath: '', action: TEKKEN_8_COMBO_MAP['BB!'] }],
+  ['WBL!', { imagePath: '', action: TEKKEN_8_COMBO_MAP['WBL!'] }],
+  ['WBO!', { imagePath: '', action: TEKKEN_8_COMBO_MAP['WBO!'] }],
+  ['FBO!', { imagePath: '', action: TEKKEN_8_COMBO_MAP['FBO!'] }],
+  [
+    'HD',
+    {
+      imagePath: '',
+      action: TEKKEN_8_COMBO_MAP.HD,
+    },
+  ],
+  [
+    'hd',
+    {
+      imagePath: '',
+      action: TEKKEN_8_COMBO_MAP.HD,
+    },
+  ],
   ['CD', { imagePath: '', action: TEKKEN_8_COMBO_MAP.cd }],
   ['cd', { imagePath: '', action: TEKKEN_8_COMBO_MAP.cd }],
   ['ss', { imagePath: '', action: TEKKEN_8_COMBO_MAP.ss }],
@@ -392,6 +414,14 @@ export const TEKKEN_8_COMBO_MAP_TRANSLATION = new Map<
     {
       imagePath: '/tekken/tekken8/buttons/4.svg',
       action: TEKKEN_8_COMBO_MAP[4],
+    },
+  ],
+  [
+    '~',
+    {
+      imagePath: '',
+      action: TEKKEN_8_COMBO_MAP['~'],
+      replaceString: '{IN QUICK SUCCESSION},',
     },
   ],
 ]);

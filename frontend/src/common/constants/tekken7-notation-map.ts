@@ -65,6 +65,7 @@ export const TEKKEN_7_COMBO_MAP = {
   'BB!': 'BALCONY-BREAK',
   sugarcoatkaz: "I'M NOT GONNA SUGARCOAT IT",
   cl: 'CLEAN HIT',
+  '~': 'INPUT IN QUICK SUCCESSION',
 } as const;
 
 export type Tekken7MapKey = keyof typeof TEKKEN_7_COMBO_MAP;
@@ -332,6 +333,14 @@ export const TEKKEN_7_COMBO_MAP_TRANSLATION = new Map<
     {
       imagePath: '/tekken/tekken7/buttons/4.svg',
       action: TEKKEN_7_COMBO_MAP[4],
+    },
+  ],
+  [
+    '~',
+    {
+      imagePath: '',
+      action: TEKKEN_7_COMBO_MAP['~'],
+      replaceString: '{IN QUICK SUCCESSION},',
     },
   ],
 ]);
