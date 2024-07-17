@@ -17,16 +17,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class ComboCharactersValidationTests {
 
   private <E extends Enum<E>> boolean assertAllCharactersAreFromGame(
-    E[] characterList,
-    ComboGameTypes gameType
-  ) {
+      E[] characterList,
+      ComboGameTypes gameType) {
     for (E character : characterList) {
-      if (
-        !ComboCharactersValidation.isComboCharacterValid(
+      if (!ComboCharactersValidation.isComboCharacterValid(
           character.name(),
-          gameType.name()
-        )
-      ) {
+          gameType.name())) {
         return false;
       }
     }
@@ -36,56 +32,44 @@ public class ComboCharactersValidationTests {
   @Test
   public void assertThatAllCharactersAreFromCorrectGameType() {
     assertAll(
-      "Characters are valid",
-      () ->
-        assertTrue(
-          this.assertAllCharactersAreFromGame(
-              Tekken7Characters.values(),
-              ComboGameTypes.TEKKEN_7
-            )
-        ),
-      () ->
-        assertTrue(
-          this.assertAllCharactersAreFromGame(
-              StreetFighter6Characters.values(),
-              ComboGameTypes.STREET_FIGHTER_6
-            )
-        ),
-      () ->
-        assertTrue(
-          this.assertAllCharactersAreFromGame(
-              GuiltyGearStriveCharacters.values(),
-              ComboGameTypes.GUILTY_GEAR_STRIVE
-            )
-        ),
-          () ->
-        assertTrue(
-          this.assertAllCharactersAreFromGame(
-              DragonBallFighterZCharacters.values(),
-              ComboGameTypes.DB_FIGHTERZ
-            )
-        )
-    );
+        "Characters are valid",
+        () -> assertTrue(
+            this.assertAllCharactersAreFromGame(
+                Tekken7Characters.values(),
+                ComboGameTypes.TEKKEN_7)),
+        () -> assertTrue(
+            this.assertAllCharactersAreFromGame(
+                StreetFighter6Characters.values(),
+                ComboGameTypes.STREET_FIGHTER_6)),
+        () -> assertTrue(
+            this.assertAllCharactersAreFromGame(
+                GuiltyGearStriveCharacters.values(),
+                ComboGameTypes.GUILTY_GEAR_STRIVE)),
+        () -> assertTrue(
+            this.assertAllCharactersAreFromGame(
+                DragonBallFighterZCharacters.values(),
+                ComboGameTypes.DB_FIGHTERZ)));
   }
 
   @Test
   public void assertThatCharactersAreNotFromGameType() {
     assertAll(
-      "Characters are invalid",
-      () ->
-        assertFalse(
-          this.assertAllCharactersAreFromGame(
+        "Characters are invalid",
+        () -> assertFalse(
+            this.assertAllCharactersAreFromGame(
+                StreetFighter6Characters.values(),
+                ComboGameTypes.GUILTY_GEAR_STRIVE)),
+        () -> assertFalse(
+            this.assertAllCharactersAreFromGame(
+                GuiltyGearStriveCharacters.values(),
+                ComboGameTypes.STREET_FIGHTER_6)),
+        () -> assertFalse(
+            this.assertAllCharactersAreFromGame(
               StreetFighter6Characters.values(),
-              ComboGameTypes.GUILTY_GEAR_STRIVE
-            )
-        ),
-      () ->
-        assertFalse(
-          this.assertAllCharactersAreFromGame(
-              GuiltyGearStriveCharacters.values(),
-              ComboGameTypes.STREET_FIGHTER_6
-            )
-        )
-    );
+                ComboGameTypes.TEKKEN_7)),
+        () -> assertFalse(
+            this.assertAllCharactersAreFromGame(
+                GuiltyGearStriveCharacters.values(),
+                ComboGameTypes.TEKKEN_8)));
   }
 }
