@@ -65,7 +65,6 @@ export const ComboTranslation = forwardRef<
     return (
       <div
         ref={ref}
-        title={result.combo}
         data-testid={result.combo}
         className={`text-light rounded p-3 ${
           backgroundColor ? 'bg-' + backgroundColor : ''
