@@ -74,6 +74,10 @@ export const TEKKEN_8_COMBO_MAP = {
   'WBL!': 'WALL-BLAST',
   'WBO!': 'WALL-BOUND',
   'FBO!': 'FLOOR-BLAST',
+  ewgf: 'ELETRIC WIND GOD FIST',
+  ewhf: 'ELETRIC WIND HOOK FIST',
+  tju: 'TAUNT JET UPPER',
+  jfsr: 'JUST FRAME SKY ROCKET',
 } as const;
 
 export type Tekken8MapKey = keyof typeof TEKKEN_8_COMBO_MAP;
@@ -131,6 +135,82 @@ export const TEKKEN_8_COMBO_MAP_TRANSLATION = new Map<
     },
   ],
   [
+    'EWHF',
+    {
+      imagePath: [
+        '/tekken/moves/f.svg',
+        '/tekken/moves/n.svg',
+        '/tekken/moves/d.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/tekken8/buttons/2.svg',
+      ],
+      action: TEKKEN_8_COMBO_MAP.ewgf,
+    },
+  ],
+  [
+    'ewhf',
+    {
+      imagePath: [
+        '/tekken/moves/f.svg',
+        '/tekken/moves/n.svg',
+        '/tekken/moves/d.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/tekken8/buttons/2.svg',
+      ],
+      action: TEKKEN_8_COMBO_MAP.ewgf,
+    },
+  ],
+  [
+    'EWGF',
+    {
+      imagePath: [
+        '/tekken/moves/f.svg',
+        '/tekken/moves/n.svg',
+        '/tekken/moves/d.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/tekken8/buttons/2.svg',
+      ],
+      action: TEKKEN_8_COMBO_MAP.ewgf,
+    },
+  ],
+  [
+    'ewgf',
+    {
+      imagePath: [
+        '/tekken/moves/f.svg',
+        '/tekken/moves/n.svg',
+        '/tekken/moves/d.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/tekken8/buttons/2.svg',
+      ],
+      action: TEKKEN_8_COMBO_MAP.ewgf,
+    },
+  ],
+  [
+    'jfsr',
+    {
+      imagePath: [
+        '/tekken/moves/f.svg',
+        '/tekken/moves/n.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/tekken8/buttons/4.svg',
+      ],
+      action: TEKKEN_8_COMBO_MAP.jfsr,
+    },
+  ],
+  [
+    'JFSR',
+    {
+      imagePath: [
+        '/tekken/moves/f.svg',
+        '/tekken/moves/n.svg',
+        '/tekken/moves/df.svg',
+        '/tekken/tekken8/buttons/4.svg',
+      ],
+      action: TEKKEN_8_COMBO_MAP.jfsr,
+    },
+  ],
+  [
     'DASH',
     {
       imagePath: '',
@@ -163,6 +243,30 @@ export const TEKKEN_8_COMBO_MAP_TRANSLATION = new Map<
     {
       imagePath: '/tekken/tekken8/special/heat.png',
       action: TEKKEN_8_COMBO_MAP.heat,
+    },
+  ],
+  [
+    'TJU',
+    {
+      imagePath: [
+        '/tekken/tekken8/buttons/1+2+3.svg',
+        '/tekken/moves/f.svg',
+        '/tekken/moves/b.svg',
+        '/tekken/tekken8/buttons/2.svg',
+      ],
+      action: TEKKEN_8_COMBO_MAP.tju,
+    },
+  ],
+  [
+    'tju',
+    {
+      imagePath: [
+        '/tekken/tekken8/buttons/1+2+3.svg',
+        '/tekken/moves/f.svg',
+        '/tekken/moves/b.svg',
+        '/tekken/tekken8/buttons/2.svg',
+      ],
+      action: TEKKEN_8_COMBO_MAP.tju,
     },
   ],
   [
