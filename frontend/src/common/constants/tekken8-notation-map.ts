@@ -249,7 +249,7 @@ export const TEKKEN_8_COMBO_MAP_TRANSLATION = new Map<
     'TJU',
     {
       imagePath: [
-        '/tekken/tekken8/buttons/1+2+3.svg',
+        '/tekken/tekken8/buttons/1+3+4.svg',
         '/tekken/moves/f.svg',
         '/tekken/moves/b.svg',
         '/tekken/tekken8/buttons/2.svg',
@@ -261,7 +261,7 @@ export const TEKKEN_8_COMBO_MAP_TRANSLATION = new Map<
     'tju',
     {
       imagePath: [
-        '/tekken/tekken8/buttons/1+2+3.svg',
+        '/tekken/tekken8/buttons/1+3+4.svg',
         '/tekken/moves/f.svg',
         '/tekken/moves/b.svg',
         '/tekken/tekken8/buttons/2.svg',
