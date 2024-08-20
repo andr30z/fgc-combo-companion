@@ -7,6 +7,7 @@ export enum GameTypes {
   STREET_FIGHTER_6 = 'STREET_FIGHTER_6',
   DB_FIGHTERZ = 'DB_FIGHTERZ',
   MORTAL_KOMBAT_1 = 'MORTAL_KOMBAT_1',
+  TWOXKO = '2XKO',
 }
 
 export const COMBO_TYPES = {
@@ -17,4 +18,5 @@ export const COMBO_TYPES = {
   [GameTypes.KOF_XV]: 'KOF XV',
   [GameTypes.DB_FIGHTERZ]: 'Dragon ball FighterZ',
   [GameTypes.MORTAL_KOMBAT_1]: 'Mortal Kombat 1',
+  [GameTypes.TWOXKO]: '2XKO',
 };

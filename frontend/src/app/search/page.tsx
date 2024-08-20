@@ -26,6 +26,7 @@ const gameNameMap: Record<GameTypes, string> = {
   [GameTypes.GUILTY_GEAR_STRIVE]: 'Guilty Gear Strive',
   [GameTypes.DB_FIGHTERZ]: 'Dragon Ball FighterZ',
   [GameTypes.MORTAL_KOMBAT_1]: 'Mortal Kombat 1',
+  [GameTypes.TWOXKO]: '2XKO',
 };
 
 interface SearchAllResult {
