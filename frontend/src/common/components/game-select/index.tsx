@@ -95,13 +95,13 @@ export const GameSelect: FC<{
           onSelect={onSelect}
           imageSource="/tekken/tekken7/tekken7-select.webp"
         />
-        {/* <Option
-          selectedOption={selectedOption}
-          option={GameTypes.MORTAL_KOMBAT_1}
-          onSelect={onSelect}
+        <Option
+          option={GameTypes.TWOXKO}
           showSoonMessage
-          imageSource="/mortal-kombat-1/mortal-kombat-1-select.jpg"
-        /> */}
+          selectedOption={selectedOption}
+          onSelect={() => null}
+          imageSource="/2xko/2xko-select.jpg"
+        />
         <div
           style={{ boxShadow: '50px 0px 30px 40px #000' }}
           className={`min-h-full min-w-[.01px] ${

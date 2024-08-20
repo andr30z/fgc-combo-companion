@@ -28,6 +28,10 @@ const translatorDictionary: Record<GameTypes, ComboTranslatorType> = {
     actions: [],
     combo: '',
   }),
+  [GameTypes.TWOXKO]: () => ({
+    combo: '',
+    actions: [],
+  }),
 };
 
 export function useComboTranslator({

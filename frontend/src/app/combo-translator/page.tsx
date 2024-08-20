@@ -72,7 +72,7 @@ const dragonBallFighterZ = [
   '{CHAR: Cell} 2M > 5M > jc.MLL > jc.MLL2H > SD > j.LLLS > j.236L',
 ];
 
-const combos = {
+const combos: Record<GameTypes, string[]> = {
   [GameTypes.TEKKEN_7]: tekken7Combos,
   [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStrive,
   [GameTypes.DB_FIGHTERZ]: dragonBallFighterZ,
@@ -81,6 +81,7 @@ const combos = {
   [GameTypes.KOF_XV]: streetFighter6,
   [GameTypes.MORTAL_KOMBAT_1]: streetFighter6,
   [GameTypes.TEKKEN_8]: tekken8Combos,
+  [GameTypes.TWOXKO]: tekken8Combos,
 };
 export default function ComboTranslator() {
   const params = useSearchParams();
