@@ -27,5 +27,7 @@ public enum GuiltyGearStriveCharacters {
   BEDMAN,
   ASUKA_R_KREUTZ,
   JOHNNY,
-  SLAYER
+  SLAYER,
+  ELPHELT,
+  DIZZY
 }

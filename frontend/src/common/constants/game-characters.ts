@@ -97,6 +97,7 @@ export const GAME_CHARACTERS_MAP = new Map<
       { label: 'Reina', value: 'REINA' },
       { label: 'Eddy', value: 'EDDY' },
       { label: 'Lidia Sobieska', value: 'LIDIA_SOBIESKA' },
+      { label: 'Heihachi', value: 'HEIHACHI' },
     ],
   ],
   [
@@ -104,6 +105,7 @@ export const GAME_CHARACTERS_MAP = new Map<
     [
       { label: 'ED', value: 'ED' },
       { label: 'M. Bison', value: 'M_BISON' },
+      { label: 'Terry', value: 'TERRY' },
       { label: 'Blanka', value: 'BLANKA' },
       { label: 'Cammy', value: 'CAMMY' },
       { label: 'Chun Li', value: 'CHUN_LI' },
@@ -157,6 +159,8 @@ export const GAME_CHARACTERS_MAP = new Map<
       { label: 'Bedman?', value: 'BEDMAN' },
       { label: 'Asuka R Kreutz', value: 'ASUKA_R_KREUTZ' },
       { label: 'Johnny', value: 'JOHNNY' },
+      { label: 'Elphelt', value: 'ELPHELT' },
+      { label: 'Dizzy', value: 'DIZZY' },
     ],
   ],
   [
