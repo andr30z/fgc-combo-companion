@@ -34,5 +34,6 @@ public enum Tekken8Characters {
   VICTOR,
   REINA,
   EDDY,
-  LIDIA_SOBIESKA
+  LIDIA_SOBIESKA,
+  HEIHACHI
 }
