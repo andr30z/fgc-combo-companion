@@ -18,7 +18,7 @@ export default function ForgotPage() {
     useBoolean();
 
   return (
-    <div className="w-screen h-full min-h-80vh flex flex-row justify-center items-center gap-2">
+    <div className="w-full h-full min-h-80vh flex flex-row justify-center items-center gap-2">
       <Card
         cardTitle={hasSubmited ? undefined : 'Forgot your password?'}
         size="xl"
@@ -42,7 +42,7 @@ export default function ForgotPage() {
           </>
         ) : (
           <>
-            <main className="flex gap-4 flex-1 flex-col justify-center items-center w-full">
+            <main className="flex gap-8 flex-1 flex-col justify-center items-center w-full">
               <Input
                 label="Enter your email"
                 placeholder="Your email"

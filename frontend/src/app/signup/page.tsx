@@ -28,7 +28,7 @@ export default function SignupPage() {
 
   const [hasCreated, { setTrue: setCreatedTrue }] = useBoolean(false);
   return (
-    <div className="w-screen h-full min-h-80vh flex flex-row justify-center items-center gap-2">
+    <div className="w-full h-full min-h-80vh flex flex-row justify-center items-center">
       <Card
         className="min-h-[550px] gap-5 shadow-primary shadow-lg w-[80vw]"
         size="xl"
@@ -144,7 +144,7 @@ export default function SignupPage() {
                 type="submit"
               />
               <GoogleLogin extraStyles="w-full py-0" />
-              <Link href="/login">Already have an account? Log In</Link>
+              <Link href="/login">Already have an account? Log in</Link>
             </footer>
           </>
         )}
