@@ -98,6 +98,7 @@ export const GAME_CHARACTERS_MAP = new Map<
       { label: 'Eddy', value: 'EDDY' },
       { label: 'Lidia Sobieska', value: 'LIDIA_SOBIESKA' },
       { label: 'Heihachi', value: 'HEIHACHI' },
+      { label: 'Clive Rosfield', value: 'CLIVE_ROSFIELD' },
     ],
   ],
   [
