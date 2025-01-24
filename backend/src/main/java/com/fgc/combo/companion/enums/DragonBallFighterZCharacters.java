@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.enums;
 
+@Deprecated
 public enum DragonBallFighterZCharacters {
   ANDROID_16,
   ANDROID_17,

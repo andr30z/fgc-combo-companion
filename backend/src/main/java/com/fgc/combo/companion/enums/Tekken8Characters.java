@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.enums;
 
+@Deprecated
 public enum Tekken8Characters {
   KAZUYA,
   JIN,

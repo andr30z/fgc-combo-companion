@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.enums;
 
+@Deprecated
 public enum GuiltyGearStriveCharacters {
   SOL_BADGUY,
   ABA,
