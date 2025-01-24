@@ -225,7 +225,6 @@ public class V11__AddCharactersToDb extends BaseJavaMigration {
     Statement statement = connection.createStatement();
 
     String sqlTekken7 = this.createCombosToSql(Tekken7Characters.values(), ComboGameTypes.TEKKEN_7);
-    // throw new RuntimeException(sqlTekken7);
     statement.execute(sqlTekken7);
 
     String sqlTekken8 = this.createCombosToSql(Tekken8Characters.values(),
