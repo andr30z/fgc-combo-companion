@@ -1,5 +1,8 @@
 .env:
   prefix: ""
+
+server:
+  port: ${PORT:8080}
 authentication:
   auth:
     oauthkey: ${OAUTH_KEY}

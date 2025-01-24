@@ -20,7 +20,7 @@ public enum Tekken7Characters {
   GIGAS,
   HEIHACHI,
   HWOARANG,
-  JACK7,
+  JACK_7,
   JIN,
   JOSIE,
   JULIA,
