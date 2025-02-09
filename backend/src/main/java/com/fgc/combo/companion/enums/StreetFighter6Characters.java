@@ -24,5 +24,6 @@ public enum StreetFighter6Characters {
   AKI,
   AKUMA,
   M_BISON,
-  TERRY
+  TERRY,
+  MAI
 }
