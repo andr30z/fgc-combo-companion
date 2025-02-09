@@ -128,6 +128,7 @@ export const GAME_CHARACTERS_MAP = new Map<
       { label: 'Rashid', value: 'RASHID' },
       { label: 'A.K.I', value: 'AKI' },
       { label: 'AKUMA', value: 'AKUMA' },
+      { label: 'Mai', value: 'MAI' },
     ],
   ],
   [
