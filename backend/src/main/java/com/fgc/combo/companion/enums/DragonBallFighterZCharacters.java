@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.enums;
 
+@Deprecated
 public enum DragonBallFighterZCharacters {
   ANDROID_16,
   ANDROID_17,
@@ -21,8 +22,8 @@ public enum DragonBallFighterZCharacters {
   GOKU,
   GOKU_GT,
   GOKU_SSGSS,
-  GOKUSUPERSAIYAN,
-  GOKUULTRAINSTINCT,
+  GOKU_SUPER_SAIYAN,
+  GOKU_ULTRA_INSTINCT,
   GOKU_BLACK,
   GOTENKS,
   HIT,
@@ -35,12 +36,12 @@ public enum DragonBallFighterZCharacters {
   MASTER_ROSHI,
   NAPPA,
   PICCOLO,
-  SUPERBABY2,
+  SUPER_BABY_2,
   TIEN,
   TRUNKS,
   VEGETA,
   VEGETA_SSGSS,
-  VEGETASUPERSAIYAN,
+  VEGETA_SUPER_SAIYAN,
   VEGITO_SSGSS,
   VIDEL,
   YAMCHA,

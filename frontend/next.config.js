@@ -3,7 +3,7 @@ const path = require('path');
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    FGC_API_URL: process.env.FGC_API_URL,
+    NEXT_PUBLIC_FGC_API_URL: process.env.NEXT_PUBLIC_FGC_API_URL,
   },
   webpack(config) {
     // config.resolve.alias[package.name] = path.resolve(__dirname, 'src');

@@ -6,14 +6,24 @@ export interface SelectProps {
   value: string;
   options: Array<string | { label: string; value: string }>;
   onSelectValue: (value: string) => void;
+  isLoadingOptions?: boolean;
 }
 export const Select: React.FC<SelectProps> = (props) => {
-  const { options: opts, value, onSelectValue } = props;
+  const { options: opts, value, onSelectValue, isLoadingOptions } = props;
   const options = ['Select an option', ...opts];
 
+  if (isLoadingOptions) {
+    options.unshift('Loading options...');
+  }
   return (
     <RadixSelect.Root
-      value={value ? value : 'Select an option'}
+      value={
+        isLoadingOptions
+          ? 'Loading options...'
+          : value
+          ? value
+          : 'Select an option'
+      }
       onValueChange={onSelectValue}
     >
       <RadixSelect.Trigger className="rounded-lg px-[15px] text-sm leading-none min-h-[52px] min-w-[130px] gap-[5px] bg-light flex flex-row items-center justify-between">

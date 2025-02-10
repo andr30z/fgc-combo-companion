@@ -12,7 +12,10 @@ public class V1__CreateUserTable extends BaseJavaMigration {
     Connection connection = context.getConnection();
     Statement statement = connection.createStatement();
     statement.execute(
-      "CREATE SEQUENCE IF NOT EXISTS hibernate_sequence START WITH 1 INCREMENT BY 1"
+      "CREATE EXTENSION pgcrypto;"
+    );
+    statement.execute(
+      "CREATE SEQUENCE IF NOT EXISTS hibernate_sequence START WITH 1 INCREMENT BY 1;"
     );
 
     statement.execute("CREATE TYPE oauthtypes AS ENUM ('GOOGLE');");

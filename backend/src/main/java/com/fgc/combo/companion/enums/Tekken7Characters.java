@@ -1,5 +1,6 @@
 package com.fgc.combo.companion.enums;
 
+@Deprecated
 public enum Tekken7Characters {
   AKUMA,
   ALISA,
@@ -20,7 +21,7 @@ public enum Tekken7Characters {
   GIGAS,
   HEIHACHI,
   HWOARANG,
-  JACK7,
+  JACK_7,
   JIN,
   JOSIE,
   JULIA,

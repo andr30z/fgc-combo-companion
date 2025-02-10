@@ -2,30 +2,28 @@ package com.fgc.combo.companion.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ValueOfEnumValidator
-  implements ConstraintValidator<ValueOfEnum, String> {
-
-  private List<String> acceptedValues;
+    implements ConstraintValidator<ValueOfEnum, String> {
+  private Class<? extends Enum<?>> enumClass;
 
   @Override
   public void initialize(ValueOfEnum annotation) {
-    acceptedValues =
-      Stream
-        .of(annotation.enumClass().getEnumConstants())
-        .map(Enum::name)
-        .collect(Collectors.toList());
+    this.enumClass = annotation.enumClass();
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
     }
 
-    return acceptedValues.contains(value.toString());
+    try {
+      Enum.valueOf((Class) enumClass, value.trim().toUpperCase());
+      return true;
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
   }
 }

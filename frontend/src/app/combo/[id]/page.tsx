@@ -3,6 +3,8 @@ import { UserPreviewLink } from '@/common/components/user-preview-link';
 import { getCharacterName } from '@/common/constants/game-characters';
 import { FGC_API_URLS, getFgcApiInstance } from '@/common/services/fgc-api';
 import { Combo } from '@/common/types/combo';
+import { GameCharacter } from '@/common/types/game-characters';
+import { GameTypes } from '@/common/types/game-types';
 import { promiseResultWithError } from '@/common/utils/promises';
 import { ComboDisplay } from '@/modules/combo-page/combo-display';
 import { Metadata } from 'next';
@@ -16,13 +18,22 @@ function getComboDetails(id: string) {
   );
 }
 
+function getGameCharacters(game: GameTypes) {
+  const fgcApi = getFgcApiInstance();
+  return promiseResultWithError(
+    fgcApi.get<{ characters: GameCharacter[] }>(
+      FGC_API_URLS.getCharactersByGame(game),
+    ),
+  );
+}
+
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { result, error } = await getComboDetails(params?.id ?? '');
   if (error) {
     return {
-      title: 'FGC - Playlist Details',
+      title: 'FGC - Combo Details',
     };
   }
   const combo = result.data;
@@ -60,23 +71,32 @@ export default async function ComboPage({ params }: PageProps) {
   const id = params?.id;
   const { error, result } = await getComboDetails(id || '');
   const isLoggedUser = cookies().has('accessToken');
+  const errorView = (
+    <main className="w-full min-h-[30vh] flex items-center justify-center flex-col">
+      <h1 className="text-light font-primary font-bold text-3xl">
+        {error?.response?.status === 404
+          ? 'Combo not found'
+          : 'Something went wrong. Try again later.'}
+      </h1>
+      <Button
+        text="Home"
+        href={isLoggedUser ? '/dashboard/combos' : '/login'}
+        renderAsInnerLink
+      />
+    </main>
+  );
   if (error) {
-    return (
-      <main className="w-full min-h-[30vh] flex items-center justify-center flex-col">
-        <h1 className="text-light font-primary font-bold text-3xl">
-          {error?.response?.status === 404
-            ? 'Combo not found'
-            : 'Something went wrong. Try again later.'}
-        </h1>
-        <Button
-          text="Home"
-          href={isLoggedUser ? '/dashboard/combos' : '/login'}
-          renderAsInnerLink
-        />
-      </main>
-    );
+    return errorView;
   }
   const combo = result.data;
+
+  const { result: gameCharacters, error: gameCharactersError } =
+    await getGameCharacters(combo.game);
+
+  if (gameCharactersError) {
+    return errorView;
+  }
+
   return (
     <main className="layout-padding-x h-80vh min-h-400 flex flex-col justify-center gap-2">
       <div className="w-full flex flex-col gap-2">
@@ -91,7 +111,10 @@ export default async function ComboPage({ params }: PageProps) {
         {combo.totalDamage || combo.character ? (
           <span className="text-sub-info font-primary text-sm">
             {combo.character
-              ? getCharacterName(combo.game, combo.character)
+              ? getCharacterName(
+                  combo.character,
+                  gameCharacters.data.characters,
+                )
               : ''}
             {combo.totalDamage
               ? ` ${combo.character ? '-' : ''} ${combo.totalDamage} Damage`

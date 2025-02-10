@@ -1,3 +1,4 @@
+import { GameCharacter } from '../types/game-characters';
 import { GameTypes } from '../types/game-types';
 
 export const GAME_CHARACTERS_MAP = new Map<
@@ -26,7 +27,7 @@ export const GAME_CHARACTERS_MAP = new Map<
       { label: 'Gigas', value: 'GIGAS' },
       { label: 'Heihachi', value: 'HEIHACHI' },
       { label: 'Hwoarang', value: 'HWOARANG' },
-      { label: 'Jack 7', value: 'JACK-7' },
+      { label: 'Jack 7', value: 'JACK_7' },
       { label: 'Jin', value: 'JIN' },
       { label: 'Josie', value: 'JOSIE' },
       { label: 'Julia', value: 'JULIA' },
@@ -348,7 +349,9 @@ export const GAME_CHARACTERS_MAP = new Map<
   ],
 ]);
 
-export function getCharacterName(game: GameTypes, character: string) {
-  return GAME_CHARACTERS_MAP.get(game)?.find((c) => c.value === character)
-    ?.label;
+export function getCharacterName(
+  character: string,
+  characters?: Array<GameCharacter>,
+) {
+  return characters?.find((c) => c.code === character)?.name;
 }

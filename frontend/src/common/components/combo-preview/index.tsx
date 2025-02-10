@@ -1,4 +1,3 @@
-import { getCharacterName } from '@/common/constants/game-characters';
 import { useBoolean } from '@/common/hooks/boolean';
 import { GameTypes } from '@/common/types/game-types';
 import { type FC, type ReactNode, useRef } from 'react';
@@ -7,6 +6,7 @@ import { ComboTranslation, ComboTranslationProps } from '../combo-translation';
 import { CopyTextButton } from '../copy-text-button';
 import { Modal } from '../modal';
 import { DownloadComponentImageButton } from '../download-component-image-button';
+import { useGetCharacters } from '@/common/hooks/get-characters';
 export const ComboPreview: FC<
   {
     combo: string;
@@ -31,12 +31,13 @@ export const ComboPreview: FC<
     isComboDetailsOpen,
     { setTrue: openComboDetails, setFalse: closeComboDetails },
   ] = useBoolean();
+  const { getCharacterName } = useGetCharacters({ game });
   const comboTranslatorRef = useRef<HTMLDivElement>(null);
 
   const damageAndCharacter =
     totalDamage || character ? (
       <span className="text-light font-primary text-lg mt-[1px] mb-5">
-        {character ? getCharacterName(game, character) : ''}
+        {character ? getCharacterName(character) : ''}
         {totalDamage ? ` ${character ? '-' : ''} ${totalDamage} Damage` : null}
       </span>
     ) : null;

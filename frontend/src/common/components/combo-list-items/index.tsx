@@ -1,9 +1,10 @@
-import { getCharacterName } from '@/common/constants/game-characters';
 import { useBoolean } from '@/common/hooks/boolean';
+import { useGetCharacters } from '@/common/hooks/get-characters';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS, fgcApi } from '@/common/services/fgc-api';
 import type { Combo } from '@/common/types/combo';
 import type { PlaylistCombo } from '@/common/types/playlist-combo';
+import { User } from '@/common/types/user';
 import { promiseResultWithError } from '@/common/utils/promises';
 import { Draggable } from '@hello-pangea/dnd';
 import type { AxiosResponse } from 'axios';
@@ -22,6 +23,105 @@ import { ListItems, ListItemsProps } from '../list-items';
 import { LoadingBackdrop } from '../loading-backdrop';
 import { Modal } from '../modal';
 import { UserPreviewLink } from '../user-preview-link';
+
+const HeaderCombo: FC<{
+  comboOrPlaylistCombo: ComboOrPlaylistCombo;
+  showComboDeleteIconValidation?: (
+    comboOrPlaylistCombo: ComboOrPlaylistCombo,
+  ) => boolean;
+  user?: User;
+  showComboOwner?: boolean;
+  useComboItemHeader?: boolean;
+  deleteCombo: (comboId: string) => () => Promise<void>;
+  confirmDeleteMsg: string;
+  onSetSelectedItem: (item: Combo) => void;
+}> = ({
+  comboOrPlaylistCombo,
+  showComboDeleteIconValidation,
+  user,
+  showComboOwner,
+  useComboItemHeader,
+  deleteCombo,
+  confirmDeleteMsg,
+  onSetSelectedItem,
+}) => {
+  const combo: Combo = (
+    typeof get(comboOrPlaylistCombo, 'combo') === 'string'
+      ? comboOrPlaylistCombo
+      : comboOrPlaylistCombo.combo
+  ) as Combo;
+  const currentUserIsOwner = combo.owner.id === user?.id;
+  const showDeleteIcon = showComboDeleteIconValidation
+    ? showComboDeleteIconValidation(combo)
+    : currentUserIsOwner;
+
+  const { getCharacterName } = useGetCharacters({ game: combo.game });
+
+  const damageAndCharacter =
+    combo.totalDamage || combo.character ? (
+      <span className="text-sub-info font-primary text-sm mt-[1px]">
+        {combo.character ? getCharacterName(combo.character) : ''}
+        {combo.totalDamage
+          ? ` ${combo.character ? '-' : ''} ${combo.totalDamage} Damage`
+          : null}
+      </span>
+    ) : null;
+
+  return (
+    <header className=" w-full mb-4 items-center flex flex-wrap flex-row justify-between">
+      <div className="flex flex-col max-w-[80%]">
+        <h5
+          title={combo.name}
+          className="text-ellipsis truncate text-xl text-light font-primary font-bold"
+        >
+          {combo.name}
+        </h5>
+        {damageAndCharacter}
+        {showComboOwner && (
+          <UserPreviewLink
+            id={combo.owner.id}
+            name={combo.owner.name}
+            prefix="Created by"
+          />
+        )}
+      </div>
+      {useComboItemHeader && (
+        <div className="flex flex-row gap-2">
+          {user && <AddComboToPlaylist iconSize={27} comboId={combo.id} />}
+          {currentUserIsOwner && (
+            <AiFillEdit
+              size={27}
+              className="text-light cursor-pointer hover:text-primary"
+              onClick={(e) => {
+                e.stopPropagation();
+                onSetSelectedItem(combo);
+                // setSelectedItem(combo);
+                // openForm();
+              }}
+            />
+          )}
+          {showDeleteIcon && (
+            <ConfirmAction
+              onConfirm={deleteCombo(comboOrPlaylistCombo.id)}
+              confirmationText={confirmDeleteMsg}
+            >
+              {({ openConfirmModal }) => (
+                <AiFillDelete
+                  size={27}
+                  className="text-light cursor-pointer hover:text-primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openConfirmModal();
+                  }}
+                />
+              )}
+            </ConfirmAction>
+          )}
+        </div>
+      )}
+    </header>
+  );
+};
 
 type ComboOrPlaylistCombo = Combo | PlaylistCombo;
 interface ComboListItemsProps extends ListItemsProps<ComboOrPlaylistCombo> {
@@ -164,89 +264,23 @@ export const ComboListItems: FC<ComboListItemsProps> = ({
                           }
                           defaultAction();
                         }}
-                        rendeHeader={() => {
-                          const currentUserIsOwner =
-                            combo.owner.id === user?.id;
-                          const showDeleteIcon = showComboDeleteIconValidation
-                            ? showComboDeleteIconValidation(item)
-                            : currentUserIsOwner;
-
-                          const damageAndCharacter =
-                            combo.totalDamage || combo.character ? (
-                              <span className="text-sub-info font-primary text-sm mt-[1px]">
-                                {combo.character
-                                  ? getCharacterName(
-                                      combo.game,
-                                      combo.character,
-                                    )
-                                  : ''}
-                                {combo.totalDamage
-                                  ? ` ${combo.character ? '-' : ''} ${
-                                      combo.totalDamage
-                                    } Damage`
-                                  : null}
-                              </span>
-                            ) : null;
-
-                          return (
-                            <header className=" w-full mb-4 items-center flex flex-wrap flex-row justify-between">
-                              <div className="flex flex-col max-w-[80%]">
-                                <h5
-                                  title={combo.name}
-                                  className="text-ellipsis truncate text-xl text-light font-primary font-bold"
-                                >
-                                  {combo.name}
-                                </h5>
-                                {damageAndCharacter}
-                                {showComboOwner && (
-                                  <UserPreviewLink
-                                    id={combo.owner.id}
-                                    name={combo.owner.name}
-                                    prefix="Created by"
-                                  />
-                                )}
-                              </div>
-                              {useComboItemHeader && (
-                                <div className="flex flex-row gap-2">
-                                  {user && (
-                                    <AddComboToPlaylist
-                                      iconSize={27}
-                                      comboId={combo.id}
-                                    />
-                                  )}
-                                  {currentUserIsOwner && (
-                                    <AiFillEdit
-                                      size={27}
-                                      className="text-light cursor-pointer hover:text-primary"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setSelectedItem(combo);
-                                        openForm();
-                                      }}
-                                    />
-                                  )}
-                                  {showDeleteIcon && (
-                                    <ConfirmAction
-                                      onConfirm={deleteCombo(item.id)}
-                                      confirmationText={confirmDeleteMsg}
-                                    >
-                                      {({ openConfirmModal }) => (
-                                        <AiFillDelete
-                                          size={27}
-                                          className="text-light cursor-pointer hover:text-primary"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            openConfirmModal();
-                                          }}
-                                        />
-                                      )}
-                                    </ConfirmAction>
-                                  )}
-                                </div>
-                              )}
-                            </header>
-                          );
-                        }}
+                        rendeHeader={() => (
+                          <HeaderCombo
+                            comboOrPlaylistCombo={item}
+                            confirmDeleteMsg={confirmDeleteMsg}
+                            deleteCombo={deleteCombo}
+                            user={user}
+                            showComboDeleteIconValidation={
+                              showComboDeleteIconValidation
+                            }
+                            showComboOwner={showComboOwner}
+                            useComboItemHeader={useComboItemHeader}
+                            onSetSelectedItem={(item) => {
+                              setSelectedItem(item);
+                              openForm();
+                            }}
+                          />
+                        )}
                       />
                     )}
                   </ComboPreview>
