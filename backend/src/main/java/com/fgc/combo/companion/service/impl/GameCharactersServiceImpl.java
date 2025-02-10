@@ -16,7 +16,6 @@ public class GameCharactersServiceImpl implements GameCharactersService {
 
   public GameCharactersServiceImpl(
       GameCharacterRepository gameCharacterRepository
-
   ) {
     this.gameCharacterRepository = gameCharacterRepository;
   }
