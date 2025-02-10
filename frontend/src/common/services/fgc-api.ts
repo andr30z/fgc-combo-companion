@@ -1,6 +1,7 @@
 import axios, { CreateAxiosDefaults } from 'axios';
 import type { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
+import { GameTypes } from '../types/game-types';
 
 export const FGC_API_URL = process.env.NEXT_PUBLIC_FGC_API_URL
   ? process.env.NEXT_PUBLIC_FGC_API_URL
@@ -66,4 +67,7 @@ export const FGC_API_URLS = {
   getPlaylistCombosOrdenationUrl: (playlistId: string) =>
     `/v1/playlists/${playlistId}/combos/ordenation`,
   USER_EMAIL_VERIFICATION: '/v1/users/email-verification-solicitation',
+  getCharactersByGame(game: GameTypes) {
+    return `/v1/game-characters?game=${game}`;
+  },
 };
