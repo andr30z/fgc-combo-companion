@@ -32,23 +32,19 @@ public class ComboServiceImpl implements ComboService {
   private final UserService userService;
 
   public ComboServiceImpl(
-    ComboRepository comboRepository,
-    ComboMapper comboMapper,
-    UserService userService
-  ) {
+      ComboRepository comboRepository,
+      ComboMapper comboMapper,
+      UserService userService) {
     this.comboRepository = comboRepository;
     this.comboMapper = comboMapper;
     this.userService = userService;
   }
 
   private void validateComboCharacter(String character, String game) {
- if (
-      character != null &&
-      !ComboCharactersValidation.isComboCharacterValid(
-        character,
-        game
-      )
-    ) {
+    if (character != null &&
+        !ComboCharactersValidation.isComboCharacterValid(
+            character,
+            game)) {
       throw new BadRequestException("Invalid combo character!");
     }
   }
@@ -58,33 +54,26 @@ public class ComboServiceImpl implements ComboService {
 
     String gameType = createComboDTO.getGame();
 
-    this.validateComboCharacter(createComboDTO.getCharacter(), gameType);
-
     Combo combo = comboMapper.toOriginal(createComboDTO);
     User currentUser = userService.me();
     combo.setOwner(currentUser);
     combo.setGame(gameType);
     log.info(
-      "Creating combo with name: {} and game: {}",
-      combo.getName(),
-      combo.getGame().name()
-    );
+        "Creating combo with name: {} and game: {}",
+        combo.getName(),
+        combo.getGame().name());
     return this.saveCombo(combo);
   }
 
   @Override
   public Combo update(UUID id, UpdateComboDto updateComboDTO) {
-    Combo combo =
-      this.comboRepository.findById(id)
+    Combo combo = this.comboRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
- 
-    this.validateComboCharacter(updateComboDTO.getCharacter(), updateComboDTO.getGame());
 
     User currentUser = userService.me();
     if (!combo.getOwner().getId().equals(currentUser.getId())) {
       throw new OperationNotAllowedException(
-        "This combo belongs to another user!"
-      );
+          "This combo belongs to another user!");
     }
 
     BeanUtils.copyProperties(updateComboDTO, combo);
@@ -96,8 +85,7 @@ public class ComboServiceImpl implements ComboService {
   @Override
   public PaginationResponse<Combo> getAllByCurrentUser(Pageable pageable) {
     User user = this.userService.me();
-    Page<Combo> userCombos =
-      this.comboRepository.findAllByOwner(user, pageable);
+    Page<Combo> userCombos = this.comboRepository.findAllByOwner(user, pageable);
 
     return PaginationResponseMapper.create(userCombos);
   }
@@ -106,8 +94,7 @@ public class ComboServiceImpl implements ComboService {
   public Combo getByIdAndCurrentUser(UUID id) {
     User currentUser = this.userService.me();
 
-    Combo combo =
-      this.comboRepository.findByIdAndOwner(id, currentUser)
+    Combo combo = this.comboRepository.findByIdAndOwner(id, currentUser)
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
 
     return combo;
@@ -120,36 +107,29 @@ public class ComboServiceImpl implements ComboService {
 
   @Override
   public PaginationResponse<Combo> getAllByOwnerAndSearchParam(
-    PlaylistComboSearchDto playlistComboSearchDTO,
-    Pageable pageable
-  ) {
+      PlaylistComboSearchDto playlistComboSearchDTO,
+      Pageable pageable) {
     String name = URLDecoderUtil.decodeParamToUTF8(
-      playlistComboSearchDTO.getName()
-    );
+        playlistComboSearchDTO.getName());
     User currentUser = userService.me();
     return PaginationResponseMapper.create(
-      name == null
-        ? this.comboRepository.findAllByOwner(currentUser, pageable)
-        : this.comboRepository.findAllByOwnerAndSearchParam(
-            currentUser,
-            name,
-            pageable
-          )
-    );
+        name == null
+            ? this.comboRepository.findAllByOwner(currentUser, pageable)
+            : this.comboRepository.findAllByOwnerAndSearchParam(
+                currentUser,
+                name,
+                pageable));
   }
 
   @Override
   public boolean deleteByIdAndCurrentUser(UUID id) {
-    Combo combo =
-      this.comboRepository.findById(id)
+    Combo combo = this.comboRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
     User me = userService.me();
 
-    if (
-      !combo.getOwner().getId().equals(me.getId())
-    ) throw new OperationNotAllowedException(
-      "This combo belongs to another user!"
-    );
+    if (!combo.getOwner().getId().equals(me.getId()))
+      throw new OperationNotAllowedException(
+          "This combo belongs to another user!");
 
     this.comboRepository.delete(combo);
     return true;
@@ -157,24 +137,20 @@ public class ComboServiceImpl implements ComboService {
 
   @Override
   public PaginationResponse<Combo> getAllBySearchParams(
-    PlaylistComboSearchDto playlistComboSearchDTO,
-    Pageable pageable
-  ) {
+      PlaylistComboSearchDto playlistComboSearchDTO,
+      Pageable pageable) {
     String name = URLDecoderUtil.decodeParamToUTF8(
-      playlistComboSearchDTO.getName()
-    );
+        playlistComboSearchDTO.getName());
     return PaginationResponseMapper.create(
-      name == null
-        ? this.comboRepository.findAll(pageable)
-        : this.comboRepository.findAllBySearchParam(name, pageable)
-    );
+        name == null
+            ? this.comboRepository.findAll(pageable)
+            : this.comboRepository.findAllBySearchParam(name, pageable));
   }
 
   @Override
   public PaginationResponse<Combo> getByOwner(User user, Pageable pageable) {
     return PaginationResponseMapper.create(
-      this.comboRepository.findAllByOwner(user, pageable)
-    );
+        this.comboRepository.findAllByOwner(user, pageable));
   }
 
   @Override
@@ -185,6 +161,6 @@ public class ComboServiceImpl implements ComboService {
   @Override
   public Combo getById(UUID id) {
     return this.comboRepository.findById(id)
-      .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
+        .orElseThrow(() -> new ResourceNotFoundException("Combo not found!"));
   }
 }
