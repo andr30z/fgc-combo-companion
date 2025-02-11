@@ -123,6 +123,7 @@ public class V11__AddCharactersToDb extends BaseJavaMigration {
       new Character("KIMBERLY", "Kimberly"),
       new Character("LILY", "Lily"),
       new Character("LUKE", "Luke"),
+      new Character("MAI", "Mai"),
       new Character("MANON", "Manon"),
       new Character("MARISA", "Marisa"),
       new Character("RYU", "Ryu"),
