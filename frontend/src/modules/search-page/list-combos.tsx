@@ -62,14 +62,8 @@ export const ListCombos: FC<ListCombosProps> = ({ combos }) => {
     <section className="flex flex-col gap-2 layout-padding-x">
       <h6 className="font-bold text-light text-3xl">Combos</h6>
       {combos.map((comboItem) => {
-        const {
-          id,
-          name: combo,
-          game,
-          character,
-          totalDamage,
-          description,
-        } = comboItem;
+        const { id, combo, game, character, totalDamage, description } =
+          comboItem;
         return (
           <ComboPreview
             key={id}
