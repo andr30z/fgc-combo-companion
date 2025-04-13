@@ -80,7 +80,7 @@ export const PlaylistList: FC<{
             iconLeft={<AiOutlineSearch size={23} className="text-primary" />}
             placeholder="Search for playlists"
             height="h-[40px]"
-            width="w-[300px]"
+            width="w-full sm:w-[300px]"
             className=""
             value={searchValue}
             setValue={setSearchValue}
