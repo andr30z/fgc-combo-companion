@@ -24,7 +24,6 @@ export const CopyTextButton: React.FC<CopyTextButtonProps> = ({
         : 'http://localhost:3000'
     }${textToCopy}`;
   };
-  // console.log("dsadsad")
   return (
     <Button
       color="primary"
