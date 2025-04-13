@@ -117,6 +117,14 @@ export const Header = () => {
                 >
                   <AiOutlineSearch size={25} role="button" />
                 </Link>
+                <Link
+                  href={`/user/${user?.id}`}
+                  useHoverStyles={false}
+                  color="light"
+                  className="cursor-pointer hover:opacity-30"
+                >
+                  <AiOutlineUser size={25} role="button" />
+                </Link>
                 <AiOutlineMenu
                   size={25}
                   role="button"

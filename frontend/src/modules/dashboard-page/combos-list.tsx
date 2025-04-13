@@ -60,9 +60,9 @@ export const CombosList: FC<ComboListInterface> = ({ initialComboData }) => {
           <Input
             iconLeft={<AiOutlineSearch size={23} className="text-primary" />}
             placeholder="Search for a combo"
+            containerClassName="sm:w-[300px]"
             height="h-[40px]"
-            width="w-[300px]"
-            className=""
+            width="w-full"
             value={searchValue}
             setValue={setSearchValue}
             onChange={debouncedRefetch}

@@ -4,9 +4,10 @@ import { useApiQuery } from '@/common/hooks/api-query';
 import { useUser } from '@/common/hooks/user';
 import { FGC_API_URLS } from '@/common/services/fgc-api';
 import { User } from '@/common/types/user';
-import { AiFillEdit, AiOutlineTwitter } from 'react-icons/ai';
+import { AiOutlineTwitter } from 'react-icons/ai';
 import { FaYoutubeSquare } from 'react-icons/fa';
 import { FiInstagram } from 'react-icons/fi';
+import { RiUserSettingsLine } from 'react-icons/ri';
 
 const TEN_MINUTES = 1000 * 60 * 10;
 
@@ -37,7 +38,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ user, userId }) => {
       <div className="flex flex-row justify-end gap-1">
         {isCurrentUser && (
           <Link href="/user/profile" color="light">
-            <AiFillEdit title="Edit" size={25} />
+            <RiUserSettingsLine title="Edit" size={25} />
           </Link>
         )}
         {data?.twitterProfileUrl && (
