@@ -13,6 +13,10 @@ authentication:
     refreshTokenExpirationMsec: ${REFRESH_TOKEN_EXPIRATION_MSEC}
     tokenCookieDomain: ${TOKEN_COOKIE_DOMAIN:fgc-combo-companion.xyz}
 
+brevo:
+  api:
+    key: ${BREVO_API_KEY}
+
 
 email-verification:
   base-frontend-url: ${BASE_EMAIL_VERIFICATION_FRONTEND_URL}
@@ -38,16 +42,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_SENDER_MAIL_USERNAME}
-    password: ${MAIL_SENDER_MAIL_PASSWORD}
-    properties:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher

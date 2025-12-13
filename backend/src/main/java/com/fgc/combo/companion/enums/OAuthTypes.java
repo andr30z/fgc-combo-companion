@@ -5,7 +5,6 @@ public enum OAuthTypes {
 
   public static class Constants {
 
-    public static final String GOOGLE = "GOOGLE";
     public static final String ALL_OAUTH_TYPES = "GOOGLE";
   }
 }
