@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
+import com.fgc.combo.companion.service.CustomUserDetailsServiceImpl;
 import com.fgc.combo.companion.validation.ValueOfEnumValidator;
 
 import lombok.extern.slf4j.Slf4j;

@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.fgc.combo.companion.service.CustomUserDetailsServiceImpl;
 import com.fgc.combo.companion.service.TokenProvider;
-import com.fgc.combo.companion.service.impl.CustomUserDetailsServiceImpl;
 import com.fgc.combo.companion.utils.SecurityCipher;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
