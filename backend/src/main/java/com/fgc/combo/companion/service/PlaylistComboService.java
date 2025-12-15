@@ -194,7 +194,7 @@ public class PlaylistComboService {
 			Playlist playlist,
 			CreateComboDto createComboDTO) {
 
-		if (createComboDTO.getCharacter() != null) {
+		if (createComboDTO.getCharacter() != null || createComboDTO.getCharacter() != "") {
 			this.gameCharactersService.isGameCharacterValid(
 					createComboDTO.getCharacter(),
 					createComboDTO.getGame());
