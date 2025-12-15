@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated(forRemoval = true)
 public class ComboCharactersValidation {
 
   private static final Map<ComboGameTypes, List<String>> validComboCharacters = Map.ofEntries(

@@ -12,26 +12,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fgc.combo.companion.dto.CreateUserDto;
-import com.fgc.combo.companion.dto.CustomUserDetails;
-import com.fgc.combo.companion.dto.LoginRequest;
-import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
-import com.fgc.combo.companion.dto.Token;
-import com.fgc.combo.companion.dto.UpdateUserDto;
-import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
-import com.fgc.combo.companion.enums.OAuthTypes;
-import com.fgc.combo.companion.exception.BadRequestException;
-import com.fgc.combo.companion.exception.EntityExistsException;
-import com.fgc.combo.companion.exception.ResourceNotFoundException;
-import com.fgc.combo.companion.model.User;
-import com.fgc.combo.companion.repository.UserRepository;
-import com.fgc.combo.companion.service.impl.UserServiceImpl;
-import com.fgc.combo.companion.utils.CookieUtil;
-import com.fgc.combo.companion.utils.SecurityCipher;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,6 +37,23 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fgc.combo.companion.dto.CreateUserDto;
+import com.fgc.combo.companion.dto.CustomUserDetails;
+import com.fgc.combo.companion.dto.LoginRequest;
+import com.fgc.combo.companion.dto.OAuthLoginRequestDto;
+import com.fgc.combo.companion.dto.Token;
+import com.fgc.combo.companion.dto.UpdateUserDto;
+import com.fgc.combo.companion.dto.UpdateUserPasswordDto;
+import com.fgc.combo.companion.enums.OAuthTypes;
+import com.fgc.combo.companion.exception.BadRequestException;
+import com.fgc.combo.companion.exception.EntityExistsException;
+import com.fgc.combo.companion.exception.ResourceNotFoundException;
+import com.fgc.combo.companion.model.User;
+import com.fgc.combo.companion.repository.UserRepository;
+import com.fgc.combo.companion.utils.CookieUtil;
+import com.fgc.combo.companion.utils.SecurityCipher;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTests {
@@ -95,7 +96,7 @@ public class UserServiceImplTests {
 
   private AutoCloseable autoCloseable;
 
-  private UserServiceImpl underTest;
+  private UserService underTest;
 
   private String userMail = "testemail@gmail.com";
   private String password = "123456";
@@ -115,7 +116,7 @@ public class UserServiceImplTests {
     autoCloseable = MockitoAnnotations.openMocks(this);
 
     underTest =
-      new UserServiceImpl(
+      new UserService(
         userRepository,
         tokenProvider,
         cookieUtil,
