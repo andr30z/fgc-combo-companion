@@ -7,6 +7,7 @@ import { streetFighter6Translator } from '@/common/combo-translations/street-fig
 import { guiltyGearStriveTranslator } from '@/common/combo-translations/guilty-gear-strive';
 import { dragonBallFighterZTranslator } from '@/common/combo-translations/dragon-ball-fighterz';
 import { tekken8Translator } from '@/common/combo-translations/tekken8';
+import { twoXKOTranslator } from '@/common/combo-translations/2xko';
 
 interface UseComboTranslatorParams {
   game: GameTypes;
@@ -28,10 +29,7 @@ const translatorDictionary: Record<GameTypes, ComboTranslatorType> = {
     actions: [],
     combo: '',
   }),
-  [GameTypes.TWOXKO]: () => ({
-    combo: '',
-    actions: [],
-  }),
+  [GameTypes.TWOXKO]: twoXKOTranslator,
 };
 
 export function useComboTranslator({

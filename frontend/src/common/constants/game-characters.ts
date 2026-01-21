@@ -347,6 +347,18 @@ export const GAME_CHARACTERS_MAP = new Map<
       },
     ],
   ],
+  [
+    GameTypes.TWOXKO,
+    [
+      { label: 'Ahri', value: 'AHRI' },
+      { label: 'Braum', value: 'BRAUM' },
+      { label: 'Darius', value: 'DARIUS' },
+      { label: 'Ekko', value: 'EKKO' },
+      { label: 'Illaoi', value: 'ILLAOI' },
+      { label: 'Jinx', value: 'JINX' },
+      { label: 'Yasuo', value: 'YASUO' },
+    ],
+  ],
 ]);
 
 export function getCharacterName(

@@ -9,7 +9,8 @@ import { GameSelect } from '@/common/components/game-select';
 import { LOCAL_STORAGE_KEYS } from '@/common/constants/local-storage-keys';
 import { useBoolean } from '@/common/hooks/boolean';
 import { usePageTitle } from '@/common/hooks/page-title';
-import { GameTypes } from '@/common/types/game-types';
+import { useUser } from '@/common/hooks/user';
+import { COMBO_TYPES, GameTypes } from '@/common/types/game-types';
 import { get } from 'lodash';
 import { useSearchParams } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -72,6 +73,14 @@ const dragonBallFighterZ = [
   '{CHAR: Cell} 2M > 5M > jc.MLL > jc.MLL2H > SD > j.LLLS > j.236L',
 ];
 
+const twoXKOCombos = [
+  '{CHAR: Vi} M > H > H > S2 > 66 > 2 + H > 9 + M > H > S1 > M + S2',
+  '{CHAR: Warwick} M > H > 2 [ S1 ] ~ M, 2M > M > H > 2H > j.M > j.H > j.S1, 6S2, S2 S2 S2',
+  '{CHAR: Illaoi} L M H S2 (delay) M H 2H 2S1 M H 2H j. M H S1 land j. M H S1+L',
+  '{CHAR: Ahri} M H 6S2 7S2 S2 2 S1 66 [ H ] land j. M H 3S2 land S2 + M',
+  '{CHAR: Blitzcrank} M > H > 2H > j.M > j.2H > j.H > 2H > j.2H > H > S1 > S1 + ( L or M or H )',
+];
+
 const combos: Record<GameTypes, string[]> = {
   [GameTypes.TEKKEN_7]: tekken7Combos,
   [GameTypes.GUILTY_GEAR_STRIVE]: guiltyGearStrive,
@@ -81,10 +90,11 @@ const combos: Record<GameTypes, string[]> = {
   [GameTypes.KOF_XV]: streetFighter6,
   [GameTypes.MORTAL_KOMBAT_1]: streetFighter6,
   [GameTypes.TEKKEN_8]: tekken8Combos,
-  [GameTypes.TWOXKO]: tekken8Combos,
+  [GameTypes.TWOXKO]: twoXKOCombos,
 };
 export default function ComboTranslator() {
   const params = useSearchParams();
+  const { user } = useUser({ redirectTo: null });
   const comboTranslatorRef = useRef<HTMLDivElement>(null);
   const comboParam = params?.get('combo');
   const gameParam = params?.get('game');
@@ -101,7 +111,7 @@ export default function ComboTranslator() {
     GameTypes.STREET_FIGHTER_6;
 
   const [game, setGame] = useState(
-    get(GameTypes, gameInitialValue)
+    get(COMBO_TYPES, gameInitialValue)
       ? (gameInitialValue as GameTypes)
       : GameTypes.STREET_FIGHTER_6,
   );
@@ -133,12 +143,22 @@ export default function ComboTranslator() {
     setCombo(randomCombo);
   };
 
+  const onSelectGame = (selectedGame: GameTypes) => {
+    setGame(selectedGame);
+
+    const hasFavoriteGame =
+      localStorage.getItem(LOCAL_STORAGE_KEYS.FAVORITE_GAME) != null;
+    if (!user && !hasFavoriteGame) {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEYS.FAVORITE_GAME,
+        JSON.stringify(selectedGame),
+      );
+    }
+  };
+
   return (
     <main className="w-full h-full min-h-80vh flex flex-col items-center justify-center px-10 gap-24">
-      <GameSelect
-        onSelect={(selected) => setGame(selected)}
-        selectedOption={game}
-      />
+      <GameSelect onSelect={onSelectGame} selectedOption={game} />
       <div className="w-full flex items-center justify-center flex-col gap-2">
         <ComboInput combo={combo} game={game} setCombo={setCombo} />
         <div className="gap-2 flex flex-row flex-wrap justify-center">

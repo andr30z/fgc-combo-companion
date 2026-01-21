@@ -17,16 +17,21 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   const colorInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <>
+    <div className="relative flex">
       <Button
         style={{
           backgroundColor: color,
         }}
         useHoverStyles={false}
-        leftIcon={<IoMdColorPalette size={18} />}
+        leftIcon={
+          <IoMdColorPalette
+            className="group-hover/combo:opacity-50 hover:opacity-50"
+            size={18}
+          />
+        }
         title={title}
         text={buttonText}
-        extraStyles="hover:opacity-50"
+        extraStyles="group/combo hover:opacity-50"
         onClick={() => {
           if (colorInputRef.current) {
             colorInputRef.current.click();
@@ -37,7 +42,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
         ref={colorInputRef}
         value={color}
         type="color"
-        className="opacity-0 cursor-pointer absolute"
+        className="opacity-0 cursor-pointer absolute bottom-[-10px]"
         onChange={(e) => {
           e.stopPropagation();
           const value = e.currentTarget.value;
@@ -46,6 +51,6 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           });
         }}
       />
-    </>
+    </div>
   );
 };

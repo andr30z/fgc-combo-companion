@@ -97,9 +97,8 @@ export const GameSelect: FC<{
         />
         <Option
           option={GameTypes.TWOXKO}
-          showSoonMessage
           selectedOption={selectedOption}
-          onSelect={() => null}
+          onSelect={onSelect}
           imageSource="/2xko/2xko-select.jpg"
         />
         <div
